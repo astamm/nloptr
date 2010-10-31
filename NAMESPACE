@@ -1,0 +1,3 @@
+useDynLib(nloptr, NLoptR_Optimize)
+export(nloptr, is.nloptr)
+S3method(print, nloptr)

@@ -1,0 +1,36 @@
+# Copyright (C) 2010 Jelmer Ypma. All Rights Reserved.
+# This code is published under the L-GPL.
+#
+# File:   Makevars.win
+# Author: Jelmer Ypma
+# Date:   18 August 2010
+
+
+##########################################################################
+#  Usually, you don't have to change anything below.  Note that if you   #
+#  change certain compiler options, you might have to recompile Ipopt.   #
+##########################################################################
+
+
+# C / C++ Compiler command
+CC  = gcc
+CXX = g++
+
+# C Compiler options
+NLOPT_CFLAGS = 
+
+# additional C Compiler options for linking
+NLOPT_CLINKFLAGS = 
+
+# Libraries necessary to link with NLopt
+NLOPT_LIBS = -L./nlopt-2.2 -llibnlopt-0 -lm
+
+# Necessary Include dirs 
+NLOPT_INCL = -I./nlopt-2.2
+
+# Define objects for R to build
+OBJECTS = nloptr.o
+
+# Convert to R macros
+PKG_LIBS = ${NLOPT_CLINKFLAGS} ${NLOPT_LIBS}
+PKG_CFLAGS = ${NLOPT_CFLAGS} ${NLOPT_INCL}
