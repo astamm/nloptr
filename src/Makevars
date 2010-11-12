@@ -4,7 +4,12 @@
 # File:   Makevars.in
 # Author: Jelmer Ypma
 # Date:   8 October 2010
-
+#
+# Change: 12 November 2010
+#				Download NLopt code from web, compile it
+#               and link the static library into nloptr.so
+#               Configure with --enable-shared to compile
+#               NLopt with -fPIC
 
 ##########################################################################
 #  Usually, you don't have to change anything below.  Note that if you   #
@@ -23,18 +28,15 @@ NLOPT_CFLAGS =
 NLOPT_CLINKFLAGS = 
 
 # Libraries necessary to link with NLopt
-NLOPT_LIBS=-L./nlopt-2.2.1/lib -lnlopt -lm 
-# NLOPT_LIBS=-L. -lnlopt -lm 
-# NLOPT_LIBS=-Llibnlopt.so -lm 
-# NLOPT_LIBS=-L./nlopt-2.2.1/lib/libnlopt.so -lm 
-# NLOPT_LIBS = -L$HOME/install/lib -lnlopt -lm
+NLOPT_LIBS = -lm 
+# NLOPT_LIBS = -lnlopt -lm 
 
 # Necessary Include dirs 
-NLOPT_INCL=-I./nlopt-2.2.1/include
+NLOPT_INCL = -I./nlopt-2.2.1/include
 # NLOPT_INCL = -I$HOME/install/include
 
 # Define objects for R to build
-OBJECTS = nloptr.o
+OBJECTS = nloptr.o nlopt-2.2.1/lib/libnlopt.a
 
 # Convert to R macros
 PKG_LIBS=${NLOPT_CLINKFLAGS} ${NLOPT_LIBS}
@@ -42,17 +44,17 @@ PKG_CFLAGS=${NLOPT_CFLAGS} ${NLOPT_INCL}
 
 SRCDIR = ${CURDIR}
 
-.PHONY: all nlopt-2.2.1/include/nlopt.h
+.PHONY: all nlopt-2.2.1/lib/libnlopt.a
      
-all: nlopt-2.2.1/include/nlopt.h $(SHLIB)
+all: nlopt-2.2.1/lib/libnlopt.a $(SHLIB)
 
 $(SHLIB): 
 	   
 # Compile NLopt source code and clean up
-nlopt-2.2.1/include/nlopt.h: nlopt-2.2.1/configure
+nlopt-2.2.1/lib/libnlopt.a: nlopt-2.2.1/configure
 	echo "Installing library to: ${SRCDIR}/nlopt-2.2.1"
 	cd nlopt-2.2.1; \
-	./configure --prefix=${SRCDIR}/nlopt-2.2.1 --enable-shared --disable-static --without-octave --without-matlab --without-guile --without-python; \
+	./configure --prefix=${SRCDIR}/nlopt-2.2.1 --enable-shared --enable-static --without-octave --without-matlab --without-guile --without-python; \
 	make; \
 	make install; \
 	ls | grep -v ^include$$ | grep -v ^lib$$ | xargs rm -rf;
