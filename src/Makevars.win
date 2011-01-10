@@ -23,14 +23,44 @@ NLOPT_CFLAGS =
 NLOPT_CLINKFLAGS = 
 
 # Libraries necessary to link with NLopt
-NLOPT_LIBS = -L./nlopt-2.2 -llibnlopt-0 -lm
+# NLOPT_LIBS = -L./nlopt-2.2 -llibnlopt-0 -lm
+NLOPT_LIBS = -lm
 
 # Necessary Include dirs 
-NLOPT_INCL = -I./nlopt-2.2
+# NLOPT_INCL = -I./nlopt-2.2
+NLOPT_INCL = -I./nlopt-2.2.1/include
 
 # Define objects for R to build
-OBJECTS = nloptr.o
+# OBJECTS = nloptr.o
+OBJECTS = nloptr.o nlopt-2.2.1/lib/libnlopt.a
 
 # Convert to R macros
 PKG_LIBS = ${NLOPT_CLINKFLAGS} ${NLOPT_LIBS}
 PKG_CFLAGS = ${NLOPT_CFLAGS} ${NLOPT_INCL}
+
+
+.PHONY: all nlopt-2.2.1/lib/libnlopt.a
+     
+all: nlopt-2.2.1/lib/libnlopt.a $(SHLIB)
+
+$(SHLIB): 
+	   
+# Compile NLopt source code and clean up
+nlopt-2.2.1/lib/libnlopt.a: nlopt-2.2.1/configure
+	echo "Installing library to: ${SRCDIR}/nlopt-2.2.1"
+	cd nlopt-2.2.1; \
+	./configure --prefix=${SRCDIR}/nlopt-2.2.1 --enable-shared --enable-static --without-octave --without-matlab --without-guile --without-python; \
+	make; \
+	make install; \
+	ls | grep -v ^include$$ | grep -v ^lib$$ | xargs rm -rf;
+
+# Extract NLopt source code and remove .tar.gz
+nlopt-2.2.1/configure: nlopt-2.2.1.tar.gz
+	tar -xzvf nlopt-2.2.1.tar.gz
+	rm -rf nlopt-2.2.1.tar.gz
+
+
+# Download NLopt source code
+nlopt-2.2.1.tar.gz:
+	wget http://ab-initio.mit.edu/nlopt/nlopt-2.2.1.tar.gz
+
