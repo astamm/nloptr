@@ -3,13 +3,8 @@
 #
 # File:   Makevars.in
 # Author: Jelmer Ypma
-# Date:   8 October 2010
-#
-# Change: 12 November 2010
-#				Download NLopt code from web, compile it
-#               and link the static library into nloptr.so
-#               Configure with --enable-shared to compile
-#               NLopt with -fPIC
+# Date:   10 June 2010
+
 
 ##########################################################################
 #  Usually, you don't have to change anything below.  Note that if you   #
@@ -67,7 +62,8 @@ nlopt-2.2.1/configure: nlopt-2.2.1.tar.gz
 
 # Download NLopt source code
 nlopt-2.2.1.tar.gz:
-	wget http://ab-initio.mit.edu/nlopt/nlopt-2.2.1.tar.gz
+	# wget http://ab-initio.mit.edu/nlopt/nlopt-2.2.1.tar.gz
+	curl -O http://ab-initio.mit.edu/nlopt/nlopt-2.2.1.tar.gz
 
 clean:
 	rm -rf *.so
