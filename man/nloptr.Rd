@@ -82,6 +82,13 @@ nloptr( x0,
     
     Algorithms with equality constraints require the option local_opts, which contains a list with 
     an algorithm and a termination condition for the local algorithm. See ?`nloptr-package` for an example.
+    
+    The option print_level controls how much output is shown during the optimization process. Possible values: 
+    \tabular{ll}{
+        0 (default) \tab no output \cr
+        1 \tab show iteration number and value of objective function \cr
+        2 \tab 1 + show value of (in)equalities
+    }
   }
   \item{...}{
     arguments that will be passed to the user-defined objective and constraints functions.

@@ -74,7 +74,8 @@ local_opts <- list( "algorithm" = "NLOPT_LD_MMA",
 opts <- list( "algorithm" = "NLOPT_LD_AUGLAG",
               "xtol_rel"  = 1.0e-7,
               "maxeval"   = 1000,
-              "local_opts" = local_opts )
+              "local_opts" = local_opts,
+              "print_level" = 2 )
 
 res <- nloptr( x0=x0, 
                eval_f=eval_f, 
@@ -82,7 +83,7 @@ res <- nloptr( x0=x0,
                ub=ub, 
                eval_g_ineq=eval_g_ineq, 
                eval_g_eq=eval_g_eq, 
-               opts=opts)               
+               opts=opts) 
 print( res )
 
 # see if the constraints are violated

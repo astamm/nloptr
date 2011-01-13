@@ -23,8 +23,9 @@ eval_grad_f <- function(x) {
 # initial values
 x0 <- c( -1.2, 1 )
 
-opts <- list("algorithm"="NLOPT_LD_LBFGS",
-             "xtol_rel"=1.0e-8)
+opts <- list( "algorithm"   = "NLOPT_LD_LBFGS",
+              "xtol_rel"    = 1.0e-8,
+              "print_level" = 1 )
  
 # solve Rosenbrock Banana function
 res <- nloptr( x0=x0, 

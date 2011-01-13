@@ -27,6 +27,8 @@
 #		iterations : number of iterations that were executed
 #		objective : value if the objective function in the solution
 #		solution : optimal value of the controls
+#
+# 13/01/2011: added print_level option
 
 nloptr <-
 function( x0, 
@@ -55,7 +57,8 @@ function( x0,
         } else {
             conv_options <- unlist( opts[ names(opts) != "algorithm" & 
                                           names(opts) != "tol_constraints_ineq" &
-                                          names(opts) != "tol_constraints_eq" ] )
+                                          names(opts) != "tol_constraints_eq" &
+                                          names(opts) != "print_level"  ] )
             opts$termination_conditions <- paste( paste( names(conv_options) ), ": ", paste( conv_options ), sep='', collapse='\t' )
             if ( ! "xtol_rel" %in% names( opts ) ) {
                 opts$xtol_rel <- 0.0
@@ -84,6 +87,9 @@ function( x0,
         }
         if ( ! "tol_constraints_eq" %in% names( opts ) ) {
             opts$tol_constraints_eq <- rep( 1e-8, num_constraints_eq )
+        }
+        if ( ! "print_level" %in% names( opts ) ) {
+            opts$print_level <- 0
         }
     
         return( opts )

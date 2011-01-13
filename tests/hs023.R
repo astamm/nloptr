@@ -67,8 +67,9 @@ x0 <- c( 3, 1 )
 lb <- c( -50, -50 )
 ub <- c(  50,  50 )
 
-opts <- list( "algorithm" = "NLOPT_LD_MMA",
-              "xtol_rel"  = 1.0e-6 )
+opts <- list( "algorithm"   = "NLOPT_LD_MMA",
+              "xtol_rel"    = 1.0e-6, 
+              "print_level" = 2 )
 
              
 res <- nloptr( x0=x0, 

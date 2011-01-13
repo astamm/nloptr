@@ -29,6 +29,8 @@
  * Financial support of the UK Economic and Social Research Council 
  * through a grant (RES-589-28-0001) to the ESRC Centre for Microdata 
  * Methods and Practice (CeMMAP) is gratefully acknowledged.
+ *
+ * 13/01/2011: added print_level option
  */
 
  // TODO: add minimize/maximize option (objective = "maximize")
@@ -195,6 +197,7 @@ typedef struct {
     SEXP R_eval_f;
     SEXP R_environment;
     int  num_iterations;
+    int  print_level;
 } func_objective_data;
 
 /*
@@ -215,6 +218,11 @@ double func_objective(unsigned n, const double *x, double *grad, void *data)
     // increase number of function evaluations
     d->num_iterations++;
   
+    // print status
+    if ( d->print_level >= 1 ) {
+        Rprintf( "iteration: %d\n", d->num_iterations );
+    }
+    
 	// Allocate memory for a vector of reals.
 	// This vector will contain the elements of x,
 	// x is the argument to the R function R_eval_f
@@ -245,6 +253,10 @@ double func_objective(unsigned n, const double *x, double *grad, void *data)
         UNPROTECT( 1 );
     }
   
+    // print objective value
+    if ( d->print_level >= 1 ) {
+        Rprintf( "\tf(x) = %f\n", obj_value );
+    }
     
     // gradient
     if (grad) {
@@ -271,6 +283,7 @@ double func_objective(unsigned n, const double *x, double *grad, void *data)
 typedef struct {
     SEXP R_eval_g;
     SEXP R_environment;
+    int print_level;
 } func_constraints_ineq_data;
 
 /*
@@ -330,6 +343,20 @@ void func_constraints_ineq(unsigned m, double* constraints, unsigned n, const do
         UNPROTECT( 1 );
     }
     
+    // print inequality constraints
+    if ( d->print_level >= 2 ) {
+        if ( m == 1 ) {
+            Rprintf( "\tg(x) = %f\n", constraints[ 0 ] );
+        }
+        else {
+            Rprintf( "\tg(x) = ( %f", constraints[ 0 ] );
+            for (i=1;i<m;i++) {
+                Rprintf( ",%f", constraints[ i ] );
+            }
+            Rprintf( " )\n" );
+        }
+    }
+    
     // get the value of the gradient if needed
     if (grad) {
         // result needs to be a list in this case
@@ -367,6 +394,7 @@ void func_constraints_ineq(unsigned m, double* constraints, unsigned n, const do
 typedef struct {
     SEXP R_eval_g;
     SEXP R_environment;
+    int print_level;
 } func_constraints_eq_data;
 
 /*
@@ -424,6 +452,20 @@ void func_constraints_eq(unsigned m, double* constraints, unsigned n, const doub
         }
         
         UNPROTECT( 1 );
+    }
+    
+    // print equality constraints
+    if ( d->print_level >= 2 ) {
+        if ( m == 1 ) {
+            Rprintf( "\th(x) = %f\n", constraints[ 0 ] );
+        }
+        else {
+            Rprintf( "\th(x) = ( %f", constraints[ 0 ] );
+            for (i=1;i<m;i++) {
+                Rprintf( ",%f", constraints[ i ] );
+            }
+            Rprintf( " )\n" );
+        }
     }
     
     // get the value of the gradient if needed
@@ -634,6 +676,12 @@ SEXP NLoptR_Optimize( SEXP args )
     }
     UNPROTECT( 1 );
     
+    // get print_level from options
+    SEXP R_opts_print_level;
+    PROTECT( R_opts_print_level = AS_INTEGER( getListElement( R_options, "print_level" ) ) );
+    int print_level = INTEGER( R_opts_print_level )[0];
+    UNPROTECT( 1 );
+    
     // get lower and upper bounds
     SEXP R_lower_bounds, R_upper_bounds;
     PROTECT( R_lower_bounds = getListElement( args, "lower_bounds" ) );
@@ -674,9 +722,10 @@ SEXP NLoptR_Optimize( SEXP args )
 	
     // define data to pass to objective function
     func_objective_data objfunc_data;
-    objfunc_data.R_eval_f = R_eval_f;
-    objfunc_data.R_environment = R_environment;
-    objfunc_data.num_iterations = 0;
+    objfunc_data.R_eval_f        = R_eval_f;
+    objfunc_data.R_environment   = R_environment;
+    objfunc_data.num_iterations  = 0;
+    objfunc_data.print_level     = print_level;
     
     // add objective to options
     nlopt_set_min_objective(opts, func_objective, &objfunc_data);
@@ -698,6 +747,7 @@ SEXP NLoptR_Optimize( SEXP args )
         func_constraints_ineq_data ineq_constr_data;
         ineq_constr_data.R_eval_g       = R_eval_g_ineq;
         ineq_constr_data.R_environment  = R_environment;
+        ineq_constr_data.print_level    = print_level;
         
         // add vector-valued inequality constraint
         nlopt_add_inequality_mconstraint(opts, num_constraints_ineq, func_constraints_ineq, &ineq_constr_data, tol_constraints_ineq);
@@ -720,6 +770,7 @@ SEXP NLoptR_Optimize( SEXP args )
         func_constraints_eq_data eq_constr_data;
         eq_constr_data.R_eval_g       = R_eval_g_eq;
         eq_constr_data.R_environment  = R_environment;
+        eq_constr_data.print_level    = print_level;
         
         // add vector-valued equality constraint
         nlopt_add_equality_mconstraint(opts, num_constraints_eq, func_constraints_eq, &eq_constr_data, tol_constraints_eq);
