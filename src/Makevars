@@ -49,7 +49,7 @@ $(SHLIB):
 nlopt-2.2.1/lib/libnlopt.a: nlopt-2.2.1/configure
 	echo "Installing library to: ${SRCDIR}/nlopt-2.2.1"
 	cd nlopt-2.2.1; \
-	./configure --prefix=${SRCDIR}/nlopt-2.2.1 --enable-shared --enable-static --without-octave --without-matlab --without-guile --without-python; \
+	./configure --prefix=${SRCDIR}/nlopt-2.2.1 --disable-shared --enable-static --without-octave --without-matlab --without-guile --without-python; \
 	make; \
 	make install; \
 	ls | grep -v ^include$$ | grep -v ^lib$$ | xargs rm -rf;
@@ -62,7 +62,6 @@ nlopt-2.2.1/configure: nlopt-2.2.1.tar.gz
 
 # Download NLopt source code
 nlopt-2.2.1.tar.gz:
-	# wget http://ab-initio.mit.edu/nlopt/nlopt-2.2.1.tar.gz
 	curl -O http://ab-initio.mit.edu/nlopt/nlopt-2.2.1.tar.gz
 
 clean:
