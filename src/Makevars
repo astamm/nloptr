@@ -4,17 +4,13 @@
 # File:   Makevars.in
 # Author: Jelmer Ypma
 # Date:   10 June 2010
-
-
-##########################################################################
-#  Usually, you don't have to change anything below.  Note that if you   #
-#  change certain compiler options, you might have to recompile Ipopt.   #
-##########################################################################
+#
+# Change --disable-shared to --enable-shared to compile with -fPIC
 
 
 # C / C++ Compiler command
-CC  = gcc
-CXX = g++
+# CC  = gcc
+# CXX = g++
 
 # C Compiler options
 NLOPT_CFLAGS = 
@@ -23,7 +19,7 @@ NLOPT_CFLAGS =
 NLOPT_CLINKFLAGS = 
 
 # Libraries necessary to link with NLopt
-NLOPT_LIBS = -lm 
+NLOPT_LIBS = -lm nlopt-2.2.1/lib/libnlopt.la
 # NLOPT_LIBS = -lnlopt -lm 
 
 # Necessary Include dirs 
@@ -31,7 +27,8 @@ NLOPT_INCL = -I./nlopt-2.2.1/include
 # NLOPT_INCL = -I$HOME/install/include
 
 # Define objects for R to build
-OBJECTS = nloptr.o nlopt-2.2.1/lib/libnlopt.a
+# OBJECTS = nloptr.o nlopt-2.2.1/lib/libnlopt.a
+OBJECTS = nloptr.o
 
 # Convert to R macros
 PKG_LIBS=${NLOPT_CLINKFLAGS} ${NLOPT_LIBS}
@@ -49,7 +46,7 @@ $(SHLIB):
 nlopt-2.2.1/lib/libnlopt.a: nlopt-2.2.1/configure
 	echo "Installing library to: ${SRCDIR}/nlopt-2.2.1"
 	cd nlopt-2.2.1; \
-	./configure --prefix=${SRCDIR}/nlopt-2.2.1 --disable-shared --enable-static --without-octave --without-matlab --without-guile --without-python; \
+	./configure --prefix=${SRCDIR}/nlopt-2.2.1 --enable-shared --enable-static --without-octave --without-matlab --without-guile --without-python; \
 	make; \
 	make install; \
 	ls | grep -v ^include$$ | grep -v ^lib$$ | xargs rm -rf;
