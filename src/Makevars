@@ -19,7 +19,8 @@ NLOPT_CFLAGS =
 NLOPT_CLINKFLAGS = 
 
 # Libraries necessary to link with NLopt
-NLOPT_LIBS = -lm nlopt-2.2.1/lib/libnlopt.la
+NLOPT_LIBS = -lm
+# NLOPT_LIBS = -lm nlopt-2.2.1/lib/libnlopt.la
 # NLOPT_LIBS = -lnlopt -lm 
 
 # Necessary Include dirs 
@@ -27,8 +28,8 @@ NLOPT_INCL = -I./nlopt-2.2.1/include
 # NLOPT_INCL = -I$HOME/install/include
 
 # Define objects for R to build
-# OBJECTS = nloptr.o nlopt-2.2.1/lib/libnlopt.a
-OBJECTS = nloptr.o
+OBJECTS = nloptr.o nlopt-2.2.1/lib/libnlopt.a
+# OBJECTS = nloptr.o
 
 # Convert to R macros
 PKG_LIBS=${NLOPT_CLINKFLAGS} ${NLOPT_LIBS}
