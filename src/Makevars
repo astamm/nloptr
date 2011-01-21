@@ -50,7 +50,8 @@ nlopt-2.2.1/lib/libnlopt.a: nlopt-2.2.1/configure
 	./configure --prefix=${SRCDIR}/nlopt-2.2.1 --enable-shared --enable-static --without-octave --without-matlab --without-guile --without-python; \
 	make; \
 	make install; \
-	ls | grep -v ^include$$ | grep -v ^lib$$ | xargs rm -rf;
+	ls | grep -v ^include$$ | grep -v ^lib$$ | xargs rm -rf; \
+    rm -rf .libs;
 
 # Extract NLopt source code and remove .tar.gz
 nlopt-2.2.1/configure: nlopt-2.2.1.tar.gz
