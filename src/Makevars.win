@@ -40,13 +40,13 @@ all: nlopt-2.2.1/lib/libnlopt.a $(SHLIB)
 $(SHLIB): 
 	   
 # Compile NLopt source code and clean up
-# changed this line for cmake .
-# ./configure --prefix=${SRCDIR}/nlopt-2.2.1 --enable-shared --enable-static --without-octave --without-matlab --without-guile --without-python; 
+# changed this line for configure.
+#  cmake ../nlopt-2.2.1 -DCMAKE_INSTALL_PREFIX=${SRCDIR}/nlopt-2.2.1;
 nlopt-2.2.1/lib/libnlopt.a: nlopt-2.2.1/configure nlopt-2.2.1/CMakeLists.txt nlopt-2.2.1/config.cmake.h.in
 	echo "Installing library to: ${SRCDIR}/nlopt-2.2.1-build"
 	mkdir nlopt-2.2.1-build
 	cd nlopt-2.2.1-build; \
-	cmake ../nlopt-2.2.1 -DCMAKE_INSTALL_PREFIX=${SRCDIR}/nlopt-2.2.1; \
+	./configure --prefix=${SRCDIR}/nlopt-2.2.1 --enable-shared --enable-static --without-octave --without-matlab --without-guile --without-python; \
 	make; \
 	make install; \
 	ls
