@@ -5,6 +5,8 @@
 # Author: Jelmer Ypma
 # Date:   18 August 2010
 
+# define NLopt version
+NLOPT_VERSION = 2.2.3
 
 # C / C++ Compiler command
 CC  = gcc
@@ -17,53 +19,31 @@ NLOPT_CFLAGS =
 NLOPT_CLINKFLAGS = 
 
 # Libraries necessary to link with NLopt
-# NLOPT_LIBS = -L./nlopt-2.2 -llibnlopt-0 -lm
 NLOPT_LIBS = -lm
 
 # Necessary Include dirs 
-# NLOPT_INCL = -I./nlopt-2.2
-NLOPT_INCL = -I./nlopt-2.2.1/include
+NLOPT_INCL = -I./nlopt-${NLOPT_VERSION}-build/include
 
 # Define objects for R to build
-# OBJECTS = nloptr.o
-OBJECTS = nloptr.o nlopt-2.2.1/lib/libnlopt.a
+OBJECTS = nloptr.o nlopt-${NLOPT_VERSION}-build/lib/libnlopt.a
 
 # Convert to R macros
 PKG_LIBS = ${NLOPT_CLINKFLAGS} ${NLOPT_LIBS}
 PKG_CFLAGS = ${NLOPT_CFLAGS} ${NLOPT_INCL}
 
 
-.PHONY: all nlopt-2.2.1/lib/libnlopt.a
+.PHONY: all nlopt-${NLOPT_VERSION}-build/lib/libnlopt.a
      
-all: nlopt-2.2.1/lib/libnlopt.a $(SHLIB)
+all: nlopt-${NLOPT_VERSION}-build/lib/libnlopt.a $(SHLIB)
 
 $(SHLIB): 
-	   
-# Compile NLopt source code and clean up
-# changed this line for configure.
-#  cmake ../nlopt-2.2.1 -DCMAKE_INSTALL_PREFIX=${SRCDIR}/nlopt-2.2.1;
-nlopt-2.2.1/lib/libnlopt.a: nlopt-2.2.1/configure nlopt-2.2.1/CMakeLists.txt nlopt-2.2.1/config.cmake.h.in
-	echo "Installing library to: ${SRCDIR}/nlopt-2.2.1-build"
-	mkdir nlopt-2.2.1-build
-	cd nlopt-2.2.1-build; \
-	./configure --prefix=${SRCDIR}/nlopt-2.2.1 --enable-shared --enable-static --without-octave --without-matlab --without-guile --without-python; \
-	make; \
-	make install; \
-	ls
-	ls ../
 
-# Extract NLopt source code and remove .tar.gz
-nlopt-2.2.1/configure: nlopt-2.2.1.tar.gz
-	tar -xzvf nlopt-2.2.1.tar.gz --no-same-owner
-	rm -rf nlopt-2.2.1.tar.gz
+# Extract NLopt binary and remove .tar.gz
+nlopt-${NLOPT_VERSION}-build/lib/libnlopt.a: nlopt-${NLOPT_VERSION}-build.tar.gz
+	tar -xzvf nlopt-${NLOPT_VERSION}-build.tar.gz --no-same-owner
+	rm -rf nlopt-${NLOPT_VERSION}-build.tar.gz
 
 
-# Download NLopt source code
-nlopt-2.2.1.tar.gz:
-	wget http://ab-initio.mit.edu/nlopt/nlopt-2.2.1.tar.gz
-
-nlopt-2.2.1/CMakeLists.txt:
-	wget http://ab-initio.mit.edu/nlopt/CMakeLists.txt --directory-prefix=nlopt-2.2.1
-
-nlopt-2.2.1/config.cmake.h.in:
-	wget http://ab-initio.mit.edu/nlopt/config.cmake.h.in --directory-prefix=nlopt-2.2.1
+# Download NLopt binary
+nlopt-${NLOPT_VERSION}-build.tar.gz:
+	wget http://www.ucl.ac.uk/~uctpjyy/downloads/nlopt-${NLOPT_VERSION}-build.tar.gz

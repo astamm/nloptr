@@ -6,7 +6,10 @@
 # Date:   10 June 2010
 #
 # Change --disable-shared to --enable-shared to compile with -fPIC
+# Updated version number
 
+# define NLopt version
+NLOPT_VERSION = 2.2.3
 
 # C / C++ Compiler command
 # CC  = gcc
@@ -20,15 +23,15 @@ NLOPT_CLINKFLAGS =
 
 # Libraries necessary to link with NLopt
 NLOPT_LIBS = -lm
-# NLOPT_LIBS = -lm nlopt-2.2.1/lib/libnlopt.la
+# NLOPT_LIBS = -lm nlopt-${NLOPT_VERSION}/lib/libnlopt.la
 # NLOPT_LIBS = -lnlopt -lm 
 
 # Necessary Include dirs 
-NLOPT_INCL = -I./nlopt-2.2.1/include
+NLOPT_INCL = -I./nlopt-${NLOPT_VERSION}/include
 # NLOPT_INCL = -I$HOME/install/include
 
 # Define objects for R to build
-OBJECTS = nloptr.o nlopt-2.2.1/lib/libnlopt.a
+OBJECTS = nloptr.o nlopt-${NLOPT_VERSION}/lib/libnlopt.a
 # OBJECTS = nloptr.o
 
 # Convert to R macros
@@ -37,35 +40,35 @@ PKG_CFLAGS=${NLOPT_CFLAGS} ${NLOPT_INCL}
 
 SRCDIR = ${CURDIR}
 
-.PHONY: all nlopt-2.2.1/lib/libnlopt.a
+.PHONY: all nlopt-${NLOPT_VERSION}/lib/libnlopt.a
      
-all: nlopt-2.2.1/lib/libnlopt.a $(SHLIB)
+all: nlopt-${NLOPT_VERSION}/lib/libnlopt.a $(SHLIB)
 
 $(SHLIB): 
 	   
 # Compile NLopt source code and clean up
-nlopt-2.2.1/lib/libnlopt.a: nlopt-2.2.1/configure
-	echo "Installing library to: ${SRCDIR}/nlopt-2.2.1"
-	cd nlopt-2.2.1; \
-	./configure --prefix=${SRCDIR}/nlopt-2.2.1 --enable-shared --enable-static --without-octave --without-matlab --without-guile --without-python; \
+nlopt-${NLOPT_VERSION}/lib/libnlopt.a: nlopt-${NLOPT_VERSION}/configure
+	echo "Installing library to: ${SRCDIR}/nlopt-${NLOPT_VERSION}"
+	cd nlopt-${NLOPT_VERSION}; \
+	./configure --prefix=${SRCDIR}/nlopt-${NLOPT_VERSION} --enable-shared --enable-static --without-octave --without-matlab --without-guile --without-python; \
 	make; \
 	make install; \
 	ls | grep -v ^include$$ | grep -v ^lib$$ | xargs rm -rf; \
     rm -rf .libs;
 
 # Extract NLopt source code and remove .tar.gz
-nlopt-2.2.1/configure: nlopt-2.2.1.tar.gz
-	tar -xzvf nlopt-2.2.1.tar.gz
-	rm -rf nlopt-2.2.1.tar.gz
+nlopt-${NLOPT_VERSION}/configure: nlopt-${NLOPT_VERSION}.tar.gz
+	tar -xzvf nlopt-${NLOPT_VERSION}.tar.gz
+	rm -rf nlopt-${NLOPT_VERSION}.tar.gz
 
 
 # Download NLopt source code
-nlopt-2.2.1.tar.gz:
-	curl -O http://ab-initio.mit.edu/nlopt/nlopt-2.2.1.tar.gz
+nlopt-${NLOPT_VERSION}.tar.gz:
+	curl -O http://ab-initio.mit.edu/nlopt/nlopt-${NLOPT_VERSION}.tar.gz
 
 clean:
 	rm -rf *.so
 	rm -rf *.o
-	rm -rf nlopt-2.2.1
+	rm -rf nlopt-${NLOPT_VERSION}
 	
 
