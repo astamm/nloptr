@@ -1,0 +1,74 @@
+# Copyright (C) 2010 Jelmer Ypma. All Rights Reserved.
+# This code is published under the L-GPL.
+#
+# File:   Makevars.in
+# Author: Jelmer Ypma
+# Date:   10 June 2010
+#
+# Change --disable-shared to --enable-shared to compile with -fPIC
+# Updated version number
+
+# define NLopt version
+NLOPT_VERSION = 2.2.4
+
+# C / C++ Compiler command
+# CC  = gcc
+# CXX = g++
+
+# C Compiler options
+NLOPT_CFLAGS = 
+
+# additional C Compiler options for linking
+NLOPT_CLINKFLAGS = 
+
+# Libraries necessary to link with NLopt
+NLOPT_LIBS = -lm
+# NLOPT_LIBS = -lm nlopt-${NLOPT_VERSION}/lib/libnlopt.la
+# NLOPT_LIBS = -lnlopt -lm 
+
+# Necessary Include dirs 
+NLOPT_INCL = -I./nlopt-${NLOPT_VERSION}/include
+# NLOPT_INCL = -I$HOME/install/include
+
+# Define objects for R to build
+OBJECTS = nloptr.o nlopt-${NLOPT_VERSION}/lib/libnlopt.a
+# OBJECTS = nloptr.o
+
+# Convert to R macros
+PKG_LIBS=${NLOPT_CLINKFLAGS} ${NLOPT_LIBS}
+PKG_CFLAGS=${NLOPT_CFLAGS} ${NLOPT_INCL}
+
+SRCDIR = ${CURDIR}
+
+.PHONY: all nlopt-${NLOPT_VERSION}/lib/libnlopt.a
+     
+all: nlopt-${NLOPT_VERSION}/lib/libnlopt.a $(SHLIB)
+
+$(SHLIB): 
+	   
+# Compile NLopt source code and clean up
+nlopt-${NLOPT_VERSION}/lib/libnlopt.a: nlopt-${NLOPT_VERSION}/configure
+	echo "Installing library to: ${SRCDIR}/nlopt-${NLOPT_VERSION}"
+	cd nlopt-${NLOPT_VERSION}; \
+	./configure --prefix=${SRCDIR}/nlopt-${NLOPT_VERSION} --enable-shared --enable-static --without-octave --without-matlab --without-guile --without-python; \
+	make; \
+	make install; \
+	ls | grep -v ^include$$ | grep -v ^lib$$ | xargs rm -rf; \
+    rm -rf .libs;
+
+# Extract NLopt source code and remove .tar.gz
+nlopt-${NLOPT_VERSION}/configure: nlopt-${NLOPT_VERSION}.tar.gz
+	tar -xzvf nlopt-${NLOPT_VERSION}.tar.gz
+	rm -rf nlopt-${NLOPT_VERSION}.tar.gz
+
+
+# Download NLopt source code
+nlopt-${NLOPT_VERSION}.tar.gz:
+	curl -O http://ab-initio.mit.edu/nlopt/nlopt-${NLOPT_VERSION}.tar.gz
+
+clean:
+	rm -rf *.so
+	rm -rf *.o
+	rm -rf nlopt-${NLOPT_VERSION}
+	
+
