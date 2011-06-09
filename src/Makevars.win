@@ -5,45 +5,4 @@
 # Author: Jelmer Ypma
 # Date:   18 August 2010
 
-# define NLopt version
-NLOPT_VERSION = 2.2.3
-
-# C / C++ Compiler command
-CC  = gcc
-CXX = g++
-
-# C Compiler options
-NLOPT_CFLAGS = 
-
-# additional C Compiler options for linking
-NLOPT_CLINKFLAGS = 
-
-# Libraries necessary to link with NLopt
-NLOPT_LIBS = -lm
-
-# Necessary Include dirs 
-NLOPT_INCL = -I./nlopt-${NLOPT_VERSION}-build/include
-
-# Define objects for R to build
-OBJECTS = nloptr.o nlopt-${NLOPT_VERSION}-build/lib/libnlopt.a
-
-# Convert to R macros
-PKG_LIBS = ${NLOPT_CLINKFLAGS} ${NLOPT_LIBS}
-PKG_CFLAGS = ${NLOPT_CFLAGS} ${NLOPT_INCL}
-
-
-.PHONY: all nlopt-${NLOPT_VERSION}-build/lib/libnlopt.a
-     
-all: nlopt-${NLOPT_VERSION}-build/lib/libnlopt.a $(SHLIB)
-
-$(SHLIB): 
-
-# Extract NLopt binary and remove .tar.gz
-nlopt-${NLOPT_VERSION}-build/lib/libnlopt.a: nlopt-${NLOPT_VERSION}-build.tar.gz
-	tar -xzvf nlopt-${NLOPT_VERSION}-build.tar.gz --no-same-owner
-	rm -rf nlopt-${NLOPT_VERSION}-build.tar.gz
-
-
-# Download NLopt binary
-nlopt-${NLOPT_VERSION}-build.tar.gz:
-	wget http://www.ucl.ac.uk/~uctpjyy/downloads/nlopt-${NLOPT_VERSION}-build.tar.gz
+# do not build
