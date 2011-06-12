@@ -4,5 +4,26 @@
 # File:   Makevars.win
 # Author: Jelmer Ypma
 # Date:   18 August 2010
+#
+# 09 June 2011: Windows support added thanks to Stefan Theussl and Uwe Ligges.
+#               NLOPT_HOME is the directory where a working installation of 
+#               NLopt is located (within subdirectories NLOPT_VERSION/R_ARCH)
 
-# do not build
+# Define NLopt version
+NLOPT_VERSION = 2.2.3
+
+# C Compiler options
+NLOPT_CFLAGS = 
+
+# Additional C Compiler options for linking
+NLOPT_CLINKFLAGS = -L${NLOPT_HOME}/${NLOPT_VERSION}${R_ARCH}/lib
+
+# Necessary Include dirs 
+NLOPT_INCL = -I${NLOPT_HOME}/${NLOPT_VERSION}${R_ARCH}/include
+
+# Libraries necessary to link with NLopt
+NLOPT_LIBS = -lm -lnlopt
+
+# Convert to R macros
+PKG_LIBS = ${NLOPT_CLINKFLAGS} ${NLOPT_LIBS}
+PKG_CFLAGS = ${NLOPT_CFLAGS} ${NLOPT_INCL}
