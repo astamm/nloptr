@@ -7,6 +7,8 @@
 #
 # Input: object
 # Output: bool telling whether the object is an nloptr or not
+#
+# 16/06/2011: separated local optimzer check and equality constraints check
 
 is.nloptr <- function( x ) {
     
@@ -161,8 +163,20 @@ is.nloptr <- function( x ) {
         if( !( x$options$algorithm %in% eq_algorithms ) ) {
 			stop(paste('If you want to use equality constraints, then you should use one of these algorithms', paste(eq_algorithms, collapse=', ')))
 		}
-		if ( is.null( x$local_options ) ) {
-			stop('If you want to use equality constraints, then you should have to supply an algorithm and a termination condition in local_opts')
+    }
+    
+    # check if a local optimizer was supplied, which is needed by some algorithms
+    if ( x$options$algorithm %in% 
+            c("NLOPT_LD_AUGLAG", 
+		      "NLOPT_LN_AUGLAG",
+              "NLOPT_LD_AUGLAG_EQ",
+              "NLOPT_LN_AUGLAG_EQ",
+              "NLOPT_GN_MLSL", 
+              "NLOPT_GD_MLSL", 
+              "NLOPT_GN_MLSL_LDS", 
+			  "NLOPT_GD_MLSL_LDS") ) {
+        if ( is.null( x$local_options ) ) {
+			stop(paste('The algorithm', x$options$algorithm, 'needs a local optimizer; specify an algorithm and termination condition in local_opts'))
 		}
     }
     
