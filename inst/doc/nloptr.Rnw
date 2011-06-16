@@ -57,37 +57,10 @@ where $f(\cdot)$ is the objective function and $x$ represents the $n$ optimizati
 This vignette describes how to formulate minimization problems to be solved with the R interface to NLopt. If you want to use the C interface directly or are interested in the Matlab interface, there are other sources of documentation avialable. Some of the information here has been taken from the NLopt website\footnote{\texttt{http://ab-initio.mit.edu/nlopt}}, where more details are available. All credit for implementing the C code for the different algorithms availalbe in NLopt should go to the respective authors. See the website\footnote{\texttt{http://ab-initio.mit.edu/wiki/index.php/Citing\_NLopt}} for information on how to cite NLopt and the algorithms you use.
 
 \section{Installation}
-\subsection{Linux}
-For installation on Linux 
-\begin{verbatim}
-install.packages("nloptr", repos="http://R-Forge.R-project.org")
-\end{verbatim}
-should work. You can also install the package containing the R interface from source with the R command
-\begin{verbatim}
-install.packages('~/nloptr', repos=NULL, type='source')
-\end{verbatim}
-where the first argument specifies the directory where the R interface to NLopt is located. The C interface to NLopt is then downloaded, configured and compiled into a static library. You should now be able to load the R interface to NLopt and read the help.
-<<testNLoptInstallation, eval=FALSE>>=
-library('nloptr')
-?nloptr
+This package is on CRAN and can be installed from within R using.
+<<installNLopt, eval=FALSE>>=
+install.packages("nloptr")
 @
-
-\subsection{Windows}
-To install the R interface to NLopt on Windows, you need to be able to compile R packages from source, for which you need Rtools\footnote{\texttt{http://www.murdoch-sutherland.com/Rtools/}}. I assume you downloaded the file \texttt{nloptr.zip} and extracted the contents somewhere, for instance in \texttt{c:/Rpackages/nloptr}. For installation on Windows we use the precompiled NLopt binary available at
-\begin{verbatim}
-http://ab-initio.mit.edu/wiki/index.php/NLopt#Download_and_installation
-\end{verbatim} 
-
-\begin{enumerate}
-\item Create a directory named \texttt{nlopt-2.2} inside \texttt{nloptr/src}. 
-\item Download the file \texttt{nlopt-2.2.1-dll.zip} from the website above and extract the contents in \texttt{nloptr/src/nlopt-2.2}. 
-\item Copy the file \texttt{nloptr/src/nlopt-2.2/libnlopt-0.dll} to \texttt{nloptr/src/libnlopt-0.dll}. 
-\item You can then install the package containing the R interface from R with the command
-\begin{verbatim}
-install.packages('c:/Rpackages/nloptr', repos=NULL, type='source')
-\end{verbatim}
-where the first argument specifies the directory where the R interface to NLopt is located. 
-\end{enumerate}
 You should now be able to load the R interface to NLopt and read the help.
 <<testNLoptInstallation, eval=FALSE>>=
 library('nloptr')
@@ -247,7 +220,7 @@ print( res1 )
 @
 
 \section{Notes}
-The \texttt{.R} scripts in the \texttt{tests} directory contain more examples. For instance, \texttt{hs071.R} shows how to solve problems with equality constraints. See also \texttt{http://ab-initio.mit.edu/wiki/index.php/NLopt\_Algorithms\#Augmented\_Lagrangian\_algorithm} for more details.
+The \texttt{.R} scripts in the \texttt{tests} directory contain more examples. For instance, \texttt{hs071.R} and \texttt{systemofeq.R} show how to solve problems with equality constraints. See also \texttt{http://ab-initio.mit.edu/wiki/index.php/NLopt\_Algorithms\#Augmented\_Lagrangian\_algorithm} for more details. Please let me know if you're missing any of the features that are implemented in NLopt.
 
 Sometimes the optimization procedure terminates with a message \texttt{maxtime was reached} without evaluating the objective function. Submitting the same problem again usually solves this problem.
 
