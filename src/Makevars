@@ -9,7 +9,7 @@
 # Updated version number
 
 # define NLopt version
-NLOPT_VERSION = 2.2.3
+NLOPT_VERSION = 2.2.4
 
 # C / C++ Compiler command
 # CC  = gcc
