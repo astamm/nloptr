@@ -8,7 +8,7 @@ R interface to NLopt
 nloptr is an R interface to NLopt, a free/open-source library for nonlinear optimization started by Steven G. Johnson, 
 providing a common interface for a number of different free optimization routines available online as well as original 
 implementations of various other algorithms. The NLopt library is available under the GNU Lesser General Public License (LGPL), 
-and the copyrights are owned by a variety of authors. Most of the information here has been taken from \link[http://ab-initio.mit.edu/nlopt]{the NLopt website}, where more details are available.
+and the copyrights are owned by a variety of authors. Most of the information here has been taken from \href{http://ab-initio.mit.edu/nlopt}{the NLopt website}, where more details are available.
 
 NLopt addresses general nonlinear optimization problems of the form:
 
@@ -28,8 +28,8 @@ which can be specified in g(x), and equality constraints that can be specified i
 \tabular{ll}{
 Package: \tab nloptr\cr
 Type: \tab Package\cr
-Version: \tab 1.0\cr
-Date: \tab 2010-08-18\cr
+Version: \tab 0.8.2\cr
+Date: \tab 2011-06-09\cr
 License: \tab L-GPL\cr
 LazyLoad: \tab yes\cr
 }
@@ -39,7 +39,7 @@ Steven G. Johnson and others (C code)  \cr
 Jelmer Ypma (R interface)
 }
 \references{
-Steven G. Johnson, The NLopt nonlinear-optimization package, http://ab-initio.mit.edu/nlopt
+Steven G. Johnson, The NLopt nonlinear-optimization package, \url{http://ab-initio.mit.edu/nlopt}
 }
 \keyword{ optimize }
 \keyword{ interface }
@@ -47,7 +47,6 @@ Steven G. Johnson, The NLopt nonlinear-optimization package, http://ab-initio.mi
 \code{\link{optim}}
 \code{\link{nlm}}
 \code{\link{nlminb}}
-\code{\link[ipoptr:ipoptr]{ipoptr}}
 \code{\link[Rsolnp:Rsolnp-package]{Rsolnp}}
 \code{\link[Rsolnp:solnp]{ssolnp}}
 }

@@ -7,7 +7,7 @@ R interface to NLopt
 nloptr is an R interface to NLopt, a free/open-source library for nonlinear optimization started by Steven G. Johnson, 
 providing a common interface for a number of different free optimization routines available online as well as original 
 implementations of various other algorithms. The NLopt library is available under the GNU Lesser General Public License (LGPL), 
-and the copyrights are owned by a variety of authors. Most of the information here has been taken from \link[http://ab-initio.mit.edu/nlopt]{the NLopt website}, where more details are available.
+and the copyrights are owned by a variety of authors. Most of the information here has been taken from \href{http://ab-initio.mit.edu/nlopt}{the NLopt website}, where more details are available.
 
 NLopt addresses general nonlinear optimization problems of the form:
 
@@ -75,10 +75,10 @@ nloptr( x0,
 }
   \item{opts}{
     list with options. The option "algorithm" is required. Check the
-    \link[http://ab-initio.mit.edu/wiki/index.php/NLopt_Algorithms]{NLopt website} for a full list 
+    \href{http://ab-initio.mit.edu/wiki/index.php/NLopt_Algorithms}{NLopt website} for a full list 
     of available algorithms. Other options control the termination conditions (minf_max, ftol_rel, 
     ftol_abs, xtol_rel, xtol_abs, maxeval, maxtime). Default is xtol_rel = 1e-4. More information
-    \link[http://ab-initio.mit.edu/wiki/index.php/NLopt_Introduction#Termination_conditions]{here}.
+    \href{http://ab-initio.mit.edu/wiki/index.php/NLopt_Introduction\#Termination_conditions}{here}.
     
     Algorithms with equality constraints require the option local_opts, which contains a list with 
     an algorithm and a termination condition for the local algorithm. See ?`nloptr-package` for an example.
@@ -105,7 +105,7 @@ nloptr( x0,
     \item{version}{version op NLopt that was used}
 }
 \references{
-Steven G. Johnson, The NLopt nonlinear-optimization package, http://ab-initio.mit.edu/nlopt
+Steven G. Johnson, The NLopt nonlinear-optimization package, \url{http://ab-initio.mit.edu/nlopt}
 }
 \author{
 Steven G. Johnson and others (C code) \cr
@@ -115,7 +115,6 @@ Jelmer Ypma (R interface)
 \code{\link{optim}}
 \code{\link{nlm}}
 \code{\link{nlminb}}
-\code{\link[ipoptr:ipoptr]{ipoptr}}
 \code{\link[Rsolnp:Rsolnp-package]{Rsolnp}}
 \code{\link[Rsolnp:solnp]{ssolnp}}
 }
