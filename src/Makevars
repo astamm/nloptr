@@ -5,8 +5,9 @@
 # Author: Jelmer Ypma
 # Date:   10 June 2010
 #
-# Change --disable-shared to --enable-shared to compile with -fPIC
-# Updated version number
+# 16-01-2011: Changed --disable-shared to --enable-shared to compile with -fPIC
+# 16-06-2011: Updated version number
+# 09-07-2011: Download and untar NLopt code using Rscript
 
 # define NLopt version
 NLOPT_VERSION = 2.2.4
@@ -22,8 +23,8 @@ NLOPT_CFLAGS =
 NLOPT_CLINKFLAGS = 
 
 # Libraries necessary to link with NLopt
-NLOPT_LIBS = -lm
-# NLOPT_LIBS = -lm nlopt-${NLOPT_VERSION}/lib/libnlopt.la
+# NLOPT_LIBS = -lm
+NLOPT_LIBS = -lm nlopt-${NLOPT_VERSION}/lib/libnlopt.a
 # NLOPT_LIBS = -lnlopt -lm 
 
 # Necessary Include dirs 
@@ -31,8 +32,7 @@ NLOPT_INCL = -I./nlopt-${NLOPT_VERSION}/include
 # NLOPT_INCL = -I$HOME/install/include
 
 # Define objects for R to build
-OBJECTS = nloptr.o nlopt-${NLOPT_VERSION}/lib/libnlopt.a
-# OBJECTS = nloptr.o
+OBJECTS = nloptr.o
 
 # Convert to R macros
 PKG_LIBS=${NLOPT_CLINKFLAGS} ${NLOPT_LIBS}
@@ -40,14 +40,16 @@ PKG_CFLAGS=${NLOPT_CFLAGS} ${NLOPT_INCL}
 
 SRCDIR = ${CURDIR}
 
-.PHONY: all nlopt-${NLOPT_VERSION}/lib/libnlopt.a
+.PHONY: all
      
-all: nlopt-${NLOPT_VERSION}/lib/libnlopt.a $(SHLIB)
+all: $(SHLIB)
 
-$(SHLIB): 
-	   
+$(SHLIB): nlopt-${NLOPT_VERSION}/lib/libnlopt.a ${OBJECTS}
+
+nloptr.o: nlopt-${NLOPT_VERSION}/include/nlopt.h
+  
 # Compile NLopt source code and clean up
-nlopt-${NLOPT_VERSION}/lib/libnlopt.a: nlopt-${NLOPT_VERSION}/configure
+nlopt-${NLOPT_VERSION}/include/nlopt.h nlopt-${NLOPT_VERSION}/lib/libnlopt.a: nlopt-${NLOPT_VERSION}/configure
 	echo "Installing library to: ${SRCDIR}/nlopt-${NLOPT_VERSION}"
 	cd nlopt-${NLOPT_VERSION}; \
 	./configure --prefix=${SRCDIR}/nlopt-${NLOPT_VERSION} --enable-shared --enable-static --without-octave --without-matlab --without-guile --without-python; \
@@ -57,14 +59,16 @@ nlopt-${NLOPT_VERSION}/lib/libnlopt.a: nlopt-${NLOPT_VERSION}/configure
     rm -rf .libs;
 
 # Extract NLopt source code and remove .tar.gz
+# tar -xzvf nlopt-${NLOPT_VERSION}.tar.gz
 nlopt-${NLOPT_VERSION}/configure: nlopt-${NLOPT_VERSION}.tar.gz
-	tar -xzvf nlopt-${NLOPT_VERSION}.tar.gz
+	$(shell "${R_HOME}/bin/Rscript" -e "untar(tarfile='nlopt-${NLOPT_VERSION}.tar.gz')")
 	rm -rf nlopt-${NLOPT_VERSION}.tar.gz
 
 
 # Download NLopt source code
+# curl -O http://ab-initio.mit.edu/nlopt/nlopt-${NLOPT_VERSION}.tar.gz
 nlopt-${NLOPT_VERSION}.tar.gz:
-	curl -O http://ab-initio.mit.edu/nlopt/nlopt-${NLOPT_VERSION}.tar.gz
+	$(shell "${R_HOME}/bin/Rscript" -e "download.file(url='http://ab-initio.mit.edu/nlopt/nlopt-${NLOPT_VERSION}.tar.gz', destfile='nlopt-${NLOPT_VERSION}.tar.gz')")
 
 clean:
 	rm -rf *.so
