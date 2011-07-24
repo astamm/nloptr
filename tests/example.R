@@ -81,7 +81,7 @@ res1 <- nloptr( x0=c(1.234,5.678),
                 lb = c(-Inf,0), 
                 ub = c(Inf,Inf), 
                 eval_g_ineq = eval_g0, 
-                opts = list("algorithm"="NLOPT_LN_COBYLA"),
+                opts = list("algorithm"="NLOPT_LN_COBYLA", "check_derivatives"=TRUE),
                 a = a, 
 				b = b )
 print( res1 )
@@ -93,7 +93,7 @@ res2 <- nloptr( x0=c(1.234,5.678),
                 lb = c(-Inf,0), 
                 ub = c(Inf,Inf), 
                 eval_g_ineq = eval_g1, 
-                opts = list("algorithm"="NLOPT_LD_MMA"),
+                opts = list("algorithm"="NLOPT_LD_MMA", "check_derivatives"=TRUE),
                 a = a,
 				b = b )
 print( res2 )

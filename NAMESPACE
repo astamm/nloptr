@@ -1,3 +1,3 @@
 useDynLib(nloptr, NLoptR_Optimize)
-export(nloptr, is.nloptr)
+export(nloptr, is.nloptr, check.derivatives)
 S3method(print, nloptr)

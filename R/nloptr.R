@@ -29,6 +29,7 @@
 #		solution : optimal value of the controls
 #
 # 13/01/2011: added print_level option
+# 24/07/2011: added finite difference gradient checker
 
 nloptr <-
 function( x0, 
@@ -91,7 +92,16 @@ function( x0,
         if ( ! "print_level" %in% names( opts ) ) {
             opts$print_level <- 0
         }
-    
+		if ( ! "check_derivatives" %in% names( opts ) ) {
+			opts$check_derivatives <- FALSE
+		}
+		if ( ! "check_derivatives_tol" %in% names( opts ) ) {
+			opts$check_derivatives_tol <- 1e-04
+		}
+		if ( ! "check_derivatives_print" %in% names( opts ) ) {
+			opts$check_derivatives_print <- 'all'
+		}
+		
         return( opts )
     }
     
@@ -229,7 +239,70 @@ function( x0,
     termination_conditions <- opts$termination_conditions
     opts$termination_conditions <- NULL    
     
-    ret <- list( "x0"=x0, 
+	# define list with all algorithms (TODO: define these in the namespace)
+    list_algorithms <- c( "NLOPT_GN_DIRECT", "NLOPT_GN_DIRECT_L", "NLOPT_GN_DIRECT_L_RAND", 
+	                      "NLOPT_GN_DIRECT_NOSCAL", "NLOPT_GN_DIRECT_L_NOSCAL", 
+						  "NLOPT_GN_DIRECT_L_RAND_NOSCAL", "NLOPT_GN_ORIG_DIRECT", 
+						  "NLOPT_GN_ORIG_DIRECT_L", "NLOPT_GD_STOGO", "NLOPT_GD_STOGO_RAND", 
+                          "NLOPT_LD_SLSQP", "NLOPT_LD_LBFGS_NOCEDAL", "NLOPT_LD_LBFGS", "NLOPT_LN_PRAXIS", 
+						  "NLOPT_LD_VAR1", "NLOPT_LD_VAR2", "NLOPT_LD_TNEWTON", 
+						  "NLOPT_LD_TNEWTON_RESTART", "NLOPT_LD_TNEWTON_PRECOND", 
+						  "NLOPT_LD_TNEWTON_PRECOND_RESTART", "NLOPT_GN_CRS2_LM", 
+						  "NLOPT_GN_MLSL", "NLOPT_GD_MLSL", "NLOPT_GN_MLSL_LDS", 
+						  "NLOPT_GD_MLSL_LDS", "NLOPT_LD_MMA", "NLOPT_LN_COBYLA", 
+						  "NLOPT_LN_NEWUOA", "NLOPT_LN_NEWUOA_BOUND", "NLOPT_LN_NELDERMEAD", 
+						  "NLOPT_LN_SBPLX", "NLOPT_LN_AUGLAG", "NLOPT_LD_AUGLAG", 
+						  "NLOPT_LN_AUGLAG_EQ", "NLOPT_LD_AUGLAG_EQ", "NLOPT_LN_BOBYQA", 
+						  "NLOPT_GN_ISRES" )
+	
+	# run derivative checker
+	if ( opts$check_derivatives ) {
+	
+		if ( opts$algorithm %in% list_algorithms[ grep( "NLOPT_[G,L]N", list_algorithms ) ] ) {
+			warning( paste("Skipping derivative checker because algorithm '", opts$algorithm, "' does not use gradients.", sep='') )
+		}
+		else {
+			# check derivatives of objective function
+			cat( "Checking gradients of objective function.\n" )
+			check.derivatives(
+				.x = x0, 
+				func = function( x ) { eval_f_wrapper( x )$objective }, 
+				func_grad = function( x ) { eval_f_wrapper( x )$gradient }, 
+				check_derivatives_tol = opts$check_derivatives_tol, 
+				check_derivatives_print = opts$check_derivatives_print, 
+				func_grad_name = 'eval_grad_f'
+			)
+			
+			if ( num_constraints_ineq > 0 ) {
+				# check derivatives of inequality constraints
+				cat( "Checking gradients of inequality constraints.\n" )
+				check.derivatives(
+					.x = x0, 
+					func = function( x ) { eval_g_ineq_wrapper( x )$constraints }, 
+					func_grad = function( x ) { eval_g_ineq_wrapper( x )$jacobian }, 
+					check_derivatives_tol = opts$check_derivatives_tol, 
+					check_derivatives_print = opts$check_derivatives_print, 
+					func_grad_name = 'eval_jac_g_ineq'
+				)
+			}
+			
+			if ( num_constraints_eq > 0 ) {
+				# check derivatives of equality constraints
+				cat( "Checking gradients of equality constraints.\n" )
+				check.derivatives(
+					.x = x0, 
+					func = function( x ) { eval_g_eq_wrapper( x )$constraints }, 
+					func_grad = function( x ) { eval_g_eq_wrapper( x )$jacobian }, 
+					check_derivatives_tol = opts$check_derivatives_tol, 
+					check_derivatives_print = opts$check_derivatives_print, 
+					func_grad_name = 'eval_jac_g_eq'
+				)
+			}
+		}
+
+	}
+	
+	ret <- list( "x0"=x0, 
                  "eval_f"=eval_f_wrapper, 
                  "lower_bounds"=lb, 
                  "upper_bounds"=ub, 
