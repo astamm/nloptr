@@ -80,7 +80,7 @@ nloptr( x0,
     ftol_abs, xtol_rel, xtol_abs, maxeval, maxtime). Default is xtol_rel = 1e-4. More information
     \href{http://ab-initio.mit.edu/wiki/index.php/NLopt_Introduction\#Termination_conditions}{here}.
     
-    Algorithms with equality constraints require the option local_opts, which contains a list with 
+    Some algorithms with equality constraints require the option local_opts, which contains a list with 
     an algorithm and a termination condition for the local algorithm. See ?`nloptr-package` for an example.
     
     The option print_level controls how much output is shown during the optimization process. Possible values: 
@@ -89,6 +89,10 @@ nloptr( x0,
         1 \tab show iteration number and value of objective function \cr
         2 \tab 1 + show value of (in)equalities
     }
+	
+	The option check_derivatives (default = FALSE) can be used to run to compare the analytic gradients with finite difference approximations. 
+	The option check_derivatives_print ('all' (default), 'errors', 'none') controls the output of the derivative checker, if it is run, showing all comparisons, only those that resulted in an error, or none.
+	The option check_derivatives_tol (default = 1e-04), determines when a difference between an analytic gradient and its finite difference approximation is flagged as an error.
   }
   \item{...}{
     arguments that will be passed to the user-defined objective and constraints functions.
@@ -252,7 +256,7 @@ res2 <- nloptr( x0=c(1.234,5.678),
                 lb = c(-Inf,0), 
                 ub = c(Inf,Inf), 
                 eval_g_ineq = eval_g1, 
-                opts = list("algorithm"="NLOPT_LD_MMA"),
+                opts = list("algorithm"="NLOPT_LD_MMA", "check_derivatives"=TRUE),
                 a = a,
                 b = b )
 print( res2 )

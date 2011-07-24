@@ -1,0 +1,44 @@
+This file describes how to install nloptr from source for Windows. Compiling nloptr for Windows consists of two steps:
+1. configure and compile NLopt from source
+       or 
+   download and unpack a pre-compiled binary (NLopt-2.2.3-win-build.zip from http://www.ucl.ac.uk/~uctpjyy/nloptr.html)
+2. compile the R interface
+
+
+
+*** To install NLopt from source (optional)
+Requirements: Cygwin or MSYS
+
+1. Download the latest source of NLopt from http://ab-initio.mit.edu/wiki/index.php/NLopt#Download_and_installation, e.g. nlopt-2.2.3.tar.gz and unpack this archive somewhere (e.g. c:/tmp/nlopt-2.2.3).
+
+2. Start MSYS and go to the directory where the NLopt source is located
+> cd c:/tmp/nlopt-2.2.3
+
+3. Create a new (build) directory where the 32-bit version of NLopt will be located, it should have the following structure nloptr/${NLOPT_VERSION}/${R_ARCH},
+where e.g. NLOPT_VERSION = 2.2.3, R_ARCH is i386 for 32-bit and x64 for 64-bit
+> mkdir c:/tmp/nlopt/2.2.3/i386
+
+4. From the directory where the NLopt source is located, configure NLopt to install in the build directory you just created, then make and make install
+> ./configure --prefix=/c/tmp/nlopt/2.2.3/i386 --disable-shared --enable-static --without-octave --without-matlab --without-guile --without-python
+> make
+> make install
+
+5. Optionally do the same thing for 64-bit (for 64-bit it is probably best to delete the nlopt-2.2.3 directory first and unzip the file containing the source again)
+> ./configure --prefix=/c/work/projects/Rpackages/nlopt/2.2.3/x64 --with-pic --enable-static --without-octave --without-matlab --without-guile --without-python --build=x86_64-w64-mingw32 --host=x86_64-w64-mingw32
+> make
+> make install
+
+
+
+*** To install nloptr
+Requirements: Rtools
+
+1. Download the source of nloptr (from R-forge https://r-forge.r-project.org/R/?group_id=933 or CRAN http://cran.r-project.org/web/packages/nloptr/index.html) and unpack this somewhere.
+
+2. Check the value of NLOPT_VERSION in pkg/src/Makevars.win
+
+3. Before building from the MS-DOS prompt, define an enviroment variable with the location of the NLopt library
+    set NLOPT_HOME=c:/tmp/nlopt
+
+4. Compile the R interface
+    R CMD build nloptr/pkg

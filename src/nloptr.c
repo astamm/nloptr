@@ -31,6 +31,7 @@
  * Methods and Practice (CeMMAP) is gratefully acknowledged.
  *
  * 13/01/2011: added print_level option
+ * 24/07/2011: added checks on return value when setting equality constraints etc.
  */
 
  // TODO: add minimize/maximize option (objective = "maximize")
@@ -644,6 +645,10 @@ SEXP NLoptR_Optimize( SEXP args )
     // declare counter
     unsigned i;
 
+	// declare nlopt_result, to capture error codes from setting options
+	nlopt_result res;
+	int flag_encountered_error = 0;
+	
     // get initial values
     SEXP R_init_values;
     PROTECT( R_init_values = getListElement( args, "x0" ) );
@@ -697,9 +702,17 @@ SEXP NLoptR_Optimize( SEXP args )
     UNPROTECT( 2 );
     
     // add upper and lower bounds to options
-    nlopt_set_lower_bounds(opts, lb);
-    nlopt_set_upper_bounds(opts, ub);
-    
+    res = nlopt_set_lower_bounds(opts, lb);
+	if ( res == NLOPT_INVALID_ARGS ) {
+		flag_encountered_error = 1;
+		Rprintf("Error: nlopt_set_lower_bounds returned NLOPT_INVALID_ARGS.\n");
+	}
+    res = nlopt_set_upper_bounds(opts, ub);
+    if ( res == NLOPT_INVALID_ARGS ) {
+		flag_encountered_error = 1;
+		Rprintf("Error: nlopt_set_upper_bounds returned NLOPT_INVALID_ARGS.\n");
+	}
+	
     // get number of inequality constraints
     SEXP R_num_constraints_ineq;
     PROTECT( R_num_constraints_ineq = AS_INTEGER( getListElement( args, "num_constraints_ineq" ) ) );
@@ -728,8 +741,11 @@ SEXP NLoptR_Optimize( SEXP args )
     objfunc_data.print_level     = print_level;
     
     // add objective to options
-    nlopt_set_min_objective(opts, func_objective, &objfunc_data);
-
+    res = nlopt_set_min_objective(opts, func_objective, &objfunc_data);
+	if ( res == NLOPT_INVALID_ARGS ) {
+		flag_encountered_error = 1;
+		Rprintf("Error: nlopt_set_min_objective returned NLOPT_INVALID_ARGS.\n");
+	}
 	
     // inequality constraints
     if ( num_constraints_ineq > 0 ) {
@@ -750,8 +766,11 @@ SEXP NLoptR_Optimize( SEXP args )
         ineq_constr_data.print_level    = print_level;
         
         // add vector-valued inequality constraint
-        nlopt_add_inequality_mconstraint(opts, num_constraints_ineq, func_constraints_ineq, &ineq_constr_data, tol_constraints_ineq);
-        
+        res = nlopt_add_inequality_mconstraint(opts, num_constraints_ineq, func_constraints_ineq, &ineq_constr_data, tol_constraints_ineq);
+        if ( res == NLOPT_INVALID_ARGS ) {
+			flag_encountered_error = 1;
+			Rprintf("Error: nlopt_add_inequality_mconstraint returned NLOPT_INVALID_ARGS.\n");
+		}
     }
 	
     // equality constraints
@@ -773,16 +792,25 @@ SEXP NLoptR_Optimize( SEXP args )
         eq_constr_data.print_level    = print_level;
         
         // add vector-valued equality constraint
-        nlopt_add_equality_mconstraint(opts, num_constraints_eq, func_constraints_eq, &eq_constr_data, tol_constraints_eq);
-        
+        res = nlopt_add_equality_mconstraint(opts, num_constraints_eq, func_constraints_eq, &eq_constr_data, tol_constraints_eq);
+        if ( res == NLOPT_INVALID_ARGS ) {
+			flag_encountered_error = 1;
+			Rprintf("Error: nlopt_add_equality_mconstraint returned NLOPT_INVALID_ARGS.\n");
+		}
     }
     
 	// optimal value of objective value, upon return
-    double obj_value; 
+    double obj_value = HUGE_VAL; 
 
-    // do optimization
-    nlopt_result status = nlopt_optimize( opts, x0, &obj_value );
-
+    // do optimization, if no error occurred during initialization of the problem
+    nlopt_result status;
+	if ( flag_encountered_error==0 ) {
+		status = nlopt_optimize( opts, x0, &obj_value );
+	}
+	else {
+		status = NLOPT_INVALID_ARGS;
+	}
+	
     // dispose of the nlopt_opt object
     nlopt_destroy( opts );
     
