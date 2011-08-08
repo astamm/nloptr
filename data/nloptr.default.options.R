@@ -106,7 +106,19 @@ nloptr.default.options <- data.frame(
 		  "TRUE or FALSE",
 		  "FALSE",
 		  FALSE,
-		  "If TRUE, a description of all options and their current and default values is printed to the screen.")
+		  "If TRUE, a description of all options and their current and default values is printed to the screen."),
+		c("population",
+		  "integer",
+		  "population is a positive integer",
+		  "0",
+		  FALSE,
+		  "Several of the stochastic search algorithms (e.g., CRS, MLSL, and ISRES) start by generating some initial population of random points x. By default, this initial population size is chosen heuristically in some algorithm-specific way, but the initial population can by changed by setting a positive integer value for population. A population of zero implies that the heuristic default will be used."),
+		c("ranseed",
+		  "integer",
+		  "ranseed is a positive integer",
+		  "0",
+		  FALSE,
+		  "For stochastic optimization algorithms, pseudorandom numbers are generated. Set the random seed using ranseed if you want to use a 'deterministic' sequence of pseudorandom numbers, i.e. the same sequence from run to run. If ranseed is 0 (default), the seed for the random numbers is generated from the system time, so that you will get a different sequence of pseudorandom numbers each time you run your program.")
 	),
 	stringsAsFactors = FALSE )
 names( nloptr.default.options ) <- c( "name", "type", "possible_values", "default", "is_termination_condition", "description" )

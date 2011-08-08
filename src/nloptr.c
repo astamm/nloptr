@@ -570,7 +570,20 @@ nlopt_opt getOptions( SEXP R_options, int num_controls ) {
     double maxtime = REAL( R_opts_maxtime )[0];
     nlopt_set_maxtime(opts, maxtime);
     
-    UNPROTECT( 9 );
+	SEXP R_opts_population;
+    PROTECT( R_opts_population = AS_INTEGER( getListElement( R_options, "population" ) ) );
+    unsigned int population = INTEGER( R_opts_population )[0];
+    nlopt_set_population(opts, population);
+	
+	SEXP R_opts_ranseed;
+    PROTECT( R_opts_ranseed = AS_INTEGER( getListElement( R_options, "ranseed" ) ) );
+    unsigned long ranseed = INTEGER( R_opts_ranseed )[0];
+	// set random seed if ranseed > 0.
+	// by default a random seed is generated from system time.
+	if ( ranseed > 0 ) {
+		nlopt_srand(ranseed);
+	}
+    UNPROTECT( 11 );
 
     return opts;
 }
