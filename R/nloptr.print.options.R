@@ -3,20 +3,34 @@
 #
 # File:   nloptr.print.options.R
 # Author: Jelmer Ypma
-# Date:   7 August 2011
+# Date:   8 August 2011
 #
 # Print list of all options with description.
 #
-# Input: 	list with user defined options (optional)
+# Input: 	
+#	opts.show:	the description of the options in this list are shown (optional, default is to show all options)
+#	opts.user:	list with user defined options (optional)
 # Output: 	options, default values, user values if supplied) 
 # 			and description	printed to screen. No return value.
+#
+# 08/08/2011: Added opts.show argument to only show a subset of all options.
 
 nloptr.print.options <- 
-function( 
+function(
+	opts.show=NULL,
 	opts.user=NULL ) 
 {
-	for( row.cnt in 1:nrow( nloptr.default.options ) ) {
-		opt <- nloptr.default.options[row.cnt,]
+	# show all options if no list of options is supplied
+	if ( is.null( opts.show ) ) {
+		nloptr.show.options <- nloptr.default.options
+	} else {
+		nloptr.show.options <- nloptr.default.options[ nloptr.default.options$name %in% opts.show, ]
+	}
+	
+	# loop over all options and print values
+	for( row.cnt in 1:nrow( nloptr.show.options ) ) {
+		opt <- nloptr.show.options[row.cnt,]
+		
 		value.current <- ifelse( 
 								is.null(opts.user[[opt$name]]), 
 								"(default)", 

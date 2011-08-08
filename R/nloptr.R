@@ -190,7 +190,7 @@ function( x0,
     
 	# print description of options if requested
 	if (opts$print_options_doc) {
-		nloptr.print.options( opts )
+		nloptr.print.options( opts.user = opts )
 	}	
 	
 	# define list with all algorithms
