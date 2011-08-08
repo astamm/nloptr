@@ -79,6 +79,7 @@ nloptr( x0,
     of available algorithms. Other options control the termination conditions (minf_max, ftol_rel, 
     ftol_abs, xtol_rel, xtol_abs, maxeval, maxtime). Default is xtol_rel = 1e-4. More information
     \href{http://ab-initio.mit.edu/wiki/index.php/NLopt_Introduction\#Termination_conditions}{here}.
+	A full description of all options is shown by the function \code{nloptr.print.options()}.
     
     Some algorithms with equality constraints require the option local_opts, which contains a list with 
     an algorithm and a termination condition for the local algorithm. See ?`nloptr-package` for an example.
@@ -116,6 +117,8 @@ Steven G. Johnson and others (C code) \cr
 Jelmer Ypma (R interface)
 }
 \seealso{
+\code{\link[nloptr:nloptr.print.options]{nloptr.print.options}}
+\code{\link[nloptr:check.derivatives]{check.derivatives}}
 \code{\link{optim}}
 \code{\link{nlm}}
 \code{\link{nlminb}}
