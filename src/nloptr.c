@@ -184,6 +184,7 @@ nlopt_algorithm getAlgorithmCode( const char *algorithm_str ) {
     } 
     else {
         // unknown algorithm code
+		Rprintf("Error: unknown algorithm %s.\n", algorithm_str);
         algorithm = -99;
     }
     
@@ -499,7 +500,7 @@ void func_constraints_eq(unsigned m, double* constraints, unsigned n, const doub
 	UNPROTECT( 2 );
 }
 
-nlopt_opt getOptions( SEXP R_options, int num_controls ) {
+nlopt_opt getOptions( SEXP R_options, int num_controls, int *flag_encountered_error ) {
 
     /*
      * double minf_max - stop if the objective function value drops below minf_max. (Set to -HUGE_VAL to ignore.)
@@ -513,7 +514,9 @@ nlopt_opt getOptions( SEXP R_options, int num_controls ) {
      * double maxtime - stop if the elapsed wall-clock time, in seconds, exceeds maxtime. Set to zero to ignore. 
      */
 
-    
+	// declare nlopt_result, to capture error codes from setting options
+    nlopt_result res;
+	
     // get algorithm from options
     SEXP R_algorithm;
     PROTECT( R_algorithm = getListElement( R_options, "algorithm" ) );
@@ -532,24 +535,38 @@ nlopt_opt getOptions( SEXP R_options, int num_controls ) {
     SEXP R_opts_stopval;        // stop when f(x) <= stopval for minimizing or >= stopval for maximizing
     PROTECT( R_opts_stopval = getListElement( R_options, "stopval" ) );
     double stopval = REAL( R_opts_stopval )[0];
-    nlopt_set_stopval(opts, stopval);
+    res = nlopt_set_stopval(opts, stopval);
+	if ( res == NLOPT_INVALID_ARGS ) {
+		*flag_encountered_error = 1;
+		Rprintf("Error: nlopt_set_stopval returned NLOPT_INVALID_ARGS.\n");
+	}
 
-  
     SEXP R_opts_ftol_rel;
     PROTECT( R_opts_ftol_rel = getListElement( R_options, "ftol_rel" ) );
     double ftol_rel = REAL( R_opts_ftol_rel )[0];
-    nlopt_set_ftol_rel(opts, ftol_rel);
-
+    res = nlopt_set_ftol_rel(opts, ftol_rel);
+	if ( res == NLOPT_INVALID_ARGS ) {
+		*flag_encountered_error = 1;
+		Rprintf("Error: nlopt_set_ftol_rel returned NLOPT_INVALID_ARGS.\n");
+	}
     
-    SEXP R_opts_ftol_abs;
+	SEXP R_opts_ftol_abs;
     PROTECT( R_opts_ftol_abs = getListElement( R_options, "ftol_abs" ) );
     double ftol_abs = REAL( R_opts_ftol_abs )[0];
-    nlopt_set_ftol_abs(opts, ftol_abs);
-    
+    res = nlopt_set_ftol_abs(opts, ftol_abs);
+    if ( res == NLOPT_INVALID_ARGS ) {
+		*flag_encountered_error = 1;
+		Rprintf("Error: nlopt_set_ftol_abs returned NLOPT_INVALID_ARGS.\n");
+	}
+	
     SEXP R_opts_xtol_rel;
     PROTECT( R_opts_xtol_rel = getListElement( R_options, "xtol_rel" ) );
     double xtol_rel = REAL( R_opts_xtol_rel )[0];
-    nlopt_set_xtol_rel(opts, xtol_rel);
+    res = nlopt_set_xtol_rel(opts, xtol_rel);
+	if ( res == NLOPT_INVALID_ARGS ) {
+		*flag_encountered_error = 1;
+		Rprintf("Error: nlopt_set_xtol_rel returned NLOPT_INVALID_ARGS.\n");
+	}
     
     SEXP R_opts_xtol_abs;
     PROTECT( R_opts_xtol_abs = getListElement( R_options, "xtol_abs" ) );
@@ -558,22 +575,38 @@ nlopt_opt getOptions( SEXP R_options, int num_controls ) {
     for (i=0;i<num_controls;i++) {
         xtol_abs[ i ] = REAL( R_opts_xtol_abs )[0];
     }
-    nlopt_set_xtol_abs(opts, xtol_abs);
-    
+    res = nlopt_set_xtol_abs(opts, xtol_abs);
+    if ( res == NLOPT_INVALID_ARGS ) {
+		*flag_encountered_error = 1;
+		Rprintf("Error: nlopt_set_xtol_abs returned NLOPT_INVALID_ARGS.\n");
+	}
+	
     SEXP R_opts_maxeval;
     PROTECT( R_opts_maxeval = AS_INTEGER( getListElement( R_options, "maxeval" ) ) );
     int maxeval = INTEGER( R_opts_maxeval )[0];
-    nlopt_set_maxeval(opts, maxeval);
-
+    res = nlopt_set_maxeval(opts, maxeval);
+	if ( res == NLOPT_INVALID_ARGS ) {
+		*flag_encountered_error = 1;
+		Rprintf("Error: nlopt_set_maxeval returned NLOPT_INVALID_ARGS.\n");
+	}
+	
     SEXP R_opts_maxtime;
     PROTECT( R_opts_maxtime = getListElement( R_options, "maxtime" ) );
     double maxtime = REAL( R_opts_maxtime )[0];
-    nlopt_set_maxtime(opts, maxtime);
-    
+    res = nlopt_set_maxtime(opts, maxtime);
+    if ( res == NLOPT_INVALID_ARGS ) {
+		*flag_encountered_error = 1;
+		Rprintf("Error: nlopt_set_maxtime returned NLOPT_INVALID_ARGS.\n");
+	}
+	
 	SEXP R_opts_population;
     PROTECT( R_opts_population = AS_INTEGER( getListElement( R_options, "population" ) ) );
     unsigned int population = INTEGER( R_opts_population )[0];
-    nlopt_set_population(opts, population);
+    res = nlopt_set_population(opts, population);
+	if ( res == NLOPT_INVALID_ARGS ) {
+		*flag_encountered_error = 1;
+		Rprintf("Error: nlopt_set_population returned NLOPT_INVALID_ARGS.\n");
+	}
 	
 	SEXP R_opts_ranseed;
     PROTECT( R_opts_ranseed = AS_INTEGER( getListElement( R_options, "ranseed" ) ) );
@@ -679,7 +712,7 @@ SEXP NLoptR_Optimize( SEXP args )
     // get options
     SEXP R_options;
     PROTECT( R_options = getListElement( args, "options" ) );
-    nlopt_opt opts = getOptions( R_options, num_controls );
+    nlopt_opt opts = getOptions( R_options, num_controls, &flag_encountered_error );
     UNPROTECT( 1 );
     
     // get local options
@@ -687,7 +720,7 @@ SEXP NLoptR_Optimize( SEXP args )
     PROTECT( R_local_options = getListElement( args, "local_options" ) );
     if ( R_local_options != R_NilValue ) {
         // parse list with options
-        nlopt_opt local_opts = getOptions( R_local_options, num_controls );
+        nlopt_opt local_opts = getOptions( R_local_options, num_controls, &flag_encountered_error );
         
         // add local optimizer options to global options
         nlopt_set_local_optimizer(opts, local_opts);
