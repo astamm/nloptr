@@ -14,6 +14,7 @@
 # the controls.
 #
 # 13/01/2011: added show.controls option
+# 07/08/2011: show 'optimal value' instead of 'current value' if status == 1, 2, 3, or 4
 
 print.nloptr <- function(x, show.controls=TRUE, ...) {
 	cat( "\nCall:\n", deparse(x$call), "\n\n", sep = "", fill=TRUE )
@@ -40,7 +41,7 @@ print.nloptr <- function(x, show.controls=TRUE, ...) {
     }
     
 	# if solved successfully
-	if ( x$status<=0 ) {
+	if ( x$status >= 1 & x$status <=4 ) {
 		cat( paste( "Optimal value of objective function: ", x$objective, "\n" ) )
 		if ( show.controls ) {
             if ( length( controls.indices ) < length(x$solution) ) {

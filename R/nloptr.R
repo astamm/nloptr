@@ -30,6 +30,8 @@
 #
 # 13/01/2011: added print_level option
 # 24/07/2011: added finite difference gradient checker
+# 07/08/2011: moved addition of default options to separate function
+#			  show documentation of options if print_options_doc == TRUE
 
 nloptr <-
 function( x0, 
@@ -43,70 +45,8 @@ function( x0,
           eval_jac_g_eq = NULL,
           opts = list(),
 		  ... ) {
-    
 
-    addDefaults2Options <- function( opts ) {
-    
-        # add default options if needed
-        if( !("algorithm" %in% names( opts )) ) {
-			stop( 'algorithm missing in opts or local_opts' )
-		}
-        if ( sum(c( "stopval", "ftol_rel", "ftol_abs", "xtol_rel", "xtol_abs", "maxeval", "maxtime" ) %in% names( opts )) == 0 ) {
-            print( "No termination criterium specified, using default (relative x-tolerance = 1e-4)" )
-            opts$xtol_rel <- 1.0e-04
-            opts$termination_conditions <- "relative x-tolerance = 1e-4 (DEFAULT)"
-        } else {
-            conv_options <- unlist( opts[ names(opts) != "algorithm" & 
-                                          names(opts) != "tol_constraints_ineq" &
-                                          names(opts) != "tol_constraints_eq" &
-                                          names(opts) != "print_level"  ] )
-            opts$termination_conditions <- paste( paste( names(conv_options) ), ": ", paste( conv_options ), sep='', collapse='\t' )
-            if ( ! "xtol_rel" %in% names( opts ) ) {
-                opts$xtol_rel <- 0.0
-            }
-        }
-        if ( ! "stopval" %in% names( opts ) ) {
-            opts$stopval <- -Inf
-        }
-        if ( ! "ftol_rel" %in% names( opts ) ) {
-            opts$ftol_rel <- 0.0
-        }
-        if ( ! "ftol_abs" %in% names( opts ) ) {
-            opts$ftol_abs <- 0.0
-        }
-        if ( ! "xtol_abs" %in% names( opts ) ) {
-            opts$xtol_abs <- rep( 0.0, length(x0) )
-        }
-        if ( ! "maxeval" %in% names( opts ) ) {
-            opts$maxeval <- 100
-        }
-        if ( ! "maxtime" %in% names( opts ) ) {
-            opts$maxtime <- 0.0
-        }
-        if ( ! "tol_constraints_ineq" %in% names( opts ) ) {
-            opts$tol_constraints_ineq <- rep( 1e-8, num_constraints_ineq )
-        }
-        if ( ! "tol_constraints_eq" %in% names( opts ) ) {
-            opts$tol_constraints_eq <- rep( 1e-8, num_constraints_eq )
-        }
-        if ( ! "print_level" %in% names( opts ) ) {
-            opts$print_level <- 0
-        }
-		if ( ! "check_derivatives" %in% names( opts ) ) {
-			opts$check_derivatives <- FALSE
-		}
-		if ( ! "check_derivatives_tol" %in% names( opts ) ) {
-			opts$check_derivatives_tol <- 1e-04
-		}
-		if ( ! "check_derivatives_print" %in% names( opts ) ) {
-			opts$check_derivatives_print <- 'all'
-		}
-		
-        return( opts )
-    }
-    
-    
-	# internal function to check the arguments of the functions
+    # internal function to check the arguments of the functions
 	.checkfunargs = function( fun, arglist, funname ) {
 		if( !is.function(fun) ) stop(paste(funname, " must be a function\n", sep = ""))
 		flist = formals(fun)
@@ -226,34 +166,42 @@ function( x0,
     
     # extract local options from list of options if they exist
     if ( "local_opts" %in% names(opts) ) {
-        local_opts <- addDefaults2Options( opts$local_opts )
+        res.opts.add <- nloptr.add.default.options( 
+						opts.user 				= opts$local_opts,
+						x0 						= x0,
+						num_constraints_ineq 	= num_constraints_ineq, 
+						num_constraints_eq 		= num_constraints_eq )
+		local_opts   <- res.opts.add$opts.user
         opts$local_opts <- NULL
     } else {
         local_opts <- NULL
     }
     
     # add defaults to list of options
-    opts <- addDefaults2Options( opts )
+    res.opts.add <- nloptr.add.default.options( 
+				opts.user 				= opts,
+				x0 						= x0,
+				num_constraints_ineq 	= num_constraints_ineq, 
+				num_constraints_eq 		= num_constraints_eq )
+    opts <- res.opts.add$opts.user
+	
+    # add the termination criteria to the list
+    termination_conditions <- res.opts.add$termination_conditions
     
-    # add the termination criteria to the list (and remove it from the options)
-    termination_conditions <- opts$termination_conditions
-    opts$termination_conditions <- NULL    
-    
-	# define list with all algorithms (TODO: define these in the namespace)
-    list_algorithms <- c( "NLOPT_GN_DIRECT", "NLOPT_GN_DIRECT_L", "NLOPT_GN_DIRECT_L_RAND", 
-	                      "NLOPT_GN_DIRECT_NOSCAL", "NLOPT_GN_DIRECT_L_NOSCAL", 
-						  "NLOPT_GN_DIRECT_L_RAND_NOSCAL", "NLOPT_GN_ORIG_DIRECT", 
-						  "NLOPT_GN_ORIG_DIRECT_L", "NLOPT_GD_STOGO", "NLOPT_GD_STOGO_RAND", 
-                          "NLOPT_LD_SLSQP", "NLOPT_LD_LBFGS_NOCEDAL", "NLOPT_LD_LBFGS", "NLOPT_LN_PRAXIS", 
-						  "NLOPT_LD_VAR1", "NLOPT_LD_VAR2", "NLOPT_LD_TNEWTON", 
-						  "NLOPT_LD_TNEWTON_RESTART", "NLOPT_LD_TNEWTON_PRECOND", 
-						  "NLOPT_LD_TNEWTON_PRECOND_RESTART", "NLOPT_GN_CRS2_LM", 
-						  "NLOPT_GN_MLSL", "NLOPT_GD_MLSL", "NLOPT_GN_MLSL_LDS", 
-						  "NLOPT_GD_MLSL_LDS", "NLOPT_LD_MMA", "NLOPT_LN_COBYLA", 
-						  "NLOPT_LN_NEWUOA", "NLOPT_LN_NEWUOA_BOUND", "NLOPT_LN_NELDERMEAD", 
-						  "NLOPT_LN_SBPLX", "NLOPT_LN_AUGLAG", "NLOPT_LD_AUGLAG", 
-						  "NLOPT_LN_AUGLAG_EQ", "NLOPT_LD_AUGLAG_EQ", "NLOPT_LN_BOBYQA", 
-						  "NLOPT_GN_ISRES" )
+	# print description of options if requested
+	if (opts$print_options_doc) {
+		nloptr.print.options( opts.user = opts )
+	}	
+	
+	# define list with all algorithms
+	# nloptr.options.description is a data.frame with options
+	# that is loaded when nloptr is loaded.
+    list_algorithms <-  unlist(
+							strsplit(
+								nloptr.default.options[ nloptr.default.options$name=="algorithm", "possible_values" ],
+								", "
+							)
+						)
 	
 	# run derivative checker
 	if ( opts$check_derivatives ) {
