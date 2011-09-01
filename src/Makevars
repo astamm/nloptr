@@ -8,6 +8,8 @@
 # 16-01-2011: Changed --disable-shared to --enable-shared to compile with -fPIC
 # 16-06-2011: Updated version number
 # 09-07-2011: Download and untar NLopt code using Rscript
+# 01-09-2011: Added check on empty SRCDIR
+#			  Added CC, CFLAGS, etc. to NLopt ./configure
 
 # define NLopt version
 NLOPT_VERSION = 2.2.4
@@ -23,13 +25,22 @@ NLOPT_CFLAGS =
 NLOPT_CLINKFLAGS = 
 
 # Libraries necessary to link with NLopt
-# NLOPT_LIBS = -lm
 NLOPT_LIBS = -lm nlopt-${NLOPT_VERSION}/lib/libnlopt.a
-# NLOPT_LIBS = -lnlopt -lm 
 
 # Necessary Include dirs 
 NLOPT_INCL = -I./nlopt-${NLOPT_VERSION}/include
-# NLOPT_INCL = -I$HOME/install/include
+
+# Get R compilers and flags
+CC=`"${R_HOME}/bin/R" CMD config CC`
+CFLAGS=`"${R_HOME}/bin/R" CMD config CFLAGS`
+
+CPP=`"${R_HOME}/bin/R" CMD config CPP`
+CPPFLAGS=`"${R_HOME}/bin/R" CMD config CPPFLAGS`
+
+CXX=`"${R_HOME}/bin/R" CMD config CPPFLAGS`
+CXXFLAGS=`"${R_HOME}/bin/R" CMD config CPPFLAGS`
+
+CXXCPP=`"${R_HOME}/bin/R" CMD config CXXCPP`
 
 # Define objects for R to build
 OBJECTS = nloptr.o
@@ -38,7 +49,16 @@ OBJECTS = nloptr.o
 PKG_LIBS=${NLOPT_CLINKFLAGS} ${NLOPT_LIBS}
 PKG_CFLAGS=${NLOPT_CFLAGS} ${NLOPT_INCL}
 
+# Define location of source code
 SRCDIR = ${CURDIR}
+
+# Check to see if SRCDIR is empty
+# If SRCDIR is empty use current directory, i.e. use .
+ifeq ("${SRCDIR}", "")
+	SRCDIR = .
+endif
+
+
 
 .PHONY: all
      
@@ -52,7 +72,7 @@ nloptr.o: nlopt-${NLOPT_VERSION}/include/nlopt.h
 nlopt-${NLOPT_VERSION}/include/nlopt.h nlopt-${NLOPT_VERSION}/lib/libnlopt.a: nlopt-${NLOPT_VERSION}/configure
 	echo "Installing library to: ${SRCDIR}/nlopt-${NLOPT_VERSION}"
 	cd nlopt-${NLOPT_VERSION}; \
-	./configure --prefix=${SRCDIR}/nlopt-${NLOPT_VERSION} --enable-shared --enable-static --without-octave --without-matlab --without-guile --without-python; \
+	./configure --prefix=${SRCDIR}/nlopt-${NLOPT_VERSION} --enable-shared --enable-static --without-octave --without-matlab --without-guile --without-python CC="${CC}" CFLAGS="${CFLAGS}" CPP="${CPP}" CPPFLAGS="${CPPFLAGS}" CXX="${CXX}" CXXFLAGS="${CXXFLAGS}" CXXCPP="${CXXCPP}"; \
 	make; \
 	make install; \
 	ls | grep -v ^include$$ | grep -v ^lib$$ | xargs rm -rf; \
