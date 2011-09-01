@@ -9,14 +9,10 @@
 # 16-06-2011: Updated version number
 # 09-07-2011: Download and untar NLopt code using Rscript
 # 01-09-2011: Added check on empty SRCDIR
-#			  Added CC, CFLAGS, etc. to NLopt ./configure
+#             Added CC, CFLAGS, etc. to NLopt ./configure
 
 # define NLopt version
 NLOPT_VERSION = 2.2.4
-
-# C / C++ Compiler command
-# CC  = gcc
-# CXX = g++
 
 # C Compiler options
 NLOPT_CFLAGS = 
@@ -41,6 +37,7 @@ CXX=`"${R_HOME}/bin/R" CMD config CPPFLAGS`
 CXXFLAGS=`"${R_HOME}/bin/R" CMD config CPPFLAGS`
 
 CXXCPP=`"${R_HOME}/bin/R" CMD config CXXCPP`
+
 
 # Define objects for R to build
 OBJECTS = nloptr.o
