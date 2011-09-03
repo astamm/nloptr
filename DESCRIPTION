@@ -1,8 +1,8 @@
 Package: nloptr
 Type: Package
 Title: R interface to NLopt
-Version: 0.8.4
-Date: 2011-08-12
+Version: 0.8.5
+Date: 2011-09-03
 Author: Jelmer Ypma
 Maintainer: Jelmer Ypma <uctpjyy@ucl.ac.uk>
 Description: nloptr is an R interface to NLopt. NLopt is a
@@ -16,6 +16,6 @@ License: LGPL
 LazyData: yes
 Repository: CRAN
 Repository/R-Forge/Project: nloptr
-Repository/R-Forge/Revision: 34
-Date/Publication: 2011-08-13 12:30:12
-Packaged: 2011-08-12 21:22:04 UTC; rforge
+Repository/R-Forge/Revision: 39
+Date/Publication: 2011-09-05 19:37:44
+Packaged: 2011-09-03 21:10:08 UTC; rforge

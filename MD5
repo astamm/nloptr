@@ -1,5 +1,5 @@
 d7458bca9467208b9a081731a65a6ed0 *CHANGELOG
-b2edb59a45849147dedd3946ce6e1105 *DESCRIPTION
+9c78b88fc23a27ab9642eb7cc7f578ca *DESCRIPTION
 8ecff4625397e41568387bc140638823 *INSTALL.windows
 e6a600fd5e1d9cbde2d983680233ad02 *LICENSE
 f5a6b74412a5fa35ead15b145b248ee9 *NAMESPACE
@@ -12,8 +12,8 @@ c27f3c5fdd0522b2b0421b28f1a66078 *R/nloptr.R
 6d8ffe92a77f141c8b08d95ff383568e *R/print.nloptr.R
 d766ad1582170202612a6291f7af8d35 *data/nloptr.default.options.rda
 a43080304ccf575568c83828582a258b *inst/CITATION
-c6f65cfd0585e6a5a7d7e77252beaa2e *inst/doc/nloptr.Rnw
-eac8291ca6041740fa169dce51a4bbed *inst/doc/nloptr.pdf
+6698d067f99a5b8b991eb5bafc16ebe9 *inst/doc/nloptr.Rnw
+3435e4eb4b8fa434d379bdfa51a4dba9 *inst/doc/nloptr.pdf
 14142d800315b4fb507f80edabafcc1d *inst/doc/reflist.bib
 099e6a2646375230bff73d5d08751248 *man/check.derivatives.Rd
 e1b3f384f9cd8fb45055a81c94271d16 *man/is.nloptr.Rd
@@ -22,7 +22,7 @@ e1b3f384f9cd8fb45055a81c94271d16 *man/is.nloptr.Rd
 f421c856522e718e55b9b0ec5c025389 *man/nloptr.default.options.Rd
 b0d6bc18785211b12e434d4e0f2d0a6b *man/nloptr.print.options.Rd
 8537f69586e9a291ced5da3555648474 *man/print.nloptr.Rd
-5bdb36b3759390275db7d54d0588ab44 *src/Makevars
+cd69e9cb3cc8b72a2206a1a51b3a657f *src/Makevars
 16613710b63deaa33de7a9bfe6b4d1d7 *src/Makevars.win
 e339952e1f28c046129d431168ba921b *src/nloptr.c
 51cdf37a633866e4664cd78eb7441ba9 *tests/banana.R
