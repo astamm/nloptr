@@ -33,8 +33,8 @@ CFLAGS=`"${R_HOME}/bin/R" CMD config CFLAGS`
 CPP=`"${R_HOME}/bin/R" CMD config CPP`
 CPPFLAGS=`"${R_HOME}/bin/R" CMD config CPPFLAGS`
 
-CXX=`"${R_HOME}/bin/R" CMD config CPPFLAGS`
-CXXFLAGS=`"${R_HOME}/bin/R" CMD config CPPFLAGS`
+CXX=`"${R_HOME}/bin/R" CMD config CXX`
+CXXFLAGS=`"${R_HOME}/bin/R" CMD config CXXFLAGS`
 
 CXXCPP=`"${R_HOME}/bin/R" CMD config CXXCPP`
 
