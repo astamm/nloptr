@@ -66,8 +66,12 @@ You should now be able to load the R interface to NLopt and read the help.
 library('nloptr')
 ?nloptr
 @
-If installation from CRAN doesn't work (e.g. for macs), you could try installing from source from R-Forge using
-<<installNLoptMac, eval=FALSE>>=
+The most recent experimental version of \texttt{nloptr} can be installed from R-Forge using
+<<installNLoptRForge, eval=FALSE>>=
+install.packages("nloptr",repos="http://R-Forge.R-project.org")
+@
+or from source using
+<<installNLoptRForgeSource, eval=FALSE>>=
 install.packages("nloptr",type="source",repos="http://R-Forge.R-project.org")
 @
 
