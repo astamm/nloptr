@@ -10,6 +10,8 @@
 # 09-07-2011: Download and untar NLopt code using Rscript
 # 01-09-2011: Added check on empty SRCDIR
 #             Added CC, CFLAGS, etc. to NLopt ./configure
+# 09-09-2011: Changed CURDIR to PWD which should be supported on Solaris Make
+# 21-10-2011: Changed ${PWD} to $(shell pwd) which is supported on Solaris Make
 
 # define NLopt version
 NLOPT_VERSION = 2.2.4
@@ -47,15 +49,7 @@ PKG_LIBS=${NLOPT_CLINKFLAGS} ${NLOPT_LIBS}
 PKG_CFLAGS=${NLOPT_CFLAGS} ${NLOPT_INCL}
 
 # Define location of source code
-SRCDIR = ${CURDIR}
-
-# Check to see if SRCDIR is empty
-# If SRCDIR is empty use current directory, i.e. use .
-ifeq ("${SRCDIR}", "")
-	SRCDIR = .
-endif
-
-
+SRCDIR = $(shell pwd)
 
 .PHONY: all
      
