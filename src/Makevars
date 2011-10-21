@@ -11,7 +11,7 @@
 # 01-09-2011: Added check on empty SRCDIR
 #             Added CC, CFLAGS, etc. to NLopt ./configure
 # 09-09-2011: Changed CURDIR to PWD which should be supported on Solaris Make
-# 19-10-2011: Changed ${PWD} to `pwd` which is supported on Solaris Make
+# 21-10-2011: Changed ${PWD} to $(shell pwd) which is supported on Solaris Make
 
 # define NLopt version
 NLOPT_VERSION = 2.2.4
@@ -49,7 +49,7 @@ PKG_LIBS=${NLOPT_CLINKFLAGS} ${NLOPT_LIBS}
 PKG_CFLAGS=${NLOPT_CFLAGS} ${NLOPT_INCL}
 
 # Define location of source code
-SRCDIR = `pwd`
+SRCDIR = $(shell pwd)
 
 .PHONY: all
      
