@@ -10,8 +10,9 @@
 # 09-07-2011: Download and untar NLopt code using Rscript
 # 01-09-2011: Added check on empty SRCDIR
 #             Added CC, CFLAGS, etc. to NLopt ./configure
-# 09-09-2011: Changed CURDIR to PWD which should be supported on Solaris Make
-# 21-10-2011: Changed ${PWD} to $(shell pwd) which is supported on Solaris Make
+# 09-09-2011: Changed CURDIR to PWD which is not supported on Solaris Make
+# 21-10-2011: Changed ${PWD} to $(shell pwd) which is not supported on Solaris Make
+# 24-10-2011: Changed $(shell pwd) to `pwd` which is supported on Solaris Make
 
 # define NLopt version
 NLOPT_VERSION = 2.2.4
@@ -49,7 +50,7 @@ PKG_LIBS=${NLOPT_CLINKFLAGS} ${NLOPT_LIBS}
 PKG_CFLAGS=${NLOPT_CFLAGS} ${NLOPT_INCL}
 
 # Define location of source code
-SRCDIR = $(shell pwd)
+SRCDIR=`pwd`
 
 .PHONY: all
      
@@ -63,7 +64,7 @@ nloptr.o: nlopt-${NLOPT_VERSION}/include/nlopt.h
 nlopt-${NLOPT_VERSION}/include/nlopt.h nlopt-${NLOPT_VERSION}/lib/libnlopt.a: nlopt-${NLOPT_VERSION}/configure
 	echo "Installing library to: ${SRCDIR}/nlopt-${NLOPT_VERSION}"
 	cd nlopt-${NLOPT_VERSION}; \
-	./configure --prefix=${SRCDIR}/nlopt-${NLOPT_VERSION} --enable-shared --enable-static --without-octave --without-matlab --without-guile --without-python CC="${CC}" CFLAGS="${CFLAGS}" CPP="${CPP}" CPPFLAGS="${CPPFLAGS}" CXX="${CXX}" CXXFLAGS="${CXXFLAGS}" CXXCPP="${CXXCPP}"; \
+	./configure --prefix="${SRCDIR}/nlopt-${NLOPT_VERSION}" --enable-shared --enable-static --without-octave --without-matlab --without-guile --without-python CC="${CC}" CFLAGS="${CFLAGS}" CPP="${CPP}" CPPFLAGS="${CPPFLAGS}" CXX="${CXX}" CXXFLAGS="${CXXFLAGS}" CXXCPP="${CXXCPP}"; \
 	make; \
 	make install; \
 	ls | grep -v ^include$$ | grep -v ^lib$$ | xargs rm -rf; \
