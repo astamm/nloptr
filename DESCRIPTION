@@ -1,21 +1,15 @@
 Package: nloptr
 Type: Package
 Title: R interface to NLopt
-Version: 0.8.7
-Date: 2011-10-24
+Version: 0.8.8
+Date: 2011-10-28
 Author: Jelmer Ypma
 Maintainer: Jelmer Ypma <uctpjyy@ucl.ac.uk>
-Description: nloptr is an R interface to NLopt. NLopt is a
-        free/open-source library for nonlinear optimization, providing
-        a common interface for a number of different free optimization
-        routines available online as well as original implementations
-        of various other algorithms. See
-        http://ab-initio.mit.edu/wiki/index.php/NLopt_Introduction for
-        more information on the available algorithms.
+Description: nloptr is an R interface to NLopt. NLopt is a free/open-source library for nonlinear optimization, providing a common interface for a number of different free optimization routines available online as well as original implementations of various other algorithms. See http://ab-initio.mit.edu/wiki/index.php/NLopt_Introduction for more information on the available algorithms.
 License: LGPL
 LazyData: yes
 Repository: CRAN
 Repository/R-Forge/Project: nloptr
-Repository/R-Forge/Revision: 46
-Date/Publication: 2011-10-27 07:22:12
-Packaged: 2011-10-25 15:51:23 UTC; rforge
+Repository/R-Forge/Revision: 48
+Date/Publication: 2011-11-02 17:26:08
+Packaged: 2011-10-28 21:14:45 UTC; rforge

@@ -14,6 +14,7 @@
 # 21-10-2011: Changed ${PWD} to $(shell pwd) which is not supported on Solaris Make
 # 24-10-2011: Changed $(shell pwd) to `pwd` which is supported on Solaris Make
 # 24-10-2011: Removed SRCDIR macro, using `pwd` when needed instead
+# 28-10-2011: Changed shell to `` in downloading and extracting code
 
 # define NLopt version
 NLOPT_VERSION = 2.2.4
@@ -73,14 +74,13 @@ nlopt-${NLOPT_VERSION}/include/nlopt.h nlopt-${NLOPT_VERSION}/lib/libnlopt.a: nl
 # Extract NLopt source code and remove .tar.gz
 # tar -xzvf nlopt-${NLOPT_VERSION}.tar.gz
 nlopt-${NLOPT_VERSION}/configure: nlopt-${NLOPT_VERSION}.tar.gz
-	$(shell "${R_HOME}/bin/Rscript" -e "untar(tarfile='nlopt-${NLOPT_VERSION}.tar.gz')")
+	`"${R_HOME}/bin/Rscript" -e "untar(tarfile='nlopt-${NLOPT_VERSION}.tar.gz')"`
 	rm -rf nlopt-${NLOPT_VERSION}.tar.gz
-
 
 # Download NLopt source code
 # curl -O http://ab-initio.mit.edu/nlopt/nlopt-${NLOPT_VERSION}.tar.gz
 nlopt-${NLOPT_VERSION}.tar.gz:
-	$(shell "${R_HOME}/bin/Rscript" -e "download.file(url='http://ab-initio.mit.edu/nlopt/nlopt-${NLOPT_VERSION}.tar.gz', destfile='nlopt-${NLOPT_VERSION}.tar.gz')")
+	`"${R_HOME}/bin/Rscript" -e "download.file(url='http://ab-initio.mit.edu/nlopt/nlopt-${NLOPT_VERSION}.tar.gz', destfile='nlopt-${NLOPT_VERSION}.tar.gz')"`
 
 clean:
 	rm -rf *.so
