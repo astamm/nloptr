@@ -8,22 +8,11 @@
 # 09 June 2011: Windows support added thanks to Stefan Theussl and Uwe Ligges.
 #               NLOPT_HOME is the directory where a working installation of 
 #               NLopt is located (within subdirectories NLOPT_VERSION/R_ARCH)
-
-# Define NLopt version
-NLOPT_VERSION = 2.2.3
+# 18 November 2011: Removed NLOPT_VERSION macro and adopted some other changes
+#                   proposed by Brian Ripley to make nloptr work with his new toolchain.
+#                   NLopt should now be located in NLOPT_HOME/R_ARCH (i.e. without
+#                   version number)
 
 # C Compiler options
-NLOPT_CFLAGS = 
-
-# Additional C Compiler options for linking
-NLOPT_CLINKFLAGS = -L${NLOPT_HOME}/${NLOPT_VERSION}${R_ARCH}/lib
-
-# Necessary Include dirs 
-NLOPT_INCL = -I${NLOPT_HOME}/${NLOPT_VERSION}${R_ARCH}/include
-
-# Libraries necessary to link with NLopt
-NLOPT_LIBS = -lm -lnlopt
-
-# Convert to R macros
-PKG_LIBS = ${NLOPT_CLINKFLAGS} ${NLOPT_LIBS}
-PKG_CFLAGS = ${NLOPT_CFLAGS} ${NLOPT_INCL}
+PKG_CPPFLAGS = -I$(NLOPT_HOME)$(R_ARCH)/include
+PKG_LIBS = -L$(NLOPT_HOME)$(R_ARCH)/lib -lnlopt
