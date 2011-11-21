@@ -15,6 +15,7 @@
 # 24-10-2011: Changed $(shell pwd) to `pwd` which is supported on Solaris Make
 # 24-10-2011: Removed SRCDIR macro, using `pwd` when needed instead
 # 28-10-2011: Changed shell to `` in downloading and extracting code
+# 18-11-2011: Changed CRLF and CR line endings to LF
 
 # define NLopt version
 NLOPT_VERSION = 2.2.4
