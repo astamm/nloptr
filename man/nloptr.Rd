@@ -88,7 +88,8 @@ nloptr( x0,
     \tabular{ll}{
         0 (default) \tab no output \cr
         1 \tab show iteration number and value of objective function \cr
-        2 \tab 1 + show value of (in)equalities
+        2 \tab 1 + show value of (in)equalities \cr
+        3 \tab 2 + show value of controls
     }
 	
 	The option check_derivatives (default = FALSE) can be used to run to compare the analytic gradients with finite difference approximations. 

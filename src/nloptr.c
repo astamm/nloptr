@@ -225,6 +225,20 @@ double func_objective(unsigned n, const double *x, double *grad, void *data)
         Rprintf( "iteration: %d\n", d->num_iterations );
     }
     
+    // print values of x
+    if ( d->print_level >= 3 ) {
+        if ( n == 1 ) {
+            Rprintf( "\tx = %f\n", x[ 0 ] );
+        }
+        else {
+            Rprintf( "\tx = ( %f", x[ 0 ] );
+            for (i=1;i<n;i++) {
+                Rprintf( ", %f", x[ i ] );
+            }
+            Rprintf( " )\n" );
+        }
+    }
+    
 	// Allocate memory for a vector of reals.
 	// This vector will contain the elements of x,
 	// x is the argument to the R function R_eval_f
@@ -353,7 +367,7 @@ void func_constraints_ineq(unsigned m, double* constraints, unsigned n, const do
         else {
             Rprintf( "\tg(x) = ( %f", constraints[ 0 ] );
             for (i=1;i<m;i++) {
-                Rprintf( ",%f", constraints[ i ] );
+                Rprintf( ", %f", constraints[ i ] );
             }
             Rprintf( " )\n" );
         }
@@ -464,7 +478,7 @@ void func_constraints_eq(unsigned m, double* constraints, unsigned n, const doub
         else {
             Rprintf( "\th(x) = ( %f", constraints[ 0 ] );
             for (i=1;i<m;i++) {
-                Rprintf( ",%f", constraints[ i ] );
+                Rprintf( ", %f", constraints[ i ] );
             }
             Rprintf( " )\n" );
         }

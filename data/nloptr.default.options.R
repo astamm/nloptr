@@ -78,11 +78,11 @@ nloptr.default.options <- data.frame(
 		  "The parameter tol_constraints_eq is a vector of tolerances. Each tolerance corresponds to one of the equality constraints. The tolerance is used for the purpose of stopping criteria only: a point x is considered feasible for judging whether to stop the optimization if abs( eval_g_ineq(x) ) <= tol. For equality constraints, a small positive tolerance is strongly advised in order to allow NLopt to converge even if the equality constraint is slightly nonzero. By default the tolerances for all equality constraints are set to 1e-8."),
         c("print_level", 
 		  "interger", 
-		  "0, 1, or 2", 
+		  "0, 1, 2, or 3", 
 		  "0", 
 		  FALSE, 
 		  "The option print_level controls how much output is shown during the optimization process. Possible values: 0 (default): no output;
-1: show iteration number and value of objective function; 2: 1 + show value of (in)equalities"),
+1: show iteration number and value of objective function; 2: 1 + show value of (in)equalities; 3: 2 + show value of controls."),
 		c("check_derivatives", 
 		  "logical", 
 		  "TRUE or FALSE", 
