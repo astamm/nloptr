@@ -1,3 +1,6 @@
+version 0.9.0:
+    * Introduced new print_level = 3. Shows values of controls (16 April 2012 on R-Forge).
+
 18 November 2011, version 0.8.9:
 
     * Changed CRLF and CR line endings in src/Makevars to LF line endings to remove a warning from R CMD check.
