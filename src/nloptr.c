@@ -185,7 +185,7 @@ nlopt_algorithm getAlgorithmCode( const char *algorithm_str ) {
     else {
         // unknown algorithm code
 		Rprintf("Error: unknown algorithm %s.\n", algorithm_str);
-        algorithm = -99;
+        algorithm = NLOPT_NUM_ALGORITHMS;       // Not an algorithm, so this should result in a runtime error.
     }
     
     return algorithm;

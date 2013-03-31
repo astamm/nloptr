@@ -12,7 +12,10 @@
 #                   proposed by Brian Ripley to make nloptr work with his new toolchain.
 #                   NLopt should now be located in NLOPT_HOME/R_ARCH (i.e. without
 #                   version number)
+# 19 February 2013: NLopt is compiled with --with-cxx option, in order to include
+#                   the StoGo algorithm. This means that we now need to link to 
+#                   with -lnlopt_cxx and also link to the c++ library, -lstdc++.
 
 # C Compiler options
 PKG_CPPFLAGS = -I$(NLOPT_HOME)$(R_ARCH)/include
-PKG_LIBS = -L$(NLOPT_HOME)$(R_ARCH)/lib -lnlopt
+PKG_LIBS = -L$(NLOPT_HOME)$(R_ARCH)/lib -lnlopt_cxx -lstdc++
