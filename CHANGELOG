@@ -1,5 +1,6 @@
 version 0.9.0:
     * Introduced new print_level = 3. Shows values of controls (16 April 2012 on R-Forge).
+    * Changed Makevars and Makevars.win to link to version 2.3 of NLopt compiled with --with-cxx option. This makes the StoGo algorithm available. (31 April 2013 on R-Forge).
 
 18 November 2011, version 0.8.9:
 
