@@ -30,7 +30,7 @@ NLOPT_CFLAGS =
 NLOPT_CLINKFLAGS = 
 
 # Libraries necessary to link with NLopt
-NLOPT_LIBS = -lm nlopt-${NLOPT_VERSION}/lib/libnlopt_cxx.a
+NLOPT_LIBS = -lm nlopt-${NLOPT_VERSION}/lib/libnlopt_cxx.a -lstdc++
 
 # Necessary Include dirs 
 NLOPT_INCL = -I./nlopt-${NLOPT_VERSION}/include
