@@ -16,9 +16,12 @@
 # 24-10-2011: Removed SRCDIR macro, using `pwd` when needed instead
 # 28-10-2011: Changed shell to `` in downloading and extracting code
 # 18-11-2011: Changed CRLF and CR line endings to LF
+# 21-02-2013: Changed NLOPT_VERSION to 2.3
+#             Included --with-cxx option in configure to allow for StoGo algorithm.
+#             Linking to libnlopt_cxx.a instead of libnlopt.a
 
 # define NLopt version
-NLOPT_VERSION = 2.2.4
+NLOPT_VERSION = 2.3
 
 # C Compiler options
 NLOPT_CFLAGS = 
@@ -27,7 +30,7 @@ NLOPT_CFLAGS =
 NLOPT_CLINKFLAGS = 
 
 # Libraries necessary to link with NLopt
-NLOPT_LIBS = -lm nlopt-${NLOPT_VERSION}/lib/libnlopt.a
+NLOPT_LIBS = -lm nlopt-${NLOPT_VERSION}/lib/libnlopt_cxx.a -lstdc++
 
 # Necessary Include dirs 
 NLOPT_INCL = -I./nlopt-${NLOPT_VERSION}/include
@@ -56,17 +59,17 @@ PKG_CFLAGS=${NLOPT_CFLAGS} ${NLOPT_INCL}
      
 all: $(SHLIB)
 
-$(SHLIB): nlopt-${NLOPT_VERSION}/lib/libnlopt.a ${OBJECTS}
+$(SHLIB): nlopt-${NLOPT_VERSION}/lib/libnlopt_cxx.a ${OBJECTS}
 
 nloptr.o: nlopt-${NLOPT_VERSION}/include/nlopt.h
   
 # Compile NLopt source code and clean up
 # --prefix="`pwd`", which is the directory we want to
 # install in, after we changed our current directory
-nlopt-${NLOPT_VERSION}/include/nlopt.h nlopt-${NLOPT_VERSION}/lib/libnlopt.a: nlopt-${NLOPT_VERSION}/configure
+nlopt-${NLOPT_VERSION}/include/nlopt.h nlopt-${NLOPT_VERSION}/lib/libnlopt_cxx.a: nlopt-${NLOPT_VERSION}/configure
 	echo "Installing library to: `pwd`/nlopt-${NLOPT_VERSION}"
 	cd nlopt-${NLOPT_VERSION}; \
-	./configure --prefix="`pwd`" --enable-shared --enable-static --without-octave --without-matlab --without-guile --without-python CC="${CC}" CFLAGS="${CFLAGS}" CPP="${CPP}" CPPFLAGS="${CPPFLAGS}" CXX="${CXX}" CXXFLAGS="${CXXFLAGS}" CXXCPP="${CXXCPP}"; \
+	./configure --prefix="`pwd`" --enable-shared --enable-static --without-octave --without-matlab --without-guile --without-python --with-cxx CC="${CC}" CFLAGS="${CFLAGS}" CPP="${CPP}" CPPFLAGS="${CPPFLAGS}" CXX="${CXX}" CXXFLAGS="${CXXFLAGS}" CXXCPP="${CXXCPP}"; \
 	make; \
 	make install; \
 	ls | grep -v ^include$$ | grep -v ^lib$$ | xargs rm -rf; \

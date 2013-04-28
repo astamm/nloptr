@@ -27,10 +27,10 @@ x0 <- c( -1.2, 1 )
 lb <- c( -3, -3 )
 ub <- c(  3,  3 )
 
-local_opts <- list( "algorithm" = "NLOPT_LD_BFGS",
+local_opts <- list( "algorithm" = "NLOPT_LD_LBFGS",
                     "xtol_rel"  = 1e-4 )
 
-opts <- list( "algorithm"   = "NLOPT_GN_MLSL",
+opts <- list( "algorithm"   = "NLOPT_GD_MLSL",
               "maxeval"     = 10000,
 			  "population"  = 4,
 			  "local_opts"  = local_opts )

@@ -67,10 +67,10 @@ x0 <- c( 3, 1 )
 lb <- c( -50, -50 )
 ub <- c(  50,  50 )
 
+# solve with MMA
 opts <- list( "algorithm"   = "NLOPT_LD_MMA",
               "xtol_rel"    = 1.0e-6, 
               "print_level" = 2 )
-
              
 res <- nloptr( x0=x0, 
                eval_f=eval_f, 
@@ -79,3 +79,25 @@ res <- nloptr( x0=x0,
                eval_g_ineq=eval_g_ineq, 
                opts=opts)               
 print( res )
+
+
+# check solution
+#epsilon <- 1e-4
+#objective <- eval_f( res$solution )
+#constraints <- eval_g_ineq( res$solution )
+#is.binding <- abs(constraints$constraints) < epsilon
+#
+#lagrange.multipliers <- solve( constraints$jacobian[is.binding,], objective$gradient )
+## todo: calculate hessian
+## do some checks on optimality, KKT, satisfied constraints? which constraints are binding?
+#lagrangian <- function( x, lambda, is.binding ) {
+#	return( eval_f(x)$objective - sum(lambda * eval_g_ineq(x)$constraints[is.binding]) )
+#}
+#lagrangian( res$solution, lagrange.multipliers, is.binding )
+#
+#lagrangian_grad <- function ( x ) {
+#	return( finite.diff( lagrangian, .x=x, lambda=lagrange.multipliers, is.binding=is.binding ) )
+#}
+#
+#finite.diff( lagrangian_grad, .x=res$solution )
+
