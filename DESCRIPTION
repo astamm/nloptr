@@ -5,6 +5,6 @@ Version: 0.9.1
 Date: 2013-04-28
 Author: Jelmer Ypma
 Maintainer: Jelmer Ypma <uctpjyy@ucl.ac.uk>
-Description: nloptr is an R interface to NLopt. NLopt is a free/open-source library for nonlinear optimization, providing a common interface for a number of different free optimization routines available online as well as original implementations of various other algorithms. See http://ab-initio.mit.edu/wiki/index.php/NLopt_Introduction for more information on the available algorithms. During installation on Unix the NLopt is downloaded and compiled from the NLopt website.
+Description: nloptr is an R interface to NLopt. NLopt is a free/open-source library for nonlinear optimization, providing a common interface for a number of different free optimization routines available online as well as original implementations of various other algorithms. See http://ab-initio.mit.edu/wiki/index.php/NLopt_Introduction for more information on the available algorithms. During installation on Unix the NLopt code is downloaded and compiled from the NLopt website.
 License: LGPL-3
 LazyData: yes
