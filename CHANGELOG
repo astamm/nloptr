@@ -1,4 +1,4 @@
-11 July 2013, version 0.9.2:
+11 July 2013, version 0.9.2 and 31 July 2013, version 0.9.3:
     * Made changes in bibtex file of documentation.
     * Removed CFLAGS, CXXFLAGS from Makevars.
 
