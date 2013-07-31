@@ -19,41 +19,48 @@
 # 21-02-2013: Changed NLOPT_VERSION to 2.3
 #             Included --with-cxx option in configure to allow for StoGo algorithm.
 #             Linking to libnlopt_cxx.a instead of libnlopt.a
+# 08-07-2013: Changed CFLAGS to NLOPT_CFLAGS and similarly for CC, CPP, CXX,
+#             CXXFLAGS, and CXXCPP to prevent overriding user customizations.
+#             For clarity some of the other macros are now prefixed with NLOPTR
+#             instead of NLOPT.
+# 08-07-2013: Added --vanilla flag to Rscript. This solves problems if someone sets
+#             a different home directory with setwd in Rprofile.
+# 08-07-2013: Added `pwd` to NLOPTR_LIBS and NLOPTR_INCL.
 
 # define NLopt version
 NLOPT_VERSION = 2.3
 
 # C Compiler options
-NLOPT_CFLAGS = 
+NLOPTR_CFLAGS = 
 
 # additional C Compiler options for linking
-NLOPT_CLINKFLAGS = 
+NLOPTR_CLINKFLAGS = 
 
 # Libraries necessary to link with NLopt
-NLOPT_LIBS = -lm nlopt-${NLOPT_VERSION}/lib/libnlopt_cxx.a -lstdc++
+NLOPTR_LIBS = -lm `pwd`/nlopt-${NLOPT_VERSION}/lib/libnlopt_cxx.a -lstdc++
 
 # Necessary Include dirs 
-NLOPT_INCL = -I./nlopt-${NLOPT_VERSION}/include
+NLOPTR_INCL = -I`pwd`/nlopt-${NLOPT_VERSION}/include
 
 # Get R compilers and flags
-CC=`"${R_HOME}/bin/R" CMD config CC`
-CFLAGS=`"${R_HOME}/bin/R" CMD config CFLAGS`
+NLOPT_CC=`"${R_HOME}/bin/R" CMD config CC`
+NLOPT_CFLAGS=`"${R_HOME}/bin/R" CMD config CFLAGS`
 
-CPP=`"${R_HOME}/bin/R" CMD config CPP`
-CPPFLAGS=`"${R_HOME}/bin/R" CMD config CPPFLAGS`
+NLOPT_CPP=`"${R_HOME}/bin/R" CMD config CPP`
+NLOPT_CPPFLAGS=`"${R_HOME}/bin/R" CMD config CPPFLAGS`
 
-CXX=`"${R_HOME}/bin/R" CMD config CXX`
-CXXFLAGS=`"${R_HOME}/bin/R" CMD config CXXFLAGS`
+NLOPT_CXX=`"${R_HOME}/bin/R" CMD config CXX`
+NLOPT_CXXFLAGS=`"${R_HOME}/bin/R" CMD config CXXFLAGS`
 
-CXXCPP=`"${R_HOME}/bin/R" CMD config CXXCPP`
+NLOPT_CXXCPP=`"${R_HOME}/bin/R" CMD config CXXCPP`
 
 
 # Define objects for R to build
 OBJECTS = nloptr.o
 
 # Convert to R macros
-PKG_LIBS=${NLOPT_CLINKFLAGS} ${NLOPT_LIBS}
-PKG_CFLAGS=${NLOPT_CFLAGS} ${NLOPT_INCL}
+PKG_LIBS=${NLOPTR_CLINKFLAGS} ${NLOPTR_LIBS}
+PKG_CFLAGS=${NLOPTR_CFLAGS} ${NLOPTR_INCL}
 
 .PHONY: all
      
@@ -69,7 +76,7 @@ nloptr.o: nlopt-${NLOPT_VERSION}/include/nlopt.h
 nlopt-${NLOPT_VERSION}/include/nlopt.h nlopt-${NLOPT_VERSION}/lib/libnlopt_cxx.a: nlopt-${NLOPT_VERSION}/configure
 	echo "Installing library to: `pwd`/nlopt-${NLOPT_VERSION}"
 	cd nlopt-${NLOPT_VERSION}; \
-	./configure --prefix="`pwd`" --enable-shared --enable-static --without-octave --without-matlab --without-guile --without-python --with-cxx CC="${CC}" CFLAGS="${CFLAGS}" CPP="${CPP}" CPPFLAGS="${CPPFLAGS}" CXX="${CXX}" CXXFLAGS="${CXXFLAGS}" CXXCPP="${CXXCPP}"; \
+	./configure --prefix="`pwd`" --enable-shared --enable-static --without-octave --without-matlab --without-guile --without-python --with-cxx CC="${NLOPT_CC}" CFLAGS="${NLOPT_CFLAGS}" CPP="${NLOPT_CPP}" CPPFLAGS="${NLOPT_CPPFLAGS}" CXX="${NLOPT_CXX}" CXXFLAGS="${NLOPT_CXXFLAGS}" CXXCPP="${NLOPT_CXXCPP}"; \
 	make; \
 	make install; \
 	ls | grep -v ^include$$ | grep -v ^lib$$ | xargs rm -rf; \
@@ -78,13 +85,13 @@ nlopt-${NLOPT_VERSION}/include/nlopt.h nlopt-${NLOPT_VERSION}/lib/libnlopt_cxx.a
 # Extract NLopt source code and remove .tar.gz
 # tar -xzvf nlopt-${NLOPT_VERSION}.tar.gz
 nlopt-${NLOPT_VERSION}/configure: nlopt-${NLOPT_VERSION}.tar.gz
-	`"${R_HOME}/bin/Rscript" -e "untar(tarfile='nlopt-${NLOPT_VERSION}.tar.gz')"`
+	`"${R_HOME}/bin/Rscript" --vanilla -e "untar(tarfile='nlopt-${NLOPT_VERSION}.tar.gz')"`
 	rm -rf nlopt-${NLOPT_VERSION}.tar.gz
 
 # Download NLopt source code
 # curl -O http://ab-initio.mit.edu/nlopt/nlopt-${NLOPT_VERSION}.tar.gz
 nlopt-${NLOPT_VERSION}.tar.gz:
-	`"${R_HOME}/bin/Rscript" -e "download.file(url='http://ab-initio.mit.edu/nlopt/nlopt-${NLOPT_VERSION}.tar.gz', destfile='nlopt-${NLOPT_VERSION}.tar.gz')"`
+	`"${R_HOME}/bin/Rscript" --vanilla -e "download.file(url='http://ab-initio.mit.edu/nlopt/nlopt-${NLOPT_VERSION}.tar.gz', destfile='nlopt-${NLOPT_VERSION}.tar.gz')"`
 
 clean:
 	rm -rf *.so
