@@ -1,6 +1,6 @@
 \documentclass[a4paper]{article}
+\usepackage[round,authoryear,sort&compress]{natbib}
 \usepackage[english]{babel}
-\usepackage{apacite}
 \usepackage{graphicx}
 
 % \VignetteIndexEntry{Introduction to nloptr: an R interface to NLopt}
@@ -12,7 +12,7 @@
 
 
 \title{Introduction to \texttt{nloptr}: an R interface to NLopt
-\thanks{This package should be considered in beta and comments about any aspect of the package are welcome. This document is an R vignette prepared with the aid of \texttt{Sweave}, Leisch(2002). Financial support of the UK Economic and Social Research Council through a grant (RES-589-28-0001) to the ESRC Centre for Microdata Methods and Practice (CeMMAP) is gratefully acknowledged.}}
+\thanks{This package should be considered in beta and comments about any aspect of the package are welcome. This document is an R vignette prepared with the aid of \texttt{Sweave} (Leisch, 2002). Financial support of the UK Economic and Social Research Council through a grant (RES-589-28-0001) to the ESRC Centre for Microdata Methods and Practice (CeMMAP) is gratefully acknowledged.}}
 \author{Jelmer Ypma}
 
 \begin{document}
@@ -115,7 +115,7 @@ and then minimize the function using the \texttt{nloptr} command. This command r
 opts <- list("algorithm"="NLOPT_LD_LBFGS",
              "xtol_rel"=1.0e-8)
 @
-Here we use the L-BFGS algorithm \cite{Nocedal:1980, LiuNocedal:1989}. The characters \texttt{LD} in the algorithm show that this algorithm looks for local minima (\texttt{L}) using a derivative-based (\texttt{D}) algorithm. Other algorithms look for global (\texttt{G}) minima, or they don't need derivatives (\texttt{N}). We also specified the termination criterium in terms of the relative x-tolerance. Other termination criteria are available (see Appendix \ref{sec:descoptions} for a full list of options). We then solve the minimization problem using
+Here we use the L-BFGS algorithm \citep{Nocedal:1980, LiuNocedal:1989}. The characters \texttt{LD} in the algorithm show that this algorithm looks for local minima (\texttt{L}) using a derivative-based (\texttt{D}) algorithm. Other algorithms look for global (\texttt{G}) minima, or they don't need derivatives (\texttt{N}). We also specified the termination criterium in terms of the relative x-tolerance. Other termination criteria are available (see Appendix \ref{sec:descoptions} for a full list of options). We then solve the minimization problem using
 <<solveRosenbrockBanana>>= 
 # solve Rosenbrock Banana function
 res <- nloptr( x0=x0, 
@@ -212,13 +212,13 @@ res0 <- nloptr( x0=c(1.234,5.678),
                 b = b )
 print( res0 )
 @
-Here we supplied lower bounds for $x_2$ in \texttt{lb}. There are no upper bounds for both control variables, so we supply \texttt{Inf} values. If we don't supply lower or upper bounds, plus or minus infinity is chosen by default. The inequality constraints and its jacobian are defined using \texttt{eval\_g\_ineq} and \texttt{eval\_jac\_g\_ineq}. Not all algorithms can handle inequality constraints, so we have to specifiy one that does, \texttt{NLOPT\_LD\_MMA} \cite{Svanberg:2002}. 
+Here we supplied lower bounds for $x_2$ in \texttt{lb}. There are no upper bounds for both control variables, so we supply \texttt{Inf} values. If we don't supply lower or upper bounds, plus or minus infinity is chosen by default. The inequality constraints and its jacobian are defined using \texttt{eval\_g\_ineq} and \texttt{eval\_jac\_g\_ineq}. Not all algorithms can handle inequality constraints, so we have to specifiy one that does, \texttt{NLOPT\_LD\_MMA} \citep{Svanberg:2002}. 
 
 We also specify the option \texttt{print\_level} to obtain output during the optimization process. For the available \texttt{print\_level} values, see \texttt{?nloptr}. Setting the \texttt{check\_derivatives} option to \texttt{TRUE}, compares the gradients supplied by the user with a finite difference approximation in the initial point (\texttt{x0}). When this check is run, the option \texttt{check\_derivatives\_print} can be used to print all values of the derivative checker (\texttt{all} (default)), only those values that result in an error (\texttt{errors}) or no output (\texttt{none}), in which case only the number of errors is shown. The tolerance that determines if a difference between the analytic gradient and the finite difference approximation results in an error can be set using the option \texttt{check\_derivatives\_tol} (default = 1e-04). The first column shows the value of the analytic gradient, the second column shows the value of the finite difference approximation, and the third column shows the relative error. Stars are added at the front of a line if the relative error is larger than the specified tolerance.
 
 Finally, we add all the parameters that have to be passed on to the objective and constraint functions, \texttt{a} and \texttt{b}.
 
-We can also use a different algorithm to solve the same minimization problem. The only thing we have to change is the algorithm that we want to use, in this case \texttt{NLOPT\_LN\_COBYLA}, which is an algorithm that doesn't need gradient information \cite{Powell:1994, Powell:1998}.
+We can also use a different algorithm to solve the same minimization problem. The only thing we have to change is the algorithm that we want to use, in this case \texttt{NLOPT\_LN\_COBYLA}, which is an algorithm that doesn't need gradient information \citep{Powell:1994, Powell:1998}.
 <<solveTutorialWithoutGradient>>=
 # Solve using NLOPT_LN_COBYLA without gradient information
 res1 <- nloptr( x0=c(1.234,5.678), 
@@ -280,7 +280,7 @@ The \texttt{.R} scripts in the \texttt{tests} directory contain more examples. F
 
 Sometimes the optimization procedure terminates with a message \texttt{maxtime was reached} without evaluating the objective function. Submitting the same problem again usually solves this problem.
 
-\bibliographystyle{apacite}
+\bibliographystyle{plainnat}
 \bibliography{reflist}
 
 \appendix
