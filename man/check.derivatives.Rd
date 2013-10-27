@@ -41,7 +41,7 @@ check.derivatives(
   }
 }
 \value{
-    The return value contains a list with the analytic gradient and its finite difference approximation.
+    The return value contains a list with the analytic gradient, its finite difference approximation, the relative errors, and vector comparing the relative errors to the tolerance.
 }
 \author{
 Jelmer Ypma
