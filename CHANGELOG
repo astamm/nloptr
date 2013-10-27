@@ -1,3 +1,6 @@
+27 October 2013, version 0.9.4:
+    * Changed tests to use unit testing package testthat.
+
 31 July 2013, version 0.9.3:
     * Split lines longer than 100 characters in check.derivatives examples in two lines to comply with new package rules.
     * Moved vignettes from inst/doc to vignettes to comply with new package rules.
