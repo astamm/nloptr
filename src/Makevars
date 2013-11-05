@@ -26,9 +26,10 @@
 # 08-07-2013: Added --vanilla flag to Rscript. This solves problems if someone sets
 #             a different home directory with setwd in Rprofile.
 # 08-07-2013: Added `pwd` to NLOPTR_LIBS and NLOPTR_INCL.
+# 05-11-2013: Changed NLOPT_VERSION to 2.4
 
 # define NLopt version
-NLOPT_VERSION = 2.3
+NLOPT_VERSION = 2.4
 
 # C Compiler options
 NLOPTR_CFLAGS = 
