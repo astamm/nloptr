@@ -32,6 +32,7 @@
  *
  * 13/01/2011: added print_level option
  * 24/07/2011: added checks on return value when setting equality constraints etc.
+ * 05/11/2013: Moved declaration of ineq_constr_data and eq_constr_data outside if-statement to solve segfault on Ubuntu.
  */
 
  // TODO: add minimize/maximize option (objective = "maximize")
@@ -433,7 +434,7 @@ void func_constraints_eq(unsigned m, double* constraints, unsigned n, const doub
     // declare counter
     unsigned i,j;
   
-    func_constraints_ineq_data *d = (func_constraints_ineq_data *) data;
+    func_constraints_eq_data *d = (func_constraints_eq_data *) data;
   
 	// Allocate memory for a vector of reals.
 	// This vector will contain the elements of x,
@@ -807,7 +808,12 @@ SEXP NLoptR_Optimize( SEXP args )
 		Rprintf("Error: nlopt_set_min_objective returned NLOPT_INVALID_ARGS.\n");
 	}
 	
+    //
     // inequality constraints
+    //
+    
+    // Declare data outside if-statement to prevent data corruption.
+    func_constraints_ineq_data ineq_constr_data;
     if ( num_constraints_ineq > 0 ) {
     
         // get tolerances from R_options
@@ -820,7 +826,6 @@ SEXP NLoptR_Optimize( SEXP args )
         UNPROTECT( 1 );
         
         // define data to pass to constraint function    
-        func_constraints_ineq_data ineq_constr_data;
         ineq_constr_data.R_eval_g       = R_eval_g_ineq;
         ineq_constr_data.R_environment  = R_environment;
         ineq_constr_data.print_level    = print_level;
@@ -833,7 +838,12 @@ SEXP NLoptR_Optimize( SEXP args )
 		}
     }
 	
+    //
     // equality constraints
+    //
+    
+    // Declare data outside if-statement to prevent data corruption.
+    func_constraints_eq_data eq_constr_data;
     if ( num_constraints_eq > 0 ) {
     
         // get tolerances from R_options
@@ -846,7 +856,6 @@ SEXP NLoptR_Optimize( SEXP args )
         UNPROTECT( 1 );
     
         // define data to pass to constraint function    
-        func_constraints_eq_data eq_constr_data;
         eq_constr_data.R_eval_g       = R_eval_g_eq;
         eq_constr_data.R_environment  = R_environment;
         eq_constr_data.print_level    = print_level;
