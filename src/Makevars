@@ -27,6 +27,9 @@
 #             a different home directory with setwd in Rprofile.
 # 08-07-2013: Added `pwd` to NLOPTR_LIBS and NLOPTR_INCL.
 # 05-11-2013: Changed NLOPT_VERSION to 2.4
+# 07-11-2013: Removed -lstdc++ from linker statement. A file dummy.cpp (with C++ extension)
+#             is added to the source directory to ensure linking with C++. Thanks to 
+#             Brian Ripley for bringing this up.
 
 # define NLopt version
 NLOPT_VERSION = 2.4
@@ -38,7 +41,7 @@ NLOPTR_CFLAGS =
 NLOPTR_CLINKFLAGS = 
 
 # Libraries necessary to link with NLopt
-NLOPTR_LIBS = -lm `pwd`/nlopt-${NLOPT_VERSION}/lib/libnlopt_cxx.a -lstdc++
+NLOPTR_LIBS = -lm `pwd`/nlopt-${NLOPT_VERSION}/lib/libnlopt_cxx.a
 
 # Necessary Include dirs 
 NLOPTR_INCL = -I`pwd`/nlopt-${NLOPT_VERSION}/include
