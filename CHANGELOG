@@ -1,5 +1,9 @@
-27 October 2013, version 0.9.4:
-    * Changed tests to use unit testing package testthat.
+09 November 2013, version 0.9.4:
+    * Updated NLopt to version 2.4.
+    * Changed tests to use unit testing package testthat (these are currently disabled).
+    * Fixed a segfault that started to occur on the latest version of Ubuntu.
+    * Slightly changed the build process (Removed -lstdc++ from linker statement. A file dummy.cpp (with C++ extension)
+      is added to the source directory to ensure linking with C++. Thanks to Brian Ripley for bringing this up.)
 
 31 July 2013, version 0.9.3:
     * Split lines longer than 100 characters in check.derivatives examples in two lines to comply with new package rules.
