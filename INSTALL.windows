@@ -1,7 +1,7 @@
 This file describes how to install nloptr from source for Windows. Compiling nloptr for Windows consists of two steps:
 1. configure and compile NLopt from source
        or 
-   download and unpack a pre-compiled binary (NLopt-2.3-win-build.zip from http://www.ucl.ac.uk/~uctpjyy/nloptr.html)
+   download and unpack a pre-compiled binary (NLopt-2.4-win-build.zip from http://www.ucl.ac.uk/~uctpjyy/nloptr.html)
 2. compile the R interface
 
 
@@ -9,15 +9,15 @@ This file describes how to install nloptr from source for Windows. Compiling nlo
 *** To install NLopt from source (optional)
 Requirements: Cygwin or MSYS
 
-1. Download the latest source of NLopt from http://ab-initio.mit.edu/wiki/index.php/NLopt#Download_and_installation, e.g. nlopt-2.3.tar.gz and unpack this archive somewhere (e.g. c:/tmp/nlopt-2.3).
+1. Download the latest source of NLopt from http://ab-initio.mit.edu/wiki/index.php/NLopt#Download_and_installation, e.g. nlopt-2.4.tar.gz and unpack this archive somewhere (e.g. c:/tmp/nlopt-2.4).
 
 2. Create a bash script somewhere, e.g. c:/tmp/NLoptInstall.sh with the following contents
 #!/bin/bash
 
-R_HOME="C:/tools/R/R-2.15.2"
+R_HOME="C:/tools/R/R-3.0.2"
 R_ARCH="i386"
 
-NLOPT_SRC_DIR="C:/tmp/nlopt-2.3"
+NLOPT_SRC_DIR="C:/tmp/nlopt-2.4"
 NLOPT_LIB_DIR="C:/tmp/nlopt"
 
 # Create directory for output
