@@ -30,6 +30,8 @@
 # 07-11-2013: Removed -lstdc++ from linker statement. A file dummy.cpp (with C++ extension)
 #             is added to the source directory to ensure linking with C++. Thanks to 
 #             Brian Ripley for bringing this up.
+# 12-11-2013: Replace 'sqrt(' by 'sqrt((double) ' in isres/isres/c in NLopt. This cast
+#             is not implemented in NLopt, but causes compilation errors on some systems.
 
 # define NLopt version
 NLOPT_VERSION = 2.4
@@ -80,6 +82,7 @@ nloptr.o: nlopt-${NLOPT_VERSION}/include/nlopt.h
 nlopt-${NLOPT_VERSION}/include/nlopt.h nlopt-${NLOPT_VERSION}/lib/libnlopt_cxx.a: nlopt-${NLOPT_VERSION}/configure
 	echo "Installing library to: `pwd`/nlopt-${NLOPT_VERSION}"
 	cd nlopt-${NLOPT_VERSION}; \
+	ed -s isres/isres.c <<< $$'H\n,s/sqrt(/sqrt((double) /g\nw'; \
 	./configure --prefix="`pwd`" --enable-shared --enable-static --without-octave --without-matlab --without-guile --without-python --with-cxx CC="${NLOPT_CC}" CFLAGS="${NLOPT_CFLAGS}" CPP="${NLOPT_CPP}" CPPFLAGS="${NLOPT_CPPFLAGS}" CXX="${NLOPT_CXX}" CXXFLAGS="${NLOPT_CXXFLAGS}" CXXCPP="${NLOPT_CXXCPP}"; \
 	make; \
 	make install; \
