@@ -1,3 +1,8 @@
+12 November 2013, version 0.9.5:
+    * Updated references from NLopt version 2.3 to NLopt version 2.4 in installation instructions in INSTALL.windows.
+    * Added a line in Makevars that replaces some code related to type-casting in NLopt-2.4/isres/isres.c.
+    * Changed encoding of src/nloptr.c from CP1252 to UTF-8.    
+
 09 November 2013, version 0.9.4:
     * Updated NLopt to version 2.4.
     * Changed tests to use unit testing package testthat (these are currently disabled).
