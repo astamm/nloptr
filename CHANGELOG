@@ -1,3 +1,6 @@
+19 November 2013, version 0.9.6:
+    * Added a line in Makevars to replace some code in NLopt to fix compilation on Solaris as requested by Brian Ripley.
+
 12 November 2013, version 0.9.5:
     * Updated references from NLopt version 2.3 to NLopt version 2.4 in installation instructions in INSTALL.windows.
     * Added a line in Makevars that replaces some code related to type-casting in NLopt-2.4/isres/isres.c.
