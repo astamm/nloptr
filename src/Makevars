@@ -32,6 +32,8 @@
 #             Brian Ripley for bringing this up.
 # 12-11-2013: Replace 'sqrt(' by 'sqrt((double) ' in isres/isres/c in NLopt. This cast
 #             is not implemented in NLopt, but causes compilation errors on some systems.
+# 19-11-2013: Wrap code in util/qsort_r.c in NLopt in extern "C" as requested by Brian 
+#             Ripley to fix compilation on Solaris.
 
 # define NLopt version
 NLOPT_VERSION = 2.4
@@ -83,6 +85,8 @@ nlopt-${NLOPT_VERSION}/include/nlopt.h nlopt-${NLOPT_VERSION}/lib/libnlopt_cxx.a
 	echo "Installing library to: `pwd`/nlopt-${NLOPT_VERSION}"
 	cd nlopt-${NLOPT_VERSION}; \
 	ed -s isres/isres.c <<< $$'H\n,s/sqrt(/sqrt((double) /g\nw'; \
+	ed -s util/qsort_r.c <<< $$'H\n1i\nextern "C" {\n.\nw'; \
+	ed -s util/qsort_r.c <<< $$'H\n$$a\n}\n.\nw'; \
 	./configure --prefix="`pwd`" --enable-shared --enable-static --without-octave --without-matlab --without-guile --without-python --with-cxx CC="${NLOPT_CC}" CFLAGS="${NLOPT_CFLAGS}" CPP="${NLOPT_CPP}" CPPFLAGS="${NLOPT_CPPFLAGS}" CXX="${NLOPT_CXX}" CXXFLAGS="${NLOPT_CXXFLAGS}" CXXCPP="${NLOPT_CXXCPP}"; \
 	make; \
 	make install; \
