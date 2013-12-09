@@ -16,7 +16,11 @@
 #		func_grad_name : name of function to show in output (optional)
 #       ... : arguments that are passed to the user-defined function (func and func_grad)
 #
-# Output: list with analytic gradients and finite difference approximations
+# Output: list with analytic gradients, finite difference approximations, relative errors
+#         and a comparison of the relative errors to the tolerance.
+#
+# Changelog:
+#   27/10/2013: Added relative_error and flag_derivative_warning to output list.
 
 check.derivatives <- 
 	function( 
@@ -102,8 +106,10 @@ check.derivatives <-
 
 	return( 
 		list( 
-			"analytic" = analytic_grad,
-			"finite_difference" = finite_diff_grad
+			"analytic"                = analytic_grad,
+			"finite_difference"       = finite_diff_grad,
+            "relative_error"          = relative_error,
+            "flag_derivative_warning" = flag_derivative_warning
 		) 
 	)
 }

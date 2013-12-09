@@ -26,9 +26,15 @@
 # 08-07-2013: Added --vanilla flag to Rscript. This solves problems if someone sets
 #             a different home directory with setwd in Rprofile.
 # 08-07-2013: Added `pwd` to NLOPTR_LIBS and NLOPTR_INCL.
+# 05-11-2013: Changed NLOPT_VERSION to 2.4
+# 07-11-2013: Removed -lstdc++ from linker statement. A file dummy.cpp (with C++ extension)
+#             is added to the source directory to ensure linking with C++. Thanks to 
+#             Brian Ripley for bringing this up.
+# 12-11-2013: Replace 'sqrt(' by 'sqrt((double) ' in isres/isres/c in NLopt. This cast
+#             is not implemented in NLopt, but causes compilation errors on some systems.
 
 # define NLopt version
-NLOPT_VERSION = 2.3
+NLOPT_VERSION = 2.4
 
 # C Compiler options
 NLOPTR_CFLAGS = 
@@ -37,7 +43,7 @@ NLOPTR_CFLAGS =
 NLOPTR_CLINKFLAGS = 
 
 # Libraries necessary to link with NLopt
-NLOPTR_LIBS = -lm `pwd`/nlopt-${NLOPT_VERSION}/lib/libnlopt_cxx.a -lstdc++
+NLOPTR_LIBS = -lm `pwd`/nlopt-${NLOPT_VERSION}/lib/libnlopt_cxx.a
 
 # Necessary Include dirs 
 NLOPTR_INCL = -I`pwd`/nlopt-${NLOPT_VERSION}/include
@@ -76,6 +82,7 @@ nloptr.o: nlopt-${NLOPT_VERSION}/include/nlopt.h
 nlopt-${NLOPT_VERSION}/include/nlopt.h nlopt-${NLOPT_VERSION}/lib/libnlopt_cxx.a: nlopt-${NLOPT_VERSION}/configure
 	echo "Installing library to: `pwd`/nlopt-${NLOPT_VERSION}"
 	cd nlopt-${NLOPT_VERSION}; \
+	ed -s isres/isres.c <<< $$'H\n,s/sqrt(/sqrt((double) /g\nw'; \
 	./configure --prefix="`pwd`" --enable-shared --enable-static --without-octave --without-matlab --without-guile --without-python --with-cxx CC="${NLOPT_CC}" CFLAGS="${NLOPT_CFLAGS}" CPP="${NLOPT_CPP}" CPPFLAGS="${NLOPT_CPPFLAGS}" CXX="${NLOPT_CXX}" CXXFLAGS="${NLOPT_CXXFLAGS}" CXXCPP="${NLOPT_CXXCPP}"; \
 	make; \
 	make install; \
