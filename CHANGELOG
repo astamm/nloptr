@@ -1,3 +1,6 @@
+27 January 2014, version 1.0.0:
+    * Merged wrappers from the 'nloptwrap' package.
+
 19 November 2013, version 0.9.6:
     * Added a line in Makevars to replace some code in NLopt to fix compilation on Solaris as requested by Brian Ripley.
 

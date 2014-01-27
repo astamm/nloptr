@@ -23,20 +23,23 @@ where f is the objective function to be minimized and x represents the n optimiz
 bound constraints (also called box constraints), lb and ub. For partially or totally unconstrained problems the bounds can take 
 -Inf or Inf. One may also optionally have m nonlinear inequality constraints (sometimes called a nonlinear programming problem), 
 which can be specified in g(x), and equality constraints that can be specified in h(x). Note that not all of the algorithms in NLopt can handle constraints.
+
+An optimization problem can be solved with the general nloptr interface, or using one of the wrapper functions for the separate algorithms; auglag, bobyqa, cobyla, crs2lm, direct, lbfgs, mlsl, mma, neldermead, newuoa, sbplx, slsqp, stogo, tnewton, varmetric.
 }
 \details{
 \tabular{ll}{
 Package: \tab nloptr\cr
 Type: \tab Package\cr
-Version: \tab 0.8.2\cr
-Date: \tab 2011-06-09\cr
+Version: \tab 0.9.9\cr
+Date: \tab 2013-11-22\cr
 License: \tab L-GPL\cr
 LazyLoad: \tab yes\cr
 }
 }
 \author{
 Steven G. Johnson and others (C code)  \cr
-Jelmer Ypma (R interface)
+Jelmer Ypma (R interface) \cr
+Hans W. Borchers (wrappers)
 }
 \references{
 Steven G. Johnson, The NLopt nonlinear-optimization package, \url{http://ab-initio.mit.edu/nlopt}
@@ -49,6 +52,23 @@ Steven G. Johnson, The NLopt nonlinear-optimization package, \url{http://ab-init
 \code{\link{nlminb}}
 \code{\link[Rsolnp:Rsolnp-package]{Rsolnp}}
 \code{\link[Rsolnp:solnp]{ssolnp}}
+\code{\link{nloptr}}
+\code{\link{auglag}}
+\code{\link{bobyqa}}
+\code{\link{cobyla}}
+\code{\link{crs2lm}}
+\code{\link{direct}}
+\code{\link{isres}}
+\code{\link{lbfgs}}
+\code{\link{mlsl}}
+\code{\link{mma}}
+\code{\link{neldermead}}
+\code{\link{newuoa}}
+\code{\link{sbplx}}
+\code{\link{slsqp}}
+\code{\link{stogo}}
+\code{\link{tnewton}}
+\code{\link{varmetric}}
 }
 \note{See ?nloptr for more examples.}
 \examples{
