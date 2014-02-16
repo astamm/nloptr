@@ -24,7 +24,7 @@ bound constraints (also called box constraints), lb and ub. For partially or tot
 -Inf or Inf. One may also optionally have m nonlinear inequality constraints (sometimes called a nonlinear programming problem), 
 which can be specified in g(x), and equality constraints that can be specified in h(x). Note that not all of the algorithms in NLopt can handle constraints.
 
-An optimization problem can be solved with the general nloptr interface, or using one of the wrapper functions for the separate algorithms; auglag, bobyca, cobyla, crs2lm, direct, lbfgs, mlsl, mma, neldermead, newuoa, sbplx, slsqp, stogo, tnewton, varmetric.
+An optimization problem can be solved with the general nloptr interface, or using one of the wrapper functions for the separate algorithms; auglag, bobyqa, cobyla, crs2lm, direct, lbfgs, mlsl, mma, neldermead, newuoa, sbplx, slsqp, stogo, tnewton, varmetric.
 }
 \details{
 \tabular{ll}{
@@ -54,7 +54,7 @@ Steven G. Johnson, The NLopt nonlinear-optimization package, \url{http://ab-init
 \code{\link[Rsolnp:solnp]{ssolnp}}
 \code{\link{nloptr}}
 \code{\link{auglag}}
-\code{\link{bobyca}}
+\code{\link{bobyqa}}
 \code{\link{cobyla}}
 \code{\link{crs2lm}}
 \code{\link{direct}}
