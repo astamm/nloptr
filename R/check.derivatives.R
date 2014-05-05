@@ -19,8 +19,9 @@
 # Output: list with analytic gradients, finite difference approximations, relative errors
 #         and a comparison of the relative errors to the tolerance.
 #
-# Changelog:
+# CHANGELOG:
 #   27/10/2013: Added relative_error and flag_derivative_warning to output list.
+#   05/05/2014: Replaced cat by message, so messages can now be suppressed by suppressMessages.
 
 check.derivatives <- 
 	function( 
@@ -64,11 +65,11 @@ check.derivatives <-
 		indices <- format( 1:length(analytic_grad), width=1 + sum( length(analytic_grad) > 10^(1:10) ) )
 	}
 		
-	# print results
-	cat("Derivative checker results: ", sum( flag_derivative_warning ), " error(s) detected.\n", sep='')
+	# Print results.
+	message( "Derivative checker results: ", sum( flag_derivative_warning ), " error(s) detected." )
 	if ( check_derivatives_print == 'all' ) {
 		
-		cat( "\n",
+	    message( "\n",
 			paste( 
 				ifelse( flag_derivative_warning, "*"," "), 
 				" ", func_grad_name, "[ ", indices, " ] = ", 
@@ -79,12 +80,12 @@ check.derivatives <-
 				format( relative_error, scientific=TRUE), 
 				"]", sep='', collapse="\n"
 			), 
-			"\n\n", sep=''
+			"\n\n"
 		)
 	}
 	else if ( check_derivatives_print == 'errors' ) {
 		if ( sum( flag_derivative_warning ) > 0 ) {
-			cat( "\n",
+			message( "\n",
 				paste( 
 					ifelse( flag_derivative_warning[ flag_derivative_warning ], "*"," "), 
 					" ", func_grad_name, "[ ", indices[ flag_derivative_warning ], " ] = ", 
@@ -95,7 +96,7 @@ check.derivatives <-
 					format( relative_error[ flag_derivative_warning ], scientific=TRUE), 
 					"]", sep='', collapse="\n"
 				), 
-				"\n\n", sep=''
+				"\n\n"
 			)
 		}
 	}
