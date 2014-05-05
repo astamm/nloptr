@@ -28,10 +28,12 @@
 #		objective : value if the objective function in the solution
 #		solution : optimal value of the controls
 #
-# 13/01/2011: added print_level option
-# 24/07/2011: added finite difference gradient checker
-# 07/08/2011: moved addition of default options to separate function
-#			  show documentation of options if print_options_doc == TRUE
+# CHANGELOG:
+#   13/01/2011: added print_level option
+#   24/07/2011: added finite difference gradient checker
+#   07/08/2011: moved addition of default options to separate function
+#	            show documentation of options if print_options_doc == TRUE
+#   05/05/2014: Replaced cat by message, so messages can now be suppressed by suppressMessages.
 
 nloptr <-
 function( x0, 
@@ -211,7 +213,7 @@ function( x0,
 		}
 		else {
 			# check derivatives of objective function
-			cat( "Checking gradients of objective function.\n" )
+		    message( "Checking gradients of objective function." )
 			check.derivatives(
 				.x = x0, 
 				func = function( x ) { eval_f_wrapper( x )$objective }, 
@@ -223,7 +225,7 @@ function( x0,
 			
 			if ( num_constraints_ineq > 0 ) {
 				# check derivatives of inequality constraints
-				cat( "Checking gradients of inequality constraints.\n" )
+			    message( "Checking gradients of inequality constraints.\n" )
 				check.derivatives(
 					.x = x0, 
 					func = function( x ) { eval_g_ineq_wrapper( x )$constraints }, 
@@ -236,7 +238,7 @@ function( x0,
 			
 			if ( num_constraints_eq > 0 ) {
 				# check derivatives of equality constraints
-				cat( "Checking gradients of equality constraints.\n" )
+				message( "Checking gradients of equality constraints.\n" )
 				check.derivatives(
 					.x = x0, 
 					func = function( x ) { eval_g_eq_wrapper( x )$constraints }, 
