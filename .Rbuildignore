@@ -2,3 +2,4 @@
 ^\.Rproj\.user$
 \.Rprofile
 \.gitignore
+.travis.yml
