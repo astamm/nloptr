@@ -138,7 +138,7 @@ is.nloptr <- function( x ) {
 			# check whether algorihtm needs a derivative
 			if ( x$options$algorithm %in% list_algorithmsN ) {
 				warning( 'a gradient was supplied for the equality constraints, but algorithm ', 
-					     x$options$algorithm, ' does not use gradients.\n' ) )
+					     x$options$algorithm, ' does not use gradients.' )
 			}
 			
 		} else {
