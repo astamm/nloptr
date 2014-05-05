@@ -76,7 +76,10 @@ test_that( "Test simple constrained optimization problem without gradient inform
     res <- nloptr( x0              = 1, 
                    eval_f          = eval_f,    			
                    eval_g_ineq     = eval_g_ineq, 
-                   opts            = list("algorithm"="NLOPT_LN_COBYLA", "xtol_rel" = 1e-4) )
+                   opts            = list(
+                        "algorithm"            = "NLOPT_LN_COBYLA", 
+                        "xtol_rel"             = 1e-6,
+                        "tol_constraints_ineq" = 1e-6 ) )
     
     # Run some checks on the optimal solution.
     expect_that( res$solution, equals( solution.opt ) )
