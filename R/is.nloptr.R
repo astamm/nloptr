@@ -8,7 +8,9 @@
 # Input: object
 # Output: bool telling whether the object is an nloptr or not
 #
-# 16/06/2011: separated local optimzer check and equality constraints check
+# CHANGELOG
+#   16/06/2011: separated local optimzer check and equality constraints check
+#   05/05/2014: Replaced cat by warning.
 
 is.nloptr <- function( x ) {
     
