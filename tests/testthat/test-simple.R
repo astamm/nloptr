@@ -82,7 +82,7 @@ test_that( "Test simple constrained optimization problem without gradient inform
                         "tol_constraints_ineq" = 1e-6 ) )
     
     # Run some checks on the optimal solution.
-    expect_that( res$solution, equals( solution.opt ) )
+    expect_that( res$solution, equals( solution.opt, tolerance = 1e-6 ) )
     
     # Check whether constraints are violated (up to specified tolerance).
     expect_that( eval_g_ineq( res$solution ) <= res$options$tol_constraints_ineq, is_true() )
