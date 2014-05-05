@@ -27,16 +27,8 @@ install_github("jyypma/nloptr")
 ```
 For this to work on Windows, you need to have Rtools and NLopt installed, and set an environment variable NLOPT_HOME with the location of the NLopt library.
 
-## Disclaimer and more information
-This package is distributed in the hope that it may be useful to some. The usual disclaimers apply (downloading and installing this software is at your own risk, and no support or guarantee is provided, I don't take liability and so on), but please <script language="JavaScript">
-<!--
-var name = "j.ypma";
-var domain = "ucl.ac.uk";
-var subject = "?subject=nloptr%20package";
-document.write('<a href=\"mailto:' + name + '@' + domain + subject + '\">');
-document.write('let me know</a>');
--->
-</script> if you have any problems, suggestions, comments, etc.
+## Disclaimer
+This package is distributed in the hope that it may be useful to some. The usual disclaimers apply (downloading and installing this software is at your own risk, and no support or guarantee is provided, I don't take liability and so on), but please let me know if you have any problems, suggestions, comments, etc.
 
 ## Files
 
