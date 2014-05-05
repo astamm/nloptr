@@ -11,7 +11,7 @@
                                 lb <=   x  <= ub
 ```
 
-The NLopt library is available under the GNU Lesser General Public License (LGPL), and the copyrights are owned by a variety of authors. See the [website](http://ab-initio.mit.edu/wiki/index.php/Citing_NLopt) for information on how to cite NLopt and the algorithms you use. The R interface to NLopt, also under LGPL, can be downloaded from [CRAN (http://cran.r-project.org/web/packages/nloptr/index.html) or [GitHub](https://github.com/jyypma/nloptr) (development version).
+The NLopt library is available under the GNU Lesser General Public License (LGPL), and the copyrights are owned by a variety of authors. See the [website](http://ab-initio.mit.edu/wiki/index.php/Citing_NLopt) for information on how to cite NLopt and the algorithms you use. The R interface to NLopt, also under LGPL, can be downloaded from [CRAN](http://cran.r-project.org/web/packages/nloptr/index.html) or [GitHub](https://github.com/jyypma/nloptr) (development version).
 
 ## Installation
 For most versions of R `nloptr` can be installed from R with 
@@ -47,6 +47,8 @@ document.write('let me know</a>');
 ## Changelog 
 A full version of the changelog can be found on [CRAN](http://cran.r-project.org/web/packages/nloptr/ChangeLog)
 
+| Date       | Description |
+| :---------- | :----------- |
 | 09/11/2013 | Version 0.9.4 updated NLopt to version 2.4. |
 | 31/07/2013 | Version 0.9.3 was a maintainance release. |
 | 11/07/2013 | Version 0.9.2 was a maintainance release. |
