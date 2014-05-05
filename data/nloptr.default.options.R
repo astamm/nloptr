@@ -61,7 +61,7 @@ nloptr.default.options <- data.frame(
 		c("maxtime", 
 		  "numeric", 
 		  "maxtime > 0", 
-		  "0.0", 
+		  "-1.0", 
 		  TRUE, 
 		  "Stop when the optimization time (in seconds) exceeds maxtime. This is not a strict maximum: the time may exceed maxtime slightly, depending upon the algorithm and on how slow your function evaluation is. Criterion is disabled if maxtime is non-positive (default)."),
 		c("tol_constraints_ineq", 

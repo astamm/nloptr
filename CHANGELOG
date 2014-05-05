@@ -1,3 +1,7 @@
+05 May 2014, version 1.0.1:
+    * All unit tests are now enabled and use the package testthat. Install the package with argument INSTALL_opt = "--install-tests" supplied to install.packages to install the tests. The tests can be run after installation with test_package('nloptr'). The testthat package needs to be installed and loaded to be able to run the tests.
+    * Changed default value for maxtime option from 0.0 to -1.0. In some cases nloptr returned NLOPT_MAXTIME_REACHED without running any iterations with the default setting. This change solves this.
+
 27 January 2014, version 1.0.0:
     * Merged wrappers from the 'nloptwrap' package.
 

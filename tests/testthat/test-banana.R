@@ -10,18 +10,16 @@
 # Changelog:
 #   27/10/2013: Changed example to use unit testing framework testthat.
 
-library('testthat')
-library('nloptr')
 context("Banana")
 
-# initial values
-x0 <- c( -1.2, 1 )
-
-opts <- list( "algorithm"   = "NLOPT_LD_LBFGS",
-              "xtol_rel"    = 1.0e-8,
-              "print_level" = 0 )
-
 test_that("Test Rosenbrock Banana optimization with objective and gradient in separate functions.", {
+    # initial values
+    x0 <- c( -1.2, 1 )
+    
+    opts <- list( "algorithm"   = "NLOPT_LD_LBFGS",
+                  "xtol_rel"    = 1.0e-8,
+                  "print_level" = 0 )
+    
     ## Rosenbrock Banana function and gradient in separate functions
     eval_f <- function(x) {
         return( 100 * (x[2] - x[1] * x[1])^2 + (1 - x[1])^2 )
@@ -45,6 +43,13 @@ test_that("Test Rosenbrock Banana optimization with objective and gradient in se
 } )
 
 test_that("Test Rosenbrock Banana optimization with objective and gradient in the same function.", {
+    # initial values
+    x0 <- c( -1.2, 1 )
+    
+    opts <- list( "algorithm"   = "NLOPT_LD_LBFGS",
+                  "xtol_rel"    = 1.0e-8,
+                  "print_level" = 0 )
+    
     ## Rosenbrock Banana function and gradient in one function
     # this can be used to economize on calculations
     eval_f_list <- function(x) {
