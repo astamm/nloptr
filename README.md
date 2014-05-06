@@ -43,6 +43,9 @@ A full version of the changelog can be found on [CRAN](http://cran.r-project.org
 
 | Date       | Description |
 | :---------- | :----------- |
+| 27/01/2014 | Version 1.0.0 merged wrappers from the 'nloptwrap' package. |
+| 19/11/2013 | Version 0.9.6 Added a line in Makevars to replace some code in NLopt to fix compilation on Solaris as requested by Brian Ripley. |
+| 12/11/2013 | Version 0.9.5 Updated references from NLopt version 2.3 to NLopt version 2.4 in installation instructions. | in INSTALL.windows. Added a line in Makevars that replaces some code related to type-casting in NLopt-2.4/isres/isres.c. Changed encoding of src/nloptr.c from CP1252 to UTF-8. |
 | 09/11/2013 | Version 0.9.4 updated NLopt to version 2.4. |
 | 31/07/2013 | Version 0.9.3 was a maintainance release. |
 | 11/07/2013 | Version 0.9.2 was a maintainance release. |
