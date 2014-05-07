@@ -17,11 +17,11 @@
 # 07/08/2011: show 'optimal value' instead of 'current value' if status == 1, 2, 3, or 4
 
 print.nloptr <- function(x, show.controls=TRUE, ...) {
-	cat( "\nCall:\n", deparse(x$call), "\n\n", sep = "", fill=TRUE )
-	cat( paste( "Minimization using NLopt version", x$version, "\n" ), fill=TRUE )
-	cat( unlist(strsplit(paste( "NLopt solver status:", x$status, "(", x$message, ")\n" ),' ')), fill=TRUE )
-	cat( paste( "Number of Iterations....:", x$iterations, "\n" ) )
-	cat( paste( "Termination conditions: ", x$termination_conditions, "\n" ) )
+    cat( "\nCall:\n", deparse(x$call), "\n\n", sep = "", fill=TRUE )
+    cat( paste( "Minimization using NLopt version", x$version, "\n" ), fill=TRUE )
+    cat( unlist(strsplit(paste( "NLopt solver status:", x$status, "(", x$message, ")\n" ),' ')), fill=TRUE )
+    cat( paste( "Number of Iterations....:", x$iterations, "\n" ) )
+    cat( paste( "Termination conditions: ", x$termination_conditions, "\n" ) )
     cat( paste( "Number of inequality constraints: ", x$num_constraints_ineq, "\n" ) )
     cat( paste( "Number of equality constraints:   ", x$num_constraints_eq, "\n" ) )
     
@@ -40,10 +40,10 @@ print.nloptr <- function(x, show.controls=TRUE, ...) {
         show.controls = TRUE
     }
     
-	# if solved successfully
-	if ( x$status >= 1 & x$status <=4 ) {
-		cat( paste( "Optimal value of objective function: ", x$objective, "\n" ) )
-		if ( show.controls ) {
+    # if solved successfully
+    if ( x$status >= 1 & x$status <=4 ) {
+        cat( paste( "Optimal value of objective function: ", x$objective, "\n" ) )
+        if ( show.controls ) {
             if ( length( controls.indices ) < length(x$solution) ) {
                 cat( "Optimal value of user-defined subset of controls: " )
             } else {
@@ -52,9 +52,9 @@ print.nloptr <- function(x, show.controls=TRUE, ...) {
             cat( x$solution[ controls.indices ], fill=TRUE)
             cat("\n")
         }
-	} else {
-		cat( paste( "Current value of objective function: ", x$objective, "\n" ) )
-		if ( show.controls ) {
+    } else {
+        cat( paste( "Current value of objective function: ", x$objective, "\n" ) )
+        if ( show.controls ) {
             if ( length( controls.indices ) < length(x$solution) ) {
                 cat( "Current value of user-defined subset of controls: " )
             } else {
@@ -64,5 +64,5 @@ print.nloptr <- function(x, show.controls=TRUE, ...) {
             cat("\n")
         }
     }
-	cat("\n")
+    cat("\n")
 }

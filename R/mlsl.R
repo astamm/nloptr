@@ -29,15 +29,15 @@ function(x0, fn, gr = NULL, lower, upper,
     fn  <- function(x) fun(x, ...)
 
     if (local.method == "LBFGS") {
-    	if (is.null(gr)) {
+        if (is.null(gr)) {
             gr <- function(x) nl.grad(x, fn)
         } else {
             .gr <- match.fun(gr)
             gr <- function(x) .gr(x, ...)
         }
     } else {
-    	warning("Only gradient-based LBFGS available as local method.")
-    	gr <- NULL
+        warning("Only gradient-based LBFGS available as local method.")
+        gr <- NULL
     }
 
     S0 <- nloptr(x0 = x0,
