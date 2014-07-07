@@ -34,9 +34,10 @@
 #             is not implemented in NLopt, but causes compilation errors on some systems.
 # 19-11-2013: Wrap code in util/qsort_r.c in NLopt in extern "C" as requested by Brian 
 #             Ripley to fix compilation on Solaris.
+# 07-07-2014: Changed NLOPT_VERSION to 2.4.2
 
 # define NLopt version
-NLOPT_VERSION = 2.4
+NLOPT_VERSION = 2.4.2
 
 # C Compiler options
 NLOPTR_CFLAGS = 
