@@ -762,6 +762,7 @@ SEXP NLoptR_Optimize( SEXP args )
     }
     UNPROTECT( 2 );
     
+#if 0
     // add upper and lower bounds to options
     res = nlopt_set_lower_bounds(opts, lb);
     if ( res == NLOPT_INVALID_ARGS ) {
@@ -773,6 +774,7 @@ SEXP NLoptR_Optimize( SEXP args )
         flag_encountered_error = 1;
         Rprintf("Error: nlopt_set_upper_bounds returned NLOPT_INVALID_ARGS.\n");
     }
+#endif
     
     // get number of inequality constraints
     SEXP R_num_constraints_ineq;
