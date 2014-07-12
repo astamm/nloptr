@@ -2,4 +2,5 @@
 
 rm -rf autom4te.cache/ config.log config.status \
        src/Makevars src/*.o src/*.so src/*.dylib \
-       *~
+       *~ \
+       nlopt-?.?.?/
