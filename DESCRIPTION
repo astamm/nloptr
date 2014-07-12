@@ -1,8 +1,8 @@
 Package: nloptr
 Type: Package
 Title: R interface to NLopt
-Version: 1.0.1
-Date: 2014-05-05
+Version: 1.0.2
+Date: 2014-07-12
 Author: Jelmer Ypma <uctpjyy@ucl.ac.uk>, with contributions by
         Hans W. Borchers <hwborchers@googlemail.com>
 Maintainer: Jelmer Ypma <uctpjyy@ucl.ac.uk>
@@ -17,4 +17,3 @@ Description:
 License: LGPL-3
 Suggests: testthat (>= 0.8.1)
 LazyLoad: yes
-LazyData: yes

@@ -22,9 +22,10 @@ function(
 {
     # show all options if no list of options is supplied
     if ( is.null( opts.show ) ) {
-        nloptr.show.options <- nloptr.default.options
+        nloptr.show.options <- nloptr.get.default.options()
     } else {
-        nloptr.show.options <- nloptr.default.options[ nloptr.default.options$name %in% opts.show, ]
+        nloptr.show.options <- nloptr.get.default.options()
+        nloptr.show.options <- nloptr.show.options[ nloptr.show.options$name %in% opts.show, ]
     }
     
     # loop over all options and print values

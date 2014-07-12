@@ -198,6 +198,7 @@ function( x0,
     # define list with all algorithms
     # nloptr.options.description is a data.frame with options
     # that is loaded when nloptr is loaded.
+    nloptr.default.options <- nloptr.get.default.options()
     list_algorithms <-  unlist(
                             strsplit(
                                 nloptr.default.options[ nloptr.default.options$name=="algorithm", "possible_values" ],
