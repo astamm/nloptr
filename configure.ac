@@ -6,7 +6,9 @@
 ##
 ##  Copyright (C) 2014  Dirk Eddelbuettel 
 ##
-##  To conform with the license of nloptr, this file is licensed under LGPL-3
+## This file is licensed under the GPL-2 or later just like most of my
+## Open Source code, and is granted an exemption (should it be needed) 
+## for inclusion into nloptr 
 
 # require at least autoconf 2.61
 AC_PREREQ(2.61)
@@ -23,9 +25,10 @@ AC_PROG_CXX
 AC_DEFUN([AC_PROG_PKGCONFIG], [AC_CHECK_PROG(PKGCONFIG,pkg-config,yes)])
 AC_PROG_PKGCONFIG
 
+## default to assuming no sufficient NLopt library has been found
 nlopt_good="no"
 
-## use pkg-config for NLopt
+## use pkg-config to check for NLopt
 ##
 if test x"${PKGCONFIG}" == x"yes"; then
     ## check via pkg-config for hiredis
