@@ -1,7 +1,5 @@
-12 July 2014, version 1.0.2:
-    * Added configure script which tests for a system NLopt library via pkg-config and uses it if it is sufficiently recent (ie 2.4.*), and otherwise configure download and patches the sources just how src/Makevars used to
-
-05 May 2014, version 1.0.1:
+12 July 2014, version 1.0.1:
+    * Added configure script which tests for a system NLopt library via pkg-config and uses it if it is sufficiently recent (ie 2.4.*), and otherwise configure downloads, patches and builds the NLopt sources just how src/Makevars used to
     * All unit tests are now enabled and use the package testthat. Install the package with argument INSTALL_opt = "--install-tests" supplied to install.packages to install the tests. The tests can be run after installation with test_package('nloptr'). The testthat package needs to be installed and loaded to be able to run the tests.
     * Changed default value for maxtime option from 0.0 to -1.0. In some cases nloptr returned NLOPT_MAXTIME_REACHED without running any iterations with the default setting. This change solves this.
     * Replaced cat by message or warning. Messages can be suppressed by suppressMessages.
