@@ -12,7 +12,7 @@ before_install:
   - ./travis-tool.sh bootstrap
 
 install:
-  - [ ${BUILD_NLOPT} == "no" ] && ./travis-tool.sh install_aptget libnlopt-dev
+  - if [ ${BUILD_NLOPT} == "no" ]; then ./travis-tool.sh install_aptget libnlopt-dev; fi
   - ./travis-tool.sh install_deps
 
 script:
