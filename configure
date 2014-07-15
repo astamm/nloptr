@@ -3311,8 +3311,9 @@ $as_echo "$as_me: Need to download and build NLopt" >&6;}
    { $as_echo "$as_me:${as_lineno-$LINENO}: Starting to install library to $(pwd)/nlopt-${NLOPT_VERSION}" >&5
 $as_echo "$as_me: Starting to install library to $(pwd)/nlopt-${NLOPT_VERSION}" >&6;}
    $(cd nlopt-${NLOPT_VERSION}; \
-        sed -i -e 's/sqrt(/sqrt((double) /g' isres/isres.c; \
-        sed -i -e '1s/^/extern "C" {\n/' -e '$s/$/\n}/' util/qsort_r.c; \
+        ed -s isres/isres.c <<< $'H\n,s/sqrt(/sqrt(double) /g\nw'; \
+        ed -s util/qsort_r.c <<< $'H\n1i\nextern "C" {\n.\nw'; \
+        ed -s util/qsort_r.c <<< $'H\n$a\n}\n.\nw' ; \
         ./configure --prefix="$(pwd)" --enable-shared --enable-static --without-octave \
                     --without-matlab --without-guile --without-python --with-cxx \
                     CC="${NLOPT_CC}" CFLAGS="${NLOPT_CFLAGS}" CPP="${NLOPT_CPP}" \
@@ -4498,6 +4499,4 @@ if test -n "$ac_unrecognized_opts" && test "$enable_option_checking" != no; then
   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: unrecognized options: $ac_unrecognized_opts" >&5
 $as_echo "$as_me: WARNING: unrecognized options: $ac_unrecognized_opts" >&2;}
 fi
-
-echo "Completed configuration and ready to build."
 
