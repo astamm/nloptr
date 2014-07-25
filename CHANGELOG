@@ -1,3 +1,7 @@
+25 July 2014, version 1.0.3:
+    * Changed NLOPT_VERSION to 2.4.2 for Linux.
+    * Changed nloptr.default.options from a data.frame to a function returning the data.frame.
+
 25 July 2014, version 1.0.2:
     * Added configure script which tests for a system NLopt library via pkg-config and uses it if it is sufficiently recent (ie 2.4.*), and otherwise configure downloads, patches and builds the NLopt sources just how src/Makevars used to (thanks to Dirk Eddelbuettel).
 

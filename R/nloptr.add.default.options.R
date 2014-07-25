@@ -24,6 +24,8 @@ function(
     num_constraints_ineq=0, 
     num_constraints_eq=0 ) 
 {
+    nloptr.default.options <- nloptr.get.default.options()
+    
     # get names of options that define a termination condition
     termination.opts <- 
         nloptr.default.options[ nloptr.default.options$is_termination_condition==TRUE, "name" ]

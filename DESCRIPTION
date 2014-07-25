@@ -18,4 +18,3 @@ Description:
 License: LGPL-3
 Suggests: testthat (>= 0.8.1)
 LazyLoad: yes
-LazyData: yes

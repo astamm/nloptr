@@ -3,7 +3,7 @@
 useDynLib(nloptr, NLoptR_Optimize)
 
 ## Public routines
-export(nloptr, is.nloptr, nloptr.print.options)
+export(nloptr, is.nloptr, nloptr.print.options, nloptr.get.default.options)
 export(check.derivatives)
 
 export(nl.grad, nl.jacobian)
