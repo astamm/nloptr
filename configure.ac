@@ -135,7 +135,7 @@ if test x"${nlopt_good}" = x"no"; then
    ## install in, after we changed our current directory
    AC_MSG_NOTICE([Starting to install library to $(pwd)/nlopt-${NLOPT_VERSION}])
    $(cd nlopt-${NLOPT_VERSION}; \
-        ed -s isres/isres.c <<< $'H\n,s/sqrt(/sqrt(double) /g\nw'; \
+        ed -s isres/isres.c <<< $'H\n,s/sqrt(/sqrt((double) /g\nw'; \
         ed -s util/qsort_r.c <<< $'H\n1i\nextern "C" {\n.\nw'; \
         ed -s util/qsort_r.c <<< $'H\n$a\n}\n.\nw' ; \
         ./configure --prefix="$(pwd)" --enable-shared --enable-static --without-octave \
