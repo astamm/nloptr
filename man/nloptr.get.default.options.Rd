@@ -7,9 +7,7 @@ Return a data.frame with all the options that can be supplied to nloptr.
 This function returns a data.frame with all the options that can be supplied to \code{\link[nloptr:nloptr]{nloptr}}. The data.frame contains the default values of the options and an explanation. A user-friendly way to show these options is by using the function \code{\link[nloptr:nloptr.print.options]{nloptr.print.options}}.
 }
 \usage{
-\method{print.nloptr.options}{nloptr}()
-}
-\arguments{
+nloptr.get.default.options()
 }
 \value{
 The return value contains a \code{data.frame} with the following elements
