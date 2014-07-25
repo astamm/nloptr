@@ -3273,10 +3273,10 @@ $as_echo "$as_me: Need to download and build NLopt" >&6;}
    NLOPTR_CLINKFLAGS=
 
    ## Libraries necessary to link with NLopt
-   NLOPTR_LIBS="-lm $(pwd)/nlopt-${NLOPT_VERSION}/inst/lib/libnlopt_cxx.a"
+   NLOPTR_LIBS="-lm $(pwd)/nlopt-${NLOPT_VERSION}/lib/libnlopt_cxx.a"
 
    ## Necessary Include dirs
-   NLOPTR_INCL="-I$(pwd)/nlopt-${NLOPT_VERSION}/inst/include"
+   NLOPTR_INCL="-I$(pwd)/nlopt-${NLOPT_VERSION}/include"
 
    ## Set R_HOME, respecting an environment variable if set
    : ${R_HOME=$(R RHOME)}
@@ -3308,28 +3308,28 @@ $as_echo "$as_me: Need to download and build NLopt" >&6;}
    ## Compile NLopt source code and clean up
    ## --prefix="`pwd`", which is the directory we want to
    ## install in, after we changed our current directory
-   { $as_echo "$as_me:${as_lineno-$LINENO}: Starting to install library to $(pwd)/nlopt-${NLOPT_VERSION}/inst" >&5
-$as_echo "$as_me: Starting to install library to $(pwd)/nlopt-${NLOPT_VERSION}/inst" >&6;}
+   { $as_echo "$as_me:${as_lineno-$LINENO}: Starting to install library to $(pwd)/nlopt-${NLOPT_VERSION}" >&5
+$as_echo "$as_me: Starting to install library to $(pwd)/nlopt-${NLOPT_VERSION}" >&6;}
    $(cd nlopt-${NLOPT_VERSION}; \
         ed -s isres/isres.c <<< $'H\n,s/sqrt(/sqrt((double) /g\nw'; \
         ed -s util/qsort_r.c <<< $'H\n1i\nextern "C" {\n.\nw'; \
         ed -s util/qsort_r.c <<< $'H\n$a\n}\n.\nw' ; \
-        ./configure --prefix="$(pwd)/inst" --enable-shared --enable-static --without-octave \
+        ./configure --prefix="$(pwd)" --enable-shared --enable-static --without-octave \
                     --without-matlab --without-guile --without-python --with-cxx \
                     CC="${NLOPT_CC}" CFLAGS="${NLOPT_CFLAGS}" CPP="${NLOPT_CPP}" \
                     CPPFLAGS="${NLOPT_CPPFLAGS}" CXX="${NLOPT_CXX}" \
                     CXXFLAGS="${NLOPT_CXXFLAGS}" CXXCPP="${NLOPT_CXXCPP}" > /dev/null 2>&1; \
         make > /dev/null 2>&1; \
-        make install > /dev/null 2>&1;)
-   { $as_echo "$as_me:${as_lineno-$LINENO}: Done installing library to $(pwd)/nlopt-${NLOPT_VERSION}/inst" >&5
-$as_echo "$as_me: Done installing library to $(pwd)/nlopt-${NLOPT_VERSION}/inst" >&6;}
+        make install > /dev/null 2>&1; \
+        ls | grep -v "^include$" | grep -v "^lib$" | xargs rm -rf; \
+        rm -rf .libs;)
+   { $as_echo "$as_me:${as_lineno-$LINENO}: Done installing library to $(pwd)/nlopt-${NLOPT_VERSION}" >&5
+$as_echo "$as_me: Done installing library to $(pwd)/nlopt-${NLOPT_VERSION}" >&6;}
 
    ## Store compiler and linker flags
    nlopt_cflags="${NLOPTR_CFLAGS} ${NLOPTR_INCL}"
    nlopt_libs="${NLOPTR_CLINKFLAGS} ${NLOPTR_LIBS}"
-   echo "${NLOPTR_CFLAGS} | ${NLOPTR_INCL} | ${NLOPTR_CLINKFLAGS} | ${NLOPTR_LIBS}"
-   { $as_echo "$as_me:${as_lineno-$LINENO}: Using '${nlopt_cflags}' and '${nlopt_libs}'" >&5
-$as_echo "$as_me: Using '${nlopt_cflags}' and '${nlopt_libs}'" >&6;}
+   #echo "${NLOPTR_CFLAGS} | ${NLOPTR_INCL} | ${NLOPTR_CLINKFLAGS} | ${NLOPTR_LIBS}"
 
 else
    { $as_echo "$as_me:${as_lineno-$LINENO}: Suitable NLopt library found." >&5
