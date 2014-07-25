@@ -97,7 +97,7 @@ PKG_LIBS=@PKG_LIBS@
 # # --prefix="`pwd`", which is the directory we want to
 # # install in, after we changed our current directory
 # nlopt-${NLOPT_VERSION}/include/nlopt.h nlopt-${NLOPT_VERSION}/lib/libnlopt_cxx.a: nlopt-${NLOPT_VERSION}/configure
-# 	echo "Installing library to: `pwd`/nlopt-${NLOPT_VERSION}"
+#     echo "Installing library to: `pwd`/nlopt-${NLOPT_VERSION}"
 # 	cd nlopt-${NLOPT_VERSION}; \
 # 	ed -s isres/isres.c <<< $$'H\n,s/sqrt(/sqrt((double) /g\nw'; \
 # 	ed -s util/qsort_r.c <<< $$'H\n1i\nextern "C" {\n.\nw'; \
@@ -124,4 +124,3 @@ PKG_LIBS=@PKG_LIBS@
 # 	rm -rf *.o
 # 	rm -rf nlopt-${NLOPT_VERSION}
 	
-
