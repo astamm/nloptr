@@ -1,0 +1,126 @@
+
+## We now use configure to find where NLopt is installed. 
+##
+## If it is not found, it is downloaded and installed from source -- but such
+## a build scheme is not permitted within Debian, or on Launchpad, or ... so
+## the preference is use a supplied version of NLopt
+
+PKG_CFLAGS=@PKG_CFLAGS@
+PKG_LIBS=@PKG_LIBS@
+
+## Old Makevars code below
+
+
+
+# Copyright (C) 2010 Jelmer Ypma. All Rights Reserved.
+# This code is published under the L-GPL.
+#
+# File:   Makevars.in
+# Author: Jelmer Ypma
+# Date:   10 June 2010
+#
+# 16-01-2011: Changed --disable-shared to --enable-shared to compile with -fPIC
+# 16-06-2011: Updated version number
+# 09-07-2011: Download and untar NLopt code using Rscript
+# 01-09-2011: Added check on empty SRCDIR
+#             Added CC, CFLAGS, etc. to NLopt ./configure
+# 09-09-2011: Changed CURDIR to PWD which is not supported on Solaris Make
+# 21-10-2011: Changed ${PWD} to $(shell pwd) which is not supported on Solaris Make
+# 24-10-2011: Changed $(shell pwd) to `pwd` which is supported on Solaris Make
+# 24-10-2011: Removed SRCDIR macro, using `pwd` when needed instead
+# 28-10-2011: Changed shell to `` in downloading and extracting code
+# 18-11-2011: Changed CRLF and CR line endings to LF
+# 21-02-2013: Changed NLOPT_VERSION to 2.3
+#             Included --with-cxx option in configure to allow for StoGo algorithm.
+#             Linking to libnlopt_cxx.a instead of libnlopt.a
+# 08-07-2013: Changed CFLAGS to NLOPT_CFLAGS and similarly for CC, CPP, CXX,
+#             CXXFLAGS, and CXXCPP to prevent overriding user customizations.
+#             For clarity some of the other macros are now prefixed with NLOPTR
+#             instead of NLOPT.
+# 08-07-2013: Added --vanilla flag to Rscript. This solves problems if someone sets
+#             a different home directory with setwd in Rprofile.
+# 08-07-2013: Added `pwd` to NLOPTR_LIBS and NLOPTR_INCL.
+# 05-11-2013: Changed NLOPT_VERSION to 2.4
+# 07-11-2013: Removed -lstdc++ from linker statement. A file dummy.cpp (with C++ extension)
+#             is added to the source directory to ensure linking with C++. Thanks to 
+#             Brian Ripley for bringing this up.
+# 12-11-2013: Replace 'sqrt(' by 'sqrt((double) ' in isres/isres/c in NLopt. This cast
+#             is not implemented in NLopt, but causes compilation errors on some systems.
+# 19-11-2013: Wrap code in util/qsort_r.c in NLopt in extern "C" as requested by Brian 
+#             Ripley to fix compilation on Solaris.
+# 07-07-2014: Changed NLOPT_VERSION to 2.4.2
+
+# # define NLopt version
+# NLOPT_VERSION = 2.4.2
+
+# # C Compiler options
+# NLOPTR_CFLAGS = 
+
+# # additional C Compiler options for linking
+# NLOPTR_CLINKFLAGS = 
+
+# # Libraries necessary to link with NLopt
+# NLOPTR_LIBS = -lm `pwd`/nlopt-${NLOPT_VERSION}/lib/libnlopt_cxx.a
+
+# # Necessary Include dirs 
+# NLOPTR_INCL = -I`pwd`/nlopt-${NLOPT_VERSION}/include
+
+# # Get R compilers and flags
+# NLOPT_CC=`"${R_HOME}/bin/R" CMD config CC`
+# NLOPT_CFLAGS=`"${R_HOME}/bin/R" CMD config CFLAGS`
+
+# NLOPT_CPP=`"${R_HOME}/bin/R" CMD config CPP`
+# NLOPT_CPPFLAGS=`"${R_HOME}/bin/R" CMD config CPPFLAGS`
+
+# NLOPT_CXX=`"${R_HOME}/bin/R" CMD config CXX`
+# NLOPT_CXXFLAGS=`"${R_HOME}/bin/R" CMD config CXXFLAGS`
+
+# NLOPT_CXXCPP=`"${R_HOME}/bin/R" CMD config CXXCPP`
+
+
+# # Define objects for R to build
+# OBJECTS = nloptr.o
+
+# # Convert to R macros
+# PKG_LIBS=${NLOPTR_CLINKFLAGS} ${NLOPTR_LIBS}
+# PKG_CFLAGS=${NLOPTR_CFLAGS} ${NLOPTR_INCL}
+
+# .PHONY: all
+     
+# all: $(SHLIB)
+
+# $(SHLIB): nlopt-${NLOPT_VERSION}/lib/libnlopt_cxx.a ${OBJECTS}
+
+# nloptr.o: nlopt-${NLOPT_VERSION}/include/nlopt.h
+  
+# # Compile NLopt source code and clean up
+# # --prefix="`pwd`", which is the directory we want to
+# # install in, after we changed our current directory
+# nlopt-${NLOPT_VERSION}/include/nlopt.h nlopt-${NLOPT_VERSION}/lib/libnlopt_cxx.a: nlopt-${NLOPT_VERSION}/configure
+#     echo "Installing library to: `pwd`/nlopt-${NLOPT_VERSION}"
+# 	cd nlopt-${NLOPT_VERSION}; \
+# 	ed -s isres/isres.c <<< $$'H\n,s/sqrt(/sqrt((double) /g\nw'; \
+# 	ed -s util/qsort_r.c <<< $$'H\n1i\nextern "C" {\n.\nw'; \
+# 	ed -s util/qsort_r.c <<< $$'H\n$$a\n}\n.\nw'; \
+# 	./configure --prefix="`pwd`" --enable-shared --enable-static --without-octave --without-matlab --without-guile --without-python --with-cxx CC="${NLOPT_CC}" CFLAGS="${NLOPT_CFLAGS}" CPP="${NLOPT_CPP}" CPPFLAGS="${NLOPT_CPPFLAGS}" CXX="${NLOPT_CXX}" CXXFLAGS="${NLOPT_CXXFLAGS}" CXXCPP="${NLOPT_CXXCPP}"; \
+# 	make; \
+# 	make install; \
+# 	ls | grep -v ^include$$ | grep -v ^lib$$ | xargs rm -rf; \
+#     rm -rf .libs;
+
+# # Extract NLopt source code and remove .tar.gz
+# # tar -xzvf nlopt-${NLOPT_VERSION}.tar.gz
+# nlopt-${NLOPT_VERSION}/configure: nlopt-${NLOPT_VERSION}.tar.gz
+# 	`"${R_HOME}/bin/Rscript" --vanilla -e "untar(tarfile='nlopt-${NLOPT_VERSION}.tar.gz')"`
+# 	rm -rf nlopt-${NLOPT_VERSION}.tar.gz
+
+# # Download NLopt source code
+# # curl -O http://ab-initio.mit.edu/nlopt/nlopt-${NLOPT_VERSION}.tar.gz
+# nlopt-${NLOPT_VERSION}.tar.gz:
+# 	`"${R_HOME}/bin/Rscript" --vanilla -e "download.file(url='http://ab-initio.mit.edu/nlopt/nlopt-${NLOPT_VERSION}.tar.gz', destfile='nlopt-${NLOPT_VERSION}.tar.gz')"`
+
+# clean:
+# 	rm -rf *.so
+# 	rm -rf *.o
+# 	rm -rf nlopt-${NLOPT_VERSION}
+	

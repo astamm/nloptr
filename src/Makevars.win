@@ -16,7 +16,8 @@
 #                   the StoGo algorithm. This means that we now need to link to 
 #                   with -lnlopt_cxx and also link to the c++ library, -lstdc++.
 # 7 November 2013: Changed PKG_CPPFLAGS to PKG_CFLAGS.
+# 2 May 2014: Added quotes around include paths to allow for spaces in NLOPT_HOME.
 
 # C Compiler options
-PKG_CFLAGS = -I$(NLOPT_HOME)$(R_ARCH)/include
-PKG_LIBS = -L$(NLOPT_HOME)$(R_ARCH)/lib -lnlopt_cxx
+PKG_CFLAGS = -I"$(NLOPT_HOME)$(R_ARCH)/include"
+PKG_LIBS = -L"$(NLOPT_HOME)$(R_ARCH)/lib" -lnlopt_cxx

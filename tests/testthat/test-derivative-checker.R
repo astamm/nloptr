@@ -10,8 +10,6 @@
 # Changelog:
 #   27/10/2013: Changed example to use unit testing framework testthat.
 
-library('testthat')
-library('nloptr')
 context("Derivative checker")
 
 test_that("Test derivative checker.", {

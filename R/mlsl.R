@@ -6,6 +6,9 @@
 # Date:   27 January 2014
 #
 # Wrapper to solve optimization problem using Multi-Level Single-Linkage.
+#
+# CHANGELOG:
+#   05/05/2014: Replaced cat by warning.
 
 mlsl <-
 function(x0, fn, gr = NULL, lower, upper,
@@ -26,15 +29,15 @@ function(x0, fn, gr = NULL, lower, upper,
     fn  <- function(x) fun(x, ...)
 
     if (local.method == "LBFGS") {
-    	if (is.null(gr)) {
+        if (is.null(gr)) {
             gr <- function(x) nl.grad(x, fn)
         } else {
             .gr <- match.fun(gr)
             gr <- function(x) .gr(x, ...)
         }
     } else {
-    	cat("Warning:\nOnly gradient-based LBFGS available as local method.")
-    	gr <- NULL
+        warning("Only gradient-based LBFGS available as local method.")
+        gr <- NULL
     }
 
     S0 <- nloptr(x0 = x0,
