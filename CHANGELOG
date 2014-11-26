@@ -1,3 +1,6 @@
+02 August 2014, version 1.0.4:
+    * Increased version number to re-submit package to CRAN with CRLF line endings removed for configure and configure.ac.
+
 25 July 2014, version 1.0.3:
     * Changed NLOPT_VERSION to 2.4.2 for Linux.
     * Changed nloptr.default.options from a data.frame to a function returning the data.frame.
