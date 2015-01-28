@@ -13,6 +13,9 @@ function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
             localsolver = c("COBYLA"), localtol = 1e-6, ineq2local = FALSE,
             nl.info = FALSE, control = list(), ...)
 {
+    if ( getOption('nloptr.show.inequality.warning') ) {
+        warning('For consistency with the rest of the package the inequality sign will be switched from >= to <= in the next nloptr version.')
+    }
     if (ineq2local) {
         # gsolver <- "NLOPT_LN_AUGLAG_EQ"
         stop("Inequalities to local solver: feature not yet implemented.")
