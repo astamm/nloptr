@@ -163,5 +163,5 @@ fi
 ## now use all these
 AC_SUBST([PKG_CFLAGS],["${PKG_CFLAGS} $nlopt_cflags"])
 AC_SUBST([PKG_LIBS],["${PKG_LIBS} $nlopt_libs"])
-AC_CONFIG_FILES([src/Makevars])
+AC_CONFIG_FILES([src/Makevars R/PkgFlags.R])
 AC_OUTPUT
