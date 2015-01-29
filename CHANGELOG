@@ -1,6 +1,6 @@
 28 January 2015, version 1.0.5:
     * Added non-exported functions CFlags and LdFlags to be used in packages that want to link to the NLopt C library.
-    * For consistency with the rest of the package the inequality sign in the function auglag will be switched from >= to <= in the next nloptr version. The current version of nloptr shows a warning when using these functions. This warning can be turned off with options('nloptr.show.inequality.warning' = FALSE).
+    * For consistency with the rest of the package the inequality sign in the functions auglag, cobyla, isres, mma, and slsqp will be switched from >= to <= in the next nloptr version. The current version of nloptr shows a warning when using these functions with inequality constraints. This warning can be turned off with options('nloptr.show.inequality.warning' = FALSE).
 
 02 August 2014, version 1.0.4:
     * Increased version number to re-submit package to CRAN with CRLF line endings removed for configure and configure.ac.

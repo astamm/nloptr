@@ -18,6 +18,10 @@ function(x0, fn, lower = NULL, upper = NULL, hin = NULL,
     fn <- function(x) f1(x, ...)
 
     if (!is.null(hin)) {
+        if ( getOption('nloptr.show.inequality.warning') ) {
+            warning('For consistency with the rest of the package the inequality sign will be switched from >= to <= in the next nloptr version.')
+        }
+        
         f2  <- match.fun(hin)
         hin <- function(x) (-1)*f2(x, ...)  # NLOPT expects hin <= 0
     }

@@ -26,6 +26,10 @@ mma <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
 
 
     if (!is.null(hin)) {
+        if ( getOption('nloptr.show.inequality.warning') ) {
+            warning('For consistency with the rest of the package the inequality sign will be switched from >= to <= in the next nloptr version.')
+        }
+        
         .hin <- match.fun(hin)
         hin <- function(x) (-1) * .hin(x)   # change  hin >= 0  to  hin <= 0 !
         if (is.null(hinjac)) {
