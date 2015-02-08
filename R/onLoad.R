@@ -1,3 +1,6 @@
 .onLoad <- function(libname, pkgname) {
-    options('nloptr.show.inequality.warning' = TRUE )
+    # Set the option to TRUE if it has not been set before.
+    if( is.null( getOption('nloptr.show.inequality.warning') ) ) {
+        options('nloptr.show.inequality.warning' = TRUE )
+    }
 }
