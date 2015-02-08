@@ -1,7 +1,7 @@
 Package: nloptr
 Type: Package
 Title: R interface to NLopt
-Version: 1.0.6
+Version: 1.0.7
 Date: 2015-02-08
 Author: Jelmer Ypma <uctpjyy@ucl.ac.uk>, with contributions by
         Hans W. Borchers <hwborchers@googlemail.com> and 
