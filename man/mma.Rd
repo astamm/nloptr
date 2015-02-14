@@ -90,7 +90,15 @@ S <- mma(x0.hs100, fn.hs100, gr = gr.hs100,
             hin = hin.hs100, hinjac = hinjac.hs100,
             nl.info = TRUE, control = list(xtol_rel = 1e-8))
 
+\donttest{
+# This example is put in donttest because it runs for more than
+# 40 seconds under 32-bit Windows. The difference in time needed
+# to execute the code between 32-bit Windows and 64-bit Windows
+# can probably be explained by differences in rounding/truncation
+# on the different systems. On Windows 32-bit more iterations
+# are needed resulting in a longer runtime.
 # correct result with inexact jacobian
 S <- mma(x0.hs100, fn.hs100, hin = hin.hs100,
             nl.info = TRUE, control = list(xtol_rel = 1e-8))
+}
 }
