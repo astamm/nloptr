@@ -1,5 +1,9 @@
-9 February 2015, version 1.0.7:
+22 February 2015, version 1.0.8:
+    * Changed description in DESCRIPTION such that it does not start with the package name (as requested by CRAN).
+
+14 February 2015, version 1.0.7:
     * Changed title field in DESCRIPTION to title case (as requested by CRAN).
+    * Added donttest around example in mma documentation.
 
 8 February 2015, version 1.0.6:
     * Updated description to better reflect installation procedure on Linux when NLopt is pre-installed (as requested by CRAN).
