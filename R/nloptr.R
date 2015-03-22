@@ -34,6 +34,7 @@
 #   07/08/2011: moved addition of default options to separate function
 #               show documentation of options if print_options_doc == TRUE
 #   05/05/2014: Replaced cat by message, so messages can now be suppressed by suppressMessages.
+#   22/03/2015: Added while-loop around solve statement. This should solve the problem that NLopt sometimes exits with NLOPT_MAXTIME_REACHED when no maxtime was set in the options.
 
 nloptr <-
 function( x0, 
@@ -276,19 +277,42 @@ function( x0,
     # check whether we have a correctly formed ipoptr object
     is.nloptr( ret )
     
-    # choose correct minimzation function based on wether constrained were supplied
-    solution <- .Call( NLoptR_Optimize, ret )
+    # Count the number of times that we try to solve the problem.
+    num.evals <- 0
+    solve.continue <- TRUE
+    while ( num.evals <= 10 & solve.continue ) {
+        # Update the number of evaluations.
+        num.evals <- num.evals + 1
+        
+        # choose correct minimzation function based on wether constrained were supplied
+        solution <- .Call( NLoptR_Optimize, ret )
     
-    # remove the environment from the return object
-    ret$environment <- NULL
-    
-    # add solution variables to object
-    ret$status     <- solution$status
-    ret$message    <- solution$message
-    ret$iterations <- solution$iterations
-    ret$objective  <- solution$objective
-    ret$solution   <- solution$solution
-    ret$version    <- paste( c(solution$version_major, solution$version_minor, solution$version_bugfix), collapse='.' )
+        # remove the environment from the return object
+        ret$environment <- NULL
+        
+        # add solution variables to object
+        ret$status     <- solution$status
+        ret$message    <- solution$message
+        ret$iterations <- solution$iterations
+        ret$objective  <- solution$objective
+        ret$solution   <- solution$solution
+        ret$version    <- paste( c(solution$version_major, solution$version_minor, solution$version_bugfix), collapse='.' )
+        ret$num.evals  <- num.evals
+        
+        # If maxtime is set to a positive number in the options
+        # or if the return status of the solver is not equal to
+        # 6, we can stop trying to solve the problem.
+        #
+        # Solution status 6: NLOPT_MAXTIME_REACHED: Optimization
+        # stopped because maxtime (above) was reached.
+        # 
+        # This loop is need, because sometimes the solver exits
+        # with this code, even if maxtime is set to 0 or a negative
+        # number.
+        if ( opts$maxtime > 0 | solution$status != 6 ) {
+            solve.continue <- FALSE
+        }
+    }
     
     return( ret )
 }
