@@ -1,3 +1,7 @@
+22 March 2015, version 1.0.9:
+    * When the problem fails with error status 6 (NLOPT_MAXTIME_REACHED) and maxtime was not set to a positive number in the options, then nloptr tries a couple more times to solve the problem. This is a new approach that should solve the bug that NLopt sometimes exits a problem stating the maximum available time has been reached, even when no limit on the time has been set.
+    * Changed warning to message in order to show that for consistency with the rest of the package the inequality sign in the functions auglag, cobyla, isres, mma, and slsqp will be switched from >= to <= in a future nloptr version.
+
 22 February 2015, version 1.0.8:
     * Changed description in DESCRIPTION such that it does not start with the package name (as requested by CRAN).
 
