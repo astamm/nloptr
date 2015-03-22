@@ -59,7 +59,7 @@ function(x0, fn, lower, upper, hin = NULL, heq = NULL,
 
     if (!is.null(hin)) {
         if ( getOption('nloptr.show.inequality.warning') ) {
-            warning('For consistency with the rest of the package the inequality sign will be switched from >= to <= in the next nloptr version.')
+            message('For consistency with the rest of the package the inequality sign will be switched from >= to <= in the next nloptr version.')
         }
         
         .hin <- match(hin)
