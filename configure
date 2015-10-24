@@ -2955,21 +2955,12 @@ fi
 ##
 if test x"${nlopt_libs}" == x""; then
     if test x"${PKGCONFIG}" == x"yes"; then
-        ## check via pkg-config for hiredis
+        ## check via pkg-config for nlopt
         if pkg-config --exists nlopt; then
             ## obtain cflags and obtain libs
             nlopt_cflags=$(pkg-config --cflags nlopt)
             nlopt_libs=$(pkg-config --libs nlopt)
-            nlopt_version=$(pkg-config --modversion nlopt)
             nlopt_good="yes"
-
-            case ${nlopt_version} in
-                 1.*|2.0.*|2.1.*|2.2.*|2.3.*)
-                    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Only NLopt version 2.4.0 or greater can be used with nloptr." >&5
-$as_echo "$as_me: WARNING: Only NLopt version 2.4.0 or greater can be used with nloptr." >&2;}
-                    nlopt_good="no"
-                 ;;
-            esac
         fi
     fi
 fi
@@ -3253,6 +3244,32 @@ fi
 
 
 
+## Check for NLopt version number using pkg-config.
+# Perform this check after the header check,
+# because the correct header with the wrong
+# version, does not work.
+if test x"${nlopt_good}" = x"yes"; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: Now testing for NLopt versison number." >&5
+$as_echo "$as_me: Now testing for NLopt versison number." >&6;}
+    if test x"${PKGCONFIG}" == x"yes"; then
+        ## check via pkg-config for version number of nlopt
+        if pkg-config --exists nlopt; then
+            ## obtain version number
+            nlopt_version=$(pkg-config --modversion nlopt)
+
+            case ${nlopt_version} in
+                 1.*|2.0.*|2.1.*|2.2.*|2.3.*)
+                    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Only NLopt version 2.4.0 or greater can be used with nloptr." >&5
+$as_echo "$as_me: WARNING: Only NLopt version 2.4.0 or greater can be used with nloptr." >&2;}
+                    nlopt_good="no"
+                ;;
+            esac
+        fi
+    else
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Could not test version of NLopt because pkg-config is not installed. Make sure the version number of NLopt is 2.4.0 or greater. Otherwise nloptr can not be used." >&5
+$as_echo "$as_me: WARNING: Could not test version of NLopt because pkg-config is not installed. Make sure the version number of NLopt is 2.4.0 or greater. Otherwise nloptr can not be used." >&2;}
+    fi
+fi
 
 ## in case neither of the two methods above worked, download NLopt and build it locally
 if test x"${nlopt_good}" = x"no"; then

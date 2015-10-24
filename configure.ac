@@ -48,20 +48,12 @@ AC_ARG_WITH([nlopt-libs],
 ##
 if test x"${nlopt_libs}" == x""; then
     if test x"${PKGCONFIG}" == x"yes"; then
-        ## check via pkg-config for hiredis
+        ## check via pkg-config for nlopt
         if pkg-config --exists nlopt; then
             ## obtain cflags and obtain libs
             nlopt_cflags=$(pkg-config --cflags nlopt)
             nlopt_libs=$(pkg-config --libs nlopt)
-            nlopt_version=$(pkg-config --modversion nlopt)
             nlopt_good="yes"
-    
-            case ${nlopt_version} in
-                 1.*|2.0.*|2.1.*|2.2.*|2.3.*)
-                    AC_MSG_WARN([Only NLopt version 2.4.0 or greater can be used with nloptr.])
-                    nlopt_good="no"
-                 ;; 
-            esac    
         fi
     fi
 fi
@@ -79,6 +71,29 @@ AC_CHECK_HEADER([$nlopt_header],
                 [nlopt_good="no"],
                 [])       
 
+## Check for NLopt version number using pkg-config.
+# Perform this check after the header check,
+# because the correct header with the wrong
+# version, does not work.
+if test x"${nlopt_good}" = x"yes"; then
+    AC_MSG_NOTICE([Now testing for NLopt versison number.])
+    if test x"${PKGCONFIG}" == x"yes"; then
+        ## check via pkg-config for version number of nlopt
+        if pkg-config --exists nlopt; then
+            ## obtain version number
+            nlopt_version=$(pkg-config --modversion nlopt)
+        
+            case ${nlopt_version} in
+                 1.*|2.0.*|2.1.*|2.2.*|2.3.*)
+                    AC_MSG_WARN([Only NLopt version 2.4.0 or greater can be used with nloptr.])
+                    nlopt_good="no"
+                ;; 
+            esac    
+        fi
+    else
+        AC_MSG_WARN([Could not test version of NLopt because pkg-config is not installed. Make sure the version number of NLopt is 2.4.0 or greater. Otherwise nloptr can not be used.])
+    fi
+fi
 
 ## in case neither of the two methods above worked, download NLopt and build it locally
 if test x"${nlopt_good}" = x"no"; then
