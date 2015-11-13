@@ -29,6 +29,7 @@ AC_PROG_PKGCONFIG
 nlopt_good="no"
 nlopt_cflags=""
 nlopt_libs=""
+r_args=""
 
 ## consider command-line options if given
 ##
@@ -42,6 +43,11 @@ AC_ARG_WITH([nlopt-libs],
                            [Supply the linker flags such as the location and name of NLopt libraries]),
             [nlopt_libs=$withval],
             [nlopt_libs=""])
+AC_ARG_WITH([r-args],
+            AC_HELP_STRING([--with-r-args=ARGUMENTS],
+                           [Supply the arguments that should be passed to Rscript. Default: --vanilla]),
+            [r_args=$withval],
+            [r_args="--vanilla"])
 
 
 ## also use pkg-config to check for NLopt
@@ -138,11 +144,11 @@ if test x"${nlopt_good}" = x"no"; then
 
    ## Download NLopt source code
    ## curl -O http://ab-initio.mit.edu/nlopt/nlopt-${NLOPT_VERSION}.tar.gz
-   $("${R_HOME}/bin/Rscript" --vanilla -e "download.file(url='${NLOPT_URL}', destfile='${NLOPT_TGZ}')")
+   $("${R_HOME}/bin/Rscript" ${r_args} -e "download.file(url='${NLOPT_URL}', destfile='${NLOPT_TGZ}')")
 
    ## Extract NLopt source code and remove .tar.gz
    ## tar -xzvf nlopt-${NLOPT_VERSION}.tar.gz
-   $("${R_HOME}/bin/Rscript" --vanilla -e "untar(tarfile='${NLOPT_TGZ}')")
+   $("${R_HOME}/bin/Rscript" ${r_args} -e "untar(tarfile='${NLOPT_TGZ}')")
    $(rm -rf ${NLOPT_TGZ})
 
    ## Compile NLopt source code and clean up

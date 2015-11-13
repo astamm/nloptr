@@ -676,6 +676,7 @@ ac_user_opts='
 enable_option_checking
 with_nlopt_cflags
 with_nlopt_libs
+with_r_args
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1300,6 +1301,8 @@ Optional Packages:
                           header files
   --with-nlopt-libs=LIBS  Supply the linker flags such as the location and
                           name of NLopt libraries
+  --with-r-args=ARGUMENTS Supply the arguments that should be passed to
+                          Rscript. Default: --vanilla
 
 Some influential environment variables:
   CXX         C++ compiler command
@@ -2930,6 +2933,7 @@ fi
 nlopt_good="no"
 nlopt_cflags=""
 nlopt_libs=""
+r_args=""
 
 ## consider command-line options if given
 ##
@@ -2947,6 +2951,14 @@ if test "${with_nlopt_libs+set}" = set; then :
   withval=$with_nlopt_libs; nlopt_libs=$withval
 else
   nlopt_libs=""
+fi
+
+
+# Check whether --with-r-args was given.
+if test "${with_r_args+set}" = set; then :
+  withval=$with_r_args; r_args=$withval
+else
+  r_args="--vanilla"
 fi
 
 
@@ -3315,11 +3327,11 @@ $as_echo "$as_me: Need to download and build NLopt" >&6;}
 
    ## Download NLopt source code
    ## curl -O http://ab-initio.mit.edu/nlopt/nlopt-${NLOPT_VERSION}.tar.gz
-   $("${R_HOME}/bin/Rscript" --vanilla -e "download.file(url='${NLOPT_URL}', destfile='${NLOPT_TGZ}')")
+   $("${R_HOME}/bin/Rscript" ${r_args} -e "download.file(url='${NLOPT_URL}', destfile='${NLOPT_TGZ}')")
 
    ## Extract NLopt source code and remove .tar.gz
    ## tar -xzvf nlopt-${NLOPT_VERSION}.tar.gz
-   $("${R_HOME}/bin/Rscript" --vanilla -e "untar(tarfile='${NLOPT_TGZ}')")
+   $("${R_HOME}/bin/Rscript" ${r_args} -e "untar(tarfile='${NLOPT_TGZ}')")
    $(rm -rf ${NLOPT_TGZ})
 
    ## Compile NLopt source code and clean up
