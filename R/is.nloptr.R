@@ -182,5 +182,25 @@ is.nloptr <- function( x ) {
         }
     }
     
+    # Check if the vector with tolerances for the inequality
+    # constraints is of the same size as the number of constraints.
+    if ( x$num_constraints_ineq !=
+         length( x$options$tol_constraints_ineq ) ) {
+        stop(paste('The vector tol_constraints_ineq in the options list has size', 
+                   length(x$options$tol_constraints_ineq),
+                   'which is unequal to the number of inequality constraints,',
+                   x$num_constraints_ineq, '.'))
+    }
+    
+    # Check if the vector with tolerances for the equality
+    # constraints is of the same size as the number of constraints.
+    if ( x$num_constraints_eq !=
+         length( x$options$tol_constraints_eq ) ) {
+        stop(paste('The vector tol_constraints_eq in the options list has size', 
+                   length(x$options$tol_constraints_eq),
+                   'which is unequal to the number of equality constraints,',
+                   x$num_constraints_eq, '.'))
+    }
+    
     return( TRUE )
 }
