@@ -139,6 +139,21 @@ if test x"${nlopt_good}" = x"no"; then
    NLOPT_CXXFLAGS=$("${R_HOME}/bin/R" CMD config CXXFLAGS)
    NLOPT_CXXCPP=$("${R_HOME}/bin/R" CMD config CXXCPP)
 
+   ## If intel compiler then strip -ipo option as nlopt compilation
+   ## fails with it enabled
+   if test "${NLOPT_CC}" = "icc"; then
+     AC_MSG_NOTICE([Intel CC detected - disabling ipo])
+     NLOPT_CFLAGS=$(echo "$NLOPT_CFLAGS" | sed 's/-ipo//')
+   fi
+   if test "${NLOPT_CPP}" = "icc"; then
+     AC_MSG_NOTICE([Intel CPP detected - disabling ipo])
+     NLOPT_CPPFLAGS=$(echo "$NLOPT_CPPFLAGS" | sed 's/-ipo//')
+   fi
+   if test "${NLOPT_CXX}" = "icpc"; then
+     AC_MSG_NOTICE([Intel CXX detected - disabling ipo])
+     NLOPT_CXXFLAGS=$(echo "$NLOPT_CXXFLAGS" | sed 's/-ipo//')
+   fi
+
    ## report values
    #echo "${NLOPT_CC} | ${NLOPT_CFLAGS} | ${NLOPT_CPPFLAGS} | ${NLOPT_CPPFLAGS} | ${NLOPT_CXX} | ${NLOPT_CXXFLAGS} | ${NLOPT_CXXCPP}"
 
