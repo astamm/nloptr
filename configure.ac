@@ -138,9 +138,10 @@ if test x"${nlopt_good}" = x"no"; then
    NLOPT_CXX=$("${R_HOME}/bin/R" CMD config CXX)
    NLOPT_CXXFLAGS=$("${R_HOME}/bin/R" CMD config CXXFLAGS)
    NLOPT_CXXCPP=$("${R_HOME}/bin/R" CMD config CXXCPP)
+   NLOPT_AR=$("${R_HOME}/bin/R" CMD config AR)
 
    ## report values
-   #echo "${NLOPT_CC} | ${NLOPT_CFLAGS} | ${NLOPT_CPPFLAGS} | ${NLOPT_CPPFLAGS} | ${NLOPT_CXX} | ${NLOPT_CXXFLAGS} | ${NLOPT_CXXCPP}"
+   #echo "${NLOPT_CC} | ${NLOPT_CFLAGS} | ${NLOPT_CPPFLAGS} | ${NLOPT_CPPFLAGS} | ${NLOPT_CXX} | ${NLOPT_CXXFLAGS} | ${NLOPT_CXXCPP} | ${NLOPT_AR}"
 
    ## Download NLopt source code
    ## curl -O http://ab-initio.mit.edu/nlopt/nlopt-${NLOPT_VERSION}.tar.gz
@@ -163,7 +164,8 @@ if test x"${nlopt_good}" = x"no"; then
                     --without-matlab --without-guile --without-python --with-cxx \
                     CC="${NLOPT_CC}" CFLAGS="${NLOPT_CFLAGS}" CPP="${NLOPT_CPP}" \
                     CPPFLAGS="${NLOPT_CPPFLAGS}" CXX="${NLOPT_CXX}" \
-                    CXXFLAGS="${NLOPT_CXXFLAGS}" CXXCPP="${NLOPT_CXXCPP}" > /dev/null 2>&1; \
+                    CXXFLAGS="${NLOPT_CXXFLAGS}" CXXCPP="${NLOPT_CXXCPP}" \
+                    AR="${NLOPT_AR}" > /dev/null 2>&1; \
         make > /dev/null 2>&1; \
         make install > /dev/null 2>&1; \
         ls | grep -v "^include$" | grep -v "^lib$" | xargs rm -rf; \
