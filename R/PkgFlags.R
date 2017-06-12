@@ -17,7 +17,7 @@ LdFlags <- function( print = TRUE ) {
     if (.Platform$OS.type=="windows") {
         flags <- '-L"$(NLOPT_HOME)$(R_ARCH)/lib" -lnlopt_cxx'
     } else {
-        flags <- '@PKG_CFLAGS@'
+        flags <- '@PKG_LIBS@'
     }
     if ( print ) {
         cat( flags )
