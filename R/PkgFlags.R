@@ -3,7 +3,7 @@ CFlags <- function( print = TRUE ) {
     if (.Platform$OS.type=="windows") {
         flags <- '-I"$(NLOPT_HOME)$(R_ARCH)/include"' 
     } else {
-        flags <- '@PKG_CFLAGS@'
+        flags <- '  -I/home/foranw/src/world/R/nloptr/nlopt-2.4.2/include'
     }
     if ( print ) {
         cat( flags )
@@ -17,7 +17,7 @@ LdFlags <- function( print = TRUE ) {
     if (.Platform$OS.type=="windows") {
         flags <- '-L"$(NLOPT_HOME)$(R_ARCH)/lib" -lnlopt_cxx'
     } else {
-        flags <- '@PKG_LIBS@'
+        flags <- '  -lm /home/foranw/src/world/R/nloptr/nlopt-2.4.2/lib/libnlopt_cxx.a'
     }
     if ( print ) {
         cat( flags )
