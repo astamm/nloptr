@@ -3340,9 +3340,9 @@ $as_echo "$as_me: Need to download and build NLopt" >&6;}
    { $as_echo "$as_me:${as_lineno-$LINENO}: Starting to install library to $(pwd)/nlopt-${NLOPT_VERSION}" >&5
 $as_echo "$as_me: Starting to install library to $(pwd)/nlopt-${NLOPT_VERSION}" >&6;}
    $(cd nlopt-${NLOPT_VERSION}; \
-        ed -s isres/isres.c <<< $'H\n,s/sqrt(/sqrt((double) /g\nw'; \
-        ed -s util/qsort_r.c <<< $'H\n1i\nextern "C" {\n.\nw'; \
-        ed -s util/qsort_r.c <<< $'H\n$a\n}\n.\nw' ; \
+        echo $'H\n,s/sqrt(/sqrt((double) /g\nw' | ed -s isres/isres.c; \
+        echo $'H\n1i\nextern "C" {\n.\nw' | ed -s util/qsort_r.c; \
+        echo $'H\n$a\n}\n.\nw' | ed -s util/qsort_r.c; \
         ./configure --prefix="$(pwd)" --enable-shared --enable-static --without-octave \
                     --without-matlab --without-guile --without-python --with-cxx \
                     CC="${NLOPT_CC}" CFLAGS="${NLOPT_CFLAGS}" CPP="${NLOPT_CPP}" \
