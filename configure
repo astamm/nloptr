@@ -3290,6 +3290,7 @@ $as_echo "$as_me: Need to download and build NLopt" >&6;}
 
    ## define NLopt version
    NLOPT_VERSION=2.4.2
+   NLOPT_HASH_MD5="d0b8f139a4acf29b76dbae69ade8ac54"
 
    ## define NLopt file and download URL
    NLOPT_TGZ="nlopt-${NLOPT_VERSION}.tar.gz"
@@ -3328,6 +3329,19 @@ $as_echo "$as_me: Need to download and build NLopt" >&6;}
    ## Download NLopt source code
    ## curl -O http://ab-initio.mit.edu/nlopt/nlopt-${NLOPT_VERSION}.tar.gz
    $("${R_HOME}/bin/Rscript" ${r_args} -e "download.file(url='${NLOPT_URL}', destfile='${NLOPT_TGZ}')")
+
+   ## Check the hash of the NLopt tarball
+   if test -n "$(which md5sum)"; then
+     NLOPT_TGZ_HASH_MD5=$(md5sum -q ${NLOPT_TGZ})
+   else
+     NLOPT_TGZ_HASH_MD5=$(md5 -q ${NLOPT_TGZ})
+   fi
+   if test ${NLOPT_TGZ_HASH_MD5} == ${NLOPT_HASH_MD5}; then
+     { $as_echo "$as_me:${as_lineno-$LINENO}: The hash check ok for ${NLOPT_TGZ}" >&5
+$as_echo "$as_me: The hash check ok for ${NLOPT_TGZ}" >&6;}
+   else
+     as_fn_error $? "The hash check failed for ${NLOPT_TGZ}" "$LINENO" 5
+   fi
 
    ## Extract NLopt source code and remove .tar.gz
    ## tar -xzvf nlopt-${NLOPT_VERSION}.tar.gz
