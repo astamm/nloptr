@@ -154,9 +154,14 @@ function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
     # Function and gradient, if needed
     .fn <- match.fun(fn)
     fn  <- function(x) .fn(x, ...)
-
-    if (!dfree && is.null(gr)) {
-        gr <- function(x) nl.grad(x, fn)
+    
+    if (!dfree) {
+        if (is.null(gr)) {
+            gr <- function(x) nl.grad(x, fn)
+        } else {
+            .gr <- match.fun(gr)
+            gr <- function(x) .gr(x, ...)
+        }
     }
 
     # Global and local options
@@ -174,28 +179,28 @@ function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
         }
 
         .hin <- match.fun(hin)
-        hin <- function(x) (-1) * .hin(x)   # change  hin >= 0  to  hin <= 0 !
+        hin <- function(x) (-1) * .hin(x, ...)   # change  hin >= 0  to  hin <= 0 !
     }
     if (!dfree) {
         if (is.null(hinjac)) {
             hinjac <- function(x) nl.jacobian(x, hin)
         } else {
             .hinjac <- match.fun(hinjac)
-            hinjac <- function(x) (-1) * .hinjac(x)
+            hinjac <- function(x) (-1) * .hinjac(x, ...)
         }
     }
 
     # Equality constraints
     if (!is.null(heq)) {
         .heq <- match.fun(heq)
-        heq <- function(x) .heq(x)
+        heq <- function(x) .heq(x, ...)
     }
     if (!dfree) {
         if (is.null(heqjac)) {
             heqjac <- function(x) nl.jacobian(x, heq)
         } else {
             .heqjac <- match.fun(heqjac)
-            heqjac <- function(x) .heqjac(x)
+            heqjac <- function(x) .heqjac(x, ...)
         }
     }
 
