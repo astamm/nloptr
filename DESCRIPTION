@@ -7,7 +7,7 @@ Author: Jelmer Ypma <uctpjyy@ucl.ac.uk>, with contributions by
         Hans W. Borchers <hwborchers@googlemail.com> and 
         Dirk Eddelbuettel <edd@debian.org>
 Maintainer: Jelmer Ypma <uctpjyy@ucl.ac.uk>
-Description: 
+Description:
     Solve optimization problems using an R interface to NLopt. NLopt is a free/open-source library for
     nonlinear optimization, providing a common interface for a number of
     different free optimization routines available online as well as original
@@ -18,6 +18,9 @@ Description:
     installed on the system. If the NLopt library cannot be found, the code
     is downloaded and compiled from the NLopt website.
 License: LGPL-3
-Suggests: testthat (>= 0.8.1)
+Suggests: testthat (>= 0.8.1),
+    knitr,
+    rmarkdown
 LazyLoad: yes
 NeedsCompilation: yes
+VignetteBuilder: knitr
