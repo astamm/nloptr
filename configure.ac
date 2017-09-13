@@ -107,6 +107,7 @@ if test x"${nlopt_good}" = x"no"; then
 
    ## define NLopt version
    NLOPT_VERSION=2.4.2
+   NLOPT_HASH_MD5="d0b8f139a4acf29b76dbae69ade8ac54"
 
    ## define NLopt file and download URL
    NLOPT_TGZ="nlopt-${NLOPT_VERSION}.tar.gz"
@@ -145,6 +146,18 @@ if test x"${nlopt_good}" = x"no"; then
    ## Download NLopt source code
    ## curl -O http://ab-initio.mit.edu/nlopt/nlopt-${NLOPT_VERSION}.tar.gz
    $("${R_HOME}/bin/Rscript" ${r_args} -e "download.file(url='${NLOPT_URL}', destfile='${NLOPT_TGZ}')")
+
+   ## Check the hash of the NLopt tarball
+   if test -n "$(which md5sum)"; then
+     NLOPT_TGZ_HASH_MD5=$(md5sum -q ${NLOPT_TGZ})
+   else
+     NLOPT_TGZ_HASH_MD5=$(md5 -q ${NLOPT_TGZ})
+   fi
+   if test ${NLOPT_TGZ_HASH_MD5} == ${NLOPT_HASH_MD5}; then
+     AC_MSG_NOTICE([The hash check ok for ${NLOPT_TGZ}])
+   else
+     AC_ERROR([The hash check failed for ${NLOPT_TGZ}])
+   fi
 
    ## Extract NLopt source code and remove .tar.gz
    ## tar -xzvf nlopt-${NLOPT_VERSION}.tar.gz
