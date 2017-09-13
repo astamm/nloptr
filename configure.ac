@@ -110,7 +110,7 @@ if test x"${nlopt_good}" = x"no"; then
 
    ## define NLopt file and download URL
    NLOPT_TGZ="nlopt-${NLOPT_VERSION}.tar.gz"
-   NLOPT_URL="http://ab-initio.mit.edu/nlopt/${NLOPT_TGZ}"
+   NLOPT_URL="https://github.com/stevengj/nlopt/archive/${NLOPT_TGZ}"
 
    ## C Compiler options    
    NLOPTR_CFLAGS= 
@@ -143,13 +143,15 @@ if test x"${nlopt_good}" = x"no"; then
    #echo "${NLOPT_CC} | ${NLOPT_CFLAGS} | ${NLOPT_CPPFLAGS} | ${NLOPT_CPPFLAGS} | ${NLOPT_CXX} | ${NLOPT_CXXFLAGS} | ${NLOPT_CXXCPP}"
 
    ## Download NLopt source code
-   ## curl -O http://ab-initio.mit.edu/nlopt/nlopt-${NLOPT_VERSION}.tar.gz
-   $("${R_HOME}/bin/Rscript" ${r_args} -e "download.file(url='${NLOPT_URL}', destfile='${NLOPT_TGZ}')")
+   ## curl -OL https://github.com/stevengj/nlopt/archive/nlopt-${NLOPT_VERSION}.tar.gz
+   $("${R_HOME}/bin/Rscript" ${r_args} -e "download.file(url='${NLOPT_URL}', destfile='${NLOPT_TGZ}', extra='-L')")
 
    ## Extract NLopt source code and remove .tar.gz
    ## tar -xzvf nlopt-${NLOPT_VERSION}.tar.gz
    $("${R_HOME}/bin/Rscript" ${r_args} -e "untar(tarfile='${NLOPT_TGZ}')")
    $(rm -rf ${NLOPT_TGZ})
+
+   $(mv nlopt-nlopt-${NLOPT_VERSION} nlopt-${NLOPT_VERSION})
 
    ## Compile NLopt source code and clean up
    ## --prefix="`pwd`", which is the directory we want to
@@ -159,7 +161,8 @@ if test x"${nlopt_good}" = x"no"; then
         ed -s isres/isres.c <<< $'H\n,s/sqrt(/sqrt((double) /g\nw'; \
         ed -s util/qsort_r.c <<< $'H\n1i\nextern "C" {\n.\nw'; \
         ed -s util/qsort_r.c <<< $'H\n$a\n}\n.\nw' ; \
-        ./configure --prefix="$(pwd)" --enable-shared --enable-static --without-octave \
+        sh autogen.sh --no-configure; \
+        ./configure --prefix="$(pwd)" --enable-maintainer-mode --enable-shared --enable-static --without-octave \
                     --without-matlab --without-guile --without-python --with-cxx \
                     CC="${NLOPT_CC}" CFLAGS="${NLOPT_CFLAGS}" CPP="${NLOPT_CPP}" \
                     CPPFLAGS="${NLOPT_CPPFLAGS}" CXX="${NLOPT_CXX}" \
