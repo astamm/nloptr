@@ -103,14 +103,7 @@ fi
 
 ## in case neither of the two methods above worked, download NLopt and build it locally
 if test x"${nlopt_good}" = x"no"; then
-   AC_MSG_NOTICE([Need to download and build NLopt])
-
-   ## define NLopt version
-   NLOPT_VERSION=2.4.2
-
-   ## define NLopt file and download URL
-   NLOPT_TGZ="nlopt-${NLOPT_VERSION}.tar.gz"
-   NLOPT_URL="http://ab-initio.mit.edu/nlopt/${NLOPT_TGZ}"
+   AC_MSG_NOTICE([Need to configure and build NLopt])
 
    ## C Compiler options    
    NLOPTR_CFLAGS= 
@@ -119,10 +112,10 @@ if test x"${nlopt_good}" = x"no"; then
    NLOPTR_CLINKFLAGS= 
 
    ## Libraries necessary to link with NLopt
-   NLOPTR_LIBS="-lm $(pwd)/nlopt-${NLOPT_VERSION}/lib/libnlopt_cxx.a"
+   NLOPTR_LIBS="-lm $(pwd)/src/nlopt_src/lib/libnlopt_cxx.a"
 
    ## Necessary Include dirs 
-   NLOPTR_INCL="-I$(pwd)/nlopt-${NLOPT_VERSION}/include"
+   NLOPTR_INCL="-I$(pwd)/src/nlopt_src/include"
 
    ## Set R_HOME, respecting an environment variable if set 
    : ${R_HOME=$(R RHOME)}
@@ -142,24 +135,15 @@ if test x"${nlopt_good}" = x"no"; then
    ## report values
    #echo "${NLOPT_CC} | ${NLOPT_CFLAGS} | ${NLOPT_CPPFLAGS} | ${NLOPT_CPPFLAGS} | ${NLOPT_CXX} | ${NLOPT_CXXFLAGS} | ${NLOPT_CXXCPP}"
 
-   ## Download NLopt source code
-   ## curl -O http://ab-initio.mit.edu/nlopt/nlopt-${NLOPT_VERSION}.tar.gz
-   $("${R_HOME}/bin/Rscript" ${r_args} -e "download.file(url='${NLOPT_URL}', destfile='${NLOPT_TGZ}')")
-
-   ## Extract NLopt source code and remove .tar.gz
-   ## tar -xzvf nlopt-${NLOPT_VERSION}.tar.gz
-   $("${R_HOME}/bin/Rscript" ${r_args} -e "untar(tarfile='${NLOPT_TGZ}')")
-   $(rm -rf ${NLOPT_TGZ})
-
    ## Compile NLopt source code and clean up
    ## --prefix="`pwd`", which is the directory we want to
    ## install in, after we changed our current directory
-   AC_MSG_NOTICE([Starting to install library to $(pwd)/nlopt-${NLOPT_VERSION}])
-   $(cd nlopt-${NLOPT_VERSION}; \
+   AC_MSG_NOTICE([Starting to install library to $(pwd)/src/nlopt_src])
+   $(cd src/nlopt_src; \
         ed -s isres/isres.c <<< $'H\n,s/sqrt(/sqrt((double) /g\nw'; \
         ed -s util/qsort_r.c <<< $'H\n1i\nextern "C" {\n.\nw'; \
         ed -s util/qsort_r.c <<< $'H\n$a\n}\n.\nw' ; \
-        ./configure --prefix="$(pwd)" --enable-shared --enable-static --without-octave \
+        ./configure --prefix="$(pwd)" --enable-maintainer-mode --enable-shared --enable-static --without-octave \
                     --without-matlab --without-guile --without-python --with-cxx \
                     CC="${NLOPT_CC}" CFLAGS="${NLOPT_CFLAGS}" CPP="${NLOPT_CPP}" \
                     CPPFLAGS="${NLOPT_CPPFLAGS}" CXX="${NLOPT_CXX}" \
@@ -168,7 +152,7 @@ if test x"${nlopt_good}" = x"no"; then
         make install > /dev/null 2>&1; \
         ls | grep -v "^include$" | grep -v "^lib$" | xargs rm -rf; \
         rm -rf .libs;)
-   AC_MSG_NOTICE([Done installing library to $(pwd)/nlopt-${NLOPT_VERSION}])
+   AC_MSG_NOTICE([Done installing library to $(pwd)/src/nlopt_src])
 
    ## Store compiler and linker flags
    nlopt_cflags="${NLOPTR_CFLAGS} ${NLOPTR_INCL}"

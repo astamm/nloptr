@@ -652,6 +652,7 @@ infodir
 docdir
 oldincludedir
 includedir
+runstatedir
 localstatedir
 sharedstatedir
 sysconfdir
@@ -726,6 +727,7 @@ datadir='${datarootdir}'
 sysconfdir='${prefix}/etc'
 sharedstatedir='${prefix}/com'
 localstatedir='${prefix}/var'
+runstatedir='${localstatedir}/run'
 includedir='${prefix}/include'
 oldincludedir='/usr/include'
 docdir='${datarootdir}/doc/${PACKAGE_TARNAME}'
@@ -978,6 +980,15 @@ do
   | -silent | --silent | --silen | --sile | --sil)
     silent=yes ;;
 
+  -runstatedir | --runstatedir | --runstatedi | --runstated \
+  | --runstate | --runstat | --runsta | --runst | --runs \
+  | --run | --ru | --r)
+    ac_prev=runstatedir ;;
+  -runstatedir=* | --runstatedir=* | --runstatedi=* | --runstated=* \
+  | --runstate=* | --runstat=* | --runsta=* | --runst=* | --runs=* \
+  | --run=* | --ru=* | --r=*)
+    runstatedir=$ac_optarg ;;
+
   -sbindir | --sbindir | --sbindi | --sbind | --sbin | --sbi | --sb)
     ac_prev=sbindir ;;
   -sbindir=* | --sbindir=* | --sbindi=* | --sbind=* | --sbin=* \
@@ -1115,7 +1126,7 @@ fi
 for ac_var in	exec_prefix prefix bindir sbindir libexecdir datarootdir \
 		datadir sysconfdir sharedstatedir localstatedir includedir \
 		oldincludedir docdir infodir htmldir dvidir pdfdir psdir \
-		libdir localedir mandir
+		libdir localedir mandir runstatedir
 do
   eval ac_val=\$$ac_var
   # Remove trailing slashes.
@@ -1268,6 +1279,7 @@ Fine tuning of the installation directories:
   --sysconfdir=DIR        read-only single-machine data [PREFIX/etc]
   --sharedstatedir=DIR    modifiable architecture-independent data [PREFIX/com]
   --localstatedir=DIR     modifiable single-machine data [PREFIX/var]
+  --runstatedir=DIR       modifiable per-process data [LOCALSTATEDIR/run]
   --libdir=DIR            object code libraries [EPREFIX/lib]
   --includedir=DIR        C header files [PREFIX/include]
   --oldincludedir=DIR     C header files for non-gcc [/usr/include]
@@ -3285,15 +3297,8 @@ fi
 
 ## in case neither of the two methods above worked, download NLopt and build it locally
 if test x"${nlopt_good}" = x"no"; then
-   { $as_echo "$as_me:${as_lineno-$LINENO}: Need to download and build NLopt" >&5
-$as_echo "$as_me: Need to download and build NLopt" >&6;}
-
-   ## define NLopt version
-   NLOPT_VERSION=2.4.2
-
-   ## define NLopt file and download URL
-   NLOPT_TGZ="nlopt-${NLOPT_VERSION}.tar.gz"
-   NLOPT_URL="http://ab-initio.mit.edu/nlopt/${NLOPT_TGZ}"
+   { $as_echo "$as_me:${as_lineno-$LINENO}: Need to configure and build NLopt" >&5
+$as_echo "$as_me: Need to configure and build NLopt" >&6;}
 
    ## C Compiler options
    NLOPTR_CFLAGS=
@@ -3302,10 +3307,10 @@ $as_echo "$as_me: Need to download and build NLopt" >&6;}
    NLOPTR_CLINKFLAGS=
 
    ## Libraries necessary to link with NLopt
-   NLOPTR_LIBS="-lm $(pwd)/nlopt-${NLOPT_VERSION}/lib/libnlopt_cxx.a"
+   NLOPTR_LIBS="-lm $(pwd)/src/nlopt_src/lib/libnlopt_cxx.a"
 
    ## Necessary Include dirs
-   NLOPTR_INCL="-I$(pwd)/nlopt-${NLOPT_VERSION}/include"
+   NLOPTR_INCL="-I$(pwd)/src/nlopt_src/include"
 
    ## Set R_HOME, respecting an environment variable if set
    : ${R_HOME=$(R RHOME)}
@@ -3325,25 +3330,16 @@ $as_echo "$as_me: Need to download and build NLopt" >&6;}
    ## report values
    #echo "${NLOPT_CC} | ${NLOPT_CFLAGS} | ${NLOPT_CPPFLAGS} | ${NLOPT_CPPFLAGS} | ${NLOPT_CXX} | ${NLOPT_CXXFLAGS} | ${NLOPT_CXXCPP}"
 
-   ## Download NLopt source code
-   ## curl -O http://ab-initio.mit.edu/nlopt/nlopt-${NLOPT_VERSION}.tar.gz
-   $("${R_HOME}/bin/Rscript" ${r_args} -e "download.file(url='${NLOPT_URL}', destfile='${NLOPT_TGZ}')")
-
-   ## Extract NLopt source code and remove .tar.gz
-   ## tar -xzvf nlopt-${NLOPT_VERSION}.tar.gz
-   $("${R_HOME}/bin/Rscript" ${r_args} -e "untar(tarfile='${NLOPT_TGZ}')")
-   $(rm -rf ${NLOPT_TGZ})
-
    ## Compile NLopt source code and clean up
    ## --prefix="`pwd`", which is the directory we want to
    ## install in, after we changed our current directory
-   { $as_echo "$as_me:${as_lineno-$LINENO}: Starting to install library to $(pwd)/nlopt-${NLOPT_VERSION}" >&5
-$as_echo "$as_me: Starting to install library to $(pwd)/nlopt-${NLOPT_VERSION}" >&6;}
-   $(cd nlopt-${NLOPT_VERSION}; \
+   { $as_echo "$as_me:${as_lineno-$LINENO}: Starting to install library to $(pwd)/src/nlopt_src" >&5
+$as_echo "$as_me: Starting to install library to $(pwd)/src/nlopt_src" >&6;}
+   $(cd src/nlopt_src; \
         ed -s isres/isres.c <<< $'H\n,s/sqrt(/sqrt((double) /g\nw'; \
         ed -s util/qsort_r.c <<< $'H\n1i\nextern "C" {\n.\nw'; \
         ed -s util/qsort_r.c <<< $'H\n$a\n}\n.\nw' ; \
-        ./configure --prefix="$(pwd)" --enable-shared --enable-static --without-octave \
+        ./configure --prefix="$(pwd)" --enable-maintainer-mode --enable-shared --enable-static --without-octave \
                     --without-matlab --without-guile --without-python --with-cxx \
                     CC="${NLOPT_CC}" CFLAGS="${NLOPT_CFLAGS}" CPP="${NLOPT_CPP}" \
                     CPPFLAGS="${NLOPT_CPPFLAGS}" CXX="${NLOPT_CXX}" \
@@ -3352,8 +3348,8 @@ $as_echo "$as_me: Starting to install library to $(pwd)/nlopt-${NLOPT_VERSION}" 
         make install > /dev/null 2>&1; \
         ls | grep -v "^include$" | grep -v "^lib$" | xargs rm -rf; \
         rm -rf .libs;)
-   { $as_echo "$as_me:${as_lineno-$LINENO}: Done installing library to $(pwd)/nlopt-${NLOPT_VERSION}" >&5
-$as_echo "$as_me: Done installing library to $(pwd)/nlopt-${NLOPT_VERSION}" >&6;}
+   { $as_echo "$as_me:${as_lineno-$LINENO}: Done installing library to $(pwd)/src/nlopt_src" >&5
+$as_echo "$as_me: Done installing library to $(pwd)/src/nlopt_src" >&6;}
 
    ## Store compiler and linker flags
    nlopt_cflags="${NLOPTR_CFLAGS} ${NLOPTR_INCL}"
