@@ -1,3 +1,4 @@
+extern "C" {
 /* Copyright (c) 2007-2014 Massachusetts Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining
@@ -107,4 +108,5 @@ void nlopt_qsort_r(void *base_, size_t nmemb, size_t size, void *thunk,
 	  nlopt_qsort_r(base+npart*size, nmemb-npart, size, thunk, compar);
      }
 #endif /* !HAVE_QSORT_R */
+}
 }

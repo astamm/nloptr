@@ -89,8 +89,8 @@ nlopt_result isres_minimize(int n, nlopt_func f, void *f_data,
      if (population < 1) return NLOPT_INVALID_ARGS;
      survivors = ceil(population * SURVIVOR);
 
-     taup = PHI / sqrt(2*n);
-     tau = PHI / sqrt(2*sqrt(n));
+     taup = PHI / sqrt((double) 2*n);
+     tau = PHI / sqrt((double) 2*sqrt((double) n));
 
      /* we don't handle unbounded search regions */
      for (j = 0; j < n; ++j) if (nlopt_isinf(lb[j]) || nlopt_isinf(ub[j]))
@@ -116,7 +116,7 @@ nlopt_result isres_minimize(int n, nlopt_func f, void *f_data,
 
      for (k = 0; k < population; ++k) {
 	  for (j = 0; j < n; ++j) {
-	       sigmas[k*n+j] = (ub[j] - lb[j]) / sqrt(n);
+	       sigmas[k*n+j] = (ub[j] - lb[j]) / sqrt((double) n);
 	       xs[k*n+j] = nlopt_urand(lb[j], ub[j]);
 	  }
      }
@@ -232,7 +232,7 @@ nlopt_result isres_minimize(int n, nlopt_func f, void *f_data,
 	       i = k % survivors;
 	       ri = irank[i];
 	       for (j = 0; j < n; ++j) {
-		    double sigmamax = (ub[j] - lb[j]) / sqrt(n);
+		    double sigmamax = (ub[j] - lb[j]) / sqrt((double) n);
 		    sigmas[rk*n+j] = sigmas[ri*n+j] 
 			 * exp(taup_rand + tau*nlopt_nrand(0,1));
 		    if (sigmas[rk*n+j] > sigmamax)
@@ -258,7 +258,7 @@ nlopt_result isres_minimize(int n, nlopt_func f, void *f_data,
 			 /* standard mutation for last survivor and
 			    for any survivor components that are now
 			    outside the bounds */
-			 double sigmamax = (ub[j] - lb[j]) / sqrt(n);
+			 double sigmamax = (ub[j] - lb[j]) / sqrt((double) n);
 			 double sigi = sigmas[rk*n+j];
 			 sigmas[rk*n+j] *= exp(taup_rand 
 					       + tau*nlopt_nrand(0,1));
