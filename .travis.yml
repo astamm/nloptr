@@ -15,8 +15,8 @@ matrix:
       apt:
         packages:
           - libnlopt-dev
- 
- after_failure:
+
+after_failure:
   - cat /home/travis/build/jyypma/nloptr/nloptr.Rcheck/00check.logs
 
 notifications:
