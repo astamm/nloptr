@@ -9,8 +9,8 @@ sudo: false
 
 matrix:
   include:
-  - env: BUILD_NLOPT=no
   - env: BUILD_NLOPT=yes
+  - env: BUILD_NLOPT=no
     addons:
       apt:
         packages:
