@@ -140,7 +140,7 @@ if test x"${nlopt_good}" = x"no"; then
    ## install in, after we changed our current directory
    AC_MSG_NOTICE([Starting to install library to $(pwd)/src/nlopt_src])
    $(cd src/nlopt_src; \
-        ./configure --prefix="$(pwd)" --enable-maintainer-mode --enable-shared --enable-static --without-octave \
+        ./configure --prefix="$(pwd)" --enable-shared --enable-static --without-octave \
                     --without-matlab --without-guile --without-python --with-cxx \
                     CC="${NLOPT_CC}" CFLAGS="${NLOPT_CFLAGS}" CPP="${NLOPT_CPP}" \
                     CPPFLAGS="${NLOPT_CPPFLAGS}" CXX="${NLOPT_CXX}" \

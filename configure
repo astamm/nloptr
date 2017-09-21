@@ -3336,7 +3336,7 @@ $as_echo "$as_me: Need to configure and build NLopt" >&6;}
    { $as_echo "$as_me:${as_lineno-$LINENO}: Starting to install library to $(pwd)/src/nlopt_src" >&5
 $as_echo "$as_me: Starting to install library to $(pwd)/src/nlopt_src" >&6;}
    $(cd src/nlopt_src; \
-        ./configure --prefix="$(pwd)" --enable-maintainer-mode --enable-shared --enable-static --without-octave \
+        ./configure --prefix="$(pwd)" --enable-shared --enable-static --without-octave \
                     --without-matlab --without-guile --without-python --with-cxx \
                     CC="${NLOPT_CC}" CFLAGS="${NLOPT_CFLAGS}" CPP="${NLOPT_CPP}" \
                     CPPFLAGS="${NLOPT_CPPFLAGS}" CXX="${NLOPT_CXX}" \
