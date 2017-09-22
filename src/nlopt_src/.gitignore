@@ -12,8 +12,6 @@
 *.zip
 
 # generated code
-api/nlopt.f
-api/nlopt.hpp
 octave/nlopt_optimize_usage.h
 nlopt.pc
 swig/nlopt-enum-renames.i
