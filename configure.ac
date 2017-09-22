@@ -144,9 +144,9 @@ if test x"${nlopt_good}" = x"no"; then
                     --without-matlab --without-guile --without-python --with-cxx \
                     CC="${NLOPT_CC}" CFLAGS="${NLOPT_CFLAGS}" CPP="${NLOPT_CPP}" \
                     CPPFLAGS="${NLOPT_CPPFLAGS}" CXX="${NLOPT_CXX}" \
-                    CXXFLAGS="${NLOPT_CXXFLAGS}" CXXCPP="${NLOPT_CXXCPP}" > /dev/null 2>&1; \
-        make > /dev/null 2>&1; \
-        make install > /dev/null 2>&1; \
+                    CXXFLAGS="${NLOPT_CXXFLAGS}" CXXCPP="${NLOPT_CXXCPP}"; \
+        make; \
+        make install; \
         ls | grep -v "^include$" | grep -v "^lib$" | xargs rm -rf; \
         rm -rf .libs;)
    AC_MSG_NOTICE([Done installing library to $(pwd)/src/nlopt_src])
