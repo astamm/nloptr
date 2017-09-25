@@ -19,7 +19,7 @@ function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
     }
 
     localsolver <- toupper(localsolver)
-    if (localsolver %in% c("COBYLA")) {   # derivative-free
+    if (localsolver %in% c("COBYLA", "BOBYQA")) {   # derivative-free
         dfree <- TRUE
         gsolver <- "NLOPT_LN_AUGLAG"
         lsolver <- paste("NLOPT_LN_", localsolver, sep = "")
