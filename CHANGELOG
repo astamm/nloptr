@@ -1,3 +1,6 @@
+25 September 2017:
+    * Fixed a bug in auglag. BOBYQA is now allowed as local solver (thanks to Léo Belzile).
+
 22 August 2016, version 1.1.0:
     * Fixed a bug that sometimes caused segmentation faults due to an unitialized vector of tolerances for the inequality and/or equality constraints (thanks to Florian Schwendinger). 
 

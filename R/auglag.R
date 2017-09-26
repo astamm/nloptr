@@ -6,6 +6,9 @@
 # Date:   27 January 2014
 #
 # Wrapper to solve optimization problem using Augmented Lagrangian.
+#
+# Changelog:
+#  2017-09-26: Fixed bug, BOBYQA is allowed as local solver (thanks to Léo Belzile).
 
 auglag <-
 function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
