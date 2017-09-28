@@ -151,6 +151,9 @@ if test x"${nlopt_good}" = x"no"; then
         rm -rf .libs;)
    AC_MSG_NOTICE([Done installing library to $(pwd)/src/nlopt_src])
 
+   ## Copy header files to inst/include such that they are available from R.
+   cp src/nlopt_src/include inst/include
+
    ## Store compiler and linker flags
    nlopt_cflags="${NLOPTR_CFLAGS} ${NLOPTR_INCL}"
    nlopt_libs="${NLOPTR_CLINKFLAGS} ${NLOPTR_LIBS}"
