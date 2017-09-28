@@ -50,8 +50,8 @@ Steven G. Johnson, The NLopt nonlinear-optimization package, \url{http://ab-init
 \code{\link{optim}}
 \code{\link{nlm}}
 \code{\link{nlminb}}
-\code{\link[Rsolnp:Rsolnp-package]{Rsolnp}}
-\code{\link[Rsolnp:solnp]{ssolnp}}
+\code{Rsolnp::Rsolnp}
+\code{Rsolnp::solnp}
 \code{\link{nloptr}}
 \code{\link{auglag}}
 \code{\link{bobyqa}}

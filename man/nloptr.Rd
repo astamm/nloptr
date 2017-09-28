@@ -123,8 +123,8 @@ Jelmer Ypma (R interface)
 \code{\link{optim}}
 \code{\link{nlm}}
 \code{\link{nlminb}}
-\code{\link[Rsolnp:Rsolnp-package]{Rsolnp}}
-\code{\link[Rsolnp:solnp]{ssolnp}}
+\code{Rsolnp::Rsolnp}
+\code{Rsolnp::solnp}
 }
 \note{See ?`nloptr-package` for an extended example.}
 \examples{
