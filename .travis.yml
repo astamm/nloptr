@@ -16,9 +16,14 @@ matrix:
         packages:
           - libnlopt-dev
 
-after_failure:
-  - cat /home/travis/build/jyypma/nloptr/nloptr.Rcheck/00check.logs
+after_success:
+  - cat /home/travis/build/jyypma/nloptr/nloptr.Rcheck/00check.log
+  - cat /home/travis/build/jyypma/nloptr/nloptr.Rcheck/00install.out
 
+after_failure:
+  - cat /home/travis/build/jyypma/nloptr/nloptr.Rcheck/00check.log
+  - cat /home/travis/build/jyypma/nloptr/nloptr.Rcheck/00install.out
+  
 notifications:
   email:
     on_success: change
