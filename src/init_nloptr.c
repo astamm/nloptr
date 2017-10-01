@@ -1,7 +1,16 @@
-#include "nloptr.h"
+#include <R.h>
+#include <Rinternals.h>
+#include <stdlib.h> // for NULL
 #include <R_ext/Rdynload.h>
 
-void R_init_mypackage(DllInfo *info) {
-    R_RegisterCCallable(info, "NLoptR_Optimize",  (DL_FUNC) &NLoptR_Optimize);
+#include "nloptr.h"
+
+static const R_CallMethodDef CallEntries[] = {
+    {"NLoptR_Optimize", (DL_FUNC) &NLoptR_Optimize, 1},
+    {NULL, NULL, 0}
+};
+
+void R_init_nloptr(DllInfo *info) {
+    R_registerRoutines(info, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(info, FALSE);
 }
