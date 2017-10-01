@@ -285,7 +285,7 @@ function( x0,
         num.evals <- num.evals + 1
         
         # choose correct minimzation function based on wether constrained were supplied
-        solution <- .Call( NLoptR_Optimize, ret )
+        solution <- .Call( "NLoptR_Optimize", ret, PACKAGE = "nloptr" )
     
         # remove the environment from the return object
         ret$environment <- NULL

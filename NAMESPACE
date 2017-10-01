@@ -1,6 +1,6 @@
 ### NAMESPACE
 
-useDynLib(nloptr, NLoptR_Optimize, .registration = TRUE)
+useDynLib(nloptr, .registration = TRUE)
 
 ## Public routines
 export(nloptr, is.nloptr, nloptr.print.options, nloptr.get.default.options)
