@@ -3349,7 +3349,8 @@ $as_echo "$as_me: Starting to install library to $(pwd)/src/nlopt_src" >&6;}
 $as_echo "$as_me: Done installing library to $(pwd)/src/nlopt_src" >&6;}
 
    ## Copy header files to inst/include such that they are available from R.
-   cp src/nlopt_src/include inst/include
+   mkdir inst/include
+   cp src/nlopt_src/include/* inst/include
 
    ## Store compiler and linker flags
    nlopt_cflags="${NLOPTR_CFLAGS} ${NLOPTR_INCL}"
