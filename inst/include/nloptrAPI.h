@@ -15,36 +15,32 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *   
- * File:   init_nloptr.c
+ * File:   nloptrApi.h
  * Author: Jelmer Ypma
  * Date:   3 October 2017
  *
- * This file registers C functions to be used from R.
+ * This file provides an API for calling internal NLopt code from C within
+ * R packages. The C functions that are registered in init_nloptr.c can be
+ * accessed by external R packages.
  * 
- * 03/10/2017: Included registering of C functions to be used by external R packages.
- * 01/10/2017: Initial version.
+ * 03/10/2017: Initial version.
  */
 
 
+#ifndef __NLOPTRAPI_H__
+#define __NLOPTRAPI_H__
+
+#include <R_ext/Rdynload.h>
 #include <R.h>
 #include <Rinternals.h>
-#include <stdlib.h> // for NULL
-#include <R_ext/Rdynload.h>
 
-#include "nloptr.h"
 #include "nlopt.h"
 
-static const R_CallMethodDef CallEntries[] = {
-    {"NLoptR_Optimize", (DL_FUNC) &NLoptR_Optimize, 1},
-    {NULL, NULL, 0}
-};
-
-void R_init_nloptr(DllInfo *info) {
-    // Register C functions that can be used by external packages
-    // linking to internal NLopt code from C.
-    R_RegisterCCallable("nloptr", "nlopt_version", (DL_FUNC) &nlopt_version);
-
-    // Register routines to improve lookup from R using .Call interface.
-    R_registerRoutines(info, NULL, CallEntries, NULL, NULL);
-    R_useDynamicSymbols(info, FALSE);
+NLOPT_EXTERN(void) nlopt_version(int *major, int *minor, int *bugfix)
+{
+  static void(*fun)(int *, int *, int *) = NULL;
+  if (fun == NULL) fun = (void(*)(int *, int *, int *)) R_GetCCallable("nloptr","nlopt_version");
+  fun(major, minor, major);
 }
+
+#endif /* __NLOPTRAPI_H__ */
