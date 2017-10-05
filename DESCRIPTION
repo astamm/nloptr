@@ -20,7 +20,8 @@ Description:
 License: LGPL-3
 Suggests: testthat (>= 0.8.1),
     knitr,
-    rmarkdown
+    rmarkdown,
+    inline (>= 0.3.14)
 LazyLoad: yes
 NeedsCompilation: yes
 VignetteBuilder: knitr
