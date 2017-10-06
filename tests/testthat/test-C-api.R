@@ -9,11 +9,16 @@
 #
 # CHANGELOG:
 #   05/10/2017: Initial version with test of exposed nlopt_version.
+#   06/10/2017: Define empty R_TESTS environment variable to fix error on Travis.
 
 context("NLopt-C-API")
 
 # Load inline package to compile C code.
 library('inline')
+
+# Define empty R_TESTS environment variable to fix error on Travis
+# See https://github.com/hadley/testthat/issues/144 for more information.
+Sys.setenv("R_TESTS" = "")
 
 # Define arguments for compiler and linker.
 cxxargs = paste0('-I"', system.file("include", package = "nloptr"), '"')
