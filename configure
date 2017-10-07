@@ -622,6 +622,8 @@ ac_subst_vars='LTLIBOBJS
 LIBOBJS
 PKG_LIBS
 PKG_CFLAGS
+MAKEVARS_PKG_LIBS
+MAKEVARS_PKG_CFLAGS
 EGREP
 GREP
 PKGCONFIG
@@ -3353,8 +3355,9 @@ $as_echo "$as_me: Done installing library to $(pwd)/src/nlopt_src" >&6;}
    cp src/nlopt_src/include/* inst/include
 
    ## Store compiler and linker flags
-   nlopt_cflags="${NLOPTR_CFLAGS} ${NLOPTR_INCL}"
-   nlopt_libs="${NLOPTR_CLINKFLAGS} ${NLOPTR_LIBS}"
+   makevars_nlopt_cflags="${NLOPTR_CFLAGS} ${NLOPTR_INCL}"
+   makevars_nlopt_libs="${NLOPTR_CLINKFLAGS} ${NLOPTR_LIBS}"
+   nlopt_libs="-lm"
    #echo "${NLOPTR_CFLAGS} | ${NLOPTR_INCL} | ${NLOPTR_CLINKFLAGS} | ${NLOPTR_LIBS}"
 
 else
@@ -3365,7 +3368,11 @@ fi
 ## could add a test of building a three-liner here
 
 ## now use all these
-PKG_CFLAGS="${PKG_CFLAGS} $nlopt_cflags"
+MAKEVARS_PKG_CFLAGS="${PKG_CFLAGS} $makevars_nlopt_cflags"
+
+MAKEVARS_PKG_LIBS="${PKG_LIBS} $makevars_nlopt_libs"
+
+PKG_CFLAGS="${PKG_CFLAGS}"
 
 PKG_LIBS="${PKG_LIBS} $nlopt_libs"
 

@@ -4,6 +4,10 @@ CFlags <- function( print = TRUE ) {
         flags <- '-I"$(NLOPT_HOME)$(R_ARCH)/include"' 
     } else {
         flags <- '@PKG_CFLAGS@'
+        # Replace flags by include directory on R source path if flag is empty.
+        if (nchar(trimws(flags)) == 0) {
+            flags <- paste0('-I"', system.file("include", package = "nloptr"), '"')
+        }
     }
     if ( print ) {
         cat( flags )
