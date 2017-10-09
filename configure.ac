@@ -168,9 +168,9 @@ fi
 ## could add a test of building a three-liner here
 
 ## now use all these
-AC_SUBST([MAKEVARS_PKG_CFLAGS],["${PKG_CFLAGS} $makevars_nlopt_cflags"])
-AC_SUBST([MAKEVARS_PKG_LIBS],["${PKG_LIBS} $makevars_nlopt_libs"])
-AC_SUBST([PKG_CFLAGS],["${PKG_CFLAGS}"])
+AC_SUBST([MAKEVARS_PKG_CFLAGS],["${PKG_CFLAGS} $nlopt_cflags $makevars_nlopt_cflags"])
+AC_SUBST([MAKEVARS_PKG_LIBS],["${PKG_LIBS} $nlopt_libs $makevars_nlopt_libs"])
+AC_SUBST([PKG_CFLAGS],["${PKG_CFLAGS} $nlopt_cflags"])
 AC_SUBST([PKG_LIBS],["${PKG_LIBS} $nlopt_libs"])
 AC_CONFIG_FILES([src/Makevars R/PkgFlags.R])
 AC_OUTPUT

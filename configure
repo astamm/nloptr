@@ -3368,11 +3368,11 @@ fi
 ## could add a test of building a three-liner here
 
 ## now use all these
-MAKEVARS_PKG_CFLAGS="${PKG_CFLAGS} $makevars_nlopt_cflags"
+MAKEVARS_PKG_CFLAGS="${PKG_CFLAGS} $nlopt_cflags $makevars_nlopt_cflags"
 
-MAKEVARS_PKG_LIBS="${PKG_LIBS} $makevars_nlopt_libs"
+MAKEVARS_PKG_LIBS="${PKG_LIBS} $nlopt_libs $makevars_nlopt_libs"
 
-PKG_CFLAGS="${PKG_CFLAGS}"
+PKG_CFLAGS="${PKG_CFLAGS} $nlopt_cflags"
 
 PKG_LIBS="${PKG_LIBS} $nlopt_libs"
 
