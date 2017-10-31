@@ -147,7 +147,6 @@ if test x"${nlopt_good}" = x"no"; then
                     CXXFLAGS="${NLOPT_CXXFLAGS}" CXXCPP="${NLOPT_CXXCPP}"; \
         make; \
         make install; \
-        ls | grep -v "^include$" | grep -v "^lib$" | xargs rm -rf; \
         rm -rf .libs;)
    AC_MSG_NOTICE([Done installing library to $(pwd)/src/nlopt_src])
 

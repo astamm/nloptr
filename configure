@@ -3345,7 +3345,6 @@ $as_echo "$as_me: Starting to install library to $(pwd)/src/nlopt_src" >&6;}
                     CXXFLAGS="${NLOPT_CXXFLAGS}" CXXCPP="${NLOPT_CXXCPP}"; \
         make; \
         make install; \
-        ls | grep -v "^include$" | grep -v "^lib$" | xargs rm -rf; \
         rm -rf .libs;)
    { $as_echo "$as_me:${as_lineno-$LINENO}: Done installing library to $(pwd)/src/nlopt_src" >&5
 $as_echo "$as_me: Done installing library to $(pwd)/src/nlopt_src" >&6;}
