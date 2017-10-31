@@ -1,7 +1,12 @@
+# Note: This file will be created from PkgFlags.R.in when nloptr is
+# installed with configure (i.e. on *nix systems). Since this file
+# is not created on Windows, the file PkgFlags.R should not be
+# removed from the R build.
+
 ## Provide compiler flags.
 CFlags <- function( print = TRUE ) {
     if (.Platform$OS.type=="windows") {
-        flags <- '-I"$(NLOPT_HOME)$(R_ARCH)/include"' 
+        flags <- paste0('-I"', system.file("include", package = "nloptr"), '"')
     } else {
         flags <- '@PKG_CFLAGS@'
         # Replace flags by include directory on R source path if flag is empty.
@@ -19,7 +24,7 @@ CFlags <- function( print = TRUE ) {
 ## Provide linker flags.
 LdFlags <- function( print = TRUE ) {
     if (.Platform$OS.type=="windows") {
-        flags <- '-L"$(NLOPT_HOME)$(R_ARCH)/lib" -lnlopt_cxx'
+        flags <- ''
     } else {
         flags <- '@PKG_LIBS@'
     }
