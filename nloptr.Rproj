@@ -12,5 +12,10 @@ Encoding: UTF-8
 RnwWeave: Sweave
 LaTeX: pdfLaTeX
 
+AutoAppendNewline: Yes
+StripTrailingWhitespace: Yes
+LineEndingConversion: Posix
+
 BuildType: Package
 PackageInstallArgs: --no-multiarch --with-keep.source --install-tests
+PackageCheckArgs: --no-multiarch
