@@ -151,7 +151,7 @@ if test x"${nlopt_good}" = x"no"; then
    AC_MSG_NOTICE([Done installing library to $(pwd)/src/nlopt_src])
 
    ## Copy header files to inst/include such that they are available from R.
-   mkdir inst/include
+   mkdir -p inst/include
    cp src/nlopt_src/include/* inst/include
 
    ## Store compiler and linker flags
