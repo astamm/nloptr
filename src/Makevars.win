@@ -1,23 +1,10 @@
-# Copyright (C) 2010 Jelmer Ypma. All Rights Reserved.
-# This code is published under the L-GPL.
-#
-# File:   Makevars.win
-# Author: Jelmer Ypma
-# Date:   18 August 2010
-#
-# 09 June 2011: Windows support added thanks to Stefan Theussl and Uwe Ligges.
-#               NLOPT_HOME is the directory where a working installation of 
-#               NLopt is located (within subdirectories NLOPT_VERSION/R_ARCH)
-# 18 November 2011: Removed NLOPT_VERSION macro and adopted some other changes
-#                   proposed by Brian Ripley to make nloptr work with his new toolchain.
-#                   NLopt should now be located in NLOPT_HOME/R_ARCH (i.e. without
-#                   version number)
-# 19 February 2013: NLopt is compiled with --with-cxx option, in order to include
-#                   the StoGo algorithm. This means that we now need to link to 
-#                   with -lnlopt_cxx and also link to the c++ library, -lstdc++.
-# 7 November 2013: Changed PKG_CPPFLAGS to PKG_CFLAGS.
-# 2 May 2014: Added quotes around include paths to allow for spaces in NLOPT_HOME.
+PKG_CPPFLAGS= -I../windows/nlopt-2.4.2/include
+PKG_LIBS= -L../windows/nlopt-2.4.2/lib${R_ARCH} -lnlopt_cxx
 
-# C Compiler options
-PKG_CFLAGS = -I"$(NLOPT_HOME)$(R_ARCH)/include"
-PKG_LIBS = -L"$(NLOPT_HOME)$(R_ARCH)/lib" -lnlopt_cxx
+all: clean winlibs
+
+winlibs:
+	"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" "../tools/winlibs.R"
+
+clean:
+	rm -f $(SHLIB) $(OBJECTS)
