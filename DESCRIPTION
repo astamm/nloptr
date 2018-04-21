@@ -1,8 +1,8 @@
 Package: nloptr
 Type: Package
 Title: R Interface to NLopt
-Version: 1.1.0
-Date: 2016-08-22
+Version: 1.1.9
+Date: 2018-04-21
 Author: Jelmer Ypma <uctpjyy@ucl.ac.uk>, with contributions by
         Hans W. Borchers <hwborchers@googlemail.com> and 
         Dirk Eddelbuettel <edd@debian.org>
@@ -16,7 +16,7 @@ Description:
     information on the available algorithms. During installation of nloptr on 
     Unix-based sytems, the installer checks whether the NLopt library is
     installed on the system. If the NLopt library cannot be found, the code
-    is downloaded and compiled from the NLopt website.
+    is compiled using the NLopt source included in the nloptr package.
 License: LGPL-3
 Suggests: testthat (>= 0.8.1),
     knitr,
@@ -25,3 +25,4 @@ Suggests: testthat (>= 0.8.1),
 LazyLoad: yes
 NeedsCompilation: yes
 VignetteBuilder: knitr
+RoxygenNote: 6.0.1
