@@ -14,7 +14,7 @@ Description:
     implementations of various other algorithms.
     See http://ab-initio.mit.edu/wiki/index.php/NLopt_Introduction for more
     information on the available algorithms. During installation of nloptr on 
-    Unix-based sytems, the installer checks whether the NLopt library is
+    Unix-based systems, the installer checks whether the NLopt library is
     installed on the system. If the NLopt library cannot be found, the code
     is compiled using the NLopt source included in the nloptr package.
 License: LGPL-3
