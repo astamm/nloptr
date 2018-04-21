@@ -13,7 +13,7 @@
                                 lb <=   x  <= ub
 ```
 
-The NLopt library is available under the GNU Lesser General Public License (LGPL), and the copyrights are owned by a variety of authors. See the [website](http://ab-initio.mit.edu/wiki/index.php/Citing_NLopt) for information on how to cite NLopt and the algorithms you use. The R interface to NLopt, also under LGPL, can be downloaded from [CRAN](http://cran.r-project.org/web/packages/nloptr/index.html) or [GitHub](https://github.com/jyypma/nloptr) (development version).
+The NLopt library is available under the GNU Lesser General Public License (LGPL), and the copyrights are owned by a variety of authors. See the [website](http://ab-initio.mit.edu/wiki/index.php/Citing_NLopt) for information on how to cite NLopt and the algorithms you use. The R interface to NLopt, also under LGPL, can be downloaded from [CRAN](https://CRAN.R-project.org/package=nloptr/index.html) or [GitHub](https://github.com/jyypma/nloptr) (development version).
 
 ## Installation
 For most versions of R `nloptr` can be installed from R with 
@@ -35,11 +35,11 @@ This package is distributed in the hope that it may be useful to some. The usual
 ## Files
 
 * [NLopt-2.4-win-build.zip](http://www.ucl.ac.uk/~uctpjyy/downloads/NLopt-2.4-win-build.zip) - static libraries of NLopt 2.4 compiled for Windows 32-bit and 64-bit.
-* [nloptr.pdf](http://cran.r-project.org/web/packages/nloptr/vignettes/nloptr.pdf) - an R vignette describing how to use the R interface to NLopt.
+* [nloptr.pdf](https://CRAN.R-project.org/package=nloptr/vignettes/nloptr.pdf) - an R vignette describing how to use the R interface to NLopt.
 * [INSTALL.windows](https://github.com/jyypma/nloptr/blob/master/INSTALL.windows) - description of how to install `nloptr` from source for Windows.
 
 ## Changelog 
-A full version of the changelog can be found on [CRAN](http://cran.r-project.org/web/packages/nloptr/ChangeLog)
+A full version of the changelog can be found on [CRAN](https://CRAN.R-project.org/package=nloptr/ChangeLog)
 
 | Date       | Description |
 | :---------- | :----------- |
