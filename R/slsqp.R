@@ -111,7 +111,7 @@ slsqp <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
 
     if (!is.null(hin)) {
         if ( getOption('nloptr.show.inequality.warning') ) {
-            message('For consistency with the rest of the package the inequality sign will be switched from >= to <= in the next nloptr version.')
+            message('For consistency with the rest of the package the inequality sign may be switched from >= to <= in a future nloptr version.')
         }
 
         .hin <- match.fun(hin)
