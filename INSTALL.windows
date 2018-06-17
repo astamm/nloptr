@@ -73,6 +73,8 @@ Requirements: Rtools
 
 2. Before building from the MS-DOS prompt, define an enviroment variable with the location of the NLopt library, e.g.
     set NLOPT_HOME=c:/tmp/nlopt
+    
+    OR add NLOPT_HOME=[folder with NLOPT] to your .R/Makevars file
 
 3. Compile the R interface
     R CMD build nloptr
