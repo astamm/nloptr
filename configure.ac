@@ -4,17 +4,32 @@
 ##
 ##  nloptr -- R interface to NLopt
 ##
-##  Copyright (C) 2014  Dirk Eddelbuettel 
+##  Copyright (C) 2014  Dirk Eddelbuettel
 ##
 ## This file is licensed under the GPL-2 or later just like most of my
-## Open Source code, and is granted an exemption (should it be needed) 
-## for inclusion into nloptr 
+## Open Source code, and is granted an exemption (should it be needed)
+## for inclusion into nloptr
 
 # require at least autoconf 2.61
 AC_PREREQ(2.61)
 
 # Process this file with autoconf to produce a configure script.
 AC_INIT([nloptr], [1.0.1])
+
+## Set R_HOME, respecting an environment variable if set
+: ${R_HOME=$(R RHOME)}
+if test -z "${R_HOME}"; then
+ AC_MSG_ERROR([Could not determine R_HOME.])
+fi
+
+## Get R compilers and flags.
+CC=$("${R_HOME}/bin/R" CMD config CC)
+CFLAGS=$("${R_HOME}/bin/R" CMD config CFLAGS)
+CPP=$("${R_HOME}/bin/R" CMD config CPP)
+CPPFLAGS=$("${R_HOME}/bin/R" CMD config CPPFLAGS)
+CXX=$("${R_HOME}/bin/R" CMD config CXX)
+CXXFLAGS=$("${R_HOME}/bin/R" CMD config CXXFLAGS)
+CXXCPP=$("${R_HOME}/bin/R" CMD config CXXCPP)
 
 # We are using C++
 AC_LANG(C++)
@@ -75,7 +90,7 @@ nlopt_header=nlopt.h
 AC_CHECK_HEADER([$nlopt_header],
                 [nlopt_good="yes"],  # may want to check for minimal version here too
                 [nlopt_good="no"],
-                [])       
+                [])
 
 ## Check for NLopt version number using pkg-config.
 # Perform this check after the header check,
@@ -88,52 +103,34 @@ if test x"${nlopt_good}" = x"yes"; then
         if pkg-config --exists nlopt; then
             ## obtain version number
             nlopt_version=$(pkg-config --modversion nlopt)
-        
+
             case ${nlopt_version} in
                  1.*|2.0.*|2.1.*|2.2.*|2.3.*)
                     AC_MSG_WARN([Only NLopt version 2.4.0 or greater can be used with nloptr.])
                     nlopt_good="no"
-                ;; 
-            esac    
+                ;;
+            esac
         fi
     else
         AC_MSG_WARN([Could not test version of NLopt because pkg-config is not installed. Make sure the version number of NLopt is 2.4.0 or greater. Otherwise nloptr can not be used.])
     fi
 fi
 
-## in case neither of the two methods above worked, download NLopt and build it locally
+## in case neither of the two methods above worked, build NLopt locally
+## from included source files.
 if test x"${nlopt_good}" = x"no"; then
    AC_MSG_NOTICE([Need to configure and build NLopt])
-
-   ## C Compiler options    
-   NLOPTR_CFLAGS= 
-
-   ## additional C Compiler options for linking
-   NLOPTR_CLINKFLAGS= 
 
    ## Libraries necessary to link with NLopt
    NLOPTR_LIBS="-lm $(pwd)/src/nlopt_src/lib/libnlopt_cxx.a"
 
-   ## Necessary Include dirs 
+   ## Necessary Include dirs
    NLOPTR_INCL="-I$(pwd)/src/nlopt_src/include"
 
-   ## Set R_HOME, respecting an environment variable if set 
-   : ${R_HOME=$(R RHOME)}
-   if test -z "${R_HOME}"; then
-       AC_MSG_ERROR([Could not determine R_HOME.])   
-   fi
-
-   ## Get R compilers and flags
-   NLOPT_CC=$("${R_HOME}/bin/R" CMD config CC)
-   NLOPT_CFLAGS=$("${R_HOME}/bin/R" CMD config CFLAGS)
-   NLOPT_CPP=$("${R_HOME}/bin/R" CMD config CPP)
+   ## Get flags that have been re-defined above
+   ## to test whether NLopt headers are present.
    NLOPT_CPPFLAGS=$("${R_HOME}/bin/R" CMD config CPPFLAGS)
-   NLOPT_CXX=$("${R_HOME}/bin/R" CMD config CXX)
    NLOPT_CXXFLAGS=$("${R_HOME}/bin/R" CMD config CXXFLAGS)
-   NLOPT_CXXCPP=$("${R_HOME}/bin/R" CMD config CXXCPP)
-
-   ## report values
-   #echo "${NLOPT_CC} | ${NLOPT_CFLAGS} | ${NLOPT_CPPFLAGS} | ${NLOPT_CPPFLAGS} | ${NLOPT_CXX} | ${NLOPT_CXXFLAGS} | ${NLOPT_CXXCPP}"
 
    ## Compile NLopt source code and clean up
    ## --prefix="`pwd`", which is the directory we want to
@@ -142,9 +139,9 @@ if test x"${nlopt_good}" = x"no"; then
    $(cd src/nlopt_src; \
         ./configure --prefix="$(pwd)" --enable-shared --enable-static --without-octave \
                     --without-matlab --without-guile --without-python --with-cxx \
-                    CC="${NLOPT_CC}" CFLAGS="${NLOPT_CFLAGS}" CPP="${NLOPT_CPP}" \
-                    CPPFLAGS="${NLOPT_CPPFLAGS}" CXX="${NLOPT_CXX}" \
-                    CXXFLAGS="${NLOPT_CXXFLAGS}" CXXCPP="${NLOPT_CXXCPP}"; \
+                    CC="${CC}" CFLAGS="${CFLAGS}" CPP="${CPP}" \
+                    CPPFLAGS="${NLOPT_CPPFLAGS}" CXX="${CXX}" \
+                    CXXFLAGS="${NLOPT_CXXFLAGS}" CXXCPP="${CXXCPP}"; \
         make; \
         make install; \
         rm -rf .libs;)
@@ -155,10 +152,9 @@ if test x"${nlopt_good}" = x"no"; then
    cp src/nlopt_src/include/* inst/include
 
    ## Store compiler and linker flags
-   makevars_nlopt_cflags="${NLOPTR_CFLAGS} ${NLOPTR_INCL}"
-   makevars_nlopt_libs="${NLOPTR_CLINKFLAGS} ${NLOPTR_LIBS}"
+   makevars_nlopt_cflags="${CFLAGS} ${NLOPTR_INCL}"
+   makevars_nlopt_libs="${NLOPTR_LIBS}"
    nlopt_libs="-lm"
-   #echo "${NLOPTR_CFLAGS} | ${NLOPTR_INCL} | ${NLOPTR_CLINKFLAGS} | ${NLOPTR_LIBS}"
 
 else
    AC_MSG_NOTICE([Suitable NLopt library found.])

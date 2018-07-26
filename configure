@@ -1995,6 +1995,21 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 
+## Set R_HOME, respecting an environment variable if set
+: ${R_HOME=$(R RHOME)}
+if test -z "${R_HOME}"; then
+ as_fn_error $? "Could not determine R_HOME." "$LINENO" 5
+fi
+
+## Get R compilers and flags.
+CC=$("${R_HOME}/bin/R" CMD config CC)
+CFLAGS=$("${R_HOME}/bin/R" CMD config CFLAGS)
+CPP=$("${R_HOME}/bin/R" CMD config CPP)
+CPPFLAGS=$("${R_HOME}/bin/R" CMD config CPPFLAGS)
+CXX=$("${R_HOME}/bin/R" CMD config CXX)
+CXXFLAGS=$("${R_HOME}/bin/R" CMD config CXXFLAGS)
+CXXCPP=$("${R_HOME}/bin/R" CMD config CXXCPP)
+
 # We are using C++
 ac_ext=cpp
 ac_cpp='$CXXCPP $CPPFLAGS'
@@ -3297,16 +3312,11 @@ $as_echo "$as_me: WARNING: Could not test version of NLopt because pkg-config is
     fi
 fi
 
-## in case neither of the two methods above worked, download NLopt and build it locally
+## in case neither of the two methods above worked, build NLopt locally
+## from included source files.
 if test x"${nlopt_good}" = x"no"; then
    { $as_echo "$as_me:${as_lineno-$LINENO}: Need to configure and build NLopt" >&5
 $as_echo "$as_me: Need to configure and build NLopt" >&6;}
-
-   ## C Compiler options
-   NLOPTR_CFLAGS=
-
-   ## additional C Compiler options for linking
-   NLOPTR_CLINKFLAGS=
 
    ## Libraries necessary to link with NLopt
    NLOPTR_LIBS="-lm $(pwd)/src/nlopt_src/lib/libnlopt_cxx.a"
@@ -3314,23 +3324,10 @@ $as_echo "$as_me: Need to configure and build NLopt" >&6;}
    ## Necessary Include dirs
    NLOPTR_INCL="-I$(pwd)/src/nlopt_src/include"
 
-   ## Set R_HOME, respecting an environment variable if set
-   : ${R_HOME=$(R RHOME)}
-   if test -z "${R_HOME}"; then
-       as_fn_error $? "Could not determine R_HOME." "$LINENO" 5
-   fi
-
-   ## Get R compilers and flags
-   NLOPT_CC=$("${R_HOME}/bin/R" CMD config CC)
-   NLOPT_CFLAGS=$("${R_HOME}/bin/R" CMD config CFLAGS)
-   NLOPT_CPP=$("${R_HOME}/bin/R" CMD config CPP)
+   ## Get flags that have been re-defined above
+   ## to test whether NLopt headers are present.
    NLOPT_CPPFLAGS=$("${R_HOME}/bin/R" CMD config CPPFLAGS)
-   NLOPT_CXX=$("${R_HOME}/bin/R" CMD config CXX)
    NLOPT_CXXFLAGS=$("${R_HOME}/bin/R" CMD config CXXFLAGS)
-   NLOPT_CXXCPP=$("${R_HOME}/bin/R" CMD config CXXCPP)
-
-   ## report values
-   #echo "${NLOPT_CC} | ${NLOPT_CFLAGS} | ${NLOPT_CPPFLAGS} | ${NLOPT_CPPFLAGS} | ${NLOPT_CXX} | ${NLOPT_CXXFLAGS} | ${NLOPT_CXXCPP}"
 
    ## Compile NLopt source code and clean up
    ## --prefix="`pwd`", which is the directory we want to
@@ -3340,9 +3337,9 @@ $as_echo "$as_me: Starting to install library to $(pwd)/src/nlopt_src" >&6;}
    $(cd src/nlopt_src; \
         ./configure --prefix="$(pwd)" --enable-shared --enable-static --without-octave \
                     --without-matlab --without-guile --without-python --with-cxx \
-                    CC="${NLOPT_CC}" CFLAGS="${NLOPT_CFLAGS}" CPP="${NLOPT_CPP}" \
-                    CPPFLAGS="${NLOPT_CPPFLAGS}" CXX="${NLOPT_CXX}" \
-                    CXXFLAGS="${NLOPT_CXXFLAGS}" CXXCPP="${NLOPT_CXXCPP}"; \
+                    CC="${CC}" CFLAGS="${CFLAGS}" CPP="${CPP}" \
+                    CPPFLAGS="${NLOPT_CPPFLAGS}" CXX="${CXX}" \
+                    CXXFLAGS="${NLOPT_CXXFLAGS}" CXXCPP="${CXXCPP}"; \
         make; \
         make install; \
         rm -rf .libs;)
@@ -3354,10 +3351,9 @@ $as_echo "$as_me: Done installing library to $(pwd)/src/nlopt_src" >&6;}
    cp src/nlopt_src/include/* inst/include
 
    ## Store compiler and linker flags
-   makevars_nlopt_cflags="${NLOPTR_CFLAGS} ${NLOPTR_INCL}"
-   makevars_nlopt_libs="${NLOPTR_CLINKFLAGS} ${NLOPTR_LIBS}"
+   makevars_nlopt_cflags="${CFLAGS} ${NLOPTR_INCL}"
+   makevars_nlopt_libs="${NLOPTR_LIBS}"
    nlopt_libs="-lm"
-   #echo "${NLOPTR_CFLAGS} | ${NLOPTR_INCL} | ${NLOPTR_CLINKFLAGS} | ${NLOPTR_LIBS}"
 
 else
    { $as_echo "$as_me:${as_lineno-$LINENO}: Suitable NLopt library found." >&5
