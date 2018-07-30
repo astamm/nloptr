@@ -16,6 +16,19 @@ AC_PREREQ(2.61)
 # Process this file with autoconf to produce a configure script.
 AC_INIT([nloptr], [1.0.1])
 
+## consider command-line options if given
+##
+AC_ARG_WITH([nlopt-cflags],
+            AC_HELP_STRING([--with-nlopt-cflags=CFLAGS],
+                           [Supply compiler flags such as the location of NLopt header files]),
+            [nlopt_cflags=$withval],
+            [nlopt_cflags=""])
+AC_ARG_WITH([nlopt-libs],
+            AC_HELP_STRING([--with-nlopt-libs=LIBS],
+                           [Supply the linker flags such as the location and name of NLopt libraries]),
+            [nlopt_libs=$withval],
+            [nlopt_libs=""])
+
 ## Set R_HOME, respecting an environment variable if set
 : ${R_HOME=$(R RHOME)}
 if test -z "${R_HOME}"; then
@@ -23,12 +36,13 @@ if test -z "${R_HOME}"; then
 fi
 
 ## Get R compilers and flags.
+## Add user-supplied flags to flags specified by R if they have been set.
 CC=$("${R_HOME}/bin/R" CMD config CC)
-CFLAGS=$("${R_HOME}/bin/R" CMD config CFLAGS)
+CFLAGS="$("${R_HOME}/bin/R" CMD config CFLAGS) ${CFLAGS}"
 CPP=$("${R_HOME}/bin/R" CMD config CPP)
-CPPFLAGS=$("${R_HOME}/bin/R" CMD config CPPFLAGS)
+CPPFLAGS="$("${R_HOME}/bin/R" CMD config CPPFLAGS) ${CPPFLAGS}"
 CXX=$("${R_HOME}/bin/R" CMD config CXX)
-CXXFLAGS=$("${R_HOME}/bin/R" CMD config CXXFLAGS)
+CXXFLAGS="$("${R_HOME}/bin/R" CMD config CXXFLAGS) ${CXXFLAGS}"
 CXXCPP=$("${R_HOME}/bin/R" CMD config CXXCPP)
 
 # We are using C++
@@ -44,26 +58,6 @@ AC_PROG_PKGCONFIG
 nlopt_good="no"
 nlopt_cflags=""
 nlopt_libs=""
-r_args=""
-
-## consider command-line options if given
-##
-AC_ARG_WITH([nlopt-cflags],
-            AC_HELP_STRING([--with-nlopt-cflags=CFLAGS],
-                           [Supply compiler flags such as the location of NLopt header files]),
-            [nlopt_cflags=$withval],
-            [nlopt_cflags=""])
-AC_ARG_WITH([nlopt-libs],
-            AC_HELP_STRING([--with-nlopt-libs=LIBS],
-                           [Supply the linker flags such as the location and name of NLopt libraries]),
-            [nlopt_libs=$withval],
-            [nlopt_libs=""])
-AC_ARG_WITH([r-args],
-            AC_HELP_STRING([--with-r-args=ARGUMENTS],
-                           [Supply the arguments that should be passed to Rscript. Default: --vanilla]),
-            [r_args=$withval],
-            [r_args="--vanilla"])
-
 
 ## also use pkg-config to check for NLopt
 ##
@@ -129,8 +123,8 @@ if test x"${nlopt_good}" = x"no"; then
 
    ## Get flags that have been re-defined above
    ## to test whether NLopt headers are present.
-   NLOPT_CPPFLAGS=$("${R_HOME}/bin/R" CMD config CPPFLAGS)
-   NLOPT_CXXFLAGS=$("${R_HOME}/bin/R" CMD config CXXFLAGS)
+   #NLOPT_CPPFLAGS=$("${R_HOME}/bin/R" CMD config CPPFLAGS)
+   #NLOPT_CXXFLAGS=$("${R_HOME}/bin/R" CMD config CXXFLAGS)
 
    ## Compile NLopt source code and clean up
    ## --prefix="`pwd`", which is the directory we want to

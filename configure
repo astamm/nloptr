@@ -679,7 +679,6 @@ ac_user_opts='
 enable_option_checking
 with_nlopt_cflags
 with_nlopt_libs
-with_r_args
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1315,8 +1314,6 @@ Optional Packages:
                           header files
   --with-nlopt-libs=LIBS  Supply the linker flags such as the location and
                           name of NLopt libraries
-  --with-r-args=ARGUMENTS Supply the arguments that should be passed to
-                          Rscript. Default: --vanilla
 
 Some influential environment variables:
   CXX         C++ compiler command
@@ -1995,6 +1992,25 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 
+## consider command-line options if given
+##
+
+# Check whether --with-nlopt-cflags was given.
+if test "${with_nlopt_cflags+set}" = set; then :
+  withval=$with_nlopt_cflags; nlopt_cflags=$withval
+else
+  nlopt_cflags=""
+fi
+
+
+# Check whether --with-nlopt-libs was given.
+if test "${with_nlopt_libs+set}" = set; then :
+  withval=$with_nlopt_libs; nlopt_libs=$withval
+else
+  nlopt_libs=""
+fi
+
+
 ## Set R_HOME, respecting an environment variable if set
 : ${R_HOME=$(R RHOME)}
 if test -z "${R_HOME}"; then
@@ -2002,12 +2018,13 @@ if test -z "${R_HOME}"; then
 fi
 
 ## Get R compilers and flags.
+## Add user-supplied flags to flags specified by R if they have been set.
 CC=$("${R_HOME}/bin/R" CMD config CC)
-CFLAGS=$("${R_HOME}/bin/R" CMD config CFLAGS)
+CFLAGS="$("${R_HOME}/bin/R" CMD config CFLAGS) ${CFLAGS}"
 CPP=$("${R_HOME}/bin/R" CMD config CPP)
-CPPFLAGS=$("${R_HOME}/bin/R" CMD config CPPFLAGS)
+CPPFLAGS="$("${R_HOME}/bin/R" CMD config CPPFLAGS) ${CPPFLAGS}"
 CXX=$("${R_HOME}/bin/R" CMD config CXX)
-CXXFLAGS=$("${R_HOME}/bin/R" CMD config CXXFLAGS)
+CXXFLAGS="$("${R_HOME}/bin/R" CMD config CXXFLAGS) ${CXXFLAGS}"
 CXXCPP=$("${R_HOME}/bin/R" CMD config CXXCPP)
 
 # We are using C++
@@ -2962,35 +2979,6 @@ fi
 nlopt_good="no"
 nlopt_cflags=""
 nlopt_libs=""
-r_args=""
-
-## consider command-line options if given
-##
-
-# Check whether --with-nlopt-cflags was given.
-if test "${with_nlopt_cflags+set}" = set; then :
-  withval=$with_nlopt_cflags; nlopt_cflags=$withval
-else
-  nlopt_cflags=""
-fi
-
-
-# Check whether --with-nlopt-libs was given.
-if test "${with_nlopt_libs+set}" = set; then :
-  withval=$with_nlopt_libs; nlopt_libs=$withval
-else
-  nlopt_libs=""
-fi
-
-
-# Check whether --with-r-args was given.
-if test "${with_r_args+set}" = set; then :
-  withval=$with_r_args; r_args=$withval
-else
-  r_args="--vanilla"
-fi
-
-
 
 ## also use pkg-config to check for NLopt
 ##
@@ -3326,8 +3314,8 @@ $as_echo "$as_me: Need to configure and build NLopt" >&6;}
 
    ## Get flags that have been re-defined above
    ## to test whether NLopt headers are present.
-   NLOPT_CPPFLAGS=$("${R_HOME}/bin/R" CMD config CPPFLAGS)
-   NLOPT_CXXFLAGS=$("${R_HOME}/bin/R" CMD config CXXFLAGS)
+   #NLOPT_CPPFLAGS=$("${R_HOME}/bin/R" CMD config CPPFLAGS)
+   #NLOPT_CXXFLAGS=$("${R_HOME}/bin/R" CMD config CXXFLAGS)
 
    ## Compile NLopt source code and clean up
    ## --prefix="`pwd`", which is the directory we want to
