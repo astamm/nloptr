@@ -1,8 +1,8 @@
 Package: nloptr
 Type: Package
 Title: R Interface to NLopt
-Version: 1.1.9
-Date: 2018-04-21
+Version: 1.2.0
+Date: 2018-08-02
 Author: Jelmer Ypma <uctpjyy@ucl.ac.uk>, with contributions by
         Hans W. Borchers <hwborchers@googlemail.com> and 
         Dirk Eddelbuettel <edd@debian.org>
