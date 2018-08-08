@@ -1,0 +1,52 @@
+ROI.plugin.nloptr: Status: 2 ERRORs
+CCpop: Status: 1 NOTE
+dtwclust: Status: 2 NOTEs
+episplineDensity: Status: 1 NOTE
+lme4: Status: 1 NOTE
+MaxPro: Status: 1 NOTE
+mdpeer: Status: 1 NOTE
+minimaxdesign: Status: 1 NOTE
+RandomFields: Status: 1 NOTE
+RiskPortfolios: Status: 1 NOTE
+rugarch: Status: 1 NOTE
+seqHMM: Status: 1 NOTE
+smooth: Status: 1 NOTE
+stpm: Status: 1 NOTE
+support: Status: 1 NOTE
+afex: Status: OK
+binaryGP: Status: OK
+blackbox: Status: OK
+CEGO: Status: OK
+ciuupi: Status: OK
+corHMM: Status: OK
+cosa: Status: OK
+diffusion: Status: OK
+drtmle: Status: OK
+GDINA: Status: OK
+GRCdata: Status: OK
+hisse: Status: OK
+ICAOD: Status: OK
+InfoTrad: Status: OK
+metafor: Status: OK
+mev: Status: OK
+mirt: Status: OK
+modcmfitr: Status: OK
+morpheus: Status: OK
+MSCMT: Status: OK
+nlshrink: Status: OK
+OptimaRegion: Status: OK
+optiSolve: Status: OK
+OUwie: Status: OK
+parma: Status: OK
+pomp: Status: OK
+PortfolioAnalytics: Status: OK
+ptw: Status: OK
+qle: Status: OK
+regsem: Status: OK
+RobustGaSP: Status: OK
+RSDA: Status: OK
+SACOBRA: Status: OK
+spaMM: Status: OK
+SPOT: Status: OK
+SuperLearner: Status: OK
+UncertainInterval: Status: OK
