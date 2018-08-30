@@ -28,7 +28,7 @@ controls.}
 
 \item{eval_g_ineq}{function to evaluate (non-)linear inequality constraints
 that should hold in the solution.  It can also return gradient information
-at the same time in a list with elements "objective" and "jacobian" (see
+at the same time in a list with elements "constraints" and "jacobian" (see
 below for an example).}
 
 \item{eval_jac_g_ineq}{function to evaluate the jacobian of the (non-)linear
@@ -36,7 +36,7 @@ inequality constraints that should hold in the solution.}
 
 \item{eval_g_eq}{function to evaluate (non-)linear equality constraints that
 should hold in the solution.  It can also return gradient information at the
-same time in a list with elements "objective" and "jacobian" (see below for
+same time in a list with elements "constraints" and "jacobian" (see below for
 an example).}
 
 \item{eval_jac_g_eq}{function to evaluate the jacobian of the (non-)linear
