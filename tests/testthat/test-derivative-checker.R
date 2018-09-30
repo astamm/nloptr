@@ -23,7 +23,12 @@ test_that("Test derivative checker.", {
         return( 2*( x - a ) )
     }
     
-    res <- check.derivatives( .x=1:10, func=f, func_grad=f_grad, check_derivatives_print='none', a=runif(10) )
+    # Generated a using:
+    # > set.seed(3141)
+    # > a = runif(10)
+    a <- c(0.754995959345251, 0.964991861954331, 0.0414307734463364, 0.42781219445169,  0.6517094373703, 
+           0.838369226781651, 0.774285392835736, 0.531992698321119,  0.768715722020715, 0.785174649208784)
+    res <- check.derivatives( .x=1:10, func=f, func_grad=f_grad, check_derivatives_print='none', a=a )
     expect_that( sum( res$flag_derivative_warning ), equals( 0 ) )
     
     # res <- check.derivatives( .x=1:10, func=f, func_grad=f_grad, check_derivatives_print='errors', a=runif(10) )
@@ -38,7 +43,7 @@ test_that("Test derivative checker.", {
         return( 2*( x - a ) + c(0,.1,rep(0,8)) )
     }
     
-    res <- check.derivatives( .x=1:10, func=f, func_grad=f_grad, check_derivatives_print='none', a=runif(10) )
+    res <- check.derivatives( .x=1:10, func=f, func_grad=f_grad, check_derivatives_print='none', a=a )
     expect_that( sum( res$flag_derivative_warning ), equals( 1 ) )
     
      #res <- check.derivatives( .x=1:10, func=f, func_grad=f_grad, check_derivatives_print='errors', a=runif(10) )
@@ -58,7 +63,7 @@ test_that("Test derivative checker.", {
         return( rbind( rep(1,length(x)) + c(0,.01,rep(0,8)), 2*(x-a) + c(0,.1,rep(0,8)) ) )
     }
     
-    res <- check.derivatives( .x=1:10, func=g, func_grad=g_grad, check_derivatives_print='none', a=runif(10) )
+    res <- check.derivatives( .x=1:10, func=g, func_grad=g_grad, check_derivatives_print='none', a=a )
     expect_that( sum( res$flag_derivative_warning ), equals( 2 ) )
     
     # res <- check.derivatives( .x=1:10, func=g, func_grad=g_grad, check_derivatives_print='errors', a=runif(10) )

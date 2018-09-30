@@ -1,24 +1,28 @@
 Package: nloptr
 Type: Package
-Title: R interface to NLopt
-Version: 1.0.4
-Date: 2014-08-02
+Title: R Interface to NLopt
+Version: 1.2.0
+Date: 2018-08-02
 Author: Jelmer Ypma <uctpjyy@ucl.ac.uk>, with contributions by
         Hans W. Borchers <hwborchers@googlemail.com> and 
         Dirk Eddelbuettel <edd@debian.org>
 Maintainer: Jelmer Ypma <uctpjyy@ucl.ac.uk>
 Description: 
-    nloptr is an R interface to NLopt. NLopt is a free/open-source library for
-    nonlinear optimization, providing a common interface for a number of
-    different free optimization routines available online as well as original
-    implementations of various other algorithms.
-    See http://ab-initio.mit.edu/wiki/index.php/NLopt_Introduction for more
-    information on the available algorithms. During installation on Unix the
-    NLopt code is downloaded and compiled from the NLopt website.
+    Solve optimization problems using an R interface to NLopt. NLopt is a 
+    free/open-source library for nonlinear optimization, providing a common
+    interface for a number of different free optimization routines available
+    online as well as original implementations of various other algorithms.
+    See <http://ab-initio.mit.edu/wiki/index.php/NLopt_Introduction> for more
+    information on the available algorithms. During installation of nloptr on 
+    Unix-based systems, the installer checks whether the NLopt library is
+    installed on the system. If the NLopt library cannot be found, the code
+    is compiled using the NLopt source included in the nloptr package.
 License: LGPL-3
-Suggests: testthat (>= 0.8.1)
+Suggests: testthat (>= 0.8.1), knitr, rmarkdown, inline (>= 0.3.14)
 LazyLoad: yes
-Packaged: 2014-08-02 18:12:19 UTC; Jelmer
 NeedsCompilation: yes
+VignetteBuilder: knitr
+RoxygenNote: 6.0.1
+Packaged: 2018-08-07 19:35:17 UTC; Jelmer
 Repository: CRAN
-Date/Publication: 2014-08-04 15:35:43
+Date/Publication: 2018-09-30 15:00:02 UTC

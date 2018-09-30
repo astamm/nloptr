@@ -69,10 +69,10 @@ The bash script sets macros for the correct compilers, as used by R, and configu
 *** To install nloptr
 Requirements: Rtools
 
-1. Download the source of nloptr (from R-forge https://r-forge.r-project.org/R/?group_id=933 or CRAN http://cran.r-project.org/web/packages/nloptr/index.html) and unpack this somewhere.
+1. Download the source of nloptr (from GitHub https://github.com/jyypma/nloptr or CRAN http://cran.r-project.org/web/packages/nloptr/index.html) and unpack this somewhere.
 
 2. Before building from the MS-DOS prompt, define an enviroment variable with the location of the NLopt library, e.g.
     set NLOPT_HOME=c:/tmp/nlopt
 
 3. Compile the R interface
-    R CMD build nloptr/pkg
+    R CMD build nloptr

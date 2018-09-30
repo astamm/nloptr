@@ -1,8 +1,4 @@
-### R code from vignette source 'nloptr.Rnw'
-
-###################################################
-### code chunk number 1: setSweaveOptions
-###################################################
+## ----setSweaveOptions,echo=FALSE--------------------------
 # have an (invisible) initialization noweb chunk
 # to remove the default continuation prompt '>'
 options(continue = " ")
@@ -12,41 +8,23 @@ options(width = 60)
 options(SweaveHooks=list(fig=function()
     par(mar=c(5.1, 4.1, 1.1, 2.1))))
 
+## ----installNLopt, eval=FALSE-----------------------------
+#  install.packages("nloptr")
 
-###################################################
-### code chunk number 2: installNLopt (eval = FALSE)
-###################################################
-## install.packages("nloptr")
+## ----testNLoptInstallation, eval=FALSE--------------------
+#  library('nloptr')
+#  ?nloptr
 
+## ----installNLoptRForge, eval=FALSE-----------------------
+#  install.packages("nloptr",repos="http://R-Forge.R-project.org")
 
-###################################################
-### code chunk number 3: testNLoptInstallation (eval = FALSE)
-###################################################
-## library('nloptr')
-## ?nloptr
+## ----installNLoptRForgeSource, eval=FALSE-----------------
+#  install.packages("nloptr",type="source",repos="http://R-Forge.R-project.org")
 
-
-###################################################
-### code chunk number 4: installNLoptRForge (eval = FALSE)
-###################################################
-## install.packages("nloptr",repos="http://R-Forge.R-project.org")
-
-
-###################################################
-### code chunk number 5: installNLoptRForgeSource (eval = FALSE)
-###################################################
-## install.packages("nloptr",type="source",repos="http://R-Forge.R-project.org")
-
-
-###################################################
-### code chunk number 6: loadLibrary
-###################################################
+## ----loadLibrary------------------------------------------
 library(nloptr)
 
-
-###################################################
-### code chunk number 7: defineRosenbrockBanana
-###################################################
+## ----defineRosenbrockBanana-------------------------------
 ## Rosenbrock Banana function
 eval_f <- function(x) {   
     return( 100 * (x[2] - x[1] * x[1])^2 + (1 - x[1])^2 )
@@ -58,40 +36,25 @@ eval_grad_f <- function(x) {
                 200 * (x[2] - x[1] * x[1]) ) )
 }
 
-
-###################################################
-### code chunk number 8: setRosenbrockBananaInitialValues
-###################################################
+## ----setRosenbrockBananaInitialValues---------------------
 # initial values
 x0 <- c( -1.2, 1 )
 
-
-###################################################
-### code chunk number 9: setRosenbrockBananaOptions
-###################################################
+## ----setRosenbrockBananaOptions---------------------------
 opts <- list("algorithm"="NLOPT_LD_LBFGS",
              "xtol_rel"=1.0e-8)
 
-
-###################################################
-### code chunk number 10: solveRosenbrockBanana
-###################################################
+## ----solveRosenbrockBanana--------------------------------
 # solve Rosenbrock Banana function
 res <- nloptr( x0=x0, 
                eval_f=eval_f, 
                eval_grad_f=eval_grad_f,
                opts=opts)
 
-
-###################################################
-### code chunk number 11: printRosenbrockBanana
-###################################################
+## ----printRosenbrockBanana--------------------------------
 print( res )
 
-
-###################################################
-### code chunk number 12: defineRosenbrockBananaList
-###################################################
+## ----defineRosenbrockBananaList---------------------------
 ## Rosenbrock Banana function and gradient in one function
 eval_f_list <- function(x) {
     common_term <- x[2] - x[1] * x[1]
@@ -100,19 +63,13 @@ eval_f_list <- function(x) {
                                     200 * common_term) ) )
 }
 
-
-###################################################
-### code chunk number 13: solveRosenbrockBananaList
-###################################################
+## ----solveRosenbrockBananaList----------------------------
 res <- nloptr( x0=x0, 
                eval_f=eval_f_list,
                opts=opts)
 print( res )
 
-
-###################################################
-### code chunk number 14: defineTutorialObjective
-###################################################
+## ----defineTutorialObjective------------------------------
 # objective function
 eval_f0 <- function( x, a, b ){ 
     return( sqrt(x[2]) )
@@ -123,10 +80,7 @@ eval_grad_f0 <- function( x, a, b ){
     return( c( 0, .5/sqrt(x[2]) ) )
 }
 
-
-###################################################
-### code chunk number 15: defineTutorialConstraints
-###################################################
+## ----defineTutorialConstraints----------------------------
 # constraint function
 eval_g0 <- function( x, a, b ) {
     return( (a*x[1] + b)^3 - x[2] )
@@ -138,18 +92,12 @@ eval_jac_g0 <- function( x, a, b ) {
                    c( 3*a[2]*(a[2]*x[1] + b[2])^2, -1.0 ) ) )
 }
 
-
-###################################################
-### code chunk number 16: defineTutorialParameters
-###################################################
+## ----defineTutorialParameters-----------------------------
 # define parameters
 a <- c(2,-1)
 b <- c(0, 1)
 
-
-###################################################
-### code chunk number 17: solveTutorialWithGradient
-###################################################
+## ----solveTutorialWithGradient----------------------------
 # Solve using NLOPT_LD_MMA with gradient information supplied in separate function
 res0 <- nloptr( x0=c(1.234,5.678), 
                 eval_f=eval_f0, 
@@ -167,10 +115,7 @@ res0 <- nloptr( x0=c(1.234,5.678),
                 b = b )
 print( res0 )
 
-
-###################################################
-### code chunk number 18: solveTutorialWithoutGradient
-###################################################
+## ----solveTutorialWithoutGradient-------------------------
 # Solve using NLOPT_LN_COBYLA without gradient information
 res1 <- nloptr( x0=c(1.234,5.678), 
                 eval_f=eval_f0, 
@@ -183,10 +128,7 @@ res1 <- nloptr( x0=c(1.234,5.678),
                 b = b )
 print( res1 )
 
-
-###################################################
-### code chunk number 19: derivativeCheckerDefineFunctions
-###################################################
+## ----derivativeCheckerDefineFunctions---------------------
 g <- function( x, a ) {
     return( 
         c( x[1] - a[1], 
@@ -212,10 +154,7 @@ g_grad <- function( x, a ) {
     )
 }
 
-
-###################################################
-### code chunk number 20: derivativeCheckerPrint
-###################################################
+## ----derivativeCheckerPrint-------------------------------
 res <- check.derivatives( 
 			.x=c(1,2), 
 			func=g, 
@@ -223,16 +162,9 @@ res <- check.derivatives(
 			check_derivatives_print='all', 
 			a=c(.3, .8) )
 
-
-###################################################
-### code chunk number 21: derivativeCheckerResult
-###################################################
+## ----derivativeCheckerResult------------------------------
 res
 
-
-###################################################
-### code chunk number 22: printAllOptions
-###################################################
-nloptr.print.options()
-
+## ----printAllOptions--------------------------------------
+nloptr::nloptr.print.options()
 

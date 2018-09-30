@@ -5,8 +5,8 @@
 ## a build scheme is not permitted within Debian, or on Launchpad, or ... so
 ## the preference is use a supplied version of NLopt
 
-PKG_CFLAGS=@PKG_CFLAGS@
-PKG_LIBS=@PKG_LIBS@
+PKG_CFLAGS=@MAKEVARS_PKG_CFLAGS@
+PKG_LIBS=@MAKEVARS_PKG_LIBS@
 
 ## Old Makevars code below
 
