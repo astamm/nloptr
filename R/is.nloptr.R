@@ -66,7 +66,7 @@ is.nloptr <- function( x ) {
                           "NLOPT_LD_TNEWTON_RESTART", "NLOPT_LD_TNEWTON_PRECOND",
                           "NLOPT_LD_TNEWTON_PRECOND_RESTART", "NLOPT_GN_CRS2_LM",
                           "NLOPT_GN_MLSL", "NLOPT_GD_MLSL", "NLOPT_GN_MLSL_LDS",
-                          "NLOPT_GD_MLSL_LDS", "NLOPT_LD_MMA", "NLOPT_LN_COBYLA",
+                          "NLOPT_GD_MLSL_LDS", "NLOPT_LD_MMA", "NLOPT_LD_CCSAQ", "NLOPT_LN_COBYLA",
                           "NLOPT_LN_NEWUOA", "NLOPT_LN_NEWUOA_BOUND", "NLOPT_LN_NELDERMEAD",
                           "NLOPT_LN_SBPLX", "NLOPT_LN_AUGLAG", "NLOPT_LD_AUGLAG",
                           "NLOPT_LN_AUGLAG_EQ", "NLOPT_LD_AUGLAG_EQ", "NLOPT_LN_BOBYQA",
