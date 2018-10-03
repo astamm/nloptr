@@ -130,15 +130,13 @@ if test x"${nlopt_good}" = x"no"; then
    ## --prefix="`pwd`", which is the directory we want to
    ## install in, after we changed our current directory
    AC_MSG_NOTICE([Starting to install library to $(pwd)/src/nlopt_src])
-   $(cd src/nlopt_src; \
+   (cd src/nlopt_src; \
         ./configure --prefix="$(pwd)" --enable-shared --enable-static --without-octave \
                     --without-matlab --without-guile --without-python --with-cxx \
                     CC="${CC}" CFLAGS="${CFLAGS}" CPP="${CPP}" \
                     CPPFLAGS="${NLOPT_CPPFLAGS}" CXX="${CXX}" \
-                    CXXFLAGS="${NLOPT_CXXFLAGS}" CXXCPP="${CXXCPP}"; \
-        make; \
-        make install; \
-        rm -rf .libs;)
+                    CXXFLAGS="${NLOPT_CXXFLAGS}" CXXCPP="${CXXCPP}" && \
+        make && make install && rm -rf .libs) || exit 1
    AC_MSG_NOTICE([Done installing library to $(pwd)/src/nlopt_src])
 
    ## Copy header files to inst/include such that they are available from R.

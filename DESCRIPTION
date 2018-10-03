@@ -1,8 +1,8 @@
 Package: nloptr
 Type: Package
 Title: R Interface to NLopt
-Version: 1.2.0
-Date: 2018-08-02
+Version: 1.2.1
+Date: 2018-10-02
 Author: Jelmer Ypma <uctpjyy@ucl.ac.uk>, with contributions by
         Hans W. Borchers <hwborchers@googlemail.com> and 
         Dirk Eddelbuettel <edd@debian.org>
@@ -23,6 +23,6 @@ LazyLoad: yes
 NeedsCompilation: yes
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
-Packaged: 2018-08-07 19:35:17 UTC; Jelmer
+Packaged: 2018-10-03 07:37:01 UTC; ripley
 Repository: CRAN
-Date/Publication: 2018-09-30 15:00:02 UTC
+Date/Publication: 2018-10-03 08:01:36 UTC

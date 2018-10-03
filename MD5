@@ -1,5 +1,5 @@
 6ee6c2b98ab7d9afa3253a9c77f05394 *CHANGELOG
-3d5c771d891dcf2322131cc67d117ecd *DESCRIPTION
+ecd2bdc997e338980b79fe94691ef6ed *DESCRIPTION
 dc4789b199956a5cb112ec05b8f4f35f *INSTALL.windows
 33bda67ef568697383c9f6638b1487a5 *NAMESPACE
 6beffbd82c4b996704fb3f37d5115711 *R/PkgFlags.R
@@ -31,8 +31,8 @@ a29b8a04e5329071c08281d28256b313 *R/tnewton.R
 4e67b97a180e36ddfcab547ce3cb7a3a *README.md
 7db97009a649dbc70016f460f9c3324e *build/vignette.rds
 c34451812b8d1beb8d02056949d1f640 *cleanup
-b199bb93e3a005bfd23e7ed5e5387a6d *configure
-deafef8bf2f6e2714a4e54f0fab82358 *configure.ac
+aa592e10f1e8b91906ff0c8594f4646e *configure
+901d18d9eff238e59f5fadbaddac662b *configure.ac
 90f763c26b987f56de3db8f7805d6932 *inst/CITATION
 60b81279af09d3e7e8f32583151bef98 *inst/doc/nloptr.R
 a714066bfabcafc3372a7412d6ac8d61 *inst/doc/nloptr.Rmd
@@ -75,7 +75,7 @@ d41d8cd98f00b204e9800998ecf8427e *src/dummy.cpp
 040577c18ee3ea972b2cd1cd34d9844c *src/nlopt_src/ChangeLog
 0278479fa183a2ff8ab216669424b764 *src/nlopt_src/INSTALL
 6b903f540443d193e701967e62bbe9d1 *src/nlopt_src/Makefile.am
-f14c1291cddcac5a92dfb72d5d3c65c7 *src/nlopt_src/Makefile.in
+40563ac94d80e3760f9724769acba74d *src/nlopt_src/Makefile.in
 08f5f20997360741183008177936c9c7 *src/nlopt_src/NEWS
 f231a1dce7089d47f6b15aa4b4c345c8 *src/nlopt_src/README
 f231a1dce7089d47f6b15aa4b4c345c8 *src/nlopt_src/README.md
