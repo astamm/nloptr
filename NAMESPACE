@@ -3,6 +3,7 @@
 S3method(print,nloptr)
 export(auglag)
 export(bobyqa)
+export(ccsaq)
 export(check.derivatives)
 export(cobyla)
 export(crs2lm)
