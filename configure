@@ -3278,8 +3278,8 @@ fi
 # because the correct header with the wrong
 # version, does not work.
 if test x"${nlopt_good}" = x"yes"; then
-    { $as_echo "$as_me:${as_lineno-$LINENO}: Now testing for NLopt versison number." >&5
-$as_echo "$as_me: Now testing for NLopt versison number." >&6;}
+    { $as_echo "$as_me:${as_lineno-$LINENO}: Now testing for NLopt version 2.4.0 or greater." >&5
+$as_echo "$as_me: Now testing for NLopt version 2.4.0 or greater." >&6;}
     if test x"${PKGCONFIG}" == x"yes"; then
         ## check via pkg-config for version number of nlopt
         if pkg-config --exists nlopt; then
@@ -3322,15 +3322,13 @@ $as_echo "$as_me: Need to configure and build NLopt" >&6;}
    ## install in, after we changed our current directory
    { $as_echo "$as_me:${as_lineno-$LINENO}: Starting to install library to $(pwd)/src/nlopt_src" >&5
 $as_echo "$as_me: Starting to install library to $(pwd)/src/nlopt_src" >&6;}
-   $(cd src/nlopt_src; \
+   (cd src/nlopt_src; \
         ./configure --prefix="$(pwd)" --enable-shared --enable-static --without-octave \
                     --without-matlab --without-guile --without-python --with-cxx \
                     CC="${CC}" CFLAGS="${CFLAGS}" CPP="${CPP}" \
                     CPPFLAGS="${NLOPT_CPPFLAGS}" CXX="${CXX}" \
-                    CXXFLAGS="${NLOPT_CXXFLAGS}" CXXCPP="${CXXCPP}"; \
-        make; \
-        make install; \
-        rm -rf .libs;)
+                    CXXFLAGS="${NLOPT_CXXFLAGS}" CXXCPP="${CXXCPP}" && \ 
+        make && make install && rm -rf .libs) || exit 1
    { $as_echo "$as_me:${as_lineno-$LINENO}: Done installing library to $(pwd)/src/nlopt_src" >&5
 $as_echo "$as_me: Done installing library to $(pwd)/src/nlopt_src" >&6;}
 

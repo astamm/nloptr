@@ -91,7 +91,7 @@ AC_CHECK_HEADER([$nlopt_header],
 # because the correct header with the wrong
 # version, does not work.
 if test x"${nlopt_good}" = x"yes"; then
-    AC_MSG_NOTICE([Now testing for NLopt versison number.])
+    AC_MSG_NOTICE([Now testing for NLopt version 2.4.0 or greater.])
     if test x"${PKGCONFIG}" == x"yes"; then
         ## check via pkg-config for version number of nlopt
         if pkg-config --exists nlopt; then
@@ -130,15 +130,13 @@ if test x"${nlopt_good}" = x"no"; then
    ## --prefix="`pwd`", which is the directory we want to
    ## install in, after we changed our current directory
    AC_MSG_NOTICE([Starting to install library to $(pwd)/src/nlopt_src])
-   $(cd src/nlopt_src; \
+   (cd src/nlopt_src; \
         ./configure --prefix="$(pwd)" --enable-shared --enable-static --without-octave \
                     --without-matlab --without-guile --without-python --with-cxx \
                     CC="${CC}" CFLAGS="${CFLAGS}" CPP="${CPP}" \
                     CPPFLAGS="${NLOPT_CPPFLAGS}" CXX="${CXX}" \
-                    CXXFLAGS="${NLOPT_CXXFLAGS}" CXXCPP="${CXXCPP}"; \
-        make; \
-        make install; \
-        rm -rf .libs;)
+                    CXXFLAGS="${NLOPT_CXXFLAGS}" CXXCPP="${CXXCPP}" && \
+        make && make install && rm -rf .libs) || exit 1
    AC_MSG_NOTICE([Done installing library to $(pwd)/src/nlopt_src])
 
    ## Copy header files to inst/include such that they are available from R.

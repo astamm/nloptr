@@ -4,8 +4,8 @@
 \alias{cobyla}
 \title{Constrained Optimization by Linear Approximations}
 \usage{
-cobyla(x0, fn, lower = NULL, upper = NULL, hin = NULL, nl.info = FALSE,
-  control = list(), ...)
+cobyla(x0, fn, lower = NULL, upper = NULL, hin = NULL,
+  nl.info = FALSE, control = list(), ...)
 }
 \arguments{
 \item{x0}{starting point for searching the optimum.}
