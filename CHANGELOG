@@ -1,3 +1,6 @@
+20 October 2018:
+    * Exposed CCSAQ algorithm in R interface (contributed by Julien Chiquet).
+
 03 October 2018:
     * Build process was changed to solve issues on several OS (many thanks to the CRAN maintainers).
 

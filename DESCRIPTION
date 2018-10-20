@@ -1,7 +1,7 @@
 Package: nloptr
 Type: Package
 Title: R Interface to NLopt
-Version: 1.2.1.9000
+Version: 1.2.1.9001
 Date: 2018-10-02
 Authors@R: c(person("Jelmer", "Ypma", role = c("aut", "cre"),
                     email = "uctpjyy@ucl.ac.uk"),
@@ -14,7 +14,8 @@ Authors@R: c(person("Jelmer", "Ypma", role = c("aut", "cre"),
              person("Brian", "Ripley", role = "ctb",
                     comment = "build process on multiple OS"),
              person("Kurt", "Hornik", role = "ctb",
-                    comment = "build process on multiple OS"))
+                    comment = "build process on multiple OS"),
+             person("Julien", "Chiquet", role = "ctb"))
 Description: 
     Solve optimization problems using an R interface to NLopt. NLopt is a 
     free/open-source library for nonlinear optimization, providing a common
