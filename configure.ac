@@ -123,8 +123,8 @@ if test x"${nlopt_good}" = x"no"; then
 
    ## Get flags that have been re-defined above
    ## to test whether NLopt headers are present.
-   #NLOPT_CPPFLAGS=$("${R_HOME}/bin/R" CMD config CPPFLAGS)
-   #NLOPT_CXXFLAGS=$("${R_HOME}/bin/R" CMD config CXXFLAGS)
+   NLOPT_CPPFLAGS=$("${R_HOME}/bin/R" CMD config CPPFLAGS)
+   NLOPT_CXXFLAGS=$("${R_HOME}/bin/R" CMD config CXXFLAGS)
 
    ## Compile NLopt source code and clean up
    ## --prefix="`pwd`", which is the directory we want to

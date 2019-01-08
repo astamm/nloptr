@@ -3314,8 +3314,8 @@ $as_echo "$as_me: Need to configure and build NLopt" >&6;}
 
    ## Get flags that have been re-defined above
    ## to test whether NLopt headers are present.
-   #NLOPT_CPPFLAGS=$("${R_HOME}/bin/R" CMD config CPPFLAGS)
-   #NLOPT_CXXFLAGS=$("${R_HOME}/bin/R" CMD config CXXFLAGS)
+   NLOPT_CPPFLAGS=$("${R_HOME}/bin/R" CMD config CPPFLAGS)
+   NLOPT_CXXFLAGS=$("${R_HOME}/bin/R" CMD config CXXFLAGS)
 
    ## Compile NLopt source code and clean up
    ## --prefix="`pwd`", which is the directory we want to
@@ -3327,7 +3327,7 @@ $as_echo "$as_me: Starting to install library to $(pwd)/src/nlopt_src" >&6;}
                     --without-matlab --without-guile --without-python --with-cxx \
                     CC="${CC}" CFLAGS="${CFLAGS}" CPP="${CPP}" \
                     CPPFLAGS="${NLOPT_CPPFLAGS}" CXX="${CXX}" \
-                    CXXFLAGS="${NLOPT_CXXFLAGS}" CXXCPP="${CXXCPP}" && \ 
+                    CXXFLAGS="${NLOPT_CXXFLAGS}" CXXCPP="${CXXCPP}" && \
         make && make install && rm -rf .libs) || exit 1
    { $as_echo "$as_me:${as_lineno-$LINENO}: Done installing library to $(pwd)/src/nlopt_src" >&5
 $as_echo "$as_me: Done installing library to $(pwd)/src/nlopt_src" >&6;}
