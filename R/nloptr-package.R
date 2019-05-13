@@ -30,7 +30,7 @@
 #' slsqp, stogo, tnewton, varmetric.
 #'
 #' \tabular{ll}{ Package: \tab nloptr\cr Type: \tab Package\cr Version: \tab
-#' 0.9.9\cr Date: \tab 2013-11-22\cr License: \tab L-GPL\cr LazyLoad: \tab
+#' 1.2.1\cr Date: \tab 2018-10-02\cr License: \tab LGPL-3\cr LazyLoad: \tab
 #' yes\cr }
 #'
 #' @docType package
