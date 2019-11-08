@@ -20,4 +20,4 @@ BuildType: Package
 PackageInstallArgs: --no-multiarch --with-keep.source --install-tests
 PackageBuildArgs: --compact-vignettes="gs+qpdf"
 PackageBuildBinaryArgs: --compact-vignettes="gs+qpdf"
-PackageCheckArgs: --no-multiarch
+PackageCheckArgs: --no-multiarch --as-cran
