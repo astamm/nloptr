@@ -58,7 +58,7 @@ These instructions assume that a working version of
  1. Before building from the DOS prompt, add
  `NLOPT_HOME = /YOUR/PATH/TO/NLOPT/INSTALL` to your Makevars[.win].
  1. Compile the R interface
-   * **If the version of `nloptr` is still 1.2.1.9001 or similar**:
+   * **If the version of `nloptr` is still 1.2.1 or similar**:
      1. Edit the file `/nloptr/src/Makevars.win` to read:
      `PKG_CFLAGS = -I"$(NLOPT_HOME)/include"`
      `PKG_LIBS = -L"$(NLOPT_HOME)/lib" -lnlopt -lm -lstdc++`
