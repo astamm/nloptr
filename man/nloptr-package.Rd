@@ -36,7 +36,7 @@ bobyqa, cobyla, crs2lm, direct, lbfgs, mlsl, mma, neldermead, newuoa, sbplx,
 slsqp, stogo, tnewton, varmetric.
 
 \tabular{ll}{ Package: \tab nloptr\cr Type: \tab Package\cr Version: \tab
-0.9.9\cr Date: \tab 2013-11-22\cr License: \tab L-GPL\cr LazyLoad: \tab
+2.0.0\cr Date: \tab 2019-12-12\cr License: \tab L-GPL\cr LazyLoad: \tab
 yes\cr }
 }
 \note{
