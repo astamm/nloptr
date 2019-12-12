@@ -32,6 +32,7 @@
 #
 # CHANGELOG:
 #   05/05/2014: Changed example to use unit testing framework testthat.
+#   12/12/2019: Corrected warnings and using updated testtthat framework (Avraham Adler)
 
 context("HS023")
 
@@ -87,10 +88,10 @@ test_that( "Test HS023.", {
                 opts        = opts )
 
     # Run some checks on the optimal solution.
-    expect_that( res$solution, equals( solution.opt, tolerance = 1e-6 ) )
-    expect_that( all( res$solution >= lb ), is_true() )
-    expect_that( all( res$solution <= ub ), is_true() )
+    expect_equal(res$solution, solution.opt, tolerance = 1e-6)
+    expect_true(all(res$solution >= lb))
+    expect_true(all(res$solution <= ub))
 
     # Check whether constraints are violated (up to specified tolerance).
-    expect_that( all( eval_g_ineq( res$solution )$constr <= res$options$tol_constraints_ineq ), is_true() )
+    expect_true(all(eval_g_ineq(res$solution )$constr <= res$options$tol_constraints_ineq))
 } )
