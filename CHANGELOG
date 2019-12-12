@@ -1,5 +1,6 @@
 12 December 2019:
-    * Breaking API change to reflect breaking change in NLOPT v2.5 and subsequent
+    * Breaking API change to reflect breaking change in NLOPT v2.5 and subsequent (Avraham Adler)
+    * Updated unit tests to remove deprecated calls (Avraham Adler)
 
 20 October 2018:
     * Exposed CCSAQ algorithm in R interface (contributed by Julien Chiquet).
