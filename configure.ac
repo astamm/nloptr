@@ -9,6 +9,11 @@
 ## This file is licensed under the GPL-2 or later just like most of my
 ## Open Source code, and is granted an exemption (should it be needed)
 ## for inclusion into nloptr
+##
+## History:
+##   2020-02-26 (JY): Removed references to CPPFLAGS.
+##   2020-02-26 (JY): Changed CPP to $CC -E and CXXCPP to $CXX -E as support
+##     for these flags in R CMD config is deprecated from R 3.6.2.
 
 # require at least autoconf 2.61
 AC_PREREQ(2.61)
@@ -39,11 +44,10 @@ fi
 ## Add user-supplied flags to flags specified by R if they have been set.
 CC=$("${R_HOME}/bin/R" CMD config CC)
 CFLAGS="$("${R_HOME}/bin/R" CMD config CFLAGS) ${CFLAGS}"
-CPP=$("${R_HOME}/bin/R" CMD config CPP)
-CPPFLAGS="$("${R_HOME}/bin/R" CMD config CPPFLAGS) ${CPPFLAGS}"
+CPP="$("${R_HOME}/bin/R" CMD config CC) -E"
 CXX=$("${R_HOME}/bin/R" CMD config CXX)
 CXXFLAGS="$("${R_HOME}/bin/R" CMD config CXXFLAGS) ${CXXFLAGS}"
-CXXCPP=$("${R_HOME}/bin/R" CMD config CXXCPP)
+CXXCPP="$("${R_HOME}/bin/R" CMD config CXX) -E"
 
 # We are using C++
 AC_LANG(C++)
@@ -75,7 +79,7 @@ fi
 
 
 ## And make sure these flags are used for the test below.
-CPPFLAGS="${nlopt_cflags} ${CPPFLAGS}"
+CPPFLAGS="${nlopt_cflags}"
 CXXFLAGS="${nlopt_cflags} ${CXXFLAGS}"
 
 ## check for headers Debian has in libhiredis-dev
@@ -123,7 +127,6 @@ if test x"${nlopt_good}" = x"no"; then
 
    ## Get flags that have been re-defined above
    ## to test whether NLopt headers are present.
-   NLOPT_CPPFLAGS=$("${R_HOME}/bin/R" CMD config CPPFLAGS)
    NLOPT_CXXFLAGS=$("${R_HOME}/bin/R" CMD config CXXFLAGS)
 
    ## Compile NLopt source code and clean up
@@ -133,8 +136,7 @@ if test x"${nlopt_good}" = x"no"; then
    (cd src/nlopt_src; \
         ./configure --prefix="$(pwd)" --enable-shared --enable-static --without-octave \
                     --without-matlab --without-guile --without-python --with-cxx \
-                    CC="${CC}" CFLAGS="${CFLAGS}" CPP="${CPP}" \
-                    CPPFLAGS="${NLOPT_CPPFLAGS}" CXX="${CXX}" \
+                    CC="${CC}" CFLAGS="${CFLAGS}" CPP="${CPP}" CXX="${CXX}" \
                     CXXFLAGS="${NLOPT_CXXFLAGS}" CXXCPP="${CXXCPP}" && \
         make && make install && rm -rf .libs) || exit 1
    AC_MSG_NOTICE([Done installing library to $(pwd)/src/nlopt_src])
