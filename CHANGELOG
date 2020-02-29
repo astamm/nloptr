@@ -1,3 +1,6 @@
+29 February 2020:
+    * Replaced deprecated functions from testhat framework in unit tests (contributed by Avraham Adler).
+
 26 February 2020:
     * Fixed warnings (as requested by CRAN): R CMD config variables 'CPP' and 'CXXCPP' are deprecated.
 
