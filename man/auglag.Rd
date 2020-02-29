@@ -5,9 +5,9 @@
 \title{Augmented Lagrangian Algorithm}
 \usage{
 auglag(x0, fn, gr = NULL, lower = NULL, upper = NULL, hin = NULL,
-  hinjac = NULL, heq = NULL, heqjac = NULL, localsolver = c("COBYLA"),
-  localtol = 1e-06, ineq2local = FALSE, nl.info = FALSE,
-  control = list(), ...)
+  hinjac = NULL, heq = NULL, heqjac = NULL,
+  localsolver = c("COBYLA"), localtol = 1e-06, ineq2local = FALSE,
+  nl.info = FALSE, control = list(), ...)
 }
 \arguments{
 \item{x0}{starting point for searching the optimum.}

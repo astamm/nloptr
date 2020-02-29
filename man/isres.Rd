@@ -5,8 +5,8 @@
 \title{Improved Stochastic Ranking Evolution Strategy}
 \usage{
 isres(x0, fn, lower, upper, hin = NULL, heq = NULL, maxeval = 10000,
-  pop.size = 20 * (length(x0) + 1), xtol_rel = 1e-06, nl.info = FALSE,
-  ...)
+  pop.size = 20 * (length(x0) + 1), xtol_rel = 1e-06,
+  nl.info = FALSE, ...)
 }
 \arguments{
 \item{x0}{initial point for searching the optimum.}

@@ -4,8 +4,8 @@
 \alias{varmetric}
 \title{Shifted Limited-memory Variable-metric}
 \usage{
-varmetric(x0, fn, gr = NULL, rank2 = TRUE, lower = NULL, upper = NULL,
-  nl.info = FALSE, control = list(), ...)
+varmetric(x0, fn, gr = NULL, rank2 = TRUE, lower = NULL,
+  upper = NULL, nl.info = FALSE, control = list(), ...)
 }
 \arguments{
 \item{x0}{initial point for searching the optimum.}

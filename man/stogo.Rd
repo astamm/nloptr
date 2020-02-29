@@ -4,8 +4,9 @@
 \alias{stogo}
 \title{Stochastic Global Optimization}
 \usage{
-stogo(x0, fn, gr = NULL, lower = NULL, upper = NULL, maxeval = 10000,
-  xtol_rel = 1e-06, randomized = FALSE, nl.info = FALSE, ...)
+stogo(x0, fn, gr = NULL, lower = NULL, upper = NULL,
+  maxeval = 10000, xtol_rel = 1e-06, randomized = FALSE,
+  nl.info = FALSE, ...)
 }
 \arguments{
 \item{x0}{initial point for searching the optimum.}

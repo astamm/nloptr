@@ -1,3 +1,15 @@
+29 February 2020:
+    * Replaced deprecated functions from testhat framework in unit tests (contributed by Avraham Adler).
+
+26 February 2020:
+    * Fixed warnings (as requested by CRAN): R CMD config variables 'CPP' and 'CXXCPP' are deprecated.
+
+20 October 2018:
+    * Exposed CCSAQ algorithm in R interface (contributed by Julien Chiquet).
+
+03 October 2018:
+    * Build process was changed to solve issues on several OS (many thanks to the CRAN maintainers).
+
 21 April 2018:
     * Changed installation procedure. NLopt source code is now part of nloptr package and not downloaded separately during configure in Unix systems in case NLopt library cannot be found.
     * Registered NLopt C functions to be used by external R package and included C API.

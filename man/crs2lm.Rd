@@ -4,8 +4,9 @@
 \alias{crs2lm}
 \title{Controlled Random Search}
 \usage{
-crs2lm(x0, fn, lower, upper, maxeval = 10000, pop.size = 10 * (length(x0) +
-  1), ranseed = NULL, xtol_rel = 1e-06, nl.info = FALSE, ...)
+crs2lm(x0, fn, lower, upper, maxeval = 10000, pop.size = 10 *
+  (length(x0) + 1), ranseed = NULL, xtol_rel = 1e-06,
+  nl.info = FALSE, ...)
 }
 \arguments{
 \item{x0}{initial point for searching the optimum.}

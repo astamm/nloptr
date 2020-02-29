@@ -4,8 +4,9 @@
 \alias{tnewton}
 \title{Preconditioned Truncated Newton}
 \usage{
-tnewton(x0, fn, gr = NULL, lower = NULL, upper = NULL, precond = TRUE,
-  restart = TRUE, nl.info = FALSE, control = list(), ...)
+tnewton(x0, fn, gr = NULL, lower = NULL, upper = NULL,
+  precond = TRUE, restart = TRUE, nl.info = FALSE,
+  control = list(), ...)
 }
 \arguments{
 \item{x0}{starting point for searching the optimum.}

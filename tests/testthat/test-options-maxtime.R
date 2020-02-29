@@ -8,11 +8,14 @@
 # Check whether the solver stop when maxtime
 # (set in the options) is reached.
 
+# CHANGELOG:
+#   12/12/2019: Corrected warnings and using updated testtthat framework (Avraham Adler)
+
 context("Options maxtime")
 
 test_that("Test that solver stops when maxtime is reached.", {
     # Objective function with sleep added
-    # such that maxtime will be reached 
+    # such that maxtime will be reached
     # when solving the optimization problem.
     eval_f <- function(x) {
         Sys.sleep( 1 )
@@ -25,7 +28,7 @@ test_that("Test that solver stops when maxtime is reached.", {
 
     # Initial values.
     x0 <- c( 5 )
-    
+
     # Define optimizer options.
     opts <- list( "algorithm" = "NLOPT_LD_LBFGS",
                   "maxtime"   = 1,
@@ -33,11 +36,11 @@ test_that("Test that solver stops when maxtime is reached.", {
 
     # Solve problem.
     res <- nloptr(
-        x0          = x0, 
+        x0          = x0,
         eval_f      = eval_f,
         eval_grad_f = eval_grad_f,
         opts        = opts )
 
     # Check results.
-    expect_that( res$status, equals( 6L ) )
+    expect_equal(res$status, 6L)
 } )

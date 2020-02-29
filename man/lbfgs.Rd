@@ -4,8 +4,8 @@
 \alias{lbfgs}
 \title{Low-storage BFGS}
 \usage{
-lbfgs(x0, fn, gr = NULL, lower = NULL, upper = NULL, nl.info = FALSE,
-  control = list(), ...)
+lbfgs(x0, fn, gr = NULL, lower = NULL, upper = NULL,
+  nl.info = FALSE, control = list(), ...)
 }
 \arguments{
 \item{x0}{initial point for searching the optimum.}
