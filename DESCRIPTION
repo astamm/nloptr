@@ -1,8 +1,7 @@
 Package: nloptr
 Type: Package
 Title: R Interface to NLopt
-Version: 1.2.1.9001
-Date: 2018-10-02
+Version: 1.2.2
 Authors@R: c(person("Jelmer", "Ypma", role = c("aut", "cre"),
                     email = "uctpjyy@ucl.ac.uk"),
              person(c("Steven", "G."), "Johnson", role = "aut",
