@@ -1,8 +1,8 @@
 Package: nloptr
 Type: Package
 Title: R Interface to NLopt
-Version: 1.2.2
-Date: 2020-02-29
+Version: 1.2.2.1
+Date: 2020-03-11
 Authors@R: c(person("Jelmer", "Ypma", role = c("aut", "cre"),
                     email = "uctpjyy@ucl.ac.uk"),
              person(c("Steven", "G."), "Johnson", role = "aut",
@@ -38,7 +38,7 @@ LazyLoad: yes
 NeedsCompilation: yes
 VignetteBuilder: knitr
 RoxygenNote: 6.1.0
-Packaged: 2020-02-29 21:44:07 UTC; Jelmer
+Packaged: 2020-03-11 16:27:53 UTC; ripley
 Author: Jelmer Ypma [aut, cre],
   Steven G. Johnson [aut] (author of the NLopt C library),
   Hans W. Borchers [ctb],
@@ -50,4 +50,4 @@ Author: Jelmer Ypma [aut, cre],
     <https://orcid.org/0000-0002-3039-0703>)
 Maintainer: Jelmer Ypma <uctpjyy@ucl.ac.uk>
 Repository: CRAN
-Date/Publication: 2020-02-29 22:20:02 UTC
+Date/Publication: 2020-03-11 16:31:22 UTC
