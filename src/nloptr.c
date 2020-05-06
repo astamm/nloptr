@@ -185,6 +185,9 @@ nlopt_algorithm getAlgorithmCode( const char *algorithm_str ) {
     }
     else if ( strcmp( algorithm_str, "NLOPT_GN_ISRES" ) == 0 ) {
         algorithm = NLOPT_GN_ISRES;
+    } 
+    else if ( strcmp( algorithm_str, "NLOPT_GN_ESCH" ) == 0 ) { 
+        algorithm = NLOPT_GN_ESCH;
     }
     else {
         // unknown algorithm code

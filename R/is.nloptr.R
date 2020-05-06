@@ -70,7 +70,7 @@ is.nloptr <- function( x ) {
                           "NLOPT_LN_NEWUOA", "NLOPT_LN_NEWUOA_BOUND", "NLOPT_LN_NELDERMEAD",
                           "NLOPT_LN_SBPLX", "NLOPT_LN_AUGLAG", "NLOPT_LD_AUGLAG",
                           "NLOPT_LN_AUGLAG_EQ", "NLOPT_LD_AUGLAG_EQ", "NLOPT_LN_BOBYQA",
-                          "NLOPT_GN_ISRES" )
+                          "NLOPT_GN_ISRES", "NLOPT_GN_ESCH" )
 
     # check if an existing algorithm was supplied
     if ( !( x$options$algorithm %in% list_algorithms ) ) {
