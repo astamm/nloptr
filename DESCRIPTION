@@ -20,7 +20,8 @@ Authors@R: c(person("Jelmer", "Ypma", role = c("aut", "cre"),
                     role = "ctb", email="Avraham.Adler@gmail.com",
                     comment = c("removal deprecated calls from tests",
                       ORCID = "0000-0002-3039-0703")),
-             person("Aymeric", "Stamm", role = "ctb"))
+             person("Aymeric", "Stamm", role = "ctb"),
+             person("Xiongtao", "Dai", role = "ctb"))
 Description: 
     Solve optimization problems using an R interface to NLopt. NLopt is a 
     free/open-source library for nonlinear optimization, providing a common
