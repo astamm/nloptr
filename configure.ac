@@ -48,6 +48,8 @@ CPP="$("${R_HOME}/bin/R" CMD config CC) -E"
 CXX=$("${R_HOME}/bin/R" CMD config CXX)
 CXXFLAGS="$("${R_HOME}/bin/R" CMD config CXXFLAGS) ${CXXFLAGS}"
 CXXCPP="$("${R_HOME}/bin/R" CMD config CXX) -E"
+AR=$("${R_HOME}/bin/R" CMD config AR)
+RANLIB=$("${R_HOME}/bin/R" CMD config RANLIB)
 
 # We are using C++
 AC_LANG(C++)
@@ -136,6 +138,7 @@ if test x"${nlopt_good}" = x"no"; then
    (cd src/nlopt_src; \
         ./configure --prefix="$(pwd)" --enable-shared --enable-static --without-octave \
                     --without-matlab --without-guile --without-python --with-cxx \
+		    AR="${AR}" RANLIB="${RANLIB}" \
                     CC="${CC}" CFLAGS="${CFLAGS}" CPP="${CPP}" CXX="${CXX}" \
                     CXXFLAGS="${NLOPT_CXXFLAGS}" CXXCPP="${CXXCPP}" && \
         make && make install && rm -rf .libs) || exit 1
