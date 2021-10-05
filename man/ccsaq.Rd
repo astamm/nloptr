@@ -4,8 +4,18 @@
 \alias{ccsaq}
 \title{Conservative Convex Separable Approximation with Affine Approximation plus Quadratic Penalty}
 \usage{
-ccsaq(x0, fn, gr = NULL, lower = NULL, upper = NULL, hin = NULL,
-  hinjac = NULL, nl.info = FALSE, control = list(), ...)
+ccsaq(
+  x0,
+  fn,
+  gr = NULL,
+  lower = NULL,
+  upper = NULL,
+  hin = NULL,
+  hinjac = NULL,
+  nl.info = FALSE,
+  control = list(),
+  ...
+)
 }
 \arguments{
 \item{x0}{starting point for searching the optimum.}
@@ -31,13 +41,13 @@ numerically if not specified.}
 }
 \value{
 List with components:
-  \item{par}{the optimal solution found so far.}
-  \item{value}{the function value corresponding to \code{par}.}
-  \item{iter}{number of (outer) iterations, see \code{maxeval}.}
-  \item{convergence}{integer code indicating successful completion (> 1)
-    or a possible error number (< 0).}
-  \item{message}{character string produced by NLopt and giving additional
-    information.}
+\item{par}{the optimal solution found so far.}
+\item{value}{the function value corresponding to \code{par}.}
+\item{iter}{number of (outer) iterations, see \code{maxeval}.}
+\item{convergence}{integer code indicating successful completion (> 1)
+or a possible error number (< 0).}
+\item{message}{character string produced by NLopt and giving additional
+information.}
 }
 \description{
 This is a variant of CCSA ("conservative convex separable approximation")
@@ -90,7 +100,6 @@ S <- ccsaq(x0.hs100, fn.hs100, gr = gr.hs100,
 S <- ccsaq(x0.hs100, fn.hs100, hin = hin.hs100,
             nl.info = TRUE, control = list(xtol_rel = 1e-8))
 }
-
 }
 \references{
 Krister Svanberg, ``A class of globally convergent optimization

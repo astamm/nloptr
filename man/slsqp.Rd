@@ -4,9 +4,20 @@
 \alias{slsqp}
 \title{Sequential Quadratic Programming (SQP)}
 \usage{
-slsqp(x0, fn, gr = NULL, lower = NULL, upper = NULL, hin = NULL,
-  hinjac = NULL, heq = NULL, heqjac = NULL, nl.info = FALSE,
-  control = list(), ...)
+slsqp(
+  x0,
+  fn,
+  gr = NULL,
+  lower = NULL,
+  upper = NULL,
+  hin = NULL,
+  hinjac = NULL,
+  heq = NULL,
+  heqjac = NULL,
+  nl.info = FALSE,
+  control = list(),
+  ...
+)
 }
 \arguments{
 \item{x0}{starting point for searching the optimum.}
@@ -38,13 +49,13 @@ numerically if not specified.}
 }
 \value{
 List with components:
-  \item{par}{the optimal solution found so far.}
-  \item{value}{the function value corresponding to \code{par}.}
-  \item{iter}{number of (outer) iterations, see \code{maxeval}.}
-  \item{convergence}{integer code indicating successful completion (> 1)
-    or a possible error number (< 0).}
-  \item{message}{character string produced by NLopt and giving additional
-    information.}
+\item{par}{the optimal solution found so far.}
+\item{value}{the function value corresponding to \code{par}.}
+\item{iter}{number of (outer) iterations, see \code{maxeval}.}
+\item{convergence}{integer code indicating successful completion (> 1)
+or a possible error number (< 0).}
+\item{message}{character string produced by NLopt and giving additional
+information.}
 }
 \description{
 Sequential (least-squares) quadratic programming (SQP) algorithm for

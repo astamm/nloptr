@@ -13,8 +13,8 @@
 #'
 #' An implementation of almost the original Nelder-Mead simplex algorithm.
 #'
-#' Provides xplicit support for bound constraints, using essentially the method
-#' proposed in [Box].  Whenever a new point would lie outside the bound
+#' Provides explicit support for bound constraints, using essentially the method
+#' proposed in Box.  Whenever a new point would lie outside the bound
 #' constraints the point is moved back exactly onto the constraint.
 #'
 #' @param x0 starting point for searching the optimum.

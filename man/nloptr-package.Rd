@@ -46,7 +46,7 @@ See ?nloptr for more examples.
 
 # Example problem, number 71 from the Hock-Schittkowsky test suite.
 #
-# \\min_{x} x1*x4*(x1 + x2 + x3) + x3
+# \min_{x} x1*x4*(x1 + x2 + x3) + x3
 # s.t.
 #    x1*x2*x3*x4 >= 25
 #    x1^2 + x2^2 + x3^2 + x4^2 = 40

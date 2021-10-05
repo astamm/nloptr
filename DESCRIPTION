@@ -36,7 +36,9 @@ SystemRequirements: A system installation of NLopt >= 2.4.0 (with headers)
     will be used if available.
 License: LGPL-3
 Suggests: testthat (>= 0.8.1), knitr, rmarkdown, inline (>= 0.3.14)
-LazyLoad: yes
+Encoding: UTF-8
+LazyLoad: true
 NeedsCompilation: yes
 VignetteBuilder: knitr
-RoxygenNote: 6.1.0
+RoxygenNote: 7.1.2
+Roxygen: list(markdown = TRUE)

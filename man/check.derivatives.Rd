@@ -5,8 +5,15 @@
 \title{Check analytic gradients of a function using finite difference
 approximations}
 \usage{
-check.derivatives(.x, func, func_grad, check_derivatives_tol = 1e-04,
-  check_derivatives_print = "all", func_grad_name = "grad_f", ...)
+check.derivatives(
+  .x,
+  func,
+  func_grad,
+  check_derivatives_tol = 1e-04,
+  check_derivatives_print = "all",
+  func_grad_name = "grad_f",
+  ...
+)
 }
 \arguments{
 \item{.x}{point at which the comparison is done.}

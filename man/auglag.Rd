@@ -4,10 +4,23 @@
 \alias{auglag}
 \title{Augmented Lagrangian Algorithm}
 \usage{
-auglag(x0, fn, gr = NULL, lower = NULL, upper = NULL, hin = NULL,
-  hinjac = NULL, heq = NULL, heqjac = NULL,
-  localsolver = c("COBYLA"), localtol = 1e-06, ineq2local = FALSE,
-  nl.info = FALSE, control = list(), ...)
+auglag(
+  x0,
+  fn,
+  gr = NULL,
+  lower = NULL,
+  upper = NULL,
+  hin = NULL,
+  hinjac = NULL,
+  heq = NULL,
+  heqjac = NULL,
+  localsolver = c("COBYLA"),
+  localtol = 1e-06,
+  ineq2local = FALSE,
+  nl.info = FALSE,
+  control = list(),
+  ...
+)
 }
 \arguments{
 \item{x0}{starting point for searching the optimum.}
@@ -38,15 +51,15 @@ the local solver?; not possible at the moment.}
 }
 \value{
 List with components:
-  \item{par}{the optimal solution found so far.}
-  \item{value}{the function value corresponding to \code{par}.}
-  \item{iter}{number of (outer) iterations, see \code{maxeval}.}
-  \item{global_solver}{the global NLOPT solver used.}
-  \item{local_solver}{the local NLOPT solver used, LBFGS or COBYLA.}
-  \item{convergence}{integer code indicating successful completion
-    (> 0) or a possible error number (< 0).}
-  \item{message}{character string produced by NLopt and giving additional
-     information.}
+\item{par}{the optimal solution found so far.}
+\item{value}{the function value corresponding to \code{par}.}
+\item{iter}{number of (outer) iterations, see \code{maxeval}.}
+\item{global_solver}{the global NLOPT solver used.}
+\item{local_solver}{the local NLOPT solver used, LBFGS or COBYLA.}
+\item{convergence}{integer code indicating successful completion
+(> 0) or a possible error number (< 0).}
+\item{message}{character string produced by NLopt and giving additional
+information.}
 }
 \description{
 The Augmented Lagrangian method adds additional terms to the unconstrained
@@ -67,8 +80,7 @@ Since all of the actual optimization is performed in this subsidiary
 optimizer, the subsidiary algorithm that you specify determines whether the
 optimization is gradient-based or derivative-free.
 
-The local solvers available at the moment are ``COBYLA'' (for the
-derivative-free approach) and ``LBFGS'', ``MMA'', or ``SLSQP'' (for smooth
+The local solvers available at the moment are \verb{COBYLA'' (for the derivative-free approach) and }LBFGS'', \verb{MMA'', or }SLSQP'' (for smooth
 functions). The tolerance for the local solver has to be provided.
 
 There is a variant that only uses penalty functions for equality constraints
