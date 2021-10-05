@@ -14,9 +14,6 @@
 
 context("NLopt-C-API")
 
-# Load inline package to compile C code.
-library('inline')
-
 # Define empty R_TESTS environment variable to fix error on Travis
 # See https://github.com/hadley/testthat/issues/144 for more information.
 Sys.setenv("R_TESTS" = "")
@@ -26,37 +23,47 @@ cxxargs = nloptr:::CFlags(print = FALSE)
 libargs = nloptr:::LdFlags(print = FALSE)
 
 test_that( "Test exposing NLopt C function nlopt_version.", {
+    skip_if_not_installed("inline")
+
+    # Load inline package to compile C code.
+    library('inline')
+
     # Define C function to return version number.
     code <- '
       // get version of NLopt
       int major, minor, bugfix;
       nlopt_version(&major, &minor, &bugfix);
-  
+
       SEXP retvec = PROTECT(allocVector(INTSXP, 3));
       INTEGER(retvec)[0] = major;
       INTEGER(retvec)[1] = minor;
       INTEGER(retvec)[2] = bugfix;
-      
+
       UNPROTECT(1);
       return retvec;'
-    
-    get_nlopt_version <- cfunction(sig = signature(), 
-                                   body = code, 
+
+    get_nlopt_version <- cfunction(sig = signature(),
+                                   body = code,
                                    includes = '#include "nloptrAPI.h"',
                                    cxxargs = cxxargs,
                                    libargs = libargs)
-    
+
     # Get nlopt version, which consists of an integer vector:
     #   (major, minor, bugfix)
     res <- get_nlopt_version()
-    
+
     # Check return value.
     expect_type(res, "integer")
     expect_length(res, 3)
 } )
 
 test_that( "Test exposed NLopt C code using example from NLopt tutorial.", {
-    # Example taken from: 
+    skip_if_not_installed("inline")
+
+    # Load inline package to compile C code.
+    library('inline')
+
+    # Example taken from:
     #   http://ab-initio.mit.edu/wiki/index.php?title=NLopt_Tutorial
 
     include_code <- '
@@ -123,18 +130,18 @@ UNPROTECT(1);
 
 return result;'
 
-    solve_example <- cfunction(sig = signature(), 
+    solve_example <- cfunction(sig = signature(),
                                    body = code,
                                    includes = include_code,
                                    cxxargs = cxxargs,
                                    libargs = libargs)
-    
+
     # Get optimal x values.
     res <- solve_example()
 
     # Optimal solution as provided in the NLopt tutorial.
     solution.opt <- c( 1/3, 8/27 )
-    
+
     # Check return value.
     expect_equal(res, solution.opt)
 } )
