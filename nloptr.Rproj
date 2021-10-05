@@ -17,7 +17,6 @@ StripTrailingWhitespace: Yes
 LineEndingConversion: Posix
 
 BuildType: Package
-PackageInstallArgs: --no-multiarch --with-keep.source --install-tests
-PackageBuildArgs: --compact-vignettes="gs+qpdf"
-PackageBuildBinaryArgs: --compact-vignettes="gs+qpdf"
-PackageCheckArgs: --no-multiarch
+PackageUseDevtools: Yes
+PackageInstallArgs: --no-multiarch --with-keep.source
+PackageRoxygenize: rd,collate,namespace
