@@ -21,9 +21,9 @@ touch swig/nlopt.scm.in
 cp README.md README
 
 # paranoia: sometimes autoconf doesn't get things right the first time
-autoreconf --verbose --install --symlink --force
-autoreconf --verbose --install --symlink --force
-autoreconf --verbose --install --symlink --force
+autoupdate; autoreconf --verbose --install --symlink --force --warnings=obsolete
+autoupdate; autoreconf --verbose --install --symlink --force --warnings=obsolete
+autoupdate; autoreconf --verbose --install --symlink --force --warnings=obsolete
 
 if test "$configure" = "yes"
 then
