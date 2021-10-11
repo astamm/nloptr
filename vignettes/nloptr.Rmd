@@ -2,13 +2,12 @@
 title: "Introduction to `nloptr`: an R interface to NLopt^[This package should be considered in beta and comments about any aspect of the package are welcome. This document is an R vignette prepared with the aid of `knitr` [@Xie:2014; @Xie:2015; @Xie:2016]. Financial support of the UK Economic and Social Research Council through a grant (RES-589-28-0001) to the ESRC Centre for Microdata Methods and Practice (CeMMAP) is gratefully acknowledged.]"
 author: "Jelmer Ypma"
 date: "`r Sys.Date()`"
-output: 
-  rmarkdown::pdf_document
+output: rmarkdown::html_vignette
 bibliography: reflist.bib
 nocite: |
   @NLopt:website
 vignette: >
-  %\VignetteIndexEntry{Introduction to nloptr: an R interface to NLopt}
+  %\VignetteIndexEntry{nloptr}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
