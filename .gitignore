@@ -6,3 +6,9 @@ src/*.o
 src/*.so
 src/*.dll
 inst/doc
+inst/include/nlopt.f
+src/nlopt_src/config.h
+src/nlopt_src/config.log
+src/nlopt_src/config.status
+src/nlopt_src/include/
+src/nlopt_src/share/
