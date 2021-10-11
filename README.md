@@ -1,6 +1,8 @@
 # nloptr
 
-[![Build Status](https://travis-ci.org/jyypma/nloptr.svg?branch=master)](https://travis-ci.org/jyypma/nloptr)
+<!-- badges: start -->
+  [![R-CMD-check](https://github.com/astamm/nloptr/workflows/R-CMD-check/badge.svg)](https://github.com/astamm/nloptr/actions)
+  <!-- badges: end -->
 
 `nloptr` is an R interface to [NLopt](http://ab-initio.mit.edu/wiki/index.php/NLopt). NLopt is a free/open-source library for nonlinear optimization started by Steven G. Johnson, providing a common interface for a number of different free optimization routines available online as well as original implementations of various other algorithms. It can be used to solve general nonlinear programming problems with nonlinear constraints and lower and upper bounds for the controls, such as
 

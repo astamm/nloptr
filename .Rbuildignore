@@ -3,5 +3,5 @@
 ^\.Rproj\.user$
 \.Rprofile
 \.gitignore
-.travis.yml
 TODO
+^\.github$
