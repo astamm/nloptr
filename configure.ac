@@ -15,22 +15,20 @@
 ##   2020-02-26 (JY): Changed CPP to $CC -E and CXXCPP to $CXX -E as support
 ##     for these flags in R CMD config is deprecated from R 3.6.2.
 
-# require at least autoconf 2.61
-AC_PREREQ(2.61)
+# require at least autoconf 2.69
+AC_PREREQ([2.69])
 
 # Process this file with autoconf to produce a configure script.
-AC_INIT([nloptr], [1.0.1])
+AC_INIT([nloptr],[1.0.1])
 
 ## consider command-line options if given
 ##
 AC_ARG_WITH([nlopt-cflags],
-            AC_HELP_STRING([--with-nlopt-cflags=CFLAGS],
-                           [Supply compiler flags such as the location of NLopt header files]),
+            AS_HELP_STRING([--with-nlopt-cflags=CFLAGS],[Supply compiler flags such as the location of NLopt header files]),
             [nlopt_cflags=$withval],
             [nlopt_cflags=""])
 AC_ARG_WITH([nlopt-libs],
-            AC_HELP_STRING([--with-nlopt-libs=LIBS],
-                           [Supply the linker flags such as the location and name of NLopt libraries]),
+            AS_HELP_STRING([--with-nlopt-libs=LIBS],[Supply the linker flags such as the location and name of NLopt libraries]),
             [nlopt_libs=$withval],
             [nlopt_libs=""])
 
