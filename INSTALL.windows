@@ -1,6 +1,6 @@
 This file describes how to install nloptr from source for Windows. Compiling nloptr for Windows consists of two steps:
 1. configure and compile NLopt from source
-       or 
+       or
    download and unpack a pre-compiled binary (NLopt-2.4-win-build.zip from http://www.ucl.ac.uk/~uctpjyy/nloptr.html)
 2. compile the R interface
 
