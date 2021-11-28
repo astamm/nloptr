@@ -50,7 +50,7 @@
 #' @author Hans W. Borchers
 #'
 #' @note See more infos at
-#' \url{http://ab-initio.mit.edu/wiki/index.php/NLopt_Algorithms}.
+#' \url{https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/}.
 #'
 #' @seealso \code{alabama::auglag}, \code{Rsolnp::solnp},
 #' \code{Rdonlp2::donlp2}
