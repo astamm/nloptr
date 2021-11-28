@@ -10,3 +10,4 @@ src/nlopt
 src/*.o
 src/*.so
 src/*.exe
+inst/doc
