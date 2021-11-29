@@ -49,3 +49,4 @@ Suggests:
     covr
 VignetteBuilder: knitr
 Config/testthat/edition: 3
+URL: https://astamm.github.io/nloptr/index.html, https://github.com/astamm/nloptr
