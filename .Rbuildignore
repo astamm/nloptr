@@ -7,3 +7,4 @@ TODO
 ^\.github$
 ^README\.Rmd$
 ^LICENSE\.md$
+^codecov\.yml$

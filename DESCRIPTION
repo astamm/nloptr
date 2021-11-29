@@ -44,7 +44,8 @@ LinkingTo: testthat
 Suggests: 
     knitr,
     rmarkdown,
-    xml2, 
-    testthat (>= 3.0.0)
+    xml2,
+    testthat (>= 3.0.0),
+    covr
 VignetteBuilder: knitr
 Config/testthat/edition: 3

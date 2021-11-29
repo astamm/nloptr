@@ -1,11 +1,17 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# nloptr
+# nloptr <img src='man/figures/logo.png' align="right" height="139" />
 
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/astamm/nloptr/workflows/R-CMD-check/badge.svg)](https://github.com/astamm/nloptr/actions)
+[![test-coverage](https://github.com/astamm/nloptr/workflows/test-coverage/badge.svg)](https://github.com/astamm/nloptr/actions)
+[![Codecov test
+coverage](https://codecov.io/gh/astamm/nloptr/branch/master/graph/badge.svg)](https://app.codecov.io/gh/astamm/nloptr?branch=master)
+[![pkgdown](https://github.com/astamm/nloptr/workflows/pkgdown/badge.svg)](https://github.com/astamm/nloptr/actions)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/nloptr)](https://CRAN.R-project.org/package=nloptr)
 <!-- badges: end -->
 
 **nloptr** is an R interface to
@@ -47,6 +53,13 @@ simple instructions for installing [CMake](https://cmake.org) first.
 Alternatively, you can set an environment variable `CMAKE_BIN` pointing
 to a [CMake](https://cmake.org) binary of your liking on your computer
 for **nloptr** to use.
+
+## Acknowledgments
+
+I would like to express my sincere gratitude to [Dirk
+Eddelbuettel](https://github.com/eddelbuettel), Uwe Ligges and [Jelmer
+Ypma](https://github.com/jyypma) for the very instructive discussions
+about the pros and cons of various build strategies in R packages.
 
 ## Reference
 
