@@ -91,7 +91,7 @@ test_that( "Test HS071.", {
                    opts        = opts )
 
     # Run some checks on the optimal solution.
-    expect_equal(res$solution, solution.opt, tolerance = 1e-6)
+    expect_equal(res$solution, solution.opt, tolerance = 1e-5)
     expect_true(all(res$solution >= lb))
     expect_true(all(res$solution <= ub))
 
