@@ -73,7 +73,7 @@ inline NLOPT_EXTERN(void) nlopt_version(int *major, int *minor, int *bugfix)
 {
     static void(*fun)(int *, int *, int *) = NULL;
     if (fun == NULL) fun = (void(*)(int *, int *, int *)) R_GetCCallable("nloptr","nlopt_version");
-    return fun(major, minor, major);
+    return fun(major, minor, bugfix);
 }
 
 inline NLOPT_EXTERN(nlopt_opt) nlopt_create(nlopt_algorithm algorithm, unsigned n)

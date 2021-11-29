@@ -69,7 +69,7 @@ first-order (affine) approximations of the constraints.
 }
 \note{
 See more infos at
-\url{http://ab-initio.mit.edu/wiki/index.php/NLopt_Algorithms}.
+\url{https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/}.
 }
 \examples{
 

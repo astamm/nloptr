@@ -1,5 +1,0 @@
-# Default behavior.
-* text eol=lf
-
-# Denote pdf files as binary.
-*.pdf binary

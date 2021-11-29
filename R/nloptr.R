@@ -46,7 +46,7 @@
 #' original implementations of various other algorithms. The NLopt library is
 #' available under the GNU Lesser General Public License (LGPL), and the
 #' copyrights are owned by a variety of authors. Most of the information here
-#' has been taken from \href{http://ab-initio.mit.edu/nlopt}{the NLopt website},
+#' has been taken from \href{https://nlopt.readthedocs.io/en/latest/}{the NLopt website},
 #' where more details are available.
 #'
 #' NLopt addresses general nonlinear optimization problems of the form:
@@ -89,11 +89,11 @@
 #' @param eval_jac_g_eq function to evaluate the jacobian of the (non-)linear
 #' equality constraints that should hold in the solution.
 #' @param opts list with options. The option "algorithm" is required. Check the
-#' \href{http://ab-initio.mit.edu/wiki/index.php/NLopt_Algorithms}{NLopt website}
+#' \href{https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/}{NLopt website}
 #' for a full list of available algorithms. Other options control the
 #' termination conditions (minf_max, ftol_rel, ftol_abs, xtol_rel, xtol_abs,
 #' maxeval, maxtime). Default is xtol_rel = 1e-4. More information
-#' \href{http://ab-initio.mit.edu/wiki/index.php/NLopt_Introduction\#Termination_conditions}{here}.
+#' \href{https://nlopt.readthedocs.io/en/latest/NLopt_Introduction/#termination-conditions}{here}.
 #' A full description of all options is shown by the function
 #' \code{nloptr.print.options()}.
 #'
@@ -146,7 +146,7 @@
 #'   \code{Rsolnp::solnp}
 #'
 #' @references Steven G. Johnson, The NLopt nonlinear-optimization package,
-#' \url{http://ab-initio.mit.edu/nlopt}
+#' \url{https://nlopt.readthedocs.io/en/latest/}
 #'
 #' @keywords optimize interface
 #'

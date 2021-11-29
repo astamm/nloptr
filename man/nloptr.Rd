@@ -53,11 +53,11 @@ an example).}
 equality constraints that should hold in the solution.}
 
 \item{opts}{list with options. The option "algorithm" is required. Check the
-\href{http://ab-initio.mit.edu/wiki/index.php/NLopt_Algorithms}{NLopt website}
+\href{https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/}{NLopt website}
 for a full list of available algorithms. Other options control the
 termination conditions (minf_max, ftol_rel, ftol_abs, xtol_rel, xtol_abs,
 maxeval, maxtime). Default is xtol_rel = 1e-4. More information
-\href{http://ab-initio.mit.edu/wiki/index.php/NLopt_Introduction\#Termination_conditions}{here}.
+\href{https://nlopt.readthedocs.io/en/latest/NLopt_Introduction/#termination-conditions}{here}.
 A full description of all options is shown by the function
 \code{nloptr.print.options()}.
 
@@ -102,7 +102,7 @@ a number of different free optimization routines available online as well as
 original implementations of various other algorithms. The NLopt library is
 available under the GNU Lesser General Public License (LGPL), and the
 copyrights are owned by a variety of authors. Most of the information here
-has been taken from \href{http://ab-initio.mit.edu/nlopt}{the NLopt website},
+has been taken from \href{https://nlopt.readthedocs.io/en/latest/}{the NLopt website},
 where more details are available.
 }
 \details{
@@ -266,7 +266,7 @@ print( res2 )
 }
 \references{
 Steven G. Johnson, The NLopt nonlinear-optimization package,
-\url{http://ab-initio.mit.edu/nlopt}
+\url{https://nlopt.readthedocs.io/en/latest/}
 }
 \seealso{
 \code{\link[nloptr:nloptr.print.options]{nloptr.print.options}}

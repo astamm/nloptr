@@ -11,8 +11,6 @@
 #   27/10/2013: Changed example to use unit testing framework testthat.
 #   12/12/2019: Corrected warnings and using updated testtthat framework (Avraham Adler)
 
-context("Derivative checker")
-
 test_that("Test derivative checker.", {
     # Define objective function.
     f <- function( x, a ) {

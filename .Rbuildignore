@@ -5,3 +5,5 @@
 \.gitignore
 TODO
 ^\.github$
+^README\.Rmd$
+^LICENSE\.md$

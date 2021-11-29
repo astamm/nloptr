@@ -1,0 +1,47 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# nloptr
+
+<!-- badges: start -->
+  [![R-CMD-check](https://github.com/astamm/nloptr/workflows/R-CMD-check/badge.svg)](https://github.com/astamm/nloptr/actions)
+  <!-- badges: end -->
+
+**nloptr** is an R interface to [NLopt](https://nlopt.readthedocs.io/en/latest/), a free/open-source library for nonlinear optimization started by Steven G. Johnson, providing a common interface for a number of different free optimization routines available online as well as original implementations of various other algorithms. It can be used to solve general nonlinear programming problems with nonlinear constraints and lower and upper bounds for the controls, such as
+
+$$ \min_{x \in \mathbb{R}^n} \quad f(x), $$
+
+s.t. $g(x) \le 0$, $h(x) = 0$ and $\ell \le x \le u$.
+
+The [NLopt](https://nlopt.readthedocs.io/en/latest/) library is available under the GNU Lesser General Public License (LGPL), and the copyrights are owned by a variety of authors. See the [website](https://nlopt.readthedocs.io/en/latest/Citing_NLopt/) for information on how to cite NLopt and the algorithms you use.
+
+## Installation
+
+You can install **nloptr** from CRAN using:
+```
+install.packages("nloptr")
+```
+
+Alternatively, you can install the development version from GitHub:
+```
+# install.packages("remotes")
+remotes::install_github("astamm/nloptr")
+```
+
+The latest version 2.7.0 of the [NLopt](https://nlopt.readthedocs.io/en/latest/) library will then be automatically built using [CMake](https://cmake.org). The package will try to find a [CMake](https://cmake.org) binary on your `PATH`. If it cannot find one, the installation will fail with a message giving you simple instructions for installing [CMake](https://cmake.org) first. Alternatively, you can set an environment variable `CMAKE_BIN` pointing to a [CMake](https://cmake.org) binary of your liking on your computer for **nloptr** to use.
+
+## Reference
+
+Steven G. Johnson, The NLopt nonlinear-optimization package, [https://nlopt.readthedocs.io/en/latest/](https://nlopt.readthedocs.io/en/latest/)
