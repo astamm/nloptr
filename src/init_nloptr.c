@@ -34,9 +34,12 @@
 #include "nloptr.h"
 #include "nlopt.h"
 
+extern SEXP run_testthat_tests(SEXP);
+
 static const R_CallMethodDef CallEntries[] = {
-    {"NLoptR_Optimize", (DL_FUNC) &NLoptR_Optimize, 1},
-    {NULL, NULL, 0}
+  {"run_testthat_tests", (DL_FUNC) &run_testthat_tests, 1},
+  {"NLoptR_Optimize", (DL_FUNC) &NLoptR_Optimize, 1},
+  {NULL, NULL, 0}
 };
 
 void R_init_nloptr(DllInfo *info) {
