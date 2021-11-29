@@ -13,8 +13,6 @@
 #   05/05/2014: Changed example to use unit testing framework testthat.
 #   12/12/2019: Corrected warnings and using updated testtthat framework (Avraham Adler)
 
-context("Simple polynomial with additional data.")
-
 test_that( "Test simple polyonmial where parameters are supplied as additional data.", {
   # Objective function and gradient in terms of parameters.
   eval_f <- function(x, params) {

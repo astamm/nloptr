@@ -27,9 +27,6 @@
 #   05/05/2014: Changed example to use unit testing framework testthat.
 #   12/12/2019: Corrected warnings and using updated testtthat framework (Avraham Adler)
 
-
-context("HS071")
-
 test_that( "Test HS071.", {
 
     #
