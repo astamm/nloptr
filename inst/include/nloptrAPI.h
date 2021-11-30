@@ -26,7 +26,6 @@
  * 03/10/2017: Initial version exposing nlopt_version.
  */
 
-
 #ifndef __NLOPTRAPI_H__
 #define __NLOPTRAPI_H__
 

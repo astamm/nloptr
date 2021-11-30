@@ -12,7 +12,7 @@
 #include <testthat.h>
 #include <math.h>
 #include <vector>
-#include "../inst/include/nloptrAPI.h"
+#include "nloptrAPI.h"
 
 std::vector<int> get_nlopt_version()
 {

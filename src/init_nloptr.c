@@ -25,7 +25,6 @@
  * 01/10/2017: Initial version.
  */
 
-
 #include <R.h>
 #include <Rinternals.h>
 #include <stdlib.h> // for NULL
@@ -34,11 +33,9 @@
 #include "nloptr.h"
 #include "nlopt.h"
 
-extern SEXP run_testthat_tests(SEXP);
-
 static const R_CallMethodDef CallEntries[] = {
   {"run_testthat_tests", (DL_FUNC) &run_testthat_tests, 1},
-  {"NLoptR_Optimize", (DL_FUNC) &NLoptR_Optimize, 1},
+  {"NLoptR_Optimize",    (DL_FUNC) &NLoptR_Optimize,    1},
   {NULL, NULL, 0}
 };
 
