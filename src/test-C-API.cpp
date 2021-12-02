@@ -10,9 +10,8 @@
 // All test files should include the <testthat.h>
 // header file.
 #include <testthat.h>
-#include <math.h>
-#include <vector>
-#include "nloptrAPI.h"
+#include "test-C-API.h"
+#include "nlopt.h"
 
 std::vector<int> get_nlopt_version()
 {
@@ -36,10 +35,6 @@ double myfunc(unsigned n, const double *x, double *grad, void *my_func_data)
   }
   return sqrt(x[1]);
 }
-
-typedef struct {
-  double a, b;
-} my_constraint_data;
 
 double myconstraint(unsigned n, const double *x, double *grad, void *data)
 {
@@ -68,22 +63,16 @@ std::vector<double> solve_example()
 
   nlopt_set_xtol_rel(opt, 1e-4);
 
-  double x[2] = { 1.234, 5.678 };  // some initial guess
-  double minf; // the minimum objective value, upon return
-  if (nlopt_optimize(opt, x, &minf) < 0) {
-    // Rprintf("nlopt failed!\\n");
-  }
-  else {
-    // Rprintf("found minimum at f(%g,%g) = %0.10g\\n", x[0], x[1], minf);
-  }
+  // some initial guess
+  std::vector<double> x(2);
+  x[0] = 1.234;
+  x[1] = 5.678;
 
+  double minf; // the minimum objective value, upon return
+  nlopt_optimize(opt, &(x[0]), &minf);
   nlopt_destroy(opt);
 
-  std::vector<double> result(2);
-  result[0] = x[0];
-  result[1] = x[1];
-
-  return result;
+  return x;
 }
 
 // Initialize a unit test context. This is similar to how you
