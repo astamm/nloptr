@@ -16,7 +16,7 @@ test_that("Test that solver stops when maxtime is reached.", {
     # such that maxtime will be reached
     # when solving the optimization problem.
     eval_f <- function(x) {
-        Sys.sleep( 1 )
+        Sys.sleep( 2 )
         return( x^2 )
     }
 
