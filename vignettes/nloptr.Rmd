@@ -37,7 +37,7 @@ s.t.& g(x) \leq 0 \\
 $$
 where $f(\cdot)$ is the objective function and $x$ represents the $n$ optimization parameters. This problem may optionally be subject to the bound constraints (also called box constraints), $x_L$ and $x_U$. For partially or totally unconstrained problems the bounds can take values $-\infty$ or $\infty$. One may also optionally have $m$ nonlinear inequality constraints (sometimes called a nonlinear programming problem), which can be specified in $g(\cdot)$, and equality constraints that can be specified in $h(\cdot)$. Note that not all of the algorithms in NLopt can handle constraints.
 
-This vignette describes how to formulate minimization problems to be solved with the R interface to NLopt. If you want to use the C interface directly or are interested in the Matlab interface, there are other sources of documentation avialable. Some of the information here has been taken from the [NLopt website](\texttt{http://ab-initio.mit.edu/nlopt), where more details are available. All credit for implementing the C code for the different algorithms available in NLopt should go to the respective authors. See the [website](http://ab-initio.mit.edu/wiki/index.php/Citing\_NLopt) for information on how to cite NLopt and the algorithms you use.
+This vignette describes how to formulate minimization problems to be solved with the R interface to NLopt. If you want to use the C interface directly or are interested in the Matlab interface, there are other sources of documentation available. Some of the information here has been taken from the [NLopt website](https://nlopt.readthedocs.io/en/latest/), where more details are available. All credit for implementing the C code for the different algorithms available in NLopt should go to the respective authors. See the [website](http://ab-initio.mit.edu/wiki/index.php/Citing\_NLopt) for information on how to cite NLopt and the algorithms you use.
 
 # Installation
 This package is on CRAN and can be installed from within R using
@@ -264,7 +264,7 @@ res
 Note that not all errors will be picked up by the derivative checker. For instance, if we run the check with `a = c(.5, .5)`, one of the errors is not flagged as an error.
 
 # Notes
-The `.R` scripts in the `tests` directory contain more examples. For instance, `hs071.R` and `systemofeq.R` show how to solve problems with equality constraints. See the [NLopt website](http://ab-initio.mit.edu/wiki/index.php/NLopt_Algorithms#Augmented_Lagrangian_algorithm) for more details. Please let me know if you're missing any of the features that are implemented in NLopt.
+The `.R` scripts in the `tests` directory contain more examples. For instance, `hs071.R` and `systemofeq.R` show how to solve problems with equality constraints. See the [NLopt website](https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/#augmented-lagrangian-algorithm) for more details. Please let me know if you're missing any of the features that are implemented in NLopt.
 
 Sometimes the optimization procedure terminates with a message `maxtime was reached` without evaluating the objective function. Submitting the same problem again usually solves this problem.
 

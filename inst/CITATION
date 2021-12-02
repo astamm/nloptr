@@ -10,7 +10,7 @@ citEntry(entry="Article",
   volume = "?",
   number = "?",
   pages = "?",
-  textVersion = "Steven G. Johnson, The NLopt nonlinear-optimization package, http://ab-initio.mit.edu/nlopt" )
+  textVersion = "Steven G. Johnson, The NLopt nonlinear-optimization package, https://nlopt.readthedocs.io/en/latest/" )
 
 citFooter("The authors and appropriate citations for the specific optimization algorithms
 in NLopt are listed in the NLopt Algorithms page.")
