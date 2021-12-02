@@ -32,7 +32,7 @@ auglag(
 
 \item{lower, upper}{lower and upper bound constraints.}
 
-\item{hin, hinjac}{defines the inequalty constraints, \code{hin(x) >= 0}}
+\item{hin, hinjac}{defines the inequality constraints, \code{hin(x) >= 0}}
 
 \item{heq, heqjac}{defines the equality constraints, \code{heq(x) = 0}.}
 

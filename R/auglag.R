@@ -44,7 +44,7 @@
 #' @param gr gradient of the objective function; will be provided provided is
 #' \code{NULL} and the solver requires derivatives.
 #' @param lower,upper lower and upper bound constraints.
-#' @param hin,hinjac defines the inequalty constraints, \code{hin(x) >= 0}
+#' @param hin,hinjac defines the inequality constraints, \code{hin(x) >= 0}
 #' @param heq,heqjac defines the equality constraints, \code{heq(x) = 0}.
 #' @param localsolver available local solvers: COBYLA, LBFGS, MMA, or SLSQP.
 #' @param localtol tolerance applied in the selected local solver.
