@@ -8,3 +8,4 @@ TODO
 ^README\.Rmd$
 ^LICENSE\.md$
 ^codecov\.yml$
+^cran-comments\.md$
