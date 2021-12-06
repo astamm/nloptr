@@ -1,18 +1,17 @@
 # Platform
 
-|field    |value                                |
-|:--------|:------------------------------------|
-|version  |R version 4.1.1 (2021-08-10)         |
-|os       |macOS Big Sur 11.6                   |
-|system   |aarch64, darwin20.6.0                |
-|ui       |RStudio                              |
-|language |(EN)                                 |
-|collate  |en_US.UTF-8                          |
-|ctype    |en_US.UTF-8                          |
-|tz       |Europe/Paris                         |
-|date     |2021-12-02                           |
-|rstudio  |2021.09.0+351 Ghost Orchid (desktop) |
-|pandoc   |NA                                   |
+|field    |value                        |
+|:--------|:----------------------------|
+|version  |R version 4.1.1 (2021-08-10) |
+|os       |macOS Big Sur 11.6           |
+|system   |aarch64, darwin20.6.0        |
+|ui       |X11                          |
+|language |(EN)                         |
+|collate  |en_US.UTF-8                  |
+|ctype    |en_US.UTF-8                  |
+|tz       |Europe/Paris                 |
+|date     |2021-12-06                   |
+|pandoc   |NA                           |
 
 # Dependencies
 
@@ -44,7 +43,7 @@
 |rlang      |NA      |0.4.12 |*  |
 |rprojroot  |NA      |2.0.2  |*  |
 |rstudioapi |NA      |0.13   |*  |
-|testthat   |NA      |3.1.0  |*  |
+|testthat   |NA      |3.1.1  |*  |
 |tibble     |NA      |3.1.6  |*  |
 |utf8       |NA      |1.2.2  |*  |
 |vctrs      |NA      |0.3.8  |*  |
@@ -53,73 +52,60 @@
 
 # Revdeps
 
-## Failed to check (65)
+## Failed to check (52)
 
-|package             |version |error |warning |note |
-|:-------------------|:-------|:-----|:-------|:----|
-|adoptr              |?       |      |        |     |
-|afex                |?       |      |        |     |
-|ANCOMBC             |?       |      |        |     |
-|apsimx              |?       |      |        |     |
-|clusterPower        |?       |      |        |     |
-|CNORfuzzy           |?       |      |        |     |
-|ConsReg             |?       |      |        |     |
-|cops                |?       |      |        |     |
-|corHMM              |?       |      |        |     |
-|CoSMoS              |?       |      |        |     |
-|cxr                 |?       |      |        |     |
-|diffusion           |?       |      |        |     |
-|drtmle              |?       |      |        |     |
-|DSAIDE              |?       |      |        |     |
-|DSAIRM              |?       |      |        |     |
-|dtwclust            |?       |      |        |     |
-|dynamichazard       |?       |      |        |     |
-|ExtremalDep         |?       |      |        |     |
-|garma               |?       |      |        |     |
-|GDINA               |?       |      |        |     |
-|gimme               |?       |      |        |     |
-|greybox             |?       |      |        |     |
-|gscreend            |?       |      |        |     |
-|hawkesbow           |?       |      |        |     |
-|hisse               |?       |      |        |     |
-|ICAOD               |?       |      |        |     |
-|junctions           |?       |      |        |     |
-|legion              |?       |      |        |     |
-|lme4                |?       |      |        |     |
-|logitr              |?       |      |        |     |
-|LPsmooth            |?       |      |        |     |
-|mdpeer              |?       |      |        |     |
-|metafor             |?       |      |        |     |
-|mev                 |?       |      |        |     |
-|mirt                |?       |      |        |     |
-|missSBM             |?       |      |        |     |
-|mixchar             |?       |      |        |     |
-|mlr3pipelines       |?       |      |        |     |
-|MSCMT               |?       |      |        |     |
-|mssm                |?       |      |        |     |
-|nlmixr              |?       |      |        |     |
-|optedr              |?       |      |        |     |
-|OptimaRegion        |?       |      |        |     |
-|OUwie               |?       |      |        |     |
-|PAIRADISE           |?       |      |        |     |
-|phyr                |?       |      |        |     |
-|PLNmodels           |?       |      |        |     |
-|pomp                |?       |      |        |     |
-|QBAsyDist           |?       |      |        |     |
-|regsem              |?       |      |        |     |
-|riskParityPortfolio |?       |      |        |     |
-|RNAdecay            |?       |      |        |     |
-|rrscale             |?       |      |        |     |
-|RSDA                |?       |      |        |     |
-|SACOBRA             |?       |      |        |     |
-|sense               |?       |      |        |     |
-|seqHMM              |?       |      |        |     |
-|signeR              |?       |      |        |     |
-|smooth              |?       |      |        |     |
-|spaMM               |?       |      |        |     |
-|spant               |?       |      |        |     |
-|SPOT                |?       |      |        |     |
-|SuperLearner        |?       |      |        |     |
-|swdft               |?       |      |        |     |
-|yaps                |?       |      |        |     |
+|package       |version |error |warning |note |
+|:-------------|:-------|:-----|:-------|:----|
+|afex          |?       |      |        |     |
+|ANCOMBC       |?       |      |        |     |
+|apsimx        |?       |      |        |     |
+|clusterPower  |?       |      |        |     |
+|CNORfuzzy     |?       |      |        |     |
+|ConsReg       |?       |      |        |     |
+|cops          |?       |      |        |     |
+|corHMM        |?       |      |        |     |
+|CoSMoS        |?       |      |        |     |
+|cxr           |?       |      |        |     |
+|diffusion     |?       |      |        |     |
+|drtmle        |?       |      |        |     |
+|DSAIDE        |?       |      |        |     |
+|DSAIRM        |?       |      |        |     |
+|dtwclust      |?       |      |        |     |
+|dynamichazard |?       |      |        |     |
+|ExtremalDep   |?       |      |        |     |
+|garma         |?       |      |        |     |
+|GDINA         |?       |      |        |     |
+|gimme         |?       |      |        |     |
+|gscreend      |?       |      |        |     |
+|hisse         |?       |      |        |     |
+|ICAOD         |?       |      |        |     |
+|legion        |?       |      |        |     |
+|lme4          |?       |      |        |     |
+|LPsmooth      |?       |      |        |     |
+|metafor       |?       |      |        |     |
+|mev           |?       |      |        |     |
+|mirt          |?       |      |        |     |
+|missSBM       |?       |      |        |     |
+|mlr3pipelines |?       |      |        |     |
+|modcmfitr     |?       |      |        |     |
+|mosqcontrol   |?       |      |        |     |
+|MSCMT         |?       |      |        |     |
+|mssm          |?       |      |        |     |
+|nlmixr        |?       |      |        |     |
+|optedr        |?       |      |        |     |
+|OptimaRegion  |?       |      |        |     |
+|OUwie         |?       |      |        |     |
+|phyr          |?       |      |        |     |
+|PLNmodels     |?       |      |        |     |
+|QBAsyDist     |?       |      |        |     |
+|regsem        |?       |      |        |     |
+|RSDA          |?       |      |        |     |
+|sense         |?       |      |        |     |
+|seqHMM        |?       |      |        |     |
+|signeR        |?       |      |        |     |
+|smooth        |?       |      |        |     |
+|spant         |?       |      |        |     |
+|SPOT          |?       |      |        |     |
+|SuperLearner  |?       |      |        |     |
+|swdft         |?       |      |        |     |
 

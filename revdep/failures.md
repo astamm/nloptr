@@ -1,36 +1,3 @@
-# adoptr
-
-<details>
-
-* Version: 
-* GitHub: https://github.com/astamm/nloptr
-* Source code: NA
-* Number of recursive dependencies: 0
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-
-
-
-
-
-
-```
-### CRAN
-
-```
-
-
-
-
-
-
-```
 # afex
 
 <details>
@@ -691,73 +658,7 @@
 
 
 ```
-# greybox
-
-<details>
-
-* Version: 
-* GitHub: https://github.com/astamm/nloptr
-* Source code: NA
-* Number of recursive dependencies: 0
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-
-
-
-
-
-
-```
-### CRAN
-
-```
-
-
-
-
-
-
-```
 # gscreend
-
-<details>
-
-* Version: 
-* GitHub: https://github.com/astamm/nloptr
-* Source code: NA
-* Number of recursive dependencies: 0
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-
-
-
-
-
-
-```
-### CRAN
-
-```
-
-
-
-
-
-
-```
-# hawkesbow
 
 <details>
 
@@ -856,39 +757,6 @@
 
 
 ```
-# junctions
-
-<details>
-
-* Version: 
-* GitHub: https://github.com/astamm/nloptr
-* Source code: NA
-* Number of recursive dependencies: 0
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-
-
-
-
-
-
-```
-### CRAN
-
-```
-
-
-
-
-
-
-```
 # legion
 
 <details>
@@ -955,73 +823,7 @@
 
 
 ```
-# logitr
-
-<details>
-
-* Version: 
-* GitHub: https://github.com/astamm/nloptr
-* Source code: NA
-* Number of recursive dependencies: 0
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-
-
-
-
-
-
-```
-### CRAN
-
-```
-
-
-
-
-
-
-```
 # LPsmooth
-
-<details>
-
-* Version: 
-* GitHub: https://github.com/astamm/nloptr
-* Source code: NA
-* Number of recursive dependencies: 0
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-
-
-
-
-
-
-```
-### CRAN
-
-```
-
-
-
-
-
-
-```
-# mdpeer
 
 <details>
 
@@ -1186,7 +988,7 @@
 
 
 ```
-# mixchar
+# mlr3pipelines
 
 <details>
 
@@ -1219,7 +1021,40 @@
 
 
 ```
-# mlr3pipelines
+# modcmfitr
+
+<details>
+
+* Version: 
+* GitHub: https://github.com/astamm/nloptr
+* Source code: NA
+* Number of recursive dependencies: 0
+
+</details>
+
+## Error before installation
+
+### Devel
+
+```
+
+
+
+
+
+
+```
+### CRAN
+
+```
+
+
+
+
+
+
+```
+# mosqcontrol
 
 <details>
 
@@ -1450,39 +1285,6 @@
 
 
 ```
-# PAIRADISE
-
-<details>
-
-* Version: 
-* GitHub: https://github.com/astamm/nloptr
-* Source code: NA
-* Number of recursive dependencies: 0
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-
-
-
-
-
-
-```
-### CRAN
-
-```
-
-
-
-
-
-
-```
 # phyr
 
 <details>
@@ -1517,39 +1319,6 @@
 
 ```
 # PLNmodels
-
-<details>
-
-* Version: 
-* GitHub: https://github.com/astamm/nloptr
-* Source code: NA
-* Number of recursive dependencies: 0
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-
-
-
-
-
-
-```
-### CRAN
-
-```
-
-
-
-
-
-
-```
-# pomp
 
 <details>
 
@@ -1648,139 +1417,7 @@
 
 
 ```
-# riskParityPortfolio
-
-<details>
-
-* Version: 
-* GitHub: https://github.com/astamm/nloptr
-* Source code: NA
-* Number of recursive dependencies: 0
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-
-
-
-
-
-
-```
-### CRAN
-
-```
-
-
-
-
-
-
-```
-# RNAdecay
-
-<details>
-
-* Version: 
-* GitHub: https://github.com/astamm/nloptr
-* Source code: NA
-* Number of recursive dependencies: 0
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-
-
-
-
-
-
-```
-### CRAN
-
-```
-
-
-
-
-
-
-```
-# rrscale
-
-<details>
-
-* Version: 
-* GitHub: https://github.com/astamm/nloptr
-* Source code: NA
-* Number of recursive dependencies: 0
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-
-
-
-
-
-
-```
-### CRAN
-
-```
-
-
-
-
-
-
-```
 # RSDA
-
-<details>
-
-* Version: 
-* GitHub: https://github.com/astamm/nloptr
-* Source code: NA
-* Number of recursive dependencies: 0
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-
-
-
-
-
-
-```
-### CRAN
-
-```
-
-
-
-
-
-
-```
-# SACOBRA
 
 <details>
 
@@ -1902,9 +1539,9 @@ Error in download.file(url, destfile, method, mode = "wb", ...) :
   download from 'https://bioconductor.org/packages/3.14/data/annotation/src/contrib/BSgenome.Hsapiens.UCSC.hg19_1.4.3.tar.gz' failed
 In addition: Warning messages:
 1: In download.file(url, destfile, method, mode = "wb", ...) :
-  downloaded length 52761948 != reported length 710245413
+  downloaded length 28712624 != reported length 710245413
 2: In download.file(url, destfile, method, mode = "wb", ...) :
-  downloaded length 52761948 != reported length 710245413
+  downloaded length 28712624 != reported length 710245413
 3: In download.file(url, destfile, method, mode = "wb", ...) :
   URL 'https://bioconductor.org/packages/3.14/data/annotation/src/contrib/BSgenome.Hsapiens.UCSC.hg19_1.4.3.tar.gz': Timeout of 60 seconds was reached
 4: In download.file(url, destfile, method, mode = "wb", ...) :
@@ -1926,9 +1563,9 @@ Error in download.file(url, destfile, method, mode = "wb", ...) :
   download from 'https://bioconductor.org/packages/3.14/data/annotation/src/contrib/BSgenome.Hsapiens.UCSC.hg19_1.4.3.tar.gz' failed
 In addition: Warning messages:
 1: In download.file(url, destfile, method, mode = "wb", ...) :
-  downloaded length 52761948 != reported length 710245413
+  downloaded length 28712624 != reported length 710245413
 2: In download.file(url, destfile, method, mode = "wb", ...) :
-  downloaded length 52761948 != reported length 710245413
+  downloaded length 28712624 != reported length 710245413
 3: In download.file(url, destfile, method, mode = "wb", ...) :
   URL 'https://bioconductor.org/packages/3.14/data/annotation/src/contrib/BSgenome.Hsapiens.UCSC.hg19_1.4.3.tar.gz': Timeout of 60 seconds was reached
 4: In download.file(url, destfile, method, mode = "wb", ...) :
@@ -1941,39 +1578,6 @@ Warning in download.packages(pkgs, destdir = tmpd, available = available,  :
 
 ```
 # smooth
-
-<details>
-
-* Version: 
-* GitHub: https://github.com/astamm/nloptr
-* Source code: NA
-* Number of recursive dependencies: 0
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-
-
-
-
-
-
-```
-### CRAN
-
-```
-
-
-
-
-
-
-```
-# spaMM
 
 <details>
 
@@ -2106,39 +1710,6 @@ Warning in download.packages(pkgs, destdir = tmpd, available = available,  :
 
 ```
 # swdft
-
-<details>
-
-* Version: 
-* GitHub: https://github.com/astamm/nloptr
-* Source code: NA
-* Number of recursive dependencies: 0
-
-</details>
-
-## Error before installation
-
-### Devel
-
-```
-
-
-
-
-
-
-```
-### CRAN
-
-```
-
-
-
-
-
-
-```
-# yaps
 
 <details>
 
