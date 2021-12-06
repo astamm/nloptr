@@ -29,10 +29,11 @@ Description:
     interface for a number of different free optimization routines available
     online as well as original implementations of various other algorithms.
     See <https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/> for more
-    information on the available algorithms. During installation of nloptr on 
-    Unix-based systems, the installer checks whether the NLopt library is
-    installed on the system. If the NLopt library cannot be found, the code
-    is compiled using the NLopt source included in the 'nloptr' package.
+    information on the available algorithms. The installation of 'nloptr' will 
+    search for an existing binary of CMake on your PATH. If it cannot find one, 
+    it will prompt you to install it and provide hints on how to do so for usual 
+    operating systems. Once CMake is found, the latest version (2.7.0) of NLopt 
+    will be systematically built and used by the 'nloptr' package.
 License: LGPL (>= 3)
 SystemRequirements: cmake
 Biarch: true
@@ -50,3 +51,4 @@ Suggests:
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 URL: https://astamm.github.io/nloptr/index.html, https://github.com/astamm/nloptr
+BugReports: https://github.com/astamm/nloptr/issues
