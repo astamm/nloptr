@@ -47,3 +47,7 @@ Despite this bashism, it seems to work on all platforms.
     Some Unix compilers require LF line endings.
 
 These files are generated automatically upon compilation of NLopt.
+
+## Downstream dependencies
+I have also run R CMD check on downstream dependencies of [**nloptr**](https://astamm.github.io/nloptr/) using the [**revdepcheck**](https://r-lib.github.io/revdepcheck/) package. 
+All 117 packages that I could install passed: (https://github.com/wch/checkresults/blob/master/nloptr/r-release).

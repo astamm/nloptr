@@ -9,3 +9,4 @@ TODO
 ^LICENSE\.md$
 ^codecov\.yml$
 ^cran-comments\.md$
+^revdep$
