@@ -65,8 +65,8 @@ nlopt_libs=""
 
 ## also use pkg-config to check for NLopt
 ##
-if test x"${nlopt_libs}" == x""; then
-    if test x"${PKGCONFIG}" == x"yes"; then
+if test x"${nlopt_libs}" = x""; then
+    if test x"${PKGCONFIG}" = x"yes"; then
         ## check via pkg-config for nlopt
         if pkg-config --exists nlopt; then
             ## obtain cflags and obtain libs
@@ -96,7 +96,7 @@ AC_CHECK_HEADER([$nlopt_header],
 # version, does not work.
 if test x"${nlopt_good}" = x"yes"; then
     AC_MSG_NOTICE([Now testing for NLopt version 2.4.0 or greater.])
-    if test x"${PKGCONFIG}" == x"yes"; then
+    if test x"${PKGCONFIG}" = x"yes"; then
         ## check via pkg-config for version number of nlopt
         if pkg-config --exists nlopt; then
             ## obtain version number

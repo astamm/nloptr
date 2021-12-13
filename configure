@@ -2981,8 +2981,8 @@ nlopt_libs=""
 
 ## also use pkg-config to check for NLopt
 ##
-if test x"${nlopt_libs}" == x""; then
-    if test x"${PKGCONFIG}" == x"yes"; then
+if test x"${nlopt_libs}" = x""; then
+    if test x"${PKGCONFIG}" = x"yes"; then
         ## check via pkg-config for nlopt
         if pkg-config --exists nlopt; then
             ## obtain cflags and obtain libs
@@ -3279,7 +3279,7 @@ fi
 if test x"${nlopt_good}" = x"yes"; then
     { $as_echo "$as_me:${as_lineno-$LINENO}: Now testing for NLopt version 2.4.0 or greater." >&5
 $as_echo "$as_me: Now testing for NLopt version 2.4.0 or greater." >&6;}
-    if test x"${PKGCONFIG}" == x"yes"; then
+    if test x"${PKGCONFIG}" = x"yes"; then
         ## check via pkg-config for version number of nlopt
         if pkg-config --exists nlopt; then
             ## obtain version number
