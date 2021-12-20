@@ -1,3 +1,8 @@
+## Resubmission
+This is a resubmission. In this version I have:
+
+* Corrected the bashism of sourcing a script with argument in both `configure` and `configure.win` files.
+
 ## Test environments
 * local macOS R installation, R 4.1.1
 * macOS latest release (via [R-CMD-check](https://github.com/r-lib/actions/blob/master/examples/check-standard.yaml) github action)

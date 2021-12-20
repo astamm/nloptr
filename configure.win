@@ -11,7 +11,8 @@ cd src
 # Compile NLOpt from source
 sh ./scripts/nlopt_download.sh ${RSCRIPT_BIN}
 for ARCH in "/x64" "/i386"; do
-    . ./scripts/r_config.sh ${ARCH}
+    dot() { file=$1; shift; . "$file"; }
+    dot ./scripts/r_config.sh ${ARCH}
     "${CMAKE_BIN}" \
       -G "MSYS Makefiles" \
       -D BUILD_SHARED_LIBS=OFF \

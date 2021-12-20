@@ -10,7 +10,8 @@ cd src
 
 # Compile NLOpt from source
 sh ./scripts/nlopt_download.sh ${RSCRIPT_BIN}
-. ./scripts/r_config.sh ""
+dot() { file=$1; shift; . "$file"; }
+dot ./scripts/r_config.sh ""
 ${CMAKE_BIN} \
   -D BUILD_SHARED_LIBS=OFF \
   -D CMAKE_BUILD_TYPE=Release \
