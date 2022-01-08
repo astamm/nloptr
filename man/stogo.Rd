@@ -4,9 +4,18 @@
 \alias{stogo}
 \title{Stochastic Global Optimization}
 \usage{
-stogo(x0, fn, gr = NULL, lower = NULL, upper = NULL,
-  maxeval = 10000, xtol_rel = 1e-06, randomized = FALSE,
-  nl.info = FALSE, ...)
+stogo(
+  x0,
+  fn,
+  gr = NULL,
+  lower = NULL,
+  upper = NULL,
+  maxeval = 10000,
+  xtol_rel = 1e-06,
+  randomized = FALSE,
+  nl.info = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x0}{initial point for searching the optimum.}
@@ -29,13 +38,13 @@ stogo(x0, fn, gr = NULL, lower = NULL, upper = NULL,
 }
 \value{
 List with components:
-  \item{par}{the optimal solution found so far.}
-  \item{value}{the function value corresponding to \code{par}.}
-  \item{iter}{number of (outer) iterations, see \code{maxeval}.}
-  \item{convergence}{integer code indicating successful completion (> 0)
-    or a possible error number (< 0).}
-  \item{message}{character string produced by NLopt and giving additional
-    information.}
+\item{par}{the optimal solution found so far.}
+\item{value}{the function value corresponding to \code{par}.}
+\item{iter}{number of (outer) iterations, see \code{maxeval}.}
+\item{convergence}{integer code indicating successful completion (> 0)
+or a possible error number (< 0).}
+\item{message}{character string produced by NLopt and giving additional
+information.}
 }
 \description{
 StoGO is a global optimization algorithm that works by systematically

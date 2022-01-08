@@ -1,62 +1,95 @@
-# nloptr
 
-[![Build Status](https://travis-ci.org/jyypma/nloptr.svg?branch=master)](https://travis-ci.org/jyypma/nloptr)
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 
-`nloptr` is an R interface to [NLopt](http://ab-initio.mit.edu/wiki/index.php/NLopt). NLopt is a free/open-source library for nonlinear optimization started by Steven G. Johnson, providing a common interface for a number of different free optimization routines available online as well as original implementations of various other algorithms. It can be used to solve general nonlinear programming problems with nonlinear constraints and lower and upper bounds for the controls, such as
+# [**nloptr**](https://astamm.github.io/nloptr/) <img src='man/figures/logo.png' align="right" height="139" />
 
-```
-                             min      f(x)
-                           x in R^n
-                           
-                           s.t.       g(x) <= 0
-                                      h(x)  = 0
-                                lb <=   x  <= ub
-```
+<!-- badges: start -->
 
-The NLopt library is available under the GNU Lesser General Public License (LGPL), and the copyrights are owned by a variety of authors. See the [website](http://ab-initio.mit.edu/wiki/index.php/Citing_NLopt) for information on how to cite NLopt and the algorithms you use. The R interface to NLopt, also under LGPL, can be downloaded from [CRAN](https://CRAN.R-project.org/package=nloptr/index.html) or [GitHub](https://github.com/jyypma/nloptr) (development version).
+[![R-CMD-check](https://github.com/astamm/nloptr/workflows/R-CMD-check/badge.svg)](https://github.com/astamm/nloptr/actions)
+[![test-coverage](https://github.com/astamm/nloptr/workflows/test-coverage/badge.svg)](https://github.com/astamm/nloptr/actions)
+[![Codecov test
+coverage](https://codecov.io/gh/astamm/nloptr/branch/master/graph/badge.svg)](https://app.codecov.io/gh/astamm/nloptr?branch=master)
+[![pkgdown](https://github.com/astamm/nloptr/workflows/pkgdown/badge.svg)](https://github.com/astamm/nloptr/actions)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/nloptr)](https://CRAN.R-project.org/package=nloptr)
+<!-- badges: end -->
+
+[**nloptr**](https://astamm.github.io/nloptr/) is an R interface to
+[NLopt](https://nlopt.readthedocs.io/en/latest/), a free/open-source
+library for nonlinear optimization started by Steven G. Johnson,
+providing a common interface for a number of different free optimization
+routines available online as well as original implementations of various
+other algorithms. It can be used to solve general nonlinear programming
+problems with nonlinear constraints and lower and upper bounds for the
+controls, such as
+
+min<sub>*x* ∈ ℝ<sup>*n*</sup></sub>  *f*(*x*),
+
+s.t. *g*(*x*) ≤ 0, *h*(*x*) = 0 and ℓ ≤ *x* ≤ *u*.
+
+The [NLopt](https://nlopt.readthedocs.io/en/latest/) library is
+available under the GNU Lesser General Public License (LGPL), and the
+copyrights are owned by a variety of authors. See the
+[website](https://nlopt.readthedocs.io/en/latest/Citing_NLopt/) for
+information on how to cite NLopt and the algorithms you use.
 
 ## Installation
-For most versions of R `nloptr` can be installed from R with 
-```
-install.packages('nloptr')
-```
 
-### Development version
-The most recent (experimental) version can be installed from source from GitHub
-```
-library('devtools')
-install_github("jyypma/nloptr")
-```
-For this to work on Windows, you need to have Rtools and NLopt installed, and set an environment variable NLOPT_HOME with the location of the NLopt library.
+### Installing [CMake](https://cmake.org)
 
-## Disclaimer
-This package is distributed in the hope that it may be useful to some. The usual disclaimers apply (downloading and installing this software is at your own risk, and no support or guarantee is provided, I don't take liability and so on), but please let me know if you have any problems, suggestions, comments, etc.
+The [NLopt](https://nlopt.readthedocs.io/en/latest/) library has
+switched to [CMake](https://cmake.org) for its build system.
+Consequently, we updated the
+[**nloptr**](https://astamm.github.io/nloptr/) package accordingly. This
+means that [CMake](https://cmake.org) is now a system requirement. You
+can install it by following [CMake installation
+instructions](https://cmake.org/install/).
 
-## Files
+The important thing is that you add the [CMake](https://cmake.org)
+binary to your `PATH`:
 
-* [NLopt-2.4-win-build.zip](http://www.ucl.ac.uk/~uctpjyy/downloads/NLopt-2.4-win-build.zip) - static libraries of NLopt 2.4 compiled for Windows 32-bit and 64-bit.
-* [nloptr.pdf](https://CRAN.R-project.org/package=nloptr/vignettes/nloptr.pdf) - an R vignette describing how to use the R interface to NLopt.
-* [INSTALL.windows](https://github.com/jyypma/nloptr/blob/master/INSTALL.windows) - description of how to install `nloptr` from source for Windows.
+-   On Windows, the installer has an option to modify the system `PATH`
+    environment variable. If that is not selected, please select it.
+-   On macOS, you can install [CMake](https://cmake.org) and then run
+    it. In the menu bar, there is an item *How to Install For Command
+    Line Use* which you can click on to have proper instructions on how
+    to update your `PATH`. Note that the location of the
+    [CMake](https://cmake.org) binary is always
+    `/Applications/CMake.app/Contents/bin/cmake`. Hence,
+    [**nloptr**](https://astamm.github.io/nloptr/) knows where to find
+    it even if you do not update your `PATH`.
+-   On Linux, it will be automatically added unless you specifically
+    change the default installation directory before building
+    [CMake](https://cmake.org).
 
-## Changelog 
-A full version of the changelog can be found on [CRAN](https://CRAN.R-project.org/package=nloptr/ChangeLog)
+Alternatively, you can set an environment variable `CMAKE_BIN` pointing
+to a [CMake](https://cmake.org) binary of your liking on your computer
+for [**nloptr**](https://astamm.github.io/nloptr/) to use.
 
-| Date       | Description |
-| :---------- | :----------- |
-| 27/01/2014 | Version 1.0.0 merged wrappers from the 'nloptwrap' package. |
-| 19/11/2013 | Version 0.9.6 Added a line in Makevars to replace some code in NLopt to fix compilation on Solaris as requested by Brian Ripley. |
-| 12/11/2013 | Version 0.9.5 Updated references from NLopt version 2.3 to NLopt version 2.4 in installation instructions. | in INSTALL.windows. Added a line in Makevars that replaces some code related to type-casting in NLopt-2.4/isres/isres.c. Changed encoding of src/nloptr.c from CP1252 to UTF-8. |
-| 09/11/2013 | Version 0.9.4 updated NLopt to version 2.4. |
-| 31/07/2013 | Version 0.9.3 was a maintainance release. |
-| 11/07/2013 | Version 0.9.2 was a maintainance release. |
-| 31/04/2013 | Version 0.9.0 has a new `print_level = 3`, and is compiled with NLopt version 2.3 with `--with-cxx option`. This makes the StoGo algorithm available. |
-| 18/11/2011 | Version 0.8.9 removed some warnings from R CMD check and included some changes to the build process. |
-| 28/09/2011 | Version 0.8.8 updated to compile on Solaris. |
-| 03/09/2011 | Version 0.8.5 includes a working binary for MacOS. |
-| 12/08/2011 | Version 0.8.4 includes a new function `nloptr.print.options`, and has new options (`print_options_doc`, and `population` and `ranseed` for stochastic global solvers). |
-| 24/07/2011 | Version 0.8.3 has a finite difference derivative checker and includes checks to prevent adding constraints to a problem when the chosen algortihm does not allow for constraints. |
-| 09/07/2011 | Version 0.8.2 is on CRAN with an updated build process and a newer version of NLopt. |
-| 13/01/2011 | Version 0.8.1 contains an option print_level to control intermediate output. |
+### Installing [**nloptr**](https://astamm.github.io/nloptr/)
+
+You can install [**nloptr**](https://astamm.github.io/nloptr/) from CRAN
+using:
+
+    install.packages("nloptr")
+
+Alternatively, you can install the development version from GitHub:
+
+    # install.packages("remotes")
+    remotes::install_github("astamm/nloptr")
+
+The latest version 2.7.0 of the
+[NLopt](https://nlopt.readthedocs.io/en/latest/) library will then be
+automatically built using [CMake](https://cmake.org).
+
+## Acknowledgments
+
+I would like to express my sincere gratitude to [Dirk
+Eddelbuettel](https://github.com/eddelbuettel), Uwe Ligges and [Jelmer
+Ypma](https://github.com/jyypma) for the very instructive discussions
+about the pros and cons of various build strategies in R packages.
 
 ## Reference
-Steven G. Johnson, The NLopt nonlinear-optimization package, [http://ab-initio.mit.edu/nlopt](http://ab-initio.mit.edu/nlopt)
+
+Steven G. Johnson, The NLopt nonlinear-optimization package,
+<https://nlopt.readthedocs.io/en/latest/>

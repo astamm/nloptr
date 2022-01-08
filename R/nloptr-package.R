@@ -6,7 +6,7 @@
 #' original implementations of various other algorithms. The NLopt library is
 #' available under the GNU Lesser General Public License (LGPL), and the
 #' copyrights are owned by a variety of authors. Most of the information here
-#' has been taken from \href{http://ab-initio.mit.edu/nlopt}{the NLopt website},
+#' has been taken from \href{https://nlopt.readthedocs.io/en/latest/}{the NLopt website},
 #' where more details are available.
 #'
 #' NLopt addresses general nonlinear optimization problems of the form:
@@ -54,7 +54,7 @@
 #' \code{\link{varmetric}}
 #'
 #' @references Steven G. Johnson, The NLopt nonlinear-optimization package,
-#' \url{http://ab-initio.mit.edu/nlopt}
+#' \url{https://nlopt.readthedocs.io/en/latest/}
 #'
 #' @keywords optimize interface
 #'
@@ -138,7 +138,6 @@
 #'                eval_g_eq=eval_g_eq,
 #'                opts=opts)
 #' print( res )
-#'
 NULL
 
 

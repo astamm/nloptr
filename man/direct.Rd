@@ -5,11 +5,27 @@
 \alias{directL}
 \title{DIviding RECTangles Algorithm for Global Optimization}
 \usage{
-direct(fn, lower, upper, scaled = TRUE, original = FALSE,
-  nl.info = FALSE, control = list(), ...)
+direct(
+  fn,
+  lower,
+  upper,
+  scaled = TRUE,
+  original = FALSE,
+  nl.info = FALSE,
+  control = list(),
+  ...
+)
 
-directL(fn, lower, upper, randomized = FALSE, original = FALSE,
-  nl.info = FALSE, control = list(), ...)
+directL(
+  fn,
+  lower,
+  upper,
+  randomized = FALSE,
+  original = FALSE,
+  nl.info = FALSE,
+  control = list(),
+  ...
+)
 }
 \arguments{
 \item{fn}{objective function that is to be minimized.}
@@ -32,13 +48,13 @@ dimension to halve next in the case of near-ties.}
 }
 \value{
 List with components:
-  \item{par}{the optimal solution found so far.}
-  \item{value}{the function value corresponding to \code{par}.}
-  \item{iter}{number of (outer) iterations, see \code{maxeval}.}
-  \item{convergence}{integer code indicating successful completion (> 0)
-    or a possible error number (< 0).}
-  \item{message}{character string produced by NLopt and giving additional
-    information.}
+\item{par}{the optimal solution found so far.}
+\item{value}{the function value corresponding to \code{par}.}
+\item{iter}{number of (outer) iterations, see \code{maxeval}.}
+\item{convergence}{integer code indicating successful completion (> 0)
+or a possible error number (< 0).}
+\item{message}{character string produced by NLopt and giving additional
+information.}
 }
 \description{
 DIRECT is a deterministic search algorithm based on systematic division of

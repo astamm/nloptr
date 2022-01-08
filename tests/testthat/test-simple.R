@@ -18,8 +18,6 @@
 #   05/05/2014: Changed example to use unit testing framework testthat.
 #   12/12/2019: Corrected warnings and using updated testtthat framework (Avraham Adler)
 
-context("Simple contstrained problem.")
-
 test_that( "Test simple constrained optimization problem with gradient information." , {
     # Objective function.
     eval_f <- function(x) {

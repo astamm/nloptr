@@ -11,8 +11,6 @@
 #   27/10/2013: Changed example to use unit testing framework testthat.
 #   12/12/2019: Corrected warnings and using updated testtthat framework (Avraham Adler)
 
-context("Banana")
-
 test_that("Test Rosenbrock Banana optimization with objective and gradient in separate functions.", {
     # initial values
     x0 <- c( -1.2, 1 )

@@ -4,9 +4,18 @@
 \alias{tnewton}
 \title{Preconditioned Truncated Newton}
 \usage{
-tnewton(x0, fn, gr = NULL, lower = NULL, upper = NULL,
-  precond = TRUE, restart = TRUE, nl.info = FALSE,
-  control = list(), ...)
+tnewton(
+  x0,
+  fn,
+  gr = NULL,
+  lower = NULL,
+  upper = NULL,
+  precond = TRUE,
+  restart = TRUE,
+  nl.info = FALSE,
+  control = list(),
+  ...
+)
 }
 \arguments{
 \item{x0}{starting point for searching the optimum.}
@@ -30,13 +39,13 @@ not specified.}
 }
 \value{
 List with components:
-  \item{par}{the optimal solution found so far.}
-  \item{value}{the function value corresponding to \code{par}.}
-  \item{iter}{number of (outer) iterations, see \code{maxeval}.}
-  \item{convergence}{integer code indicating successful completion (> 1)
-    or a possible error number (< 0).}
-  \item{message}{character string produced by NLopt and giving additional
-    information.}
+\item{par}{the optimal solution found so far.}
+\item{value}{the function value corresponding to \code{par}.}
+\item{iter}{number of (outer) iterations, see \code{maxeval}.}
+\item{convergence}{integer code indicating successful completion (> 1)
+or a possible error number (< 0).}
+\item{message}{character string produced by NLopt and giving additional
+information.}
 }
 \description{
 Truncated Newton methods, also calledNewton-iterative methods, solve an

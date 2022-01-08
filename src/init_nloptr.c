@@ -3,7 +3,7 @@
  * This code is published under the L-GPL.
  *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published 
+ * it under the terms of the GNU Lesser General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
@@ -14,17 +14,16 @@
  *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *   
+ *
  * File:   init_nloptr.c
  * Author: Jelmer Ypma
  * Date:   3 October 2017
  *
  * This file registers C functions to be used from R.
- * 
+ *
  * 03/10/2017: Included registering of C functions to be used by external R packages.
  * 01/10/2017: Initial version.
  */
-
 
 #include <R.h>
 #include <Rinternals.h>
@@ -35,8 +34,9 @@
 #include "nlopt.h"
 
 static const R_CallMethodDef CallEntries[] = {
-    {"NLoptR_Optimize", (DL_FUNC) &NLoptR_Optimize, 1},
-    {NULL, NULL, 0}
+  {"run_testthat_tests", (DL_FUNC) &run_testthat_tests, 1},
+  {"NLoptR_Optimize",    (DL_FUNC) &NLoptR_Optimize,    1},
+  {NULL, NULL, 0}
 };
 
 void R_init_nloptr(DllInfo *info) {
@@ -56,7 +56,7 @@ void R_init_nloptr(DllInfo *info) {
     R_RegisterCCallable("nloptr", "nlopt_set_precond_max_objective", (DL_FUNC) &nlopt_set_precond_max_objective);
     R_RegisterCCallable("nloptr", "nlopt_get_algorithm",             (DL_FUNC) &nlopt_get_algorithm);
     R_RegisterCCallable("nloptr", "nlopt_get_dimension",             (DL_FUNC) &nlopt_get_dimension);
-    
+
     R_RegisterCCallable("nloptr", "nlopt_set_lower_bounds",                  (DL_FUNC) &nlopt_set_lower_bounds);
     R_RegisterCCallable("nloptr", "nlopt_set_lower_bounds1",                 (DL_FUNC) &nlopt_set_lower_bounds1);
     R_RegisterCCallable("nloptr", "nlopt_get_lower_bounds",                  (DL_FUNC) &nlopt_get_lower_bounds);
@@ -71,7 +71,7 @@ void R_init_nloptr(DllInfo *info) {
     R_RegisterCCallable("nloptr", "nlopt_add_equality_constraint",           (DL_FUNC) &nlopt_add_equality_constraint);
     R_RegisterCCallable("nloptr", "nlopt_add_precond_equality_constraint",   (DL_FUNC) &nlopt_add_precond_equality_constraint);
     R_RegisterCCallable("nloptr", "nlopt_add_equality_mconstraint",          (DL_FUNC) &nlopt_add_equality_mconstraint);
-    
+
     R_RegisterCCallable("nloptr", "nlopt_set_stopval",    (DL_FUNC) &nlopt_set_stopval);
     R_RegisterCCallable("nloptr", "nlopt_get_stopval",    (DL_FUNC) &nlopt_get_stopval);
     R_RegisterCCallable("nloptr", "nlopt_set_ftol_rel",   (DL_FUNC) &nlopt_set_ftol_rel);
@@ -90,7 +90,7 @@ void R_init_nloptr(DllInfo *info) {
     R_RegisterCCallable("nloptr", "nlopt_force_stop",     (DL_FUNC) &nlopt_force_stop);
     R_RegisterCCallable("nloptr", "nlopt_set_force_stop", (DL_FUNC) &nlopt_set_force_stop);
     R_RegisterCCallable("nloptr", "nlopt_get_force_stop", (DL_FUNC) &nlopt_get_force_stop);
-    
+
     R_RegisterCCallable("nloptr", "nlopt_set_local_optimizer",      (DL_FUNC) &nlopt_set_local_optimizer);
     R_RegisterCCallable("nloptr", "nlopt_set_population",           (DL_FUNC) &nlopt_set_population);
     R_RegisterCCallable("nloptr", "nlopt_get_population",           (DL_FUNC) &nlopt_get_population);
@@ -100,7 +100,7 @@ void R_init_nloptr(DllInfo *info) {
     R_RegisterCCallable("nloptr", "nlopt_set_initial_step",         (DL_FUNC) &nlopt_set_initial_step);
     R_RegisterCCallable("nloptr", "nlopt_set_initial_step1",        (DL_FUNC) &nlopt_set_initial_step1);
     R_RegisterCCallable("nloptr", "nlopt_get_initial_step",         (DL_FUNC) &nlopt_get_initial_step);
-    
+
     // Register routines to improve lookup from R using .Call interface.
     R_registerRoutines(info, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(info, FALSE);

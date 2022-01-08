@@ -1,0 +1,6 @@
+release_date: 2021-12-20
+rel_release_date: 2 weeks
+my_news_url: https://github.com/astamm/nloptr/blob/master/NEWS.md
+release_version: 2.0.0
+release_details: The biggest change is that we now rely on CMake for building
+  systematically the latest version (2.7.0) of the NLopt library.

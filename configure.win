@@ -1,0 +1,35 @@
+#! /bin/sh
+
+RSCRIPT_BIN=${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe
+NCORES=`${RSCRIPT_BIN} -e "cat(parallel::detectCores(logical = FALSE))"`
+
+cd src
+
+#### CMAKE CONFIGURATION ####
+. ./scripts/cmake_config.sh
+
+# Compile NLOpt from source
+sh ./scripts/nlopt_download.sh ${RSCRIPT_BIN}
+for ARCH in "/x64" "/i386"; do
+    dot() { file=$1; shift; . "$file"; }
+    dot ./scripts/r_config.sh ${ARCH}
+    "${CMAKE_BIN}" \
+      -G "MSYS Makefiles" \
+      -D BUILD_SHARED_LIBS=OFF \
+      -D CMAKE_BUILD_TYPE=Release \
+      -D CMAKE_AR=${AR} \
+      -D CMAKE_RANLIB=${RANLIB} \
+      -D NLOPT_CXX=ON \
+      -D NLOPT_GUILE=OFF \
+      -D NLOPT_MATLAB=OFF \
+      -D NLOPT_OCTAVE=OFF \
+      -D NLOPT_PYTHON=OFF \
+      -D NLOPT_SWIG=OFF \
+      -D NLOPT_TESTS=OFF \
+      -S nlopt-src \
+      -B nlopt${ARCH}-build
+    sh ./scripts/nlopt_install.sh "${CMAKE_BIN}" ${NCORES} ${ARCH}
+done
+
+# Cleanup
+sh ./scripts/nlopt_cleanup.sh

@@ -4,9 +4,19 @@
 \alias{nloptr}
 \title{R interface to NLopt}
 \usage{
-nloptr(x0, eval_f, eval_grad_f = NULL, lb = NULL, ub = NULL,
-  eval_g_ineq = NULL, eval_jac_g_ineq = NULL, eval_g_eq = NULL,
-  eval_jac_g_eq = NULL, opts = list(), ...)
+nloptr(
+  x0,
+  eval_f,
+  eval_grad_f = NULL,
+  lb = NULL,
+  ub = NULL,
+  eval_g_ineq = NULL,
+  eval_jac_g_ineq = NULL,
+  eval_g_eq = NULL,
+  eval_jac_g_eq = NULL,
+  opts = list(),
+  ...
+)
 }
 \arguments{
 \item{x0}{vector with starting values for the optimization.}
@@ -43,17 +53,17 @@ an example).}
 equality constraints that should hold in the solution.}
 
 \item{opts}{list with options. The option "algorithm" is required. Check the
-\href{http://ab-initio.mit.edu/wiki/index.php/NLopt_Algorithms}{NLopt website}
+\href{https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/}{NLopt website}
 for a full list of available algorithms. Other options control the
 termination conditions (minf_max, ftol_rel, ftol_abs, xtol_rel, xtol_abs,
 maxeval, maxtime). Default is xtol_rel = 1e-4. More information
-\href{http://ab-initio.mit.edu/wiki/index.php/NLopt_Introduction\#Termination_conditions}{here}.
+\href{https://nlopt.readthedocs.io/en/latest/NLopt_Introduction/#termination-conditions}{here}.
 A full description of all options is shown by the function
 \code{nloptr.print.options()}.
 
 Some algorithms with equality constraints require the option local_opts,
 which contains a list with an algorithm and a termination condition for the
-local algorithm. See ?`nloptr-package` for an example.
+local algorithm. See ?\code{nloptr-package} for an example.
 
 The option print_level controls how much output is shown during the
 optimization process. Possible values: \tabular{ll}{ 0 (default) \tab no
@@ -76,9 +86,9 @@ constraints functions.}
 \value{
 The return value contains a list with the inputs, and additional
 elements
-  \item{call}{the call that was made to solve}
-  \item{status}{integer value with the status of the optimization (0 is
-    success)}
+\item{call}{the call that was made to solve}
+\item{status}{integer value with the status of the optimization (0 is
+success)}
 \item{message}{more informative message with the status of the optimization}
 \item{iterations}{number of iterations that were executed}
 \item{objective}{value if the objective function in the solution}
@@ -92,7 +102,7 @@ a number of different free optimization routines available online as well as
 original implementations of various other algorithms. The NLopt library is
 available under the GNU Lesser General Public License (LGPL), and the
 copyrights are owned by a variety of authors. Most of the information here
-has been taken from \href{http://ab-initio.mit.edu/nlopt}{the NLopt website},
+has been taken from \href{https://nlopt.readthedocs.io/en/latest/}{the NLopt website},
 where more details are available.
 }
 \details{
@@ -112,7 +122,7 @@ constraints that can be specified in h(x). Note that not all of the
 algorithms in NLopt can handle constraints.
 }
 \note{
-See ?`nloptr-package` for an extended example.
+See ?\code{nloptr-package} for an extended example.
 }
 \examples{
 
@@ -256,16 +266,16 @@ print( res2 )
 }
 \references{
 Steven G. Johnson, The NLopt nonlinear-optimization package,
-\url{http://ab-initio.mit.edu/nlopt}
+\url{https://nlopt.readthedocs.io/en/latest/}
 }
 \seealso{
 \code{\link[nloptr:nloptr.print.options]{nloptr.print.options}}
-  \code{\link[nloptr:check.derivatives]{check.derivatives}}
-  \code{\link{optim}}
-  \code{\link{nlm}}
-  \code{\link{nlminb}}
-  \code{Rsolnp::Rsolnp}
-  \code{Rsolnp::solnp}
+\code{\link[nloptr:check.derivatives]{check.derivatives}}
+\code{\link{optim}}
+\code{\link{nlm}}
+\code{\link{nlminb}}
+\code{Rsolnp::Rsolnp}
+\code{Rsolnp::solnp}
 }
 \author{
 Steven G. Johnson and others (C code) \cr Jelmer Ypma (R interface)
