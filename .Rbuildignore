@@ -10,3 +10,4 @@ TODO
 ^codecov\.yml$
 ^cran-comments\.md$
 ^revdep$
+^src/nlopt/
