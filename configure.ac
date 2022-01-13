@@ -19,7 +19,6 @@ AC_INIT([nloptr],[2.0.0])
 if test -z "${R_HOME}"; then
    AC_MSG_ERROR([Could not determine R_HOME.])
 fi
-: ${R_ARCH=${R_ARCH}}
 
 CXX=`"${R_HOME}/bin/R" CMD config CXX`
 if test -z "${CXX}"; then
@@ -28,7 +27,6 @@ fi
 CXXFLAGS=`"${R_HOME}/bin/R" CMD config CXXFLAGS`
 CPPFLAGS=`"${R_HOME}/bin/R" CMD config CPPFLAGS`
 CXX11FLAGS=`"${R_HOME}/bin/R" CMD config CXX11FLAGS`
-CXX14FLAGS=`"${R_HOME}/bin/R" CMD config CXX14FLAGS`
 AC_LANG(C++)
 AC_REQUIRE_CPP
 AC_PROG_CXX
@@ -67,10 +65,13 @@ fi
 
 ## So do we need to build
 if test x"${need_to_build}" != x"no"; then
-   AC_MSG_RESULT([using NLopt via local build...])
-   tools/cmake_call.sh
-   nlopt_include=""
-   nlopt_libs="-Lnlopt${R_ARCH}/lib -lnlopt"
+    ## 'uname -m' on M1 give x86_64 which is ... not helping
+    machine=`"${R_HOME}/bin/Rscript" -e 'cat(Sys.info()[["machine"]])'`
+    AC_MSG_RESULT([using NLopt via local cmake build on ${machine} ])
+    tools/cmake_call.sh
+    ## cmake_call.sh installs into nlopt/lib, headers are copied
+    nlopt_include=""
+    nlopt_libs="-Lnlopt/lib -lnlopt"
 fi
 
 ## Now use all the values

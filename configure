@@ -1786,7 +1786,6 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 if test -z "${R_HOME}"; then
    as_fn_error $? "Could not determine R_HOME." "$LINENO" 5
 fi
-: ${R_ARCH=${R_ARCH}}
 
 CXX=`"${R_HOME}/bin/R" CMD config CXX`
 if test -z "${CXX}"; then
@@ -1795,7 +1794,6 @@ fi
 CXXFLAGS=`"${R_HOME}/bin/R" CMD config CXXFLAGS`
 CPPFLAGS=`"${R_HOME}/bin/R" CMD config CPPFLAGS`
 CXX11FLAGS=`"${R_HOME}/bin/R" CMD config CXX11FLAGS`
-CXX14FLAGS=`"${R_HOME}/bin/R" CMD config CXX14FLAGS`
 ac_ext=cpp
 ac_cpp='$CXXCPP $CPPFLAGS'
 ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
@@ -2785,11 +2783,14 @@ fi
 
 ## So do we need to build
 if test x"${need_to_build}" != x"no"; then
-   { $as_echo "$as_me:${as_lineno-$LINENO}: result: using NLopt via local build..." >&5
-$as_echo "using NLopt via local build..." >&6; }
-   tools/cmake_call.sh
-   nlopt_include=""
-   nlopt_libs="-Lnlopt${R_ARCH}/lib -lnlopt"
+    ## 'uname -m' on M1 give x86_64 which is ... not helping
+    machine=`"${R_HOME}/bin/Rscript" -e 'cat(Sys.info()["machine"])'`
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: using NLopt via local cmake build on ${machine} " >&5
+$as_echo "using NLopt via local cmake build on ${machine} " >&6; }
+    tools/cmake_call.sh
+    ## cmake_call.sh installs into nlopt/lib, headers are copied
+    nlopt_include=""
+    nlopt_libs="-Lnlopt/lib -lnlopt"
 fi
 
 ## Now use all the values
