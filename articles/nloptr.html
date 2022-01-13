@@ -80,7 +80,7 @@
 </h1>
                         <h4 data-toc-skip class="author">Jelmer Ypma</h4>
             
-            <h4 data-toc-skip class="date">2022-01-10</h4>
+            <h4 data-toc-skip class="date">2022-01-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/astamm/nloptr/blob/HEAD/vignettes/nloptr.Rmd" class="external-link"><code>vignettes/nloptr.Rmd</code></a></small>
       <div class="hidden name"><code>nloptr.Rmd</code></div>
@@ -90,9 +90,9 @@
     
     
 <p>This document describes how to use <code>nloptr</code>, which is an R interface to NLopt. NLopt is a free/open-source library for nonlinear optimization started by Steven G. Johnson, providing a common interface for a number of different free optimization routines available online as well as original implementations of various other algorithms. The NLopt library is available under the GNU Lesser General Public License (LGPL), and the copyrights are owned by a variety of authors.</p>
-<div class="section level1">
-<h1 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
-</h1>
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
 <p>NLopt addresses general nonlinear optimization problems of the form: <span class="math display">\[
 \begin{aligned}
 &amp;\min_{x \in R^n} f(x) \\
@@ -103,9 +103,9 @@ s.t.&amp; g(x) \leq 0 \\
 \]</span> where <span class="math inline">\(f(\cdot)\)</span> is the objective function and <span class="math inline">\(x\)</span> represents the <span class="math inline">\(n\)</span> optimization parameters. This problem may optionally be subject to the bound constraints (also called box constraints), <span class="math inline">\(x_L\)</span> and <span class="math inline">\(x_U\)</span>. For partially or totally unconstrained problems the bounds can take values <span class="math inline">\(-\infty\)</span> or <span class="math inline">\(\infty\)</span>. One may also optionally have <span class="math inline">\(m\)</span> nonlinear inequality constraints (sometimes called a nonlinear programming problem), which can be specified in <span class="math inline">\(g(\cdot)\)</span>, and equality constraints that can be specified in <span class="math inline">\(h(\cdot)\)</span>. Note that not all of the algorithms in NLopt can handle constraints.</p>
 <p>This vignette describes how to formulate minimization problems to be solved with the R interface to NLopt. If you want to use the C interface directly or are interested in the Matlab interface, there are other sources of documentation available. Some of the information here has been taken from the <a href="https://nlopt.readthedocs.io/en/latest/" class="external-link">NLopt website</a>, where more details are available. All credit for implementing the C code for the different algorithms available in NLopt should go to the respective authors. See the <a href="https://nlopt.readthedocs.io/en/latest/Citing_NLopt/" class="external-link">website</a> for information on how to cite NLopt and the algorithms you use.</p>
 </div>
-<div class="section level1">
-<h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
-</h1>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
 <p>This package is on CRAN and can be installed from within R using</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"nloptr"</span><span class="op">)</span></code></pre></div>
@@ -120,9 +120,9 @@ s.t.&amp; g(x) \leq 0 \\
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"nloptr"</span>,type<span class="op">=</span><span class="st">"source"</span>,repos<span class="op">=</span><span class="st">"http://R-Forge.R-project.org"</span><span class="op">)</span></code></pre></div>
 </div>
-<div class="section level1">
-<h1 id="minimizing-the-rosenbrock-banana-function">Minimizing the Rosenbrock Banana function<a class="anchor" aria-label="anchor" href="#minimizing-the-rosenbrock-banana-function"></a>
-</h1>
+<div class="section level2">
+<h2 id="minimizing-the-rosenbrock-banana-function">Minimizing the Rosenbrock Banana function<a class="anchor" aria-label="anchor" href="#minimizing-the-rosenbrock-banana-function"></a>
+</h2>
 <p>As a first example we will solve an unconstrained minimization problem. The function we look at is the Rosenbrock Banana function <span class="math display">\[
 f( x ) = 100 \left( x_2 - x_1^2 \right)^2 + \left(1 - x_1 \right)^2,
 \]</span> which is also used as an example in the documentation for the standard R optimizer <code>optim</code>. The gradient of the objective function is given by <span class="math display">\[
@@ -215,9 +215,9 @@ f( x ) = 100 \left( x_2 - x_1^2 \right)^2 + \left(1 - x_1 \right)^2,
 <span class="co">## Optimal value of controls: 1 1</span></code></pre>
 <p>This gives the same results as before.</p>
 </div>
-<div class="section level1">
-<h1 id="minimization-with-inequality-constraints">Minimization with inequality constraints<a class="anchor" aria-label="anchor" href="#minimization-with-inequality-constraints"></a>
-</h1>
+<div class="section level2">
+<h2 id="minimization-with-inequality-constraints">Minimization with inequality constraints<a class="anchor" aria-label="anchor" href="#minimization-with-inequality-constraints"></a>
+</h2>
 <p>This section shows how to minimize a function subject to inequality constraints. This example is the same as the one used in the tutorial on the NLopt website. The problem we want to solve is <span class="math display">\[
 \begin{aligned}
 &amp;\min_{x \in R^n} \sqrt{x_2} \\
@@ -413,9 +413,9 @@ s.t.&amp; x_2 \geq 0 \\
 <span class="co">## Optimal value of objective function:  0.544331053951819 </span>
 <span class="co">## Optimal value of controls: 0.3333333 0.2962963</span></code></pre>
 </div>
-<div class="section level1">
-<h1 id="derivative-checker">Derivative checker<a class="anchor" aria-label="anchor" href="#derivative-checker"></a>
-</h1>
+<div class="section level2">
+<h2 id="derivative-checker">Derivative checker<a class="anchor" aria-label="anchor" href="#derivative-checker"></a>
+</h2>
 <p>The derivative checker can be called when supplying a minimization problem to <code>nloptr</code>, using the options <code>check_derivatives</code>, <code>check_derivatives_tol</code> and <code>check_derivatives_print</code>, but it can also be used separately. For example, define the function <code>g</code>, with vector outcome, and its gradient <code>g_grad</code></p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">g</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span> <span class="va">x</span>, <span class="va">a</span> <span class="op">)</span> <span class="op">{</span>
@@ -504,15 +504,15 @@ s.t.&amp; x_2 \geq 0 \\
 <span class="co">## [6,] FALSE FALSE</span></code></pre>
 <p>Note that not all errors will be picked up by the derivative checker. For instance, if we run the check with <code>a = c(.5, .5)</code>, one of the errors is not flagged as an error.</p>
 </div>
-<div class="section level1">
-<h1 id="notes">Notes<a class="anchor" aria-label="anchor" href="#notes"></a>
-</h1>
+<div class="section level2">
+<h2 id="notes">Notes<a class="anchor" aria-label="anchor" href="#notes"></a>
+</h2>
 <p>The <code>.R</code> scripts in the <code>tests</code> directory contain more examples. For instance, <code>hs071.R</code> and <code>systemofeq.R</code> show how to solve problems with equality constraints. See the <a href="https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/#augmented-lagrangian-algorithm" class="external-link">NLopt website</a> for more details. Please let me know if you’re missing any of the features that are implemented in NLopt.</p>
 <p>Sometimes the optimization procedure terminates with a message <code>maxtime was reached</code> without evaluating the objective function. Submitting the same problem again usually solves this problem.</p>
 </div>
-<div class="section level1">
-<h1 id="description-of-options">Description of options<a class="anchor" aria-label="anchor" href="#description-of-options"></a>
-</h1>
+<div class="section level2">
+<h2 id="description-of-options">Description of options<a class="anchor" aria-label="anchor" href="#description-of-options"></a>
+</h2>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">nloptr</span><span class="fu">::</span><span class="fu"><a href="../reference/nloptr.print.options.html">nloptr.print.options</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">## algorithm</span>
@@ -697,9 +697,9 @@ s.t.&amp; x_2 \geq 0 \\
 <span class="co">##  get a different sequence of pseudorandom numbers each time you run</span>
 <span class="co">##  your program.</span></code></pre>
 </div>
-<div class="section level1 unnumbered">
-<h1 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
-</h1>
+<div class="section level2">
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
 <div id="refs" class="references">
 <div id="ref-NLopt:website">
 <p>Johnson, Steven G. n.d. “The NLopt Nonlinear-Optimization Package.” <a href="https://nlopt.readthedocs.io/en/latest/" class="external-link">https://nlopt.readthedocs.io/en/latest/</a>.</p>
@@ -755,7 +755,7 @@ s.t.&amp; x_2 \geq 0 \\
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
