@@ -1,0 +1,44 @@
+# Run CI for R using https://eddelbuettel.github.io/r-ci/
+
+name: with-system-nlopt
+
+on:
+  push:
+  pull_request:
+
+env:
+  USE_BSPM: "true"
+  _R_CHECK_FORCE_SUGGESTS_: "false"
+  ADDED_PPAS: "ppa:edd/misc"
+
+jobs:
+  check:
+    strategy:
+      matrix:
+        include:
+          #- {os: macOS-latest}
+          - {os: ubuntu-latest}
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Bootstrap
+        run: |
+          curl -OLs https://eddelbuettel.github.io/r-ci/run.sh
+          chmod 0755 run.sh
+          ./run.sh bootstrap
+
+      - name: Dependencies
+        run: |
+          ./run.sh install_aptget libnlopt-dev
+          ./run.sh install_deps
+          ./run.sh install_r xml2
+
+      - name: Test
+        run: ./run.sh run_tests
+
+      #- name: Coverage
+      #  if: ${{ matrix.os == 'ubuntu-latest' }}
+      #  run: ./run.sh coverage
