@@ -11,3 +11,6 @@ src/*.o
 src/*.so
 src/*.exe
 inst/doc
+config.log
+config.status
+src/Makevars
