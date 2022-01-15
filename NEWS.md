@@ -4,6 +4,7 @@
 
 * Move from autoconf-based build of NLopt to [CMake](https://cmake.org)-based build.
 * Update NLopt version to latest i.e. 2.7.1.
+* Add the ability on Linux platforms to re-use an existing external build of NLopt instead of building from the included sources.
 
 ## Minor changes
 
