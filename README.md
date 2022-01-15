@@ -78,7 +78,7 @@ Alternatively, you can install the development version from GitHub:
     # install.packages("remotes")
     remotes::install_github("astamm/nloptr")
 
-The latest version 2.7.0 of the
+The latest version 2.7.1 of the
 [NLopt](https://nlopt.readthedocs.io/en/latest/) library will then be
 automatically built using [CMake](https://cmake.org).
 

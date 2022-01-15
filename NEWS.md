@@ -3,7 +3,7 @@
 ## Major changes
 
 * Move from autoconf-based build of NLopt to [CMake](https://cmake.org)-based build.
-* Update NLopt version to latest i.e. 2.7.0.
+* Update NLopt version to latest i.e. 2.7.1.
 
 ## Minor changes
 
