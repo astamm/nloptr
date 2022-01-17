@@ -2,14 +2,19 @@
 This is a resubmission. In this version I have:
 
 * Corrected the bashism of sourcing a script with argument in both `configure` and `configure.win` files.
-* Added the ability on Linux platforms to re-use an existing external build of NLopt instead of building from the included sources.
+* Used [CMake](https://cmake.org) to build `nlopt` from included sources only on macOS and or on Linux if no system build is found.
+* Updated NLopt version to latest i.e. 2.7.1.
+* Put back the ability on Linux platforms to re-use an existing external build of NLopt instead of building from the included sources (contributed by Dirk Eddelbuettel, #88).
+* Added a new way of building on Windows using `rwinlib` (contributed by Jeroen Ooms, #92).
 
 ## Test environments
 * local macOS R installation, R 4.1.2
-* macOS latest release (via [R-CMD-check](https://github.com/r-lib/actions/blob/master/examples/check-standard.yaml) github action)
-* windows latest release (via [R-CMD-check](https://github.com/r-lib/actions/blob/master/examples/check-standard.yaml) github action)
-* ubuntu 20.04 latest both release and devel (via [R-CMD-check](https://github.com/r-lib/actions/blob/master/examples/check-standard.yaml) github action) using the *building nlopt from source* strategy
-* ubuntu 20.04 latest release using the *reuse existing build of nlopt* strategy
+* continuous integration via GH actions:
+  * macOS latest release
+  * windows latest release
+  * windows 2022 devel
+  * ubuntu 20.04 latest release and devel using the *building nlopt from source* strategy
+  * ubuntu 20.04 latest release using the *reuse existing build of nlopt* strategy
 * [win-builder](https://win-builder.r-project.org/) (release and devel)
 * [R-hub](https://builder.r-hub.io)
   - Windows Server 2022, R-devel, 64 bit
@@ -18,11 +23,9 @@ This is a resubmission. In this version I have:
   - Debian Linux, R-devel, GCC ASAN/UBSAN
 
 ## R CMD check results
-There was one ERROR on the winbuilder devel machine where `cmake` could be found.
+There was no ERROR and no WARNINGs.
 
-There was no WARNINGs.
-
-There were 3 NOTEs:
+There were 4 NOTEs:
 
     * checking CRAN incoming feasibility ... NOTE
     Maintainer: ‘Aymeric Stamm <aymeric.stamm@math.cnrs.fr>’
@@ -46,13 +49,15 @@ The size varies according to the system on which the package is installed.
 
     * checking line endings in C/C++/Fortran sources/headers ... NOTE
     Found the following sources/headers with CR or CRLF line endings:
-      src/nlopt/x64/include/nlopt.f
-      src/nlopt/x64/include/nlopt.hpp
       inst/include/nlopt.f
       inst/include/nlopt.hpp
     Some Unix compilers require LF line endings.
 
-This NOTE appears only on Windows. These files are generated automatically upon compilation of NLopt.
+    * checking for detritus in the temp directory ... NOTE
+    Found the following files/directories:
+      'lastMiKTeXException'
+
+These NOTEs appear only on Windows.
 
 ## Downstream dependencies
 I have also run R CMD check on downstream dependencies of [**nloptr**](https://astamm.github.io/nloptr/) using the [**revdepcheck**](https://r-lib.github.io/revdepcheck/) package. 

@@ -22,20 +22,23 @@ Authors@R: c(person("Jelmer", "Ypma", role = "aut",
              person("Xiongtao", "Dai", role = "ctb"), 
              person("Aymeric", "Stamm", role = c("ctb", "cre"), 
                     email = "aymeric.stamm@math.cnrs.fr", 
-                    comment = c(ORCID = "0000-0002-8725-3654")))
+                    comment = c(ORCID = "0000-0002-8725-3654")),
+             person("Jeroen", "Ooms", role = "ctb",
+                    email = "jeroen@berkeley.edu"))
 Description: 
     Solve optimization problems using an R interface to NLopt. NLopt is a 
     free/open-source library for nonlinear optimization, providing a common
     interface for a number of different free optimization routines available
     online as well as original implementations of various other algorithms.
     See <https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/> for more
-    information on the available algorithms. The installation of 'nloptr' will 
-    search for an existing binary of CMake on your PATH. If it cannot find one, 
-    it will prompt you to install it and provide hints on how to do so for usual 
-    operating systems. Once CMake is found, the latest version (2.7.1) of NLopt 
-    will be systematically built and used by the 'nloptr' package.
+    information on the available algorithms. Building from included sources 
+    requires CMake which will be searched for on your PATH. If it cannot 
+    find one, it will prompt you to install it and provide hints on how to 
+    do so for usual operating systems. On Linux, if a system build of NLopt 
+    is found, it is used. On Windows, NLopt is obtained through rwinlib.
 License: LGPL (>= 3)
-SystemRequirements: cmake
+SystemRequirements: cmake (needed when building from source, i.e. on macOS or 
+    on Linux if no system build is found)
 Biarch: true
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

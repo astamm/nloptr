@@ -2,9 +2,10 @@
 
 ## Major changes
 
-* Move from autoconf-based build of NLopt to [CMake](https://cmake.org)-based build.
+* Use [CMake](https://cmake.org) to build `nlopt` from included sources on macOS and on Linux if no system build is found.
 * Update NLopt version to latest i.e. 2.7.1.
-* Add the ability on Linux platforms to re-use an existing external build of NLopt instead of building from the included sources.
+* Put back the ability on Linux platforms to re-use an existing external build of NLopt instead of building from the included sources (contributed by Dirk Eddelbuettel, #88).
+* Now builds from `rwinlib` on Windows (contributed by Jeroen Ooms, #92).
 
 ## Minor changes
 
