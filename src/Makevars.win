@@ -1,13 +1,14 @@
 CXX_STD = CXX11
 VERSION = 2.7.1
 WINLIBS = ../windows/nlopt-2.7.1
-PKG_CPPFLAGS = -I../inst/include -I$(WINLIBS)/include
+PKG_CPPFLAGS = -I../inst/include
 PKG_LIBS = -L$(WINLIBS)/lib${R_ARCH}${CRT} -lnlopt
 
 all: clean winlibs
 
 winlibs:
 	"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" "../tools/winlibs.R"
+	cp $(WINLIBS)/include/* ../inst/include/
 
 clean:
 	rm -f $(SHLIB) $(OBJECTS)
