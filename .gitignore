@@ -14,3 +14,4 @@ inst/doc
 config.log
 config.status
 src/Makevars
+windows
