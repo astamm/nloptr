@@ -33,13 +33,21 @@ The [NLopt](https://nlopt.readthedocs.io/en/latest/) library is available under 
 
 ## Installation
 
-### Installing [CMake](https://cmake.org)
+### Windows
 
-The [NLopt](https://nlopt.readthedocs.io/en/latest/) library has switched to [CMake](https://cmake.org) for its build system. Consequently, we updated the [**nloptr**](https://astamm.github.io/nloptr/) package accordingly. This means that [CMake](https://cmake.org) is now a system requirement. You can install it by following [CMake installation instructions](https://cmake.org/install/).
+On Windows, latest version 2.7.1 of [NLopt](https://nlopt.readthedocs.io/en/latest/) from [rwinlib](https://github.com/rwinlib/nlopt) is used. So there is nothing else to be done.
 
-The important thing is that you add the [CMake](https://cmake.org) binary to your `PATH`:
+### Linux and macOS
 
-- On Windows, the installer has an option to modify the system `PATH` environment variable. If that is not selected, please select it.
+On Unix-like platforms, we use `pkg-config` to find a suitable system build of [NLopt](https://nlopt.readthedocs.io/en/latest/) (i.e. with version `>= 2.7.0`).
+
+- If it is found it is used.
+- Otherwise, [NLopt](https://nlopt.readthedocs.io/en/latest/) 2.7.1 is built from included sources using [CMake](https://cmake.org). In this case, a binary  of [CMake](https://cmake.org) stored in environment variable `CMAKE_BIN` is searched on the `PATH` and, alternatively, on a macOS-specific location. If that variable cannot be set, install will abort suggesting ways of installing [CMake](https://cmake.org).
+
+### Installing [CMake](https://cmake.org) (macOS and Linux only)
+
+You can install [CMake](https://cmake.org) by following [CMake installation instructions](https://cmake.org/install/). The important thing is that you add the [CMake](https://cmake.org) binary to your `PATH`:
+
 - On macOS, you can install [CMake](https://cmake.org) and then run it. In the menu bar, there is an item *How to Install For Command Line Use* which you can click on to have proper instructions on how to update your `PATH`. Note that the location of the [CMake](https://cmake.org) binary is always `/Applications/CMake.app/Contents/bin/cmake`. Hence, [**nloptr**](https://astamm.github.io/nloptr/) knows where to find it even if you do not update your `PATH`.
 - On Linux, it will be automatically added unless you specifically change the default installation directory before building [CMake](https://cmake.org).
 
@@ -58,11 +66,9 @@ Alternatively, you can install the development version from GitHub:
 remotes::install_github("astamm/nloptr")
 ```
 
-The latest version 2.7.1 of the [NLopt](https://nlopt.readthedocs.io/en/latest/) library will then be automatically built using [CMake](https://cmake.org).
-
 ## Acknowledgments
 
-I would like to express my sincere gratitude to [Dirk Eddelbuettel](https://github.com/eddelbuettel), Uwe Ligges and [Jelmer Ypma](https://github.com/jyypma) for the very instructive discussions about the pros and cons of various build strategies in R packages.
+I would like to express my sincere gratitude to [Dirk Eddelbuettel](https://github.com/eddelbuettel), [Jeroen Ooms](https://github.com/jeroen), Uwe Ligges and [Jelmer Ypma](https://github.com/jyypma) for their contributions and the very instructive discussions about the pros and cons of various build strategies in R packages.
 
 ## Reference
 
