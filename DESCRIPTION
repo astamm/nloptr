@@ -36,8 +36,8 @@ Description:
     later) is found, it is used; otherwise, it is build from included 
     sources via CMake. On Windows, NLopt is obtained through rwinlib.
 License: LGPL (>= 3)
-SystemRequirements: cmake (needed when building from source, i.e. on macOS or 
-    on Linux if no system build is found)
+SystemRequirements: cmake (for building from included source, i.e. on macOS 
+    or on Linux if no system build, version >= 2.7.0, is found)
 Biarch: true
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
