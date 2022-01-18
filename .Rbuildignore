@@ -11,3 +11,4 @@ TODO
 ^cran-comments\.md$
 ^revdep$
 ^src/nlopt/
+^windows$
