@@ -3,6 +3,7 @@ This is a resubmission. In this version I have:
 
 * Switched to only message (but not error) if a system NLopt was found, but is older than 2.7.0 (contributed by Dirk Eddelbuettel, #95).
 * Updated the `DESCRIPTION` file to make it clearer about the various strategies for building NLopt (contributed by Dirk Eddelbuettel, #95).
+* Switched to searching `cmake` first on the `PATH` and then at a macOS-specific location.
 
 ## Resubmission 1
 This is a resubmission. In this version I have:
