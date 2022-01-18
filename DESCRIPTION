@@ -32,10 +32,9 @@ Description:
     online as well as original implementations of various other algorithms.
     See <https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/> for more
     information on the available algorithms. Building from included sources 
-    requires CMake which will be searched for on your PATH. If it cannot 
-    find one, it will prompt you to install it and provide hints on how to 
-    do so for usual operating systems. On Linux, if a system build of NLopt 
-    is found, it is used. On Windows, NLopt is obtained through rwinlib.
+    requires CMake. On Linux and macOS, if a system build of NLopt (2.7.0 or
+    later) is found, it is used; other. On Windows, NLopt is obtained through
+    rwinlib.
 License: LGPL (>= 3)
 SystemRequirements: cmake (needed when building from source, i.e. on macOS or 
     on Linux if no system build is found)

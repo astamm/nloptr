@@ -2775,9 +2775,8 @@ $as_echo_n "checking for pkg-config checking NLopt version... " >&6; }
 $as_echo ">= 2.7.0" >&6; }
         need_to_build="no"
     else
-        { $as_echo "$as_me:${as_lineno-$LINENO}: result: insufficient" >&5
-$as_echo "insufficient" >&6; }
-        as_fn_error $? "NLopt 2.7.0 or later is required." "$LINENO" 5
+        { $as_echo "$as_me:${as_lineno-$LINENO}: result: insufficient: NLopt 2.7.0 or later is preferred." >&5
+$as_echo "insufficient: NLopt 2.7.0 or later is preferred." >&6; }
     fi
 fi
 

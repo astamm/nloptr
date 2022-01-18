@@ -58,8 +58,7 @@ if test x"${have_pkg_config}" != x"no"; then
         AC_MSG_RESULT([>= 2.7.0])
         need_to_build="no"
     else
-        AC_MSG_RESULT([insufficient])
-        AC_MSG_ERROR([NLopt 2.7.0 or later is required.])
+        AC_MSG_RESULT([insufficient: NLopt 2.7.0 or later is preferred.])
     fi
 fi
 
