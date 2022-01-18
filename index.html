@@ -98,13 +98,24 @@
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <div class="section level3">
-<h3 id="installing-cmake">Installing <a href="https://cmake.org" class="external-link">CMake</a>
-<a class="anchor" aria-label="anchor" href="#installing-cmake"></a>
+<h3 id="windows">Windows<a class="anchor" aria-label="anchor" href="#windows"></a>
 </h3>
-<p>The <a href="https://nlopt.readthedocs.io/en/latest/" class="external-link">NLopt</a> library has switched to <a href="https://cmake.org" class="external-link">CMake</a> for its build system. Consequently, we updated the <a href="https://astamm.github.io/nloptr/" class="external-link"><strong>nloptr</strong></a> package accordingly. This means that <a href="https://cmake.org" class="external-link">CMake</a> is now a system requirement. You can install it by following <a href="https://cmake.org/install/" class="external-link">CMake installation instructions</a>.</p>
-<p>The important thing is that you add the <a href="https://cmake.org" class="external-link">CMake</a> binary to your <code>PATH</code>:</p>
+<p>On Windows, latest version 2.7.1 of <a href="https://nlopt.readthedocs.io/en/latest/" class="external-link">NLopt</a> from <a href="https://github.com/rwinlib/nlopt" class="external-link">rwinlib</a> is used. So there is nothing else to be done.</p>
+</div>
+<div class="section level3">
+<h3 id="linux-and-macos">Linux and macOS<a class="anchor" aria-label="anchor" href="#linux-and-macos"></a>
+</h3>
+<p>On Unix-like platforms, we use <code>pkg-config</code> to find a suitable system build of <a href="https://nlopt.readthedocs.io/en/latest/" class="external-link">NLopt</a> (i.e. with version <code>&gt;= 2.7.0</code>).</p>
 <ul>
-<li>On Windows, the installer has an option to modify the system <code>PATH</code> environment variable. If that is not selected, please select it.</li>
+<li>If it is found it is used.</li>
+<li>Otherwise, <a href="https://nlopt.readthedocs.io/en/latest/" class="external-link">NLopt</a> 2.7.1 is built from included sources using <a href="https://cmake.org" class="external-link">CMake</a>. In this case, a binary of <a href="https://cmake.org" class="external-link">CMake</a> stored in environment variable <code>CMAKE_BIN</code> is searched on the <code>PATH</code> and, alternatively, on a macOS-specific location. If that variable cannot be set, install will abort suggesting ways of installing <a href="https://cmake.org" class="external-link">CMake</a>.</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="installing-cmake-macos-and-linux-only">Installing <a href="https://cmake.org" class="external-link">CMake</a> (macOS and Linux only)<a class="anchor" aria-label="anchor" href="#installing-cmake-macos-and-linux-only"></a>
+</h3>
+<p>You can install <a href="https://cmake.org" class="external-link">CMake</a> by following <a href="https://cmake.org/install/" class="external-link">CMake installation instructions</a>. The important thing is that you add the <a href="https://cmake.org" class="external-link">CMake</a> binary to your <code>PATH</code>:</p>
+<ul>
 <li>On macOS, you can install <a href="https://cmake.org" class="external-link">CMake</a> and then run it. In the menu bar, there is an item <em>How to Install For Command Line Use</em> which you can click on to have proper instructions on how to update your <code>PATH</code>. Note that the location of the <a href="https://cmake.org" class="external-link">CMake</a> binary is always <code>/Applications/CMake.app/Contents/bin/cmake</code>. Hence, <a href="https://astamm.github.io/nloptr/" class="external-link"><strong>nloptr</strong></a> knows where to find it even if you do not update your <code>PATH</code>.</li>
 <li>On Linux, it will be automatically added unless you specifically change the default installation directory before building <a href="https://cmake.org" class="external-link">CMake</a>.</li>
 </ul>
@@ -119,13 +130,12 @@
 <p>Alternatively, you can install the development version from GitHub:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># install.packages("remotes")</span></span>
 <span id="cb2-2"><a href="#cb2-2"></a>remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"astamm/nloptr"</span>)</span></code></pre></div>
-<p>The latest version 2.7.1 of the <a href="https://nlopt.readthedocs.io/en/latest/" class="external-link">NLopt</a> library will then be automatically built using <a href="https://cmake.org" class="external-link">CMake</a>.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="acknowledgments">Acknowledgments<a class="anchor" aria-label="anchor" href="#acknowledgments"></a>
 </h2>
-<p>I would like to express my sincere gratitude to <a href="https://github.com/eddelbuettel" class="external-link">Dirk Eddelbuettel</a>, Uwe Ligges and <a href="https://github.com/jyypma" class="external-link">Jelmer Ypma</a> for the very instructive discussions about the pros and cons of various build strategies in R packages.</p>
+<p>I would like to express my sincere gratitude to <a href="https://github.com/eddelbuettel" class="external-link">Dirk Eddelbuettel</a>, <a href="https://github.com/jeroen" class="external-link">Jeroen Ooms</a>, Uwe Ligges and <a href="https://github.com/jyypma" class="external-link">Jelmer Ypma</a> for their contributions and the very instructive discussions about the pros and cons of various build strategies in R packages.</p>
 </div>
 <div class="section level2">
 <h2 id="reference">Reference<a class="anchor" aria-label="anchor" href="#reference"></a>
