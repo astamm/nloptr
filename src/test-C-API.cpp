@@ -104,7 +104,7 @@ context("Test C API")
 
     // Check return value.
     expect_true(res.size() == 2);
-    expect_true(abs(res[0] - 1./3) < 1.0e-6);
-    expect_true(abs(res[1] - 8./27) < 1.0e-6);
+    expect_true(abs(res[0] - 1./ 3) < 1.0e-5);
+    expect_true(abs(res[1] - 8./27) < 1.0e-5);
   }
 }
