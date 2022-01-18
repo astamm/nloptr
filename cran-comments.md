@@ -1,4 +1,10 @@
-## Resubmission
+## Resubmission 2
+This is a resubmission. In this version I have:
+
+* Switched to only message (but not error) if a system NLopt was found, but is older than 2.7.0 (contributed by Dirk Eddelbuettel, #95).
+* Updated the `DESCRIPTION` file to make it clearer about the various strategies for building NLopt (contributed by Dirk Eddelbuettel, #95).
+
+## Resubmission 1
 This is a resubmission. In this version I have:
 
 * Corrected the bashism of sourcing a script with argument in both `configure` and `configure.win` files.
@@ -61,4 +67,4 @@ These NOTEs appear only on Windows.
 
 ## Downstream dependencies
 I have also run R CMD check on downstream dependencies of [**nloptr**](https://astamm.github.io/nloptr/) using the [**revdepcheck**](https://r-lib.github.io/revdepcheck/) package. 
-All 117 packages that I could install passed in the sense that either they install properly or they fail to install but already failed using the current released version of **nloptr**.
+All 115 packages that I could install passed in the sense that either they install properly or they fail to install but already failed using the current released version of **nloptr**.
