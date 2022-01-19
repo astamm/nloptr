@@ -31,7 +31,7 @@
 #include <R_ext/Rdynload.h>
 
 #include "nloptr.h"
-#include "nlopt.h"
+#include <nlopt.h>
 
 static const R_CallMethodDef CallEntries[] = {
   {"run_testthat_tests", (DL_FUNC) &run_testthat_tests, 1},

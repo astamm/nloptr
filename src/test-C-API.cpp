@@ -11,7 +11,7 @@
 // header file.
 #include <testthat.h>
 #include "test-C-API.h"
-#include "nlopt.h"
+#include <nlopt.h>
 
 std::vector<int> get_nlopt_version()
 {

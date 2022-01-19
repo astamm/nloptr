@@ -39,7 +39,7 @@
  // nlopt_result nlopt_set_min_objective(nlopt_opt opt, nlopt_func f, void* f_data);
 // nlopt_result nlopt_set_max_objective(nlopt_opt opt, nlopt_func f, void* f_data);
 
-#include "nlopt.h"
+#include <nlopt.h>
 
 #include <R.h>
 #include <Rdefines.h>
