@@ -2,15 +2,15 @@
 
 |field    |value                        |
 |:--------|:----------------------------|
-|version  |R version 4.1.1 (2021-08-10) |
-|os       |macOS Big Sur 11.6           |
-|system   |aarch64, darwin20.6.0        |
+|version  |R version 4.1.2 (2021-11-01) |
+|os       |macOS Monterey 12.1          |
+|system   |x86_64, darwin20.6.0         |
 |ui       |X11                          |
 |language |(EN)                         |
-|collate  |en_US.UTF-8                  |
-|ctype    |en_US.UTF-8                  |
+|collate  |fr_FR.UTF-8                  |
+|ctype    |fr_FR.UTF-8                  |
 |tz       |Europe/Paris                 |
-|date     |2021-12-06                   |
+|date     |2022-01-19                   |
 |pandoc   |NA                           |
 
 # Dependencies
@@ -27,9 +27,9 @@
 |digest     |NA      |0.6.29 |*  |
 |ellipsis   |NA      |0.3.2  |*  |
 |evaluate   |NA      |0.14   |*  |
-|fansi      |NA      |0.5.0  |*  |
-|glue       |NA      |1.5.1  |*  |
-|jsonlite   |NA      |1.7.2  |*  |
+|fansi      |NA      |1.0.2  |*  |
+|glue       |NA      |1.6.0  |*  |
+|jsonlite   |NA      |1.7.3  |*  |
 |lifecycle  |NA      |1.0.1  |*  |
 |magrittr   |NA      |2.0.1  |*  |
 |pillar     |NA      |1.6.4  |*  |
@@ -52,60 +52,11 @@
 
 # Revdeps
 
-## Failed to check (52)
+## Failed to check (3)
 
-|package       |version |error |warning |note |
-|:-------------|:-------|:-----|:-------|:----|
-|afex          |?       |      |        |     |
-|ANCOMBC       |?       |      |        |     |
-|apsimx        |?       |      |        |     |
-|clusterPower  |?       |      |        |     |
-|CNORfuzzy     |?       |      |        |     |
-|ConsReg       |?       |      |        |     |
-|cops          |?       |      |        |     |
-|corHMM        |?       |      |        |     |
-|CoSMoS        |?       |      |        |     |
-|cxr           |?       |      |        |     |
-|diffusion     |?       |      |        |     |
-|drtmle        |?       |      |        |     |
-|DSAIDE        |?       |      |        |     |
-|DSAIRM        |?       |      |        |     |
-|dtwclust      |?       |      |        |     |
-|dynamichazard |?       |      |        |     |
-|ExtremalDep   |?       |      |        |     |
-|garma         |?       |      |        |     |
-|GDINA         |?       |      |        |     |
-|gimme         |?       |      |        |     |
-|gscreend      |?       |      |        |     |
-|hisse         |?       |      |        |     |
-|ICAOD         |?       |      |        |     |
-|legion        |?       |      |        |     |
-|lme4          |?       |      |        |     |
-|LPsmooth      |?       |      |        |     |
-|metafor       |?       |      |        |     |
-|mev           |?       |      |        |     |
-|mirt          |?       |      |        |     |
-|missSBM       |?       |      |        |     |
-|mlr3pipelines |?       |      |        |     |
-|modcmfitr     |?       |      |        |     |
-|mosqcontrol   |?       |      |        |     |
-|MSCMT         |?       |      |        |     |
-|mssm          |?       |      |        |     |
-|nlmixr        |?       |      |        |     |
-|optedr        |?       |      |        |     |
-|OptimaRegion  |?       |      |        |     |
-|OUwie         |?       |      |        |     |
-|phyr          |?       |      |        |     |
-|PLNmodels     |?       |      |        |     |
-|QBAsyDist     |?       |      |        |     |
-|regsem        |?       |      |        |     |
-|RSDA          |?       |      |        |     |
-|sense         |?       |      |        |     |
-|seqHMM        |?       |      |        |     |
-|signeR        |?       |      |        |     |
-|smooth        |?       |      |        |     |
-|spant         |?       |      |        |     |
-|SPOT          |?       |      |        |     |
-|SuperLearner  |?       |      |        |     |
-|swdft         |?       |      |        |     |
+|package                            |version |error     |warning |note |
+|:----------------------------------|:-------|:---------|:-------|:----|
+|[missSBM](failures.md#misssbm)     |1.0.1   |__+1__    |        |     |
+|[mssm](failures.md#mssm)           |0.1.5   |__+1__    |        |     |
+|[PLNmodels](failures.md#plnmodels) |0.11.4  |-1 __+1__ |-1      |     |
 
