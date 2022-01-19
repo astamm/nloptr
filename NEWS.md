@@ -4,8 +4,8 @@
 
 * Use [CMake](https://cmake.org) to build `nlopt` from included sources on macOS and on Linux if no system build of NLopt (>= 2.7.0) is found.
 * Update included sources of NLopt to latest version (2.7.1).
-* Put back the ability on Linux platforms to re-use an existing external build of NLopt instead of building from the included sources (contributed by Dirk Eddelbuettel, #88).
-* Now builds from `rwinlib` on Windows (contributed by Jeroen Ooms, #92).
+* Put back the ability on Linux platforms to re-use an existing external build of NLopt instead of building from the included sources (contributed by Dirk Eddelbuettel, [#88]).
+* Now builds using NLopt from `rwinlib` on Windows current release (contributed by Jeroen Ooms, [#92]), or NLopt from `Rtools42` on Windows devel (contributed by Tomas Kalibera).
 
 ## Minor changes
 
@@ -18,7 +18,7 @@
 * Now tracking code coverage.
 * Update NLopt-related URLs following migration of [NLopt website](https://nlopt.readthedocs.io/en/latest/).
 * Fixed bug to avoid linking issues when using the C API via `#include <nloptrAPI.h>` in several source files.
-* Fix precision issue in test example `hs071` (jyypma/nloptr#81, @Tom-python0121).
+* Fix precision issue in test example `hs071` ([jyypma/nloptr#81], [@Tom-python0121]).
 * Made NLopt algorithm `NLOPT_GN_ESCH` available from R interface (contributed by Xiongtao Dai).
 
 # nloptr 1.2.2 (29 February 2020)

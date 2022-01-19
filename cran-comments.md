@@ -1,3 +1,9 @@
+## Resubmission 3
+This is a resubmission. In this version I have:
+
+* Limited the number of cores to 2 when building NLopt from included sources.
+* Used the `NLopt` library from `Rtools42` for UCRT and updated the DESCRIPTION accordingly.
+
 ## Resubmission 2
 This is a resubmission. In this version I have:
 
@@ -68,4 +74,4 @@ These NOTEs appear only on Windows.
 
 ## Downstream dependencies
 I have also run R CMD check on downstream dependencies of [**nloptr**](https://astamm.github.io/nloptr/) using the [**revdepcheck**](https://r-lib.github.io/revdepcheck/) package. 
-All 115 packages that I could install passed in the sense that either they install properly or they fail to install but already failed using the current released version of **nloptr**.
+Out of the 114 packages that had a hard dependency on `nloptr`, only three of them failed to install, namely `missSBM`, `mssm` and `PLNmodels`. Package maintainers have been contacted and I contributed the fix to all 3 of them. You should receive new submissions from them soon.
