@@ -96,7 +96,8 @@ Alternatively, you can install the development version from GitHub:
 
 I would like to express my sincere gratitude to [Dirk
 Eddelbuettel](https://github.com/eddelbuettel), [Jeroen
-Ooms](https://github.com/jeroen), Uwe Ligges and [Jelmer
+Ooms](https://github.com/jeroen), [Tomas
+Kalibera](https://github.com/kalibera), Uwe Ligges and [Jelmer
 Ypma](https://github.com/jyypma) for their contributions and the very
 instructive discussions about the pros and cons of various build
 strategies in R packages.
