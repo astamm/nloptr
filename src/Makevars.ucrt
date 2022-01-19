@@ -1,11 +1,3 @@
 CXX_STD = CXX11
-PKG_CPPFLAGS = -I../inst/include
+PKG_CPPFLAGS = -I$(R_TOOLS_SOFT)/include/nlopt
 PKG_LIBS = -lnlopt
-
-all: clean winlibs
-
-winlibs:
-	cp $(R_TOOLS_SOFT)/include/nlopt/* ../inst/include/
-
-clean:
-	rm -f $(SHLIB) $(OBJECTS)

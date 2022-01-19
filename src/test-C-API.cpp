@@ -93,7 +93,7 @@ context("Test C API")
     // Check return value
     expect_true(res.size() == 3);
     expect_true(res[0] >= 2);
-    expect_true(res[1] >= 7);
+    expect_true(res[1] >= 6);
     expect_true(res[2] >= 0);
   }
 

@@ -37,11 +37,11 @@ information on how to cite NLopt and the algorithms you use.
 
 ### Windows
 
-On Windows, latest version 2.7.1 of
-[NLopt](https://nlopt.readthedocs.io/en/latest/) from either
-[rwinlib](https://github.com/rwinlib/nlopt) (windows-release) or as part
-of the `rtools42` toolchain (windows2022-devel) is used. So there is
-nothing else to be done.
+On Windows, either the latest version `2.7.1` of
+[NLopt](https://nlopt.readthedocs.io/en/latest/) from
+[rwinlib](https://github.com/rwinlib/nlopt) (windows-release) or a
+`v2.6` build from the `rtools42` toolchain (windows2022-devel) is used.
+So there is nothing else to be done.
 
 ### Linux and macOS
 
