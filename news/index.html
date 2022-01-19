@@ -56,8 +56,8 @@
 <h3 id="major-changes-2-0-0">Major changes<a class="anchor" aria-label="anchor" href="#major-changes-2-0-0"></a></h3>
 <ul><li>Use <a href="https://cmake.org" class="external-link">CMake</a> to build <code>nlopt</code> from included sources on macOS and on Linux if no system build of NLopt (&gt;= 2.7.0) is found.</li>
 <li>Update included sources of NLopt to latest version (2.7.1).</li>
-<li>Put back the ability on Linux platforms to re-use an existing external build of NLopt instead of building from the included sources (contributed by Dirk Eddelbuettel, <a href="https://github.com/astamm/nloptr/issues/88" class="external-link">#88</a>).</li>
-<li>Now builds from <code>rwinlib</code> on Windows (contributed by Jeroen Ooms, <a href="https://github.com/astamm/nloptr/issues/92" class="external-link">#92</a>).</li>
+<li>Put back the ability on Linux platforms to re-use an existing external build of NLopt instead of building from the included sources (contributed by Dirk Eddelbuettel, [#88]).</li>
+<li>Now builds using NLopt from <code>rwinlib</code> on Windows current release (contributed by Jeroen Ooms, [#92]), or NLopt from <code>Rtools42</code> on Windows devel (contributed by Tomas Kalibera).</li>
 </ul></div>
 <div class="section level3">
 <h3 id="minor-changes-2-0-0">Minor changes<a class="anchor" aria-label="anchor" href="#minor-changes-2-0-0"></a></h3>
@@ -70,7 +70,7 @@
 <li>Now tracking code coverage.</li>
 <li>Update NLopt-related URLs following migration of <a href="https://nlopt.readthedocs.io/en/latest/" class="external-link">NLopt website</a>.</li>
 <li>Fixed bug to avoid linking issues when using the C API via <code>#include &lt;nloptrAPI.h&gt;</code> in several source files.</li>
-<li>Fix precision issue in test example <code>hs071</code> (jyypma/nloptr#81, <a href="https://github.com/Tom-python0121" class="external-link">@Tom-python0121</a>).</li>
+<li>Fix precision issue in test example <code>hs071</code> ([jyypma/nloptr#81], [@Tom-python0121]).</li>
 <li>Made NLopt algorithm <code>NLOPT_GN_ESCH</code> available from R interface (contributed by Xiongtao Dai).</li>
 </ul></div>
 </div>
