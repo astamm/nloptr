@@ -12,3 +12,4 @@ TODO
 ^revdep$
 ^src/nlopt/
 ^windows$
+^CRAN-SUBMISSION$
