@@ -1,3 +1,8 @@
+## Resubmission 4
+This is a resubmission. In this version I have:
+
+* Modified phrasing in `Description` field of `DESCRIPTION` file according to CRAN recommandations.
+
 ## Resubmission 3
 This is a resubmission. In this version I have:
 

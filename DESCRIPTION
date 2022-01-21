@@ -33,10 +33,10 @@ Description:
     See <https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/> for more
     information on the available algorithms. Building from included sources 
     requires 'CMake'. On Linux and 'macOS', if a suitable system build of 
-    NLopt (2.7.0 or later) is found, it is used; otherwise, it is build from 
-    included sources via 'CMake'. On Windows, NLopt is obtained through 
-    'rwinlib' (v2.7) on current release version or grabbed from the 'Rtools42' 
-    toolchain on the 2022 development version (v2.6).
+    NLopt (2.7.0 or later) is found, it is used; otherwise, it is built 
+    from included sources via 'CMake'. On Windows, NLopt is obtained through 
+    'rwinlib' for 'R <= 4.1.x' or grabbed from the 'Rtools42 toolchain' for 
+    'R >= 4.2.0'.
 License: LGPL (>= 3)
 SystemRequirements: cmake (for building from included source, i.e. on macOS 
     or on Linux if no system build, version >= 2.7.0, is found)
