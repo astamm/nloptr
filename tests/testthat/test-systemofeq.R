@@ -17,8 +17,6 @@
 #   05/05/2014: Changed example to use unit testing framework testthat.
 #   12/12/2019: Corrected warnings and using updated testtthat framework (Avraham Adler)
 
-context("System of equations.")
-
 test_that( "Solve system of equations using NLOPT_LD_MMA with local optimizer NLOPT_LD_MMA.", {
     # Objective function.
     eval_f0 <- function( x, params ) {

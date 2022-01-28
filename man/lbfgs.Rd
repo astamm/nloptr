@@ -4,8 +4,16 @@
 \alias{lbfgs}
 \title{Low-storage BFGS}
 \usage{
-lbfgs(x0, fn, gr = NULL, lower = NULL, upper = NULL,
-  nl.info = FALSE, control = list(), ...)
+lbfgs(
+  x0,
+  fn,
+  gr = NULL,
+  lower = NULL,
+  upper = NULL,
+  nl.info = FALSE,
+  control = list(),
+  ...
+)
 }
 \arguments{
 \item{x0}{initial point for searching the optimum.}
@@ -25,13 +33,13 @@ not specified.}
 }
 \value{
 List with components:
-  \item{par}{the optimal solution found so far.}
-  \item{value}{the function value corresponding to \code{par}.}
-  \item{iter}{number of (outer) iterations, see \code{maxeval}.}
-  \item{convergence}{integer code indicating successful completion (> 0)
-    or a possible error number (< 0).}
-  \item{message}{character string produced by NLopt and giving additional
-    information.}
+\item{par}{the optimal solution found so far.}
+\item{value}{the function value corresponding to \code{par}.}
+\item{iter}{number of (outer) iterations, see \code{maxeval}.}
+\item{convergence}{integer code indicating successful completion (> 0)
+or a possible error number (< 0).}
+\item{message}{character string produced by NLopt and giving additional
+information.}
 }
 \description{
 Low-storage version of the Broyden-Fletcher-Goldfarb-Shanno (BFGS) method.

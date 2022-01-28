@@ -4,8 +4,18 @@
 \alias{mlsl}
 \title{Multi-level Single-linkage}
 \usage{
-mlsl(x0, fn, gr = NULL, lower, upper, local.method = "LBFGS",
-  low.discrepancy = TRUE, nl.info = FALSE, control = list(), ...)
+mlsl(
+  x0,
+  fn,
+  gr = NULL,
+  lower,
+  upper,
+  local.method = "LBFGS",
+  low.discrepancy = TRUE,
+  nl.info = FALSE,
+  control = list(),
+  ...
+)
 }
 \arguments{
 \item{x0}{initial point for searching the optimum.}
@@ -29,13 +39,13 @@ not specified.}
 }
 \value{
 List with components:
-  \item{par}{the optimal solution found so far.}
-  \item{value}{the function value corresponding to \code{par}.}
-  \item{iter}{number of (outer) iterations, see \code{maxeval}.}
-  \item{convergence}{integer code indicating successful completion (> 0)
-    or a possible error number (< 0).}
-  \item{message}{character string produced by NLopt and giving additional
-    information.}
+\item{par}{the optimal solution found so far.}
+\item{value}{the function value corresponding to \code{par}.}
+\item{iter}{number of (outer) iterations, see \code{maxeval}.}
+\item{convergence}{integer code indicating successful completion (> 0)
+or a possible error number (< 0).}
+\item{message}{character string produced by NLopt and giving additional
+information.}
 }
 \description{
 The ``Multi-Level Single-Linkage'' (MLSL) algorithm for global optimization
@@ -44,10 +54,7 @@ A modification of MLSL is included using a low-discrepancy sequence (LDS)
 instead of pseudorandom numbers.
 }
 \details{
-MLSL is a `multistart' algorithm: it works by doing a sequence of local
-optimizations (using some other local optimization algorithm) from random or
-low-discrepancy starting points.  MLSL is distinguished, however by a
-`clustering' heuristic that helps it to avoid repeated searches of the same
+MLSL is a \verb{multistart' algorithm: it works by doing a sequence of local optimizations (using some other local optimization algorithm) from random or low-discrepancy starting points.  MLSL is distinguished, however by a }clustering' heuristic that helps it to avoid repeated searches of the same
 local optima, and has some theoretical guarantees of finding all local
 optima in a finite number of local minimizations.
 

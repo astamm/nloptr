@@ -2,11 +2,11 @@ Version: 1.0
 
 RestoreWorkspace: No
 SaveWorkspace: No
-AlwaysSaveHistory: No
+AlwaysSaveHistory: Default
 
 EnableCodeIndexing: Yes
 UseSpacesForTab: Yes
-NumSpacesForTab: 4
+NumSpacesForTab: 2
 Encoding: UTF-8
 
 RnwWeave: Sweave
@@ -17,7 +17,6 @@ StripTrailingWhitespace: Yes
 LineEndingConversion: Posix
 
 BuildType: Package
-PackageInstallArgs: --no-multiarch --with-keep.source --install-tests
-PackageBuildArgs: --compact-vignettes="gs+qpdf"
-PackageBuildBinaryArgs: --compact-vignettes="gs+qpdf"
-PackageCheckArgs: --no-multiarch
+PackageUseDevtools: Yes
+PackageInstallArgs: --no-multiarch --with-keep.source --clean
+PackageRoxygenize: rd,collate,namespace

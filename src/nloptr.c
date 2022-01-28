@@ -39,7 +39,7 @@
  // nlopt_result nlopt_set_min_objective(nlopt_opt opt, nlopt_func f, void* f_data);
 // nlopt_result nlopt_set_max_objective(nlopt_opt opt, nlopt_func f, void* f_data);
 
-#include "nlopt.h"
+#include <nlopt.h>
 
 #include <R.h>
 #include <Rdefines.h>
@@ -185,8 +185,8 @@ nlopt_algorithm getAlgorithmCode( const char *algorithm_str ) {
     }
     else if ( strcmp( algorithm_str, "NLOPT_GN_ISRES" ) == 0 ) {
         algorithm = NLOPT_GN_ISRES;
-    } 
-    else if ( strcmp( algorithm_str, "NLOPT_GN_ESCH" ) == 0 ) { 
+    }
+    else if ( strcmp( algorithm_str, "NLOPT_GN_ESCH" ) == 0 ) {
         algorithm = NLOPT_GN_ESCH;
     }
     else {

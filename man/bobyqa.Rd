@@ -4,8 +4,15 @@
 \alias{bobyqa}
 \title{Bound Optimization by Quadratic Approximation}
 \usage{
-bobyqa(x0, fn, lower = NULL, upper = NULL, nl.info = FALSE,
-  control = list(), ...)
+bobyqa(
+  x0,
+  fn,
+  lower = NULL,
+  upper = NULL,
+  nl.info = FALSE,
+  control = list(),
+  ...
+)
 }
 \arguments{
 \item{x0}{starting point for searching the optimum.}
@@ -22,13 +29,13 @@ bobyqa(x0, fn, lower = NULL, upper = NULL, nl.info = FALSE,
 }
 \value{
 List with components:
-  \item{par}{the optimal solution found so far.}
-  \item{value}{the function value corresponding to \code{par}.}
-  \item{iter}{number of (outer) iterations, see \code{maxeval}.}
-  \item{convergence}{integer code indicating successful completion (> 0)
-    or a possible error number (< 0).}
-  \item{message}{character string produced by NLopt and giving additional
-    information.}
+\item{par}{the optimal solution found so far.}
+\item{value}{the function value corresponding to \code{par}.}
+\item{iter}{number of (outer) iterations, see \code{maxeval}.}
+\item{convergence}{integer code indicating successful completion (> 0)
+or a possible error number (< 0).}
+\item{message}{character string produced by NLopt and giving additional
+information.}
 }
 \description{
 BOBYQA performs derivative-free bound-constrained optimization using an

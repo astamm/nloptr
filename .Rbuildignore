@@ -3,5 +3,13 @@
 ^\.Rproj\.user$
 \.Rprofile
 \.gitignore
-.travis.yml
 TODO
+^\.github$
+^README\.Rmd$
+^LICENSE\.md$
+^codecov\.yml$
+^cran-comments\.md$
+^revdep$
+^src/nlopt/
+^windows$
+^CRAN-SUBMISSION$

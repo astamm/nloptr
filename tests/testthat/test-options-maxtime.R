@@ -11,14 +11,12 @@
 # CHANGELOG:
 #   12/12/2019: Corrected warnings and using updated testtthat framework (Avraham Adler)
 
-context("Options maxtime")
-
 test_that("Test that solver stops when maxtime is reached.", {
     # Objective function with sleep added
     # such that maxtime will be reached
     # when solving the optimization problem.
     eval_f <- function(x) {
-        Sys.sleep( 1 )
+        Sys.sleep( 2 )
         return( x^2 )
     }
 

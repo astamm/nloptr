@@ -4,9 +4,19 @@
 \alias{isres}
 \title{Improved Stochastic Ranking Evolution Strategy}
 \usage{
-isres(x0, fn, lower, upper, hin = NULL, heq = NULL, maxeval = 10000,
-  pop.size = 20 * (length(x0) + 1), xtol_rel = 1e-06,
-  nl.info = FALSE, ...)
+isres(
+  x0,
+  fn,
+  lower,
+  upper,
+  hin = NULL,
+  heq = NULL,
+  maxeval = 10000,
+  pop.size = 20 * (length(x0) + 1),
+  xtol_rel = 1e-06,
+  nl.info = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x0}{initial point for searching the optimum.}
@@ -33,13 +43,13 @@ for all components.}
 }
 \value{
 List with components:
-  \item{par}{the optimal solution found so far.}
-  \item{value}{the function value corresponding to \code{par}.}
-  \item{iter}{number of (outer) iterations, see \code{maxeval}.}
-  \item{convergence}{integer code indicating successful completion (> 0)
-    or a possible error number (< 0).}
-  \item{message}{character string produced by NLopt and giving additional
-    information.}
+\item{par}{the optimal solution found so far.}
+\item{value}{the function value corresponding to \code{par}.}
+\item{iter}{number of (outer) iterations, see \code{maxeval}.}
+\item{convergence}{integer code indicating successful completion (> 0)
+or a possible error number (< 0).}
+\item{message}{character string produced by NLopt and giving additional
+information.}
 }
 \description{
 The Improved Stochastic Ranking Evolution Strategy (ISRES) algorithm for
