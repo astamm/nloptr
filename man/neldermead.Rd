@@ -66,6 +66,10 @@ neldermead(x0, psf)     #  0 0 0 0, needs maximum number of function calls
 
 \dontrun{
 # Bounded version of Nelder-Mead
+rosenbrock <- function(x) { ## Rosenbrock Banana function
+    100 * (x[2] - x[1]^2)^2 + (1 - x[1])^2 + 
+    100 * (x[3] - x[2]^2)^2 + (1 - x[2])^2
+}
 lower <- c(-Inf, 0,   0)
 upper <- c( Inf, 0.5, 1)
 x0 <- c(0, 0.1, 0.1)
