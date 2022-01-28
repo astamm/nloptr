@@ -51,7 +51,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">nloptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0.9000</span>
       </span>
     </div>
 
@@ -110,7 +110,7 @@
 <p>On Unix-like platforms, we use <code>pkg-config</code> to find a suitable system build of <a href="https://nlopt.readthedocs.io/en/latest/" class="external-link">NLopt</a> (i.e. with version <code>&gt;= 2.7.0</code>).</p>
 <ul>
 <li>If it is found it is used.</li>
-<li>Otherwise, <a href="https://nlopt.readthedocs.io/en/latest/" class="external-link">NLopt</a> 2.7.1 is built from included sources using <a href="https://cmake.org" class="external-link">CMake</a>. In this case, a binary of <a href="https://cmake.org" class="external-link">CMake</a> stored in environment variable <code>CMAKE_BIN</code> is searched on the <code>PATH</code> and, alternatively, on a macOS-specific location. If that variable cannot be set, install will abort suggesting ways of installing <a href="https://cmake.org" class="external-link">CMake</a>.</li>
+<li>Otherwise, <a href="https://nlopt.readthedocs.io/en/latest/" class="external-link">NLopt</a> 2.7.1 is built from included sources using <a href="https://cmake.org" class="external-link">CMake</a>. In this case, a binary of <a href="https://cmake.org" class="external-link">CMake</a> stored in environment variable <code>CMAKE_BIN</code> is searched on the <code>PATH</code> and, alternatively, on a macOS-specific location. If that variable cannot be set, install will abort suggesting ways of installing <a href="https://cmake.org" class="external-link">CMake</a>. The minimal version requirement on <code>cmake</code> is <code>&gt;= 3.15.0</code>.</li>
 </ul>
 </div>
 <div class="section level3">
