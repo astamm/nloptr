@@ -56,7 +56,8 @@ version `>= 2.7.0`).
     environment variable `CMAKE_BIN` is searched on the `PATH` and,
     alternatively, on a macOS-specific location. If that variable cannot
     be set, install will abort suggesting ways of installing
-    [CMake](https://cmake.org).
+    [CMake](https://cmake.org). The minimal version requirement on
+    `cmake` is `>= 3.15.0`.
 
 ### Installing [CMake](https://cmake.org) (macOS and Linux only)
 

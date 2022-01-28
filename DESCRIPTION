@@ -1,7 +1,7 @@
 Package: nloptr
 Type: Package
 Title: R Interface to NLopt
-Version: 2.0.0
+Version: 2.0.0.9000
 Authors@R: c(person("Jelmer", "Ypma", role = "aut",
                     email = "uctpjyy@ucl.ac.uk"),
              person(c("Steven", "G."), "Johnson", role = "aut",
@@ -38,8 +38,8 @@ Description:
     'rwinlib' for 'R <= 4.1.x' or grabbed from the 'Rtools42 toolchain' for 
     'R >= 4.2.0'.
 License: LGPL (>= 3)
-SystemRequirements: cmake (for building from included source, i.e. on macOS 
-    or on Linux if no system build, version >= 2.7.0, is found)
+SystemRequirements: cmake (>= 3.15.0) which is used only on Linux or macOS 
+    systems when no system build of nlopt (>= 2.7.0) can be found.
 Biarch: true
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

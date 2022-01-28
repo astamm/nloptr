@@ -1,3 +1,7 @@
+# nloptr 2.0.0.9000
+
+* Update `SystemRequirements` description to make it clearer which minimal versions of `cmake` (`>= 3.15.0`) and `nlopt` (`>= 2.7.0`) are required (#100, @HenrikBengtsson).
+
 # nloptr 2.0.0
 
 ## Major changes

@@ -42,7 +42,7 @@ On Windows, either the latest version `2.7.1` of [NLopt](https://nlopt.readthedo
 On Unix-like platforms, we use `pkg-config` to find a suitable system build of [NLopt](https://nlopt.readthedocs.io/en/latest/) (i.e. with version `>= 2.7.0`).
 
 - If it is found it is used.
-- Otherwise, [NLopt](https://nlopt.readthedocs.io/en/latest/) 2.7.1 is built from included sources using [CMake](https://cmake.org). In this case, a binary  of [CMake](https://cmake.org) stored in environment variable `CMAKE_BIN` is searched on the `PATH` and, alternatively, on a macOS-specific location. If that variable cannot be set, install will abort suggesting ways of installing [CMake](https://cmake.org).
+- Otherwise, [NLopt](https://nlopt.readthedocs.io/en/latest/) 2.7.1 is built from included sources using [CMake](https://cmake.org). In this case, a binary  of [CMake](https://cmake.org) stored in environment variable `CMAKE_BIN` is searched on the `PATH` and, alternatively, on a macOS-specific location. If that variable cannot be set, install will abort suggesting ways of installing [CMake](https://cmake.org). The minimal version requirement on `cmake` is `>= 3.15.0`.
 
 ### Installing [CMake](https://cmake.org) (macOS and Linux only)
 
