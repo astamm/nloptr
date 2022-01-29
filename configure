@@ -584,6 +584,7 @@ PACKAGE_URL=''
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
 NLOPT_CPPFLAGS
+have_cmake
 NLOPT_LIBS
 NLOPT_INCLUDE
 have_pkg_config
@@ -2782,6 +2783,53 @@ fi
 
 ## So do we need to build
 if test x"${need_to_build}" != x"no"; then
+    # Extract the first word of "cmake", so it can be a program name with args.
+set dummy cmake; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if ${ac_cv_path_have_cmake+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $have_cmake in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_have_cmake="$have_cmake" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_have_cmake="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_have_cmake" && ac_cv_path_have_cmake="no"
+  ;;
+esac
+fi
+have_cmake=$ac_cv_path_have_cmake
+if test -n "$have_cmake"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $have_cmake" >&5
+$as_echo "$have_cmake" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+    if test x"${have_cmake}" == x"no"; then
+       ## invoked for the side-effect of the cmake installation hints
+       src/scripts/cmake_config.sh
+       ## also error to end configure here
+       as_fn_error $? "Could not fine 'cmake'." "$LINENO" 5
+    fi
     ## 'uname -m' on M1 give x86_64 which is ... not helping
     machine=`"${R_HOME}/bin/Rscript" -e 'cat(Sys.info()["machine"])'`
     { $as_echo "$as_me:${as_lineno-$LINENO}: result: using NLopt via local cmake build on ${machine} " >&5
