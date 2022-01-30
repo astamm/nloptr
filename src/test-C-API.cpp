@@ -12,7 +12,6 @@
 #include <testthat.h>
 #include "test-C-API.h"
 #include <nlopt.h>
-#include <iostream>
 
 std::vector<int> get_nlopt_version()
 {
@@ -94,7 +93,7 @@ context("Test C API")
     // Check return value
     expect_true(res.size() == 3);
     expect_true(res[0] >= 2);
-    expect_true(res[1] >= 6);
+    expect_true(res[1] >= 7);
     expect_true(res[2] >= 0);
   }
 
@@ -102,8 +101,6 @@ context("Test C API")
   {
     // Get optimal x values.
     std::vector<double> res = solve_example();
-
-    std::cout << res[0] << " " << res[1] << std::endl;
 
     // Check return value.
     expect_true(res.size() == 2);
