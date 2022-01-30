@@ -1,1 +1,3 @@
 configure.ac text eol=lf
+inst/include/nlopt.f text eol=lf
+inst/include/nlopt.hpp text eol=lf
