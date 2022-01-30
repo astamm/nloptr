@@ -12,6 +12,7 @@
 #include <testthat.h>
 #include "test-C-API.h"
 #include <nlopt.h>
+#include <iostream>
 
 std::vector<int> get_nlopt_version()
 {
