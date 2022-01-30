@@ -3,6 +3,7 @@
 * Update `SystemRequirements` description to make it clearer which minimal versions of `cmake` (`>= 3.15.0`) and `nlopt` (`>= 2.7.0`) are required (#100, @HenrikBengtsson).
 * End configuration sooner and louder if `cmake` is missing when needed with clearer message (#103, @eddelbuettel).
 * Ensure system-wide installation of `cmake` in the list of suggestions to install it when missing.
+* Update GHA scripts to latest versions.
 
 # nloptr 2.0.0
 
