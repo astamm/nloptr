@@ -69,7 +69,7 @@ if test x"${need_to_build}" != x"no"; then
        ## invoked for the side-effect of the cmake installation hints
        src/scripts/cmake_config.sh
        ## also error to end configure here
-       AC_MSG_ERROR([Could not fine 'cmake'.])
+       AC_MSG_ERROR([Could not find 'cmake'.])
     fi
     ## 'uname -m' on M1 give x86_64 which is ... not helping
     machine=`"${R_HOME}/bin/Rscript" -e 'cat(Sys.info()[["machine"]])'`

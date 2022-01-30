@@ -2828,7 +2828,7 @@ fi
        ## invoked for the side-effect of the cmake installation hints
        src/scripts/cmake_config.sh
        ## also error to end configure here
-       as_fn_error $? "Could not fine 'cmake'." "$LINENO" 5
+       as_fn_error $? "Could not find 'cmake'." "$LINENO" 5
     fi
     ## 'uname -m' on M1 give x86_64 which is ... not helping
     machine=`"${R_HOME}/bin/Rscript" -e 'cat(Sys.info()["machine"])'`
