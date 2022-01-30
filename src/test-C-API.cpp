@@ -102,6 +102,8 @@ context("Test C API")
     // Get optimal x values.
     std::vector<double> res = solve_example();
 
+    std::cout << res[0] << " " << res[1] << std::endl;
+
     // Check return value.
     expect_true(res.size() == 2);
     expect_true(abs(res[0] - 1./ 3) < 1.0e-4);
