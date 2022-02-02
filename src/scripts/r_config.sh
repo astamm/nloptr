@@ -34,8 +34,16 @@ if test -z "$CXX"; then
     echo >&2 "Could not detect C++ compiler with R CMD config."
 fi
 
-AR=`"${R_HOME}/bin${R_ARCH_BIN}/R" CMD config AR`
-AR=`which $AR`
+# Only R > 4 will have the variables
+${R_HOME}/bin${R_ARCH_BIN}/Rscript --vanilla -e "getRversion() > 4" | grep TRUE > /dev/null
+if [ $? -eq 0 ]; then
+	AR=`"${R_HOME}/bin${R_ARCH_BIN}/R" CMD config AR`
+	AR=`which $AR`
+	export AR
+	echo set AR=${AR}
 
-RANLIB=`"${R_HOME}/bin${R_ARCH_BIN}/R" CMD config RANLIB`
-RANLIB=`which $RANLIB`
+	RANLIB=`"${R_HOME}/bin${R_ARCH_BIN}/R" CMD config RANLIB`
+	RANLIB=`which $RANLIB`
+	export RANLIB
+	echo set RANLIB=${RANLIB}
+fi
