@@ -15,7 +15,7 @@ dot() { file=$1; shift; . "$file"; }
 dot ./scripts/r_config.sh ""
 
 # Only R > 4 will have the variables
-$RSCRIPT_BIN --vanilla -e "getRversion() > 4" | grep TRUE > /dev/null
+$RSCRIPT_BIN --vanilla -e "getRversion() > '4.0.0'" | grep TRUE > /dev/null
 if [ $? -eq 0 ]; then
 	NEW_R="-D CMAKE_AR=${AR} -D CMAKE_RANLIB=${RANLIB} "
 else
