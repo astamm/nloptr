@@ -3249,30 +3249,26 @@ printf %s "checking if pkg-config knows NLopt... " >&6; }
     if pkg-config --exists nlopt; then
         { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 printf "%s\n" "yes" >&6; }
-        nlopt_include=$(pkg-config --cflags nlopt)
-        nlopt_libs=$(pkg-config --libs nlopt)
-        NLOPT_INCLUDE="${nlopt_include}"
+        ## Since nlopt has been found, test for minimal version requirement
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for pkg-config checking NLopt version" >&5
+printf %s "checking for pkg-config checking NLopt version... " >&6; }
+        if pkg-config --atleast-version=2.7.0 nlopt; then
+            { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: >= 2.7.0" >&5
+printf "%s\n" ">= 2.7.0" >&6; }
+            nlopt_include=$(pkg-config --cflags nlopt)
+            nlopt_libs=$(pkg-config --libs nlopt)
+            NLOPT_INCLUDE="${nlopt_include}"
 
-        NLOPT_LIBS="${nlopt_libs}"
+            NLOPT_LIBS="${nlopt_libs}"
 
+            need_to_build="no"
+        else
+            { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: insufficient: NLopt 2.7.0 or later is preferred." >&5
+printf "%s\n" "insufficient: NLopt 2.7.0 or later is preferred." >&6; }
+        fi
     else
         { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
-        have_pkg_config="no"
-    fi
-fi
-
-## And if we have pkg-config, use it to test minimal version
-if test x"${have_pkg_config}" != x"no"; then
-    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for pkg-config checking NLopt version" >&5
-printf %s "checking for pkg-config checking NLopt version... " >&6; }
-    if pkg-config --atleast-version=2.7.0 nlopt; then
-        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: >= 2.7.0" >&5
-printf "%s\n" ">= 2.7.0" >&6; }
-        need_to_build="no"
-    else
-        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: insufficient: NLopt 2.7.0 or later is preferred." >&5
-printf "%s\n" "insufficient: NLopt 2.7.0 or later is preferred." >&6; }
     fi
 fi
 
