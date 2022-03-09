@@ -5,7 +5,8 @@
 * Ensure system-wide installation of `cmake` in the list of suggestions to install it when missing.
 * Update GHA scripts to latest versions.
 * Configure git to always use LF line endings for configure.ac file.
-* Temporarily remove CI on windows devel.
+* Add CI for R-devel on Windows with Rtools42.
+* Fix for compatibility with versions of R anterior to `4.0` (#111).
 
 # nloptr 2.0.0
 
