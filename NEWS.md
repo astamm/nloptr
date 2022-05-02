@@ -1,4 +1,6 @@
-# nloptr 2.0.0.9000
+# nloptr 2.0.1
+
+This is a release mainly for increasing direct compatibility with most user cases. In details, here is the list of changes that have been made:
 
 * Update `SystemRequirements` description to make it clearer which minimal versions of `cmake` (`>= 3.15.0`) and `nlopt` (`>= 2.7.0`) are required (#100, @HenrikBengtsson).
 * End configuration sooner and louder if `cmake` is missing when needed with clearer message (#103, @eddelbuettel).
