@@ -7,6 +7,7 @@
 * Configure git to always use LF line endings for configure.ac file.
 * Add CI for R-devel on Windows with Rtools42.
 * Fix for compatibility with versions of R anterior to `4.0` (#111).
+* Look for a `cmake3` binary in the current path before `cmake` for increasing compatibility with most RHEL/CentOS users (#104, @bhogan-mitre @HenrikBengtsson).
 
 # nloptr 2.0.0
 
