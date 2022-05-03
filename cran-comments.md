@@ -33,5 +33,7 @@ The size varies according to the system on which the package is installed.
 This NOTE appears only on Windows.
 
 ## Downstream dependencies
-I have also run R CMD check on downstream dependencies of [**nloptr**](https://astamm.github.io/nloptr/) using the [**revdepcheck**](https://r-lib.github.io/revdepcheck/) package. 
-Out of the 114 packages that had a hard dependency on `nloptr`, only three of them failed to install, namely `missSBM`, `mssm` and `PLNmodels`. Package maintainers have been contacted and I contributed the fix to all 3 of them. You should receive new submissions from them soon.
+We checked 118 reverse dependencies (111 from CRAN + 7 from Bioconductor), comparing R CMD check results across CRAN and dev versions of this package.
+
+ * We saw 0 new problems
+ * We failed to check 0 packages
