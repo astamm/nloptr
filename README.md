@@ -23,9 +23,13 @@ other algorithms. It can be used to solve general nonlinear programming
 problems with nonlinear constraints and lower and upper bounds for the
 controls, such as
 
-min<sub>*x* ∈ ℝ<sup>*n*</sup></sub>  *f*(*x*),
+![\min\_{x \in \mathbb{R}^n} \quad f(x),](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cmin_%7Bx%20%5Cin%20%5Cmathbb%7BR%7D%5En%7D%20%5Cquad%20f%28x%29%2C "\min_{x \in \mathbb{R}^n} \quad f(x),")
 
-s.t. *g*(*x*) ≤ 0, *h*(*x*) = 0 and ℓ ≤ *x* ≤ *u*.
+s.t.
+![g(x) \le 0](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;g%28x%29%20%5Cle%200 "g(x) \le 0"),
+![h(x) = 0](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;h%28x%29%20%3D%200 "h(x) = 0")
+and
+![\ell \le x \le u](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cell%20%5Cle%20x%20%5Cle%20u "\ell \le x \le u").
 
 The [NLopt](https://nlopt.readthedocs.io/en/latest/) library is
 available under the GNU Lesser General Public License (LGPL), and the
@@ -39,9 +43,9 @@ information on how to cite NLopt and the algorithms you use.
 
 On Windows, either the latest version `2.7.1` of
 [NLopt](https://nlopt.readthedocs.io/en/latest/) from
-[rwinlib](https://github.com/rwinlib/nlopt) (windows-release) or a
-`v2.6` build from the `rtools42` toolchain (windows2022-devel) is used.
-So there is nothing else to be done.
+[rwinlib](https://github.com/rwinlib/nlopt) (windows-release) or the
+`v2.7.1` build from the `rtools42` toolchain (windows2022-devel) is
+used. So there is nothing else to be done.
 
 ### Linux and macOS
 
