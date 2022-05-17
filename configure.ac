@@ -74,7 +74,7 @@ if test x"${need_to_build}" != x"no"; then
     tools/cmake_call.sh
     ## cmake_call.sh installs into nlopt/lib, headers are copied
     nlopt_include=""
-    nlopt_libs="-Lnlopt/lib -lnlopt"
+    nlopt_libs="nlopt/lib/libnlopt.a"
 fi
 
 ## Now use all the values
