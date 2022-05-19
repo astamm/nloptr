@@ -20,7 +20,7 @@ difference approximation and prints the results of these checks."><meta property
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">nloptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.2</span>
       </span>
     </div>
 
@@ -127,16 +127,16 @@ the relative errors to the tolerance.</p>
 <span class="r-in">    check_derivatives_print<span class="op">=</span><span class="st">'none'</span>, a<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span> <span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Derivative checker results: 0 error(s) detected.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $analytic</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  0.2026454  3.3897617  4.0902938  7.0466759  9.2121801 10.2049042</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] 12.8984445 15.4439118 16.3404574 19.3472711</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  0.4937112  2.3934751  4.7348907  7.8915833  9.7004161 11.7568625</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] 13.5366266 14.9835021 16.2387436 19.5153093</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $finite_difference</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  0.2026443  3.3897610  4.0902939  7.0466757  9.2121796 10.2049039</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] 12.8984446 15.4439116 16.3404575 19.3472713</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  0.4937096  2.3934746  4.7348900  7.8915834  9.7004158 11.7568626</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] 13.5366265 14.9835019 16.2387437 19.5153091</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $relative_error</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 5.145052e-06 2.211704e-07 2.868905e-08 2.762245e-08 5.999089e-08</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [6] 3.017739e-08 9.231830e-09 1.323663e-08 6.063623e-09 1.030616e-08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 3.260603e-06 2.140100e-07 1.431929e-07 1.740716e-08 2.642155e-08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [6] 1.548658e-08 4.683328e-09 1.578776e-08 5.203090e-09 7.840834e-09</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $flag_derivative_warning</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</span>
@@ -151,19 +151,19 @@ the relative errors to the tolerance.</p>
 <span class="r-in">    check_derivatives_print<span class="op">=</span><span class="st">'errors'</span>, a<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span> <span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Derivative checker results: 1 error(s) detected.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> * grad_f[  2 ] = 3.821147e+00 ~ 3.721146e+00   [2.687381e-02]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> * grad_f[  2 ] = 2.487544e+00 ~ 2.387543e+00   [4.188462e-02]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $analytic</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  0.2304302  3.8211470  4.2724583  7.1141523  8.1489049 11.1959915</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] 12.7345769 15.1420351 16.6859749 19.9960561</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  1.644828  2.487544  5.412126  7.202395  9.485966 11.355225 13.757143</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] 15.782000 17.444353 19.970318</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $finite_difference</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  0.2304306  3.7211456  4.2724584  7.1141520  8.1489044 11.1959915</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] 12.7345766 15.1420350 16.6859750 19.9960560</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1]  1.644825  2.387543  5.412126  7.202394  9.485966 11.355225 13.757143</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8] 15.782000 17.444353 19.970318</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $relative_error</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 1.764185e-06 2.687381e-02 3.331504e-08 5.400089e-08 5.652688e-08</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [6] 2.329140e-09 1.737962e-08 3.751852e-09 5.593873e-09 4.256984e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 1.671180e-06 4.188462e-02 3.378518e-08 7.913610e-08 2.881553e-08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [6] 8.693812e-09 3.413882e-09 6.432275e-09 8.218816e-09 3.264474e-10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $flag_derivative_warning</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] FALSE  TRUE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</span>
@@ -183,49 +183,49 @@ the relative errors to the tolerance.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Derivative checker results: 2 error(s) detected.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   grad_f[ 1,  1 ] = 1.000000e+00 ~ 1.000000e+00   [0.000000e+00]</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   grad_f[ 2,  1 ] = 1.156799e+00 ~ 1.156799e+00   [4.307208e-07]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   grad_f[ 2,  1 ] = 9.209362e-01 ~ 9.209366e-01   [3.888363e-07]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> * grad_f[ 1,  2 ] = 1.010000e+00 ~ 1.000000e+00   [1.000000e-02]</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> * grad_f[ 2,  2 ] = 2.369100e+00 ~ 2.269100e+00   [4.407021e-02]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> * grad_f[ 2,  2 ] = 2.595634e+00 ~ 2.495634e+00   [4.007012e-02]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   grad_f[ 1,  3 ] = 1.000000e+00 ~ 1.000000e+00   [0.000000e+00]</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   grad_f[ 2,  3 ] = 5.084005e+00 ~ 5.084005e+00   [7.110701e-08]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   grad_f[ 2,  3 ] = 4.552540e+00 ~ 4.552540e+00   [2.598066e-08]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   grad_f[ 1,  4 ] = 1.000000e+00 ~ 1.000000e+00   [0.000000e+00]</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   grad_f[ 2,  4 ] = 6.883644e+00 ~ 6.883643e+00   [8.334173e-08]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   grad_f[ 2,  4 ] = 6.210301e+00 ~ 6.210300e+00   [4.221491e-08]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   grad_f[ 1,  5 ] = 1.000000e+00 ~ 1.000000e+00   [0.000000e+00]</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   grad_f[ 2,  5 ] = 8.702301e+00 ~ 8.702301e+00   [4.548361e-08]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   grad_f[ 2,  5 ] = 8.295909e+00 ~ 8.295909e+00   [3.173671e-08]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   grad_f[ 1,  6 ] = 1.000000e+00 ~ 1.000000e+00   [0.000000e+00]</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   grad_f[ 2,  6 ] = 1.048395e+01 ~ 1.048395e+01   [2.063891e-08]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   grad_f[ 2,  6 ] = 1.085476e+01 ~ 1.085476e+01   [2.981500e-08]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   grad_f[ 1,  7 ] = 1.000000e+00 ~ 1.000000e+00   [0.000000e+00]</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   grad_f[ 2,  7 ] = 1.308876e+01 ~ 1.308876e+01   [9.062020e-09]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   grad_f[ 2,  7 ] = 1.359173e+01 ~ 1.359173e+01   [3.352648e-09]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   grad_f[ 1,  8 ] = 1.000000e+00 ~ 1.000000e+00   [0.000000e+00]</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   grad_f[ 2,  8 ] = 1.433120e+01 ~ 1.433120e+01   [9.227963e-09]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   grad_f[ 2,  8 ] = 1.550479e+01 ~ 1.550479e+01   [3.634040e-09]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   grad_f[ 1,  9 ] = 1.000000e+00 ~ 1.000000e+00   [0.000000e+00]</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   grad_f[ 2,  9 ] = 1.643881e+01 ~ 1.643881e+01   [2.804367e-09]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   grad_f[ 2,  9 ] = 1.750988e+01 ~ 1.750988e+01   [9.047941e-09]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   grad_f[ 1, 10 ] = 1.000000e+00 ~ 1.000000e+00   [0.000000e+00]</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   grad_f[ 2, 10 ] = 1.962093e+01 ~ 1.962093e+01   [5.496535e-09]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   grad_f[ 2, 10 ] = 1.934316e+01 ~ 1.934316e+01   [6.759892e-09]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $analytic</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          [,1]   [,2]     [,3]     [,4]     [,5]     [,6]     [,7]    [,8]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 1.000000 1.0100 1.000000 1.000000 1.000000  1.00000  1.00000  1.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 1.156799 2.3691 5.084005 6.883644 8.702301 10.48395 13.08876 14.3312</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]     [,2]    [,3]     [,4]     [,5]     [,6]     [,7]     [,8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 1.0000000 1.010000 1.00000 1.000000 1.000000  1.00000  1.00000  1.00000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.9209362 2.595634 4.55254 6.210301 8.295909 10.85476 13.59173 15.50479</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          [,9]    [,10]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  1.00000  1.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 16.43881 19.62093</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 17.50988 19.34316</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $finite_difference</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          [,1]   [,2]     [,3]     [,4]     [,5]     [,6]     [,7]    [,8]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 1.000000 1.0000 1.000000 1.000000 1.000000  1.00000  1.00000  1.0000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 1.156799 2.2691 5.084005 6.883643 8.702301 10.48395 13.08876 14.3312</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]     [,2]    [,3]   [,4]     [,5]     [,6]     [,7]     [,8]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 1.0000000 1.000000 1.00000 1.0000 1.000000  1.00000  1.00000  1.00000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.9209366 2.495634 4.55254 6.2103 8.295909 10.85476 13.59173 15.50479</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          [,9]    [,10]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  1.00000  1.00000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 16.43881 19.62093</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 17.50988 19.34316</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $relative_error</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              [,1]       [,2]         [,3]         [,4]         [,5]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.000000e+00 0.01000000 0.000000e+00 0.000000e+00 0.000000e+00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 4.307208e-07 0.04407021 7.110701e-08 8.334173e-08 4.548361e-08</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              [,6]        [,7]         [,8]         [,9]        [,10]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.000000e+00 0.00000e+00 0.000000e+00 0.000000e+00 0.000000e+00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 2.063891e-08 9.06202e-09 9.227963e-09 2.804367e-09 5.496535e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              [,1]       [,2]         [,3]         [,4]         [,5]       [,6]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.000000e+00 0.01000000 0.000000e+00 0.000000e+00 0.000000e+00 0.0000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 3.888363e-07 0.04007012 2.598066e-08 4.221491e-08 3.173671e-08 2.9815e-08</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              [,7]        [,8]         [,9]        [,10]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.000000e+00 0.00000e+00 0.000000e+00 0.000000e+00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 3.352648e-09 3.63404e-09 9.047941e-09 6.759892e-09</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $flag_derivative_warning</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       [,1] [,2]  [,3]  [,4]  [,5]  [,6]  [,7]  [,8]  [,9] [,10]</span>
