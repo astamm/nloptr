@@ -52,10 +52,10 @@
 
     <div class="section level2"><h2 class="page-header" data-toc-text="2.0.2.9000" id="nloptr-2029000">nloptr 2.0.2.9000<a class="anchor" aria-label="anchor" href="#nloptr-2029000"></a></h2></div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="2.0.2" id="nloptr-202">nloptr 2.0.2<a class="anchor" aria-label="anchor" href="#nloptr-202"></a></h2>
+<h2 class="page-header" data-toc-text="2.0.2" id="nloptr-202">nloptr 2.0.2<small>2022-05-19</small><a class="anchor" aria-label="anchor" href="#nloptr-202"></a></h2>
 <p>This is a patch version in which:</p>
 <ul><li>I link to the <code>nlopt</code> library via <code>nlopt/lib/libnlopt.a</code> instead of <code>-Lnlopt/lib -lnlopt</code> when building <code>nlopt</code> from included sources to avoid potential mess where <code>-lnlopt</code> could look for the <code>nlopt</code> library in other places and possibly link with an existing too old system build of <code>nlopt</code>.</li></ul><p>Additionally, we contacted Simon Urbanek for updating the <code>nlopt</code> recipe for macOS users so that it does now match the latest <code>v2.7.1</code>, which should avoid <code>nlopt</code> to be built on the fly on CRAN machines.</p>
-</div>
+<ul><li>Improved backward compatibility with older versions of <code>cmake</code> (<a href="https://github.com/astamm/nloptr/issues/119" class="external-link">#119</a>).</li></ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="2.0.1" id="nloptr-201">nloptr 2.0.1<small>2022-05-03</small><a class="anchor" aria-label="anchor" href="#nloptr-201"></a></h2>
 <p>This is a release mainly for increasing direct compatibility with most user cases. In details, here is the list of changes that have been made:</p>
