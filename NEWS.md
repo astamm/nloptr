@@ -1,5 +1,9 @@
 # nloptr 2.0.2.9000
 
+* Improved compatibility on RHEL/CentOS by first searching for a `cmake3` binary
+on the `PATH` (#104).
+* Improved backward compatibility with older versions of `cmake` (#119).
+
 # nloptr 2.0.2
 
 This is a patch version in which:
@@ -12,8 +16,6 @@ places and possibly link with an existing too old system build of `nlopt`.
 Additionally, we contacted Simon Urbanek for updating the `nlopt` recipe for
 macOS users so that it does now match the latest `v2.7.1`, which should avoid
 `nlopt` to be built on the fly on CRAN machines.
-
-* Improved backward compatibility with older versions of `cmake` (#119).
 
 # nloptr 2.0.1
 
