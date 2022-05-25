@@ -1,4 +1,4 @@
 #!/bin/sh
 
-cp nlopt${R_ARCH}/include/* ../inst/include/
-rm -fr nlopt-src
+cp nlopt/include/* ../inst/include/
+rm -fr nlopt-src nlopt-build

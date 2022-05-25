@@ -18,13 +18,16 @@ if [ $? -eq 0 ]; then
   CMAKE_ADD_AR="-D CMAKE_AR=${AR}"
   CMAKE_ADD_RANLIB="-D CMAKE_RANLIB=${RANLIB}"
 else
- 	CMAKE_ADD_AR=""
+  CMAKE_ADD_AR=""
   CMAKE_ADD_RANLIB=""
 fi
+mkdir nlopt-build
+mkdir nlopt
+cd nlopt-build
 ${CMAKE_BIN} \
   -D BUILD_SHARED_LIBS=OFF \
   -D CMAKE_BUILD_TYPE=Release \
-  -D INSTALL_LIB_DIR=nlopt/lib \
+  -D CMAKE_INSTALL_PREFIX=../nlopt \
   -D NLOPT_CXX=ON \
   -D NLOPT_GUILE=OFF \
   -D NLOPT_MATLAB=OFF \
@@ -32,9 +35,10 @@ ${CMAKE_BIN} \
   -D NLOPT_PYTHON=OFF \
   -D NLOPT_SWIG=OFF \
   -D NLOPT_TESTS=OFF \
-  -S nlopt-src \
-  -B nlopt-build ${CMAKE_ADD_AR} ${CMAKE_ADD_RANLIB}
-sh ./scripts/nlopt_install.sh ${CMAKE_BIN} ${NCORES} ""
+  ${CMAKE_ADD_AR} ${CMAKE_ADD_RANLIB} ../nlopt-src
+make -j${NCORES}
+make install
+cd ..
 
 # Cleanup
 sh ./scripts/nlopt_cleanup.sh

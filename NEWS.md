@@ -1,5 +1,7 @@
 # nloptr 2.0.1.9000
 
+* Improved backward compatibility with older versions of `cmake` (#119).
+
 # nloptr 2.0.1
 
 This is a release mainly for increasing direct compatibility with most user cases. In details, here is the list of changes that have been made:

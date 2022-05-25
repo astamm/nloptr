@@ -65,6 +65,8 @@ version `>= 2.7.0`).
 
 ### Installing [CMake](https://cmake.org) (macOS and Linux only)
 
+Minimal version requirement for `cmake` is `3.2.0`.
+
 You can install [CMake](https://cmake.org) by following [CMake
 installation instructions](https://cmake.org/install/). The important
 thing is that you add the [CMake](https://cmake.org) binary to your
