@@ -39,6 +39,7 @@ ${CMAKE_BIN} \
 make -j${NCORES}
 make install
 cd ..
+mv nlopt/lib* nlopt/lib
 
 # Cleanup
 sh ./scripts/nlopt_cleanup.sh
