@@ -95,7 +95,7 @@ is.nloptr <- function( x ) {
         }
 
     } else {
-        if ( is.na( f0 ) ) { stop('objective in x0 returns NA') }
+        if (any( is.na( f0 ) )) { stop('objective in x0 returns NA') }
 
         # check whether algorihtm needs a derivative
         if ( x$options$algorithm %in% list_algorithmsD ) {
