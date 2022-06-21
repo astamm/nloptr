@@ -89,37 +89,55 @@ where more details are available.</p>
     <h2>Arguments</h2>
     <dl><dt>x0</dt>
 <dd><p>vector with starting values for the optimization.</p></dd>
+
+
 <dt>eval_f</dt>
 <dd><p>function that returns the value of the objective function. It
 can also return gradient information at the same time in a list with
 elements "objective" and "gradient" (see below for an example).</p></dd>
+
+
 <dt>eval_grad_f</dt>
 <dd><p>function that returns the value of the gradient of the
 objective function. Not all of the algorithms require a gradient.</p></dd>
+
+
 <dt>lb</dt>
 <dd><p>vector with lower bounds of the controls (use -Inf for controls
 without lower bound), by default there are no lower bounds for any of the
 controls.</p></dd>
+
+
 <dt>ub</dt>
 <dd><p>vector with upper bounds of the controls (use Inf for controls
 without upper bound), by default there are no upper bounds for any of the
 controls.</p></dd>
+
+
 <dt>eval_g_ineq</dt>
 <dd><p>function to evaluate (non-)linear inequality constraints
 that should hold in the solution.  It can also return gradient information
 at the same time in a list with elements "constraints" and "jacobian" (see
 below for an example).</p></dd>
+
+
 <dt>eval_jac_g_ineq</dt>
 <dd><p>function to evaluate the jacobian of the (non-)linear
 inequality constraints that should hold in the solution.</p></dd>
+
+
 <dt>eval_g_eq</dt>
 <dd><p>function to evaluate (non-)linear equality constraints that
 should hold in the solution.  It can also return gradient information at the
 same time in a list with elements "constraints" and "jacobian" (see below for
 an example).</p></dd>
+
+
 <dt>eval_jac_g_eq</dt>
 <dd><p>function to evaluate the jacobian of the (non-)linear
 equality constraints that should hold in the solution.</p></dd>
+
+
 <dt>opts</dt>
 <dd><p>list with options. The option "algorithm" is required. Check the
 <a href="https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/" class="external-link">NLopt website</a>
@@ -143,29 +161,41 @@ only those that resulted in an error, or none.  The option
 check_derivatives_tol (default = 1e-04), determines when a difference
 between an analytic gradient and its finite difference approximation is
 flagged as an error.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>arguments that will be passed to the user-defined objective and
 constraints functions.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The return value contains a list with the inputs, and additional
+    
+
+<p>The return value contains a list with the inputs, and additional
 elements</p>
 <dl><dt>call</dt>
 <dd><p>the call that was made to solve</p></dd>
+
 <dt>status</dt>
 <dd><p>integer value with the status of the optimization (0 is
 success)</p></dd>
+
 <dt>message</dt>
 <dd><p>more informative message with the status of the optimization</p></dd>
+
 <dt>iterations</dt>
 <dd><p>number of iterations that were executed</p></dd>
+
 <dt>objective</dt>
 <dd><p>value if the objective function in the solution</p></dd>
+
 <dt>solution</dt>
 <dd><p>optimal value of the controls</p></dd>
+
 <dt>version</dt>
 <dd><p>version of NLopt that was used</p></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -473,7 +503,7 @@ algorithms in NLopt can handle constraints.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

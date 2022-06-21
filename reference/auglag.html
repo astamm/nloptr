@@ -81,50 +81,82 @@ objective function, designed to emulate a Lagrangian multiplier.</p>
     <h2>Arguments</h2>
     <dl><dt>x0</dt>
 <dd><p>starting point for searching the optimum.</p></dd>
+
+
 <dt>fn</dt>
 <dd><p>objective function that is to be minimized.</p></dd>
+
+
 <dt>gr</dt>
 <dd><p>gradient of the objective function; will be provided provided is
 <code>NULL</code> and the solver requires derivatives.</p></dd>
+
+
 <dt>lower, upper</dt>
 <dd><p>lower and upper bound constraints.</p></dd>
+
+
 <dt>hin, hinjac</dt>
 <dd><p>defines the inequality constraints, <code>hin(x) &gt;= 0</code></p></dd>
+
+
 <dt>heq, heqjac</dt>
 <dd><p>defines the equality constraints, <code>heq(x) = 0</code>.</p></dd>
+
+
 <dt>localsolver</dt>
 <dd><p>available local solvers: COBYLA, LBFGS, MMA, or SLSQP.</p></dd>
+
+
 <dt>localtol</dt>
 <dd><p>tolerance applied in the selected local solver.</p></dd>
+
+
 <dt>ineq2local</dt>
 <dd><p>logical; shall the inequality constraints be treated by
 the local solver?; not possible at the moment.</p></dd>
+
+
 <dt>nl.info</dt>
 <dd><p>logical; shall the original NLopt info been shown.</p></dd>
+
+
 <dt>control</dt>
 <dd><p>list of options, see <code>nl.opts</code> for help.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>additional arguments passed to the function.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>List with components:</p>
+    
+
+<p>List with components:</p>
 <dl><dt>par</dt>
 <dd><p>the optimal solution found so far.</p></dd>
+
 <dt>value</dt>
 <dd><p>the function value corresponding to <code>par</code>.</p></dd>
+
 <dt>iter</dt>
 <dd><p>number of (outer) iterations, see <code>maxeval</code>.</p></dd>
+
 <dt>global_solver</dt>
 <dd><p>the global NLOPT solver used.</p></dd>
+
 <dt>local_solver</dt>
 <dd><p>the local NLOPT solver used, LBFGS or COBYLA.</p></dd>
+
 <dt>convergence</dt>
 <dd><p>integer code indicating successful completion
 (&gt; 0) or a possible error number (&lt; 0).</p></dd>
+
 <dt>message</dt>
 <dd><p>character string produced by NLopt and giving additional
 information.</p></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -245,13 +277,13 @@ augmented Lagrangian method," Optimization Methods and Software vol. 23, no.
 <span class="r-in"><span class="fu">auglag</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>, <span class="va">fn</span>, hin <span class="op">=</span> <span class="va">hin</span>, heq <span class="op">=</span> <span class="va">heq</span>, localsolver<span class="op">=</span><span class="st">"lbfgs"</span><span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> For consistency with the rest of the package the inequality sign may be switched from &gt;= to &lt;= in a future nloptr version.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $par</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 7.962648e-08 4.763515e-08 9.999999e-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 7.922047e-08 4.800681e-08 9.999999e-01</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $value</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $iter</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 147</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 146</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $global_solver</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "NLOPT_LD_AUGLAG"</span>
@@ -317,7 +349,7 @@ augmented Lagrangian method," Optimization Methods and Software vol. 23, no.
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>
