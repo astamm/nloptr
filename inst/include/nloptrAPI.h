@@ -342,6 +342,27 @@ inline NLOPT_EXTERN(nlopt_result) nlopt_get_xtol_abs(const nlopt_opt opt, double
     return fun(opt, tol);
 }
 
+inline NLOPT_EXTERN(nlopt_result) nlopt_set_x_weights1(nlopt_opt opt, double tol)
+{
+  static nlopt_result(*fun)(nlopt_opt, double) = NULL;
+  if (fun == NULL) fun = (nlopt_result(*)(nlopt_opt, double)) R_GetCCallable("nloptr","nlopt_set_x_weights1");
+  return fun(opt, tol);
+}
+
+inline NLOPT_EXTERN(nlopt_result) nlopt_set_x_weights(nlopt_opt opt, const double *tol)
+{
+  static nlopt_result(*fun)(nlopt_opt, const double *) = NULL;
+  if (fun == NULL) fun = (nlopt_result(*)(nlopt_opt, const double *)) R_GetCCallable("nloptr","nlopt_set_x_weights");
+  return fun(opt, tol);
+}
+
+inline NLOPT_EXTERN(nlopt_result) nlopt_get_x_weights(const nlopt_opt opt, double *tol)
+{
+  static nlopt_result(*fun)(nlopt_opt, double *) = NULL;
+  if (fun == NULL) fun = (nlopt_result(*)(nlopt_opt, double *)) R_GetCCallable("nloptr","nlopt_get_x_weights");
+  return fun(opt, tol);
+}
+
 inline NLOPT_EXTERN(nlopt_result) nlopt_set_maxeval(nlopt_opt opt, int maxeval)
 {
     static nlopt_result(*fun)(nlopt_opt, int) = NULL;

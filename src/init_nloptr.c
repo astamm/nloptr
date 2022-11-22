@@ -83,6 +83,9 @@ void R_init_nloptr(DllInfo *info) {
     R_RegisterCCallable("nloptr", "nlopt_set_xtol_abs1",  (DL_FUNC) &nlopt_set_xtol_abs1);
     R_RegisterCCallable("nloptr", "nlopt_set_xtol_abs",   (DL_FUNC) &nlopt_set_xtol_abs);
     R_RegisterCCallable("nloptr", "nlopt_get_xtol_abs",   (DL_FUNC) &nlopt_get_xtol_abs);
+    R_RegisterCCallable("nloptr", "nlopt_set_x_weights1", (DL_FUNC) &nlopt_set_x_weights1);
+    R_RegisterCCallable("nloptr", "nlopt_set_x_weights",  (DL_FUNC) &nlopt_set_x_weights);
+    R_RegisterCCallable("nloptr", "nlopt_get_x_weights",  (DL_FUNC) &nlopt_get_x_weights);
     R_RegisterCCallable("nloptr", "nlopt_set_maxeval",    (DL_FUNC) &nlopt_set_maxeval);
     R_RegisterCCallable("nloptr", "nlopt_get_maxeval",    (DL_FUNC) &nlopt_get_maxeval);
     R_RegisterCCallable("nloptr", "nlopt_set_maxtime",    (DL_FUNC) &nlopt_set_maxtime);
