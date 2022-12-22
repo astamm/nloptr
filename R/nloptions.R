@@ -54,7 +54,7 @@ nl.opts <- function(optlist = NULL) {
   for (option_name in names(optlist))
     opts[[option_name]] <- optlist[[option_name]]
 
-  if ("algorithm" %in% names(opts)) {
+  if (!is.null(opts[["algorithm"]])) {
     warning(
       "Option `algorithm` cannot be set here. It will be overwritten."
     )
