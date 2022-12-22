@@ -629,6 +629,15 @@ nlopt_opt getOptions( SEXP R_options, int num_controls, int *flag_encountered_er
         Rprintf("Error: nlopt_set_population returned NLOPT_INVALID_ARGS.\n");
     }
 
+    SEXP R_opts_vector_storage;
+    PROTECT( R_opts_vector_storage = AS_INTEGER( getListElement( R_options, "vector_storage" ) ) );
+    unsigned int vector_storage = INTEGER( R_opts_vector_storage )[0];
+    res = nlopt_set_vector_storage(opts, vector_storage);
+    if ( res == NLOPT_INVALID_ARGS ) {
+      *flag_encountered_error = 1;
+      Rprintf("Error: nlopt_set_vector_storage returned NLOPT_INVALID_ARGS.\n");
+    }
+
     SEXP R_opts_ranseed;
     PROTECT( R_opts_ranseed = AS_INTEGER( getListElement( R_options, "ranseed" ) ) );
     unsigned long ranseed = INTEGER( R_opts_ranseed )[0];
@@ -637,7 +646,8 @@ nlopt_opt getOptions( SEXP R_options, int num_controls, int *flag_encountered_er
     if ( ranseed > 0 ) {
         nlopt_srand(ranseed);
     }
-    UNPROTECT( 11 );
+
+    UNPROTECT( 12 );
 
     return opts;
 }
