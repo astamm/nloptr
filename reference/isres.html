@@ -60,19 +60,19 @@ although it has heuristics to escape local optima.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">isres</span><span class="op">(</span>
-  <span class="va">x0</span>,
-  <span class="va">fn</span>,
-  <span class="va">lower</span>,
-  <span class="va">upper</span>,
-  hin <span class="op">=</span> <span class="cn">NULL</span>,
-  heq <span class="op">=</span> <span class="cn">NULL</span>,
-  maxeval <span class="op">=</span> <span class="fl">10000</span>,
-  pop.size <span class="op">=</span> <span class="fl">20</span> <span class="op">*</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x0</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>,
-  xtol_rel <span class="op">=</span> <span class="fl">1e-06</span>,
-  nl.info <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">isres</span><span class="op">(</span></span>
+<span>  <span class="va">x0</span>,</span>
+<span>  <span class="va">fn</span>,</span>
+<span>  <span class="va">lower</span>,</span>
+<span>  <span class="va">upper</span>,</span>
+<span>  hin <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  heq <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  maxeval <span class="op">=</span> <span class="fl">10000</span>,</span>
+<span>  pop.size <span class="op">=</span> <span class="fl">20</span> <span class="op">*</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x0</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  xtol_rel <span class="op">=</span> <span class="fl">1e-06</span>,</span>
+<span>  nl.info <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -173,21 +173,21 @@ Cybernetics Part C: Applications and Reviews, vol. 35 (no. 2), pp. 233-243
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="co">### Rosenbrock Banana objective function</span></span>
-<span class="r-in"><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span class="r-in">    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span> <span class="fl">100</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">x0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="op">-</span><span class="fl">1.2</span>, <span class="fl">1</span> <span class="op">)</span></span>
-<span class="r-in"><span class="va">lb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="op">-</span><span class="fl">3</span>, <span class="op">-</span><span class="fl">3</span> <span class="op">)</span></span>
-<span class="r-in"><span class="va">ub</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>  <span class="fl">3</span>,  <span class="fl">3</span> <span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">isres</span><span class="op">(</span>x0 <span class="op">=</span> <span class="va">x0</span>, fn <span class="op">=</span> <span class="va">fn</span>, lower <span class="op">=</span> <span class="va">lb</span>, upper <span class="op">=</span> <span class="va">ub</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">### Rosenbrock Banana objective function</span></span></span>
+<span class="r-in"><span><span class="va">fn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span> <span class="fl">100</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">x0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="op">-</span><span class="fl">1.2</span>, <span class="fl">1</span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="op">-</span><span class="fl">3</span>, <span class="op">-</span><span class="fl">3</span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ub</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>  <span class="fl">3</span>,  <span class="fl">3</span> <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">isres</span><span class="op">(</span>x0 <span class="op">=</span> <span class="va">x0</span>, fn <span class="op">=</span> <span class="va">fn</span>, lower <span class="op">=</span> <span class="va">lb</span>, upper <span class="op">=</span> <span class="va">ub</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $par</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.000076 1.000150</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.9999078 0.9997775</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6.821703e-09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.544526e-07</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $iter</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 10000</span>
@@ -198,7 +198,7 @@ Cybernetics Part C: Applications and Reviews, vol. 35 (no. 2), pp. 233-243
 <span class="r-out co"><span class="r-pr">#&gt;</span> $message</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "NLOPT_MAXEVAL_REACHED: Optimization stopped because maxeval (above) was reached."</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -213,7 +213,7 @@ Cybernetics Part C: Applications and Reviews, vol. 35 (no. 2), pp. 233-243
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

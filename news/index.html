@@ -50,7 +50,9 @@
       <small>Source: <a href="https://github.com/astamm/nloptr/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
-    <div class="section level2"><h2 class="page-header" data-toc-text="2.0.3.9000" id="nloptr-2039000">nloptr 2.0.3.9000<a class="anchor" aria-label="anchor" href="#nloptr-2039000"></a></h2></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="2.0.3.9000" id="nloptr-2039000">nloptr 2.0.3.9000<a class="anchor" aria-label="anchor" href="#nloptr-2039000"></a></h2>
+</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="2.0.3" id="nloptr-203">nloptr 2.0.3<small>2022-05-26</small><a class="anchor" aria-label="anchor" href="#nloptr-203"></a></h2>
 <ul><li>Improved compatibility on RHEL/CentOS by first searching for a <code>cmake3</code> binary on the <code>PATH</code> (<a href="https://github.com/astamm/nloptr/issues/104" class="external-link">#104</a>).</li>
@@ -59,7 +61,8 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="2.0.2" id="nloptr-202">nloptr 2.0.2<small>2022-05-19</small><a class="anchor" aria-label="anchor" href="#nloptr-202"></a></h2>
 <p>This is a patch version in which:</p>
-<ul><li>I link to the <code>nlopt</code> library via <code>nlopt/lib/libnlopt.a</code> instead of <code>-Lnlopt/lib -lnlopt</code> when building <code>nlopt</code> from included sources to avoid potential mess where <code>-lnlopt</code> could look for the <code>nlopt</code> library in other places and possibly link with an existing too old system build of <code>nlopt</code>.</li></ul><p>Additionally, we contacted Simon Urbanek for updating the <code>nlopt</code> recipe for macOS users so that it does now match the latest <code>v2.7.1</code>, which should avoid <code>nlopt</code> to be built on the fly on CRAN machines.</p>
+<ul><li>I link to the <code>nlopt</code> library via <code>nlopt/lib/libnlopt.a</code> instead of <code>-Lnlopt/lib -lnlopt</code> when building <code>nlopt</code> from included sources to avoid potential mess where <code>-lnlopt</code> could look for the <code>nlopt</code> library in other places and possibly link with an existing too old system build of <code>nlopt</code>.</li>
+</ul><p>Additionally, we contacted Simon Urbanek for updating the <code>nlopt</code> recipe for macOS users so that it does now match the latest <code>v2.7.1</code>, which should avoid <code>nlopt</code> to be built on the fly on CRAN machines.</p>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="2.0.1" id="nloptr-201">nloptr 2.0.1<small>2022-05-03</small><a class="anchor" aria-label="anchor" href="#nloptr-201"></a></h2>
@@ -99,31 +102,37 @@
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.2.2" id="nloptr-122-29-february-2020">nloptr 1.2.2 (29 February 2020)<small>2020-02-29</small><a class="anchor" aria-label="anchor" href="#nloptr-122-29-february-2020"></a></h2>
-<ul><li>Replaced deprecated functions from <a href="https://testthat.r-lib.org" class="external-link"><strong>testthat</strong></a> framework in unit tests (contributed by Avraham Adler).</li></ul><div class="section level3">
-<h3 id="26-february-1-2-2">26 February 2020:<a class="anchor" aria-label="anchor" href="#26-february-1-2-2"></a></h3>
-<ul><li>Fixed warnings (as requested by CRAN): R CMD config variables ‘CPP’ and ‘CXXCPP’ are deprecated.</li></ul></div>
+<ul><li>Replaced deprecated functions from <a href="https://testthat.r-lib.org" class="external-link"><strong>testthat</strong></a> framework in unit tests (contributed by Avraham Adler).</li>
+</ul><div class="section level3">
+<h3 id="id_26-february-1-2-2">26 February 2020:<a class="anchor" aria-label="anchor" href="#id_26-february-1-2-2"></a></h3>
+<ul><li>Fixed warnings (as requested by CRAN): R CMD config variables ‘CPP’ and ‘CXXCPP’ are deprecated.</li>
+</ul></div>
 <div class="section level3">
-<h3 id="20-october-1-2-2">20 October 2018:<a class="anchor" aria-label="anchor" href="#20-october-1-2-2"></a></h3>
-<ul><li>Exposed CCSAQ algorithm in R interface (contributed by Julien Chiquet).</li></ul></div>
+<h3 id="id_20-october-1-2-2">20 October 2018:<a class="anchor" aria-label="anchor" href="#id_20-october-1-2-2"></a></h3>
+<ul><li>Exposed CCSAQ algorithm in R interface (contributed by Julien Chiquet).</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.2.1" id="nloptr-121-03-october-2018">nloptr 1.2.1 (03 October 2018)<small>2018-10-03</small><a class="anchor" aria-label="anchor" href="#nloptr-121-03-october-2018"></a></h2>
-<ul><li>Build process was changed to solve issues on several OS (many thanks to the CRAN maintainers).</li></ul></div>
+<ul><li>Build process was changed to solve issues on several OS (many thanks to the CRAN maintainers).</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.2.0" id="nloptr-120-30-september-2018">nloptr 1.2.0 (30 September 2018)<small>2018-09-30</small><a class="anchor" aria-label="anchor" href="#nloptr-120-30-september-2018"></a></h2>
 <div class="section level3">
-<h3 id="21-april-1-2-0">21 April 2018:<a class="anchor" aria-label="anchor" href="#21-april-1-2-0"></a></h3>
+<h3 id="id_21-april-1-2-0">21 April 2018:<a class="anchor" aria-label="anchor" href="#id_21-april-1-2-0"></a></h3>
 <ul><li>Changed installation procedure. NLopt source code is now part of nloptr package and not downloaded separately during configure in Unix systems in case NLopt library cannot be found.</li>
 <li>Registered NLopt C functions to be used by external R package and included C API.</li>
 <li>Documentation is generated using roxygen.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="25-september-1-2-0">25 September 2017:<a class="anchor" aria-label="anchor" href="#25-september-1-2-0"></a></h3>
-<ul><li>Fixed a bug in auglag. BOBYQA is now allowed as local solver (thanks to Léo Belzile).</li></ul></div>
+<h3 id="id_25-september-1-2-0">25 September 2017:<a class="anchor" aria-label="anchor" href="#id_25-september-1-2-0"></a></h3>
+<ul><li>Fixed a bug in auglag. BOBYQA is now allowed as local solver (thanks to Léo Belzile).</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1.0" id="nloptr-110-22-august-2016">nloptr 1.1.0 (22 August 2016)<a class="anchor" aria-label="anchor" href="#nloptr-110-22-august-2016"></a></h2>
-<ul><li>Fixed a bug that sometimes caused segmentation faults due to an uninitialized vector of tolerances for the inequality and/or equality constraints (thanks to Florian Schwendinger).</li></ul></div>
+<ul><li>Fixed a bug that sometimes caused segmentation faults due to an uninitialized vector of tolerances for the inequality and/or equality constraints (thanks to Florian Schwendinger).</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.0.9" id="nloptr-109-22-march-2015">nloptr 1.0.9 (22 March 2015)<a class="anchor" aria-label="anchor" href="#nloptr-109-22-march-2015"></a></h2>
 <ul><li>When the problem fails with error status 6 (NLOPT_MAXTIME_REACHED) and maxtime was not set to a positive number in the options, then nloptr tries a couple more times to solve the problem. This is a new approach that should solve the bug that NLopt sometimes exits a problem stating the maximum available time has been reached, even when no limit on the time has been set.</li>
@@ -131,7 +140,8 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.0.8" id="nloptr-108-22-february-2015">nloptr 1.0.8 (22 February 2015)<a class="anchor" aria-label="anchor" href="#nloptr-108-22-february-2015"></a></h2>
-<ul><li>Changed description in DESCRIPTION such that it does not start with the package name (as requested by CRAN).</li></ul></div>
+<ul><li>Changed description in DESCRIPTION such that it does not start with the package name (as requested by CRAN).</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.0.7" id="nloptr-107-14-february-2015">nloptr 1.0.7 (14 February 2015)<a class="anchor" aria-label="anchor" href="#nloptr-107-14-february-2015"></a></h2>
 <ul><li>Changed title field in DESCRIPTION to title case (as requested by CRAN).</li>
@@ -139,7 +149,8 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.0.6" id="nloptr-106-8-february-2015">nloptr 1.0.6 (8 February 2015)<a class="anchor" aria-label="anchor" href="#nloptr-106-8-february-2015"></a></h2>
-<ul><li>Updated description to better reflect installation procedure on Linux when NLopt is pre-installed (as requested by CRAN).</li></ul></div>
+<ul><li>Updated description to better reflect installation procedure on Linux when NLopt is pre-installed (as requested by CRAN).</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.0.5" id="nloptr-105-28-january-2015">nloptr 1.0.5 (28 January 2015)<a class="anchor" aria-label="anchor" href="#nloptr-105-28-january-2015"></a></h2>
 <ul><li>Added non-exported functions CFlags and LdFlags to be used in packages that want to link to the NLopt C library.</li>
@@ -147,7 +158,8 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.0.4" id="nloptr-104-02-august-2014">nloptr 1.0.4 (02 August 2014)<small>2014-08-04</small><a class="anchor" aria-label="anchor" href="#nloptr-104-02-august-2014"></a></h2>
-<ul><li>Increased version number to re-submit package to CRAN with CRLF line endings removed from <code>configure</code> and <code>configure.ac</code>.</li></ul></div>
+<ul><li>Increased version number to re-submit package to CRAN with CRLF line endings removed from <code>configure</code> and <code>configure.ac</code>.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.0.3" id="nloptr-103-25-july-2014">nloptr 1.0.3 (25 July 2014)<a class="anchor" aria-label="anchor" href="#nloptr-103-25-july-2014"></a></h2>
 <ul><li>Changed NLOPT_VERSION to 2.4.2 for Linux.</li>
@@ -155,7 +167,8 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.0.2" id="nloptr-102-25-july-2014">nloptr 1.0.2 (25 July 2014)<a class="anchor" aria-label="anchor" href="#nloptr-102-25-july-2014"></a></h2>
-<ul><li>Added configure script which tests for a system NLopt library via pkg-config and uses it if it is sufficiently recent (ie 2.4.*), and otherwise configure downloads, patches and builds the NLopt sources just how src/Makevars used to (thanks to Dirk Eddelbuettel).</li></ul></div>
+<ul><li>Added configure script which tests for a system NLopt library via pkg-config and uses it if it is sufficiently recent (ie 2.4.*), and otherwise configure downloads, patches and builds the NLopt sources just how src/Makevars used to (thanks to Dirk Eddelbuettel).</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.0.1" id="nloptr-101-05-may-2014">nloptr 1.0.1 (05 May 2014)<a class="anchor" aria-label="anchor" href="#nloptr-101-05-may-2014"></a></h2>
 <ul><li>All unit tests are now enabled and use the package testthat. Install the package with argument INSTALL_opt = “–install-tests” supplied to install.packages to install the tests. The tests can be run after installation with test_package(‘nloptr’). The testthat package needs to be installed and loaded to be able to run the tests.</li>
@@ -164,10 +177,12 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.0.0" id="nloptr-100-27-january-2014">nloptr 1.0.0 (27 January 2014)<small>2014-02-16</small><a class="anchor" aria-label="anchor" href="#nloptr-100-27-january-2014"></a></h2>
-<ul><li>Merged wrappers from the <strong>nloptwrap</strong> package.</li></ul></div>
+<ul><li>Merged wrappers from the <strong>nloptwrap</strong> package.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.9.6" id="nloptr-096-19-november-2013">nloptr 0.9.6 (19 November 2013)<small>2013-11-19</small><a class="anchor" aria-label="anchor" href="#nloptr-096-19-november-2013"></a></h2>
-<ul><li>Added a line in <code>Makevars</code> to replace some code in NLopt to fix compilation on Solaris as requested by Brian Ripley.</li></ul></div>
+<ul><li>Added a line in <code>Makevars</code> to replace some code in NLopt to fix compilation on Solaris as requested by Brian Ripley.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.9.5" id="nloptr-095-12-november-2013">nloptr 0.9.5 (12 November 2013)<small>2013-11-13</small><a class="anchor" aria-label="anchor" href="#nloptr-095-12-november-2013"></a></h2>
 <ul><li>Updated references from NLopt version 2.3 to NLopt version 2.4 in installation instructions in <code>INSTALL.windows</code>.</li>
@@ -204,16 +219,20 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.8.8" id="nloptr-088-28-september-2011">nloptr 0.8.8 (28 September 2011)<small>2011-11-02</small><a class="anchor" aria-label="anchor" href="#nloptr-088-28-september-2011"></a></h2>
-<ul><li>Updated <code>src/Makevars</code> to compile on Solaris.</li></ul></div>
+<ul><li>Updated <code>src/Makevars</code> to compile on Solaris.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.8.7" id="nloptr-087-24-september-2011">nloptr 0.8.7 (24 September 2011)<small>2011-10-27</small><a class="anchor" aria-label="anchor" href="#nloptr-087-24-september-2011"></a></h2>
-<ul><li>Updated <code>src/Makevars</code> to compile on Solaris.</li></ul></div>
+<ul><li>Updated <code>src/Makevars</code> to compile on Solaris.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.8.6" id="nloptr-086-19-september-2011">nloptr 0.8.6 (19 September 2011)<small>2011-10-24</small><a class="anchor" aria-label="anchor" href="#nloptr-086-19-september-2011"></a></h2>
-<ul><li>Updated <code>src/Makevars</code> to compile on Solaris.</li></ul></div>
+<ul><li>Updated <code>src/Makevars</code> to compile on Solaris.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.8.5" id="nloptr-085-03-september-2011">nloptr 0.8.5 (03 September 2011)<small>2011-09-05</small><a class="anchor" aria-label="anchor" href="#nloptr-085-03-september-2011"></a></h2>
-<ul><li>Updated <code>src/Makevars</code> to compile a working binary for MacOS.</li></ul></div>
+<ul><li>Updated <code>src/Makevars</code> to compile a working binary for MacOS.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.8.4" id="nloptr-084-12-august-2011">nloptr 0.8.4 (12 August 2011)<small>2011-08-13</small><a class="anchor" aria-label="anchor" href="#nloptr-084-12-august-2011"></a></h2>
 <ul><li>
@@ -244,7 +263,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

@@ -58,18 +58,18 @@ variant) with the `local mutation' modification.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">crs2lm</span><span class="op">(</span>
-  <span class="va">x0</span>,
-  <span class="va">fn</span>,
-  <span class="va">lower</span>,
-  <span class="va">upper</span>,
-  maxeval <span class="op">=</span> <span class="fl">10000</span>,
-  pop.size <span class="op">=</span> <span class="fl">10</span> <span class="op">*</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x0</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>,
-  ranseed <span class="op">=</span> <span class="cn">NULL</span>,
-  xtol_rel <span class="op">=</span> <span class="fl">1e-06</span>,
-  nl.info <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">crs2lm</span><span class="op">(</span></span>
+<span>  <span class="va">x0</span>,</span>
+<span>  <span class="va">fn</span>,</span>
+<span>  <span class="va">lower</span>,</span>
+<span>  <span class="va">upper</span>,</span>
+<span>  maxeval <span class="op">=</span> <span class="fl">10000</span>,</span>
+<span>  pop.size <span class="op">=</span> <span class="fl">10</span> <span class="op">*</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x0</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  ranseed <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  xtol_rel <span class="op">=</span> <span class="fl">1e-06</span>,</span>
+<span>  nl.info <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -158,32 +158,32 @@ algorithm for global optimization,'' J. Optim. Theory Appl. 130 (2), 253-264
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="co">### Minimize the Hartmann6 function</span></span>
-<span class="r-in"><span class="va">hartmann6</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">    <span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span class="r-in">    <span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">1.2</span>, <span class="fl">3.0</span>, <span class="fl">3.2</span><span class="op">)</span></span>
-<span class="r-in">    <span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10.0</span>,  <span class="fl">0.05</span>, <span class="fl">3.0</span>, <span class="fl">17.0</span>,</span>
-<span class="r-in">                   <span class="fl">3.0</span>, <span class="fl">10.0</span>,  <span class="fl">3.5</span>,  <span class="fl">8.0</span>,</span>
-<span class="r-in">                  <span class="fl">17.0</span>, <span class="fl">17.0</span>,  <span class="fl">1.7</span>,  <span class="fl">0.05</span>,</span>
-<span class="r-in">                   <span class="fl">3.5</span>,  <span class="fl">0.1</span>, <span class="fl">10.0</span>, <span class="fl">10.0</span>,</span>
-<span class="r-in">                   <span class="fl">1.7</span>,  <span class="fl">8.0</span>, <span class="fl">17.0</span>,  <span class="fl">0.1</span>,</span>
-<span class="r-in">                   <span class="fl">8.0</span>, <span class="fl">14.0</span>,  <span class="fl">8.0</span>, <span class="fl">14.0</span><span class="op">)</span>, nrow<span class="op">=</span><span class="fl">4</span>, ncol<span class="op">=</span><span class="fl">6</span><span class="op">)</span></span>
-<span class="r-in">    <span class="va">B</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.1312</span>,<span class="fl">.2329</span>,<span class="fl">.2348</span>,<span class="fl">.4047</span>,</span>
-<span class="r-in">                   <span class="fl">.1696</span>,<span class="fl">.4135</span>,<span class="fl">.1451</span>,<span class="fl">.8828</span>,</span>
-<span class="r-in">                   <span class="fl">.5569</span>,<span class="fl">.8307</span>,<span class="fl">.3522</span>,<span class="fl">.8732</span>,</span>
-<span class="r-in">                   <span class="fl">.0124</span>,<span class="fl">.3736</span>,<span class="fl">.2883</span>,<span class="fl">.5743</span>,</span>
-<span class="r-in">                   <span class="fl">.8283</span>,<span class="fl">.1004</span>,<span class="fl">.3047</span>,<span class="fl">.1091</span>,</span>
-<span class="r-in">                   <span class="fl">.5886</span>,<span class="fl">.9991</span>,<span class="fl">.6650</span>,<span class="fl">.0381</span><span class="op">)</span>, nrow<span class="op">=</span><span class="fl">4</span>, ncol<span class="op">=</span><span class="fl">6</span><span class="op">)</span></span>
-<span class="r-in">    <span class="va">fun</span> <span class="op">&lt;-</span> <span class="fl">0.0</span></span>
-<span class="r-in">    <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">        <span class="va">fun</span> <span class="op">&lt;-</span> <span class="va">fun</span> <span class="op">-</span> <span class="va">a</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">A</span><span class="op">[</span><span class="va">i</span>,<span class="op">]</span><span class="op">*</span><span class="op">(</span><span class="va">x</span><span class="op">-</span><span class="va">B</span><span class="op">[</span><span class="va">i</span>,<span class="op">]</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">    <span class="op">}</span></span>
-<span class="r-in">    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">fun</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">S</span> <span class="op">&lt;-</span> <span class="fu"><a href="mlsl.html">mlsl</a></span><span class="op">(</span>x0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">6</span><span class="op">)</span>, <span class="va">hartmann6</span>, lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">6</span><span class="op">)</span>, upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">6</span><span class="op">)</span>,</span>
-<span class="r-in">            nl.info <span class="op">=</span> <span class="cn">TRUE</span>, control<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>xtol_rel<span class="op">=</span><span class="fl">1e-8</span>, maxeval<span class="op">=</span><span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">### Minimize the Hartmann6 function</span></span></span>
+<span class="r-in"><span><span class="va">hartmann6</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">1.2</span>, <span class="fl">3.0</span>, <span class="fl">3.2</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10.0</span>,  <span class="fl">0.05</span>, <span class="fl">3.0</span>, <span class="fl">17.0</span>,</span></span>
+<span class="r-in"><span>                   <span class="fl">3.0</span>, <span class="fl">10.0</span>,  <span class="fl">3.5</span>,  <span class="fl">8.0</span>,</span></span>
+<span class="r-in"><span>                  <span class="fl">17.0</span>, <span class="fl">17.0</span>,  <span class="fl">1.7</span>,  <span class="fl">0.05</span>,</span></span>
+<span class="r-in"><span>                   <span class="fl">3.5</span>,  <span class="fl">0.1</span>, <span class="fl">10.0</span>, <span class="fl">10.0</span>,</span></span>
+<span class="r-in"><span>                   <span class="fl">1.7</span>,  <span class="fl">8.0</span>, <span class="fl">17.0</span>,  <span class="fl">0.1</span>,</span></span>
+<span class="r-in"><span>                   <span class="fl">8.0</span>, <span class="fl">14.0</span>,  <span class="fl">8.0</span>, <span class="fl">14.0</span><span class="op">)</span>, nrow<span class="op">=</span><span class="fl">4</span>, ncol<span class="op">=</span><span class="fl">6</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="va">B</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.1312</span>,<span class="fl">.2329</span>,<span class="fl">.2348</span>,<span class="fl">.4047</span>,</span></span>
+<span class="r-in"><span>                   <span class="fl">.1696</span>,<span class="fl">.4135</span>,<span class="fl">.1451</span>,<span class="fl">.8828</span>,</span></span>
+<span class="r-in"><span>                   <span class="fl">.5569</span>,<span class="fl">.8307</span>,<span class="fl">.3522</span>,<span class="fl">.8732</span>,</span></span>
+<span class="r-in"><span>                   <span class="fl">.0124</span>,<span class="fl">.3736</span>,<span class="fl">.2883</span>,<span class="fl">.5743</span>,</span></span>
+<span class="r-in"><span>                   <span class="fl">.8283</span>,<span class="fl">.1004</span>,<span class="fl">.3047</span>,<span class="fl">.1091</span>,</span></span>
+<span class="r-in"><span>                   <span class="fl">.5886</span>,<span class="fl">.9991</span>,<span class="fl">.6650</span>,<span class="fl">.0381</span><span class="op">)</span>, nrow<span class="op">=</span><span class="fl">4</span>, ncol<span class="op">=</span><span class="fl">6</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="va">fun</span> <span class="op">&lt;-</span> <span class="fl">0.0</span></span></span>
+<span class="r-in"><span>    <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>        <span class="va">fun</span> <span class="op">&lt;-</span> <span class="va">fun</span> <span class="op">-</span> <span class="va">a</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">A</span><span class="op">[</span><span class="va">i</span>,<span class="op">]</span><span class="op">*</span><span class="op">(</span><span class="va">x</span><span class="op">-</span><span class="va">B</span><span class="op">[</span><span class="va">i</span>,<span class="op">]</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="op">}</span></span></span>
+<span class="r-in"><span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">fun</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">S</span> <span class="op">&lt;-</span> <span class="fu"><a href="mlsl.html">mlsl</a></span><span class="op">(</span>x0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">6</span><span class="op">)</span>, <span class="va">hartmann6</span>, lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">6</span><span class="op">)</span>, upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">6</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>            nl.info <span class="op">=</span> <span class="cn">TRUE</span>, control<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>xtol_rel<span class="op">=</span><span class="fl">1e-8</span>, maxeval<span class="op">=</span><span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> nloptr(x0 = x0, eval_f = fn, eval_grad_f = gr, lb = lower, ub = upper, </span>
@@ -203,14 +203,14 @@ algorithm for global optimization,'' J. Optim. Theory Appl. 130 (2), 253-264
 <span class="r-out co"><span class="r-pr">#&gt;</span> Current value of controls: 0.2016895 0.1500107 0.476874 0.2753324 0.3116516 0.6573005</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="co">## Number of Iterations....: 4050</span></span>
-<span class="r-in"><span class="co">## Termination conditions:  maxeval: 10000  xtol_rel: 1e-06</span></span>
-<span class="r-in"><span class="co">## Number of inequality constraints:  0</span></span>
-<span class="r-in"><span class="co">## Number of equality constraints:    0</span></span>
-<span class="r-in"><span class="co">## Optimal value of objective function:  -3.32236801141328</span></span>
-<span class="r-in"><span class="co">## Optimal value of controls:</span></span>
-<span class="r-in"><span class="co">##     0.2016893 0.1500105 0.4768738 0.2753326 0.3116516 0.6573004</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span><span class="co">## Number of Iterations....: 4050</span></span></span>
+<span class="r-in"><span><span class="co">## Termination conditions:  maxeval: 10000  xtol_rel: 1e-06</span></span></span>
+<span class="r-in"><span><span class="co">## Number of inequality constraints:  0</span></span></span>
+<span class="r-in"><span><span class="co">## Number of equality constraints:    0</span></span></span>
+<span class="r-in"><span><span class="co">## Optimal value of objective function:  -3.32236801141328</span></span></span>
+<span class="r-in"><span><span class="co">## Optimal value of controls:</span></span></span>
+<span class="r-in"><span><span class="co">##     0.2016893 0.1500105 0.4768738 0.2753326 0.3116516 0.6573004</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -225,7 +225,7 @@ algorithm for global optimization,'' J. Optim. Theory Appl. 130 (2), 253-264
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

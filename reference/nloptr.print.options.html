@@ -58,7 +58,7 @@ a minimization problem using <code>nloptr</code>.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">nloptr.print.options</span><span class="op">(</span>opts.show <span class="op">=</span> <span class="cn">NULL</span>, opts.user <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">nloptr.print.options</span><span class="op">(</span>opts.show <span class="op">=</span> <span class="cn">NULL</span>, opts.user <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -87,9 +87,9 @@ is set to <code>TRUE</code> when passing a minimization problem to <code>nloptr<
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://astamm.github.io/nloptr/index.html" class="external-link">'nloptr'</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">nloptr.print.options</span><span class="op">(</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://astamm.github.io/nloptr/index.html" class="external-link">'nloptr'</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">nloptr.print.options</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> algorithm</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	possible values: NLOPT_GN_DIRECT, NLOPT_GN_DIRECT_L,</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	                 NLOPT_GN_DIRECT_L_RAND, NLOPT_GN_DIRECT_NOSCAL,</span>
@@ -260,6 +260,12 @@ is set to <code>TRUE</code> when passing a minimization problem to <code>nloptr<
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	changed by setting a positive integer value for population. A</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	population of zero implies that the heuristic default will be used.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> vector_storage</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	possible values: vector_storage is a positive integer</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	default value:   20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Number of gradients to remember from previous optimization steps.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ranseed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	possible values: ranseed is a positive integer</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	default value:   0</span>
@@ -272,8 +278,8 @@ is set to <code>TRUE</code> when passing a minimization problem to <code>nloptr<
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	get a different sequence of pseudorandom numbers each time you run</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	your program.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">nloptr.print.options</span><span class="op">(</span> opts.show <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"algorithm"</span>, <span class="st">"check_derivatives"</span><span class="op">)</span> <span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">nloptr.print.options</span><span class="op">(</span> opts.show <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"algorithm"</span>, <span class="st">"check_derivatives"</span><span class="op">)</span> <span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> algorithm</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	possible values: NLOPT_GN_DIRECT, NLOPT_GN_DIRECT_L,</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	                 NLOPT_GN_DIRECT_L_RAND, NLOPT_GN_DIRECT_NOSCAL,</span>
@@ -308,10 +314,10 @@ is set to <code>TRUE</code> when passing a minimization problem to <code>nloptr<
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	user-supplied analytic gradients with finite difference</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	approximations.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">opts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"algorithm"</span><span class="op">=</span><span class="st">"NLOPT_LD_LBFGS"</span>,</span>
-<span class="r-in">             <span class="st">"xtol_rel"</span><span class="op">=</span><span class="fl">1.0e-8</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">nloptr.print.options</span><span class="op">(</span> opts.user <span class="op">=</span> <span class="va">opts</span> <span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">opts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"algorithm"</span><span class="op">=</span><span class="st">"NLOPT_LD_LBFGS"</span>,</span></span>
+<span class="r-in"><span>             <span class="st">"xtol_rel"</span><span class="op">=</span><span class="fl">1.0e-8</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">nloptr.print.options</span><span class="op">(</span> opts.user <span class="op">=</span> <span class="va">opts</span> <span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> algorithm</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	possible values: NLOPT_GN_DIRECT, NLOPT_GN_DIRECT_L,</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	                 NLOPT_GN_DIRECT_L_RAND, NLOPT_GN_DIRECT_NOSCAL,</span>
@@ -498,6 +504,13 @@ is set to <code>TRUE</code> when passing a minimization problem to <code>nloptr<
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	changed by setting a positive integer value for population. A</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	population of zero implies that the heuristic default will be used.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> vector_storage</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	possible values: vector_storage is a positive integer</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	default value:   20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	current value:   (default)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Number of gradients to remember from previous optimization steps.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ranseed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	possible values: ranseed is a positive integer</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	default value:   0</span>
@@ -511,7 +524,7 @@ is set to <code>TRUE</code> when passing a minimization problem to <code>nloptr<
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	get a different sequence of pseudorandom numbers each time you run</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	your program.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -526,7 +539,7 @@ is set to <code>TRUE</code> when passing a minimization problem to <code>nloptr<
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
