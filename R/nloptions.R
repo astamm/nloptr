@@ -35,36 +35,31 @@
 #'
 #' nl.opts(list(xtol_rel = 1e-8, maxeval = 2000))
 #'
-nl.opts <-
-    function(optlist = NULL)
-    {
-        opts <- list(stopval = -Inf,        # stop minimization at this value
-                     xtol_rel = 1e-6,       # stop on small optimization step
-                 maxeval = 1000,        # stop on this many function evaluations
-                 ftol_rel = 0.0,        # stop on change times function value
-                 ftol_abs = 0.0,        # stop on small change of function value
-                 check_derivatives = FALSE,
-                 algorithm = NULL       # will be filled by each single function
-                )
+nl.opts <- function(optlist = NULL) {
+  opts <- list(
+    stopval = -Inf,            # stop minimization at this value
+    xtol_rel = 1e-6,           # stop on small optimization step
+    maxeval = 1000,            # stop on this many function evaluations
+    ftol_rel = 0.0,            # stop on change times function value
+    ftol_abs = 0.0,            # stop on small change of function value
+    check_derivatives = FALSE,
+    algorithm = NULL           # will be filled by each single function
+  )
 
-    if (is.null(optlist))
-        return(opts)
+  if (is.null(optlist)) return(opts)
 
-    if (!is.list(optlist) || "" %in% names(optlist))
-        stop("Argument 'optlist' must be a list of named (character) objects.")
+  if (!is.list(optlist) || "" %in% names(optlist))
+    stop("Argument `optlist` must be a named list.")
 
-    namc <- match.arg(names(optlist), choices=names(opts), several.ok=TRUE)
-    if (!all(names(optlist) %in% names(opts)))
-        warning("Unknown names in control: ",
-                names(optlist)[!(names(optlist) %in% names(opts))])
+  for (option_name in names(optlist))
+    opts[[option_name]] <- optlist[[option_name]]
 
-    if (!is.null(namc))
-        opts[namc] <- optlist[namc]
+  if (!is.null(opts[["algorithm"]])) {
+    warning(
+      "Option `algorithm` cannot be set here. It will be overwritten."
+    )
+    opts[["algorithm"]] <- NULL
+  }
 
-    if ("algorithm" %in% namc) {
-        warning("Option 'algorithm can not be set here; will be overwritten.")
-        opts["algorithm"] <- NULL
-    }
-
-    return(opts)
+  opts
 }
