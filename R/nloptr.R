@@ -313,16 +313,22 @@ function( x0,
             if( any(is.na(m1)) ){
                 mx1 = which( is.na(m1) )
                 for( i in 1:length(mx1) ){
-                    stop(paste(funname, " requires argument '", fnms[mx1[i]], "' but this has not been passed to the 'nloptr' function.\n", sep = ""))
+                    has_default = !(fnms[mx1[i]] == "")
+                    if (!has_default) {
+                        stop(paste(funname, " requires argument '", fnms[mx1[i]], "' but this has not been passed to the 'nloptr' function.\n", sep = ""))
+                    }
+                }
+            }
+            if( !("..." %in% names(flist)) ) {
+                m2 = match(rnms, fnms)
+                if( any(is.na(m2)) ){
+                    mx2 = which( is.na(m2) )
+                    for( i in 1:length(mx2) ){
+                        stop(paste(rnms[mx2[i]], "' passed to (...) in 'nloptr' but this is not required in the ", funname, " function.\n", sep = ""))
+                    }
                 }
             }
             m2 = match(rnms, fnms)
-            if( any(is.na(m2)) ){
-                mx2 = which( is.na(m2) )
-                for( i in 1:length(mx2) ){
-                    stop(paste(rnms[mx2[i]], "' passed to (...) in 'nloptr' but this is not required in the ", funname, " function.\n", sep = ""))
-                }
-            }
         }
         return( 0 )
     }
