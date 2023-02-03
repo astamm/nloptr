@@ -1,4 +1,4 @@
-CXX_STD = CXX11
+CXX_STD = CXX17
 VERSION = 2.7.1
 WINLIBS = ../windows/nlopt-2.7.1
 PKG_CPPFLAGS = -I../inst/include
