@@ -304,7 +304,7 @@ function( x0,
 
     # internal function to check the arguments of the functions
     .checkfunargs = function( fun, arglist, funname ) {
-        if( !is.function(fun) ) stop(paste(funname, " must be a function\n", sep = ""))
+        if( !is.function(fun) ) stop(funname, " must be a function\n")
         flist = formals(fun)
         if ( length(flist) > 1 ) {
             fnms  = names(flist)[2:length(flist)]    # remove first argument, which is x
@@ -313,14 +313,14 @@ function( x0,
             if( any(is.na(m1)) ){
                 mx1 = which( is.na(m1) )
                 for( i in 1:length(mx1) ){
-                    stop(paste(funname, " requires argument '", fnms[mx1[i]], "' but this has not been passed to the 'nloptr' function.\n", sep = ""))
+                    stop(funname, " requires argument '", fnms[mx1[i]], "' but this has not been passed to the 'nloptr' function.\n")
                 }
             }
             m2 = match(rnms, fnms)
             if( any(is.na(m2)) ){
                 mx2 = which( is.na(m2) )
                 for( i in 1:length(mx2) ){
-                    stop(paste(rnms[mx2[i]], "' passed to (...) in 'nloptr' but this is not required in the ", funname, " function.\n", sep = ""))
+                    stop(rnms[mx2[i]], "' passed to (...) in 'nloptr' but this is not required in the ", funname, " function.\n")
                 }
             }
         }
