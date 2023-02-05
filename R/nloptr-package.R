@@ -54,7 +54,7 @@
 #' \code{\link{varmetric}}
 #'
 #' @references Steven G. Johnson, The NLopt nonlinear-optimization package,
-#' \url{https://nlopt.readthedocs.io/en/latest/}
+#' \url{http://github.com/stevengj/nlopt}
 #'
 #' @keywords optimize interface
 #'
@@ -139,6 +139,3 @@
 #'                opts=opts)
 #' print( res )
 NULL
-
-
-
