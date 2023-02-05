@@ -43,19 +43,19 @@
 #' library('nloptr')
 #' nloptr.print.options()
 #'
-#' nloptr.print.options( opts.show = c("algorithm", "check_derivatives") )
+#' nloptr.print.options(opts.show = c("algorithm", "check_derivatives"))
 #'
 #' opts <- list("algorithm"="NLOPT_LD_LBFGS",
 #'              "xtol_rel"=1.0e-8)
-#' nloptr.print.options( opts.user = opts )
+#' nloptr.print.options(opts.user = opts)
 #'
 nloptr.print.options <-
 function(
-    opts.show=NULL,
-    opts.user=NULL )
+    opts.show = NULL,
+    opts.user = NULL)
 {
     # show all options if no list of options is supplied
-    if ( is.null( opts.show ) ) {
+    if (is.null(opts.show)) {
         nloptr.show.options <- nloptr.get.default.options()
     } else {
         nloptr.show.options <- nloptr.get.default.options()
@@ -63,21 +63,21 @@ function(
     }
 
     # loop over all options and print values
-    for( row.cnt in 1:nrow( nloptr.show.options ) ) {
+    for (row.cnt in 1:nrow(nloptr.show.options)) {
         opt <- nloptr.show.options[row.cnt,]
 
         value.current <- ifelse(
                                 is.null(opts.user[[opt$name]]),
                                 "(default)",
                                 opts.user[[opt$name]]
-                            )
-        cat( opt$name, "\n", sep='' )
-        cat( "\tpossible values: ", paste(strwrap(opt$possible_values, width=50), collapse="\n\t                 "), "\n", sep='' )
-        cat( "\tdefault value:   ", opt$default, "\n", sep='' )
-        if ( !is.null( opts.user ) ) {
-            cat( "\tcurrent value:   ", value.current, "\n", sep='' )
+                           )
+        cat(opt$name, "\n", sep = '')
+        cat("\tpossible values: ", paste(strwrap(opt$possible_values, width = 50), collapse = "\n\t                 "), "\n", sep = '')
+        cat("\tdefault value:   ", opt$default, "\n", sep = '')
+        if (!is.null(opts.user)) {
+            cat("\tcurrent value:   ", value.current, "\n", sep = '')
         }
-        cat( "\n\t", paste(strwrap(opt$description, width=70), collapse="\n\t"), "\n", sep='' )
-        cat( "\n")
+        cat("\n\t", paste(strwrap(opt$description, width = 70), collapse = "\n\t"), "\n", sep = '')
+        cat("\n")
     }
 }

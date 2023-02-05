@@ -141,7 +141,7 @@ check.derivatives <-
     if (check_derivatives_print == 'all') {
 
         message("\n",
-            paste(
+            paste0(
                 ifelse(flag_derivative_warning, "*"," "),
                 " ", func_grad_name, "[ ", indices, " ] = ",
                 format(analytic_grad, scientific = TRUE),
@@ -149,7 +149,7 @@ check.derivatives <-
                 format(finite_diff_grad, scientific = TRUE),
                 "   [",
                 format(relative_error, scientific = TRUE),
-                "]", sep = '', collapse = "\n"
+                "]", collapse = "\n"
            ),
             "\n\n"
        )
@@ -157,7 +157,7 @@ check.derivatives <-
     else if (check_derivatives_print == 'errors') {
         if (sum(flag_derivative_warning) > 0) {
             message("\n",
-                paste(
+                paste0(
                     ifelse(flag_derivative_warning[ flag_derivative_warning ], "*"," "),
                     " ", func_grad_name, "[ ", indices[ flag_derivative_warning ], " ] = ",
                     format(analytic_grad[ flag_derivative_warning ], scientific = TRUE),
@@ -165,7 +165,7 @@ check.derivatives <-
                     format(finite_diff_grad[ flag_derivative_warning ], scientific = TRUE),
                     "   [",
                     format(relative_error[ flag_derivative_warning ], scientific = TRUE),
-                    "]", sep = '', collapse = "\n"
+                    "]", collapse = "\n"
                ),
                 "\n\n"
            )

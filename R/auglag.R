@@ -142,11 +142,11 @@ function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
     if (localsolver %in% c("COBYLA", "BOBYQA")) {   # derivative-free
         dfree <- TRUE
         gsolver <- "NLOPT_LN_AUGLAG"
-        lsolver <- paste("NLOPT_LN_", localsolver, sep = "")
+        lsolver <- paste0("NLOPT_LN_", localsolver)
     } else if (localsolver %in% c("LBFGS", "MMA", "SLSQP")) { # with derivatives
         dfree <- FALSE
         gsolver <- "NLOPT_LD_AUGLAG"
-        lsolver <- paste("NLOPT_LD_", localsolver, sep = "")
+        lsolver <- paste0("NLOPT_LD_", localsolver)
     } else {
         stop("Only local solvers allowed: BOBYQA, COBYLA, LBFGS, MMA, SLSQP.")
     }
