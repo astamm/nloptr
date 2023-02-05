@@ -455,7 +455,7 @@ function(x0,
     nloptr.default.options <- nloptr.get.default.options()
     list_algorithms <-  unlist(
                             strsplit(
-                                nloptr.default.options[ nloptr.default.options$name=="algorithm", "possible_values" ],
+                                nloptr.default.options[nloptr.default.options$name == "algorithm", "possible_values"],
                                 ", "
                            )
                        )
@@ -463,8 +463,8 @@ function(x0,
     # run derivative checker
     if (opts$check_derivatives) {
 
-        if (opts$algorithm %in% list_algorithms[ grep("NLOPT_[G,L]N", list_algorithms) ]) {
-            warning(paste("Skipping derivative checker because algorithm '", opts$algorithm, "' does not use gradients.", sep=''))
+        if (opts$algorithm %in% list_algorithms[grep("NLOPT_[G,L]N", list_algorithms)]) {
+            warning(paste("Skipping derivative checker because algorithm '", opts$algorithm, "' does not use gradients.", sep = ''))
        }
         else {
             # check derivatives of objective function
@@ -549,7 +549,7 @@ function(x0,
         ret$iterations <- solution$iterations
         ret$objective  <- solution$objective
         ret$solution   <- solution$solution
-        ret$version    <- paste(c(solution$version_major, solution$version_minor, solution$version_bugfix), collapse='.')
+        ret$version    <- paste(c(solution$version_major, solution$version_minor, solution$version_bugfix), collapse = '.')
         ret$num.evals  <- num.evals
 
         # If maxtime is set to a positive number in the options

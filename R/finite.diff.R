@@ -18,20 +18,20 @@
 
 
 # http://en.wikipedia.org/wiki/Numerical_differentiation
-finite.diff <- function( func, .x, indices=1:length(.x), stepSize=sqrt( .Machine$double.eps ), ... ) {
+finite.diff <- function(func, .x, indices = seq_along(.x), stepSize = sqrt(.Machine$double.eps), ...) {
 
     # if we evaluate at values close to 0, we need a different step size
-    stepSizeVec <- pmax( abs(.x), 1 ) * stepSize
+    stepSizeVec <- pmax(abs(.x), 1) * stepSize
 
-    fx <- func( .x, ... )
+    fx <- func(.x, ...)
     approx.gradf.index <- function(i, .x, func, fx, stepSizeVec, ...) {
         x_prime <- .x
         x_prime[i] <- .x[i] + stepSizeVec[i]
         stepSizeVec[i] <- x_prime[i] - .x[i]
-        fx_prime <- func( x_prime, ... )
-        return( ( fx_prime - fx )/stepSizeVec[i] )
+        fx_prime <- func(x_prime, ...)
+        return((fx_prime - fx) / stepSizeVec[i])
     }
-    grad_fx <- sapply (indices, approx.gradf.index, .x=.x, func=func, fx=fx, stepSizeVec=stepSizeVec, ... )
+    grad_fx <- sapply(indices, approx.gradf.index, .x = .x, func = func, fx = fx, stepSizeVec = stepSizeVec, ...)
 
-    return( grad_fx )
+    return(grad_fx)
 }

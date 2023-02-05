@@ -54,11 +54,11 @@
 #'
 #' ### Rosenbrock Banana objective function
 #' fn <- function(x)
-#'     return( 100 * (x[2] - x[1] * x[1])^2 + (1 - x[1])^2 )
+#'     return(100 * (x[2] - x[1] * x[1])^2 + (1 - x[1])^2)
 #'
-#' x0 <- c( -1.2, 1 )
-#' lb <- c( -3, -3 )
-#' ub <- c(  3,  3 )
+#' x0 <- c(-1.2, 1)
+#' lb <- c(-3, -3)
+#' ub <- c( 3,  3)
 #'
 #' stogo(x0 = x0, fn = fn, lower = lb, upper = ub)
 #'
@@ -153,17 +153,17 @@ stogo <-
 #'
 #' ### Rosenbrock Banana objective function
 #' fn <- function(x)
-#'     return( 100 * (x[2] - x[1] * x[1])^2 + (1 - x[1])^2 )
+#'     return(100 * (x[2] - x[1] * x[1])^2 + (1 - x[1])^2)
 #'
-#' x0 <- c( -1.2, 1 )
-#' lb <- c( -3, -3 )
-#' ub <- c(  3,  3 )
+#' x0 <- c(-1.2, 1)
+#' lb <- c(-3, -3)
+#' ub <- c( 3,  3)
 #'
 #' isres(x0 = x0, fn = fn, lower = lb, upper = ub)
 #'
 isres <-
     function(x0, fn, lower, upper, hin = NULL, heq = NULL,
-             maxeval = 10000, pop.size = 20*(length(x0)+1),
+             maxeval = 10000, pop.size = 20 * (length(x0) + 1),
              xtol_rel = 1e-6, nl.info = FALSE, ...)
     {
         #opts <- nl.opts(control)
@@ -177,7 +177,7 @@ isres <-
         fn  <- function(x) fun(x, ...)
 
         if (!is.null(hin)) {
-            if ( getOption('nloptr.show.inequality.warning') ) {
+            if (getOption('nloptr.show.inequality.warning')) {
                 message('For consistency with the rest of the package the inequality sign may be switched from >= to <= in a future nloptr version.')
             }
 
@@ -288,7 +288,7 @@ isres <-
 #'
 crs2lm <-
 function(x0, fn, lower, upper,
-            maxeval = 10000, pop.size = 10*(length(x0)+1), ranseed = NULL,
+            maxeval = 10000, pop.size = 10 * (length(x0) + 1), ranseed = NULL,
             xtol_rel = 1e-6, nl.info = FALSE, ...)
 {
     #opts <- nl.opts(control)

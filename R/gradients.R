@@ -38,7 +38,7 @@
 #'   ## [1] 2  2  2  2  2
 #'
 #'   fn2 <- function(x) c(sin(x), cos(x))
-#'   x <- (0:1)*2*pi
+#'   x <- (0:1) * 2 * pi
 #'   nl.jacobian(x, fn2)
 #'   ##      [,1] [,2]
 #'   ## [1,]    1    0
@@ -47,7 +47,7 @@
 #'   ## [4,]    0    0
 #'
 nl.grad <-
-    function (x0, fn, heps = .Machine$double.eps^(1/3), ...)
+    function(x0, fn, heps = .Machine$double.eps ^ (1 / 3), ...)
     {
         if (!is.numeric(x0))
             stop("Argument 'x0' must be a numeric value.")
@@ -60,9 +60,9 @@ nl.grad <-
         n <- length(x0)
         hh <- rep(0, n)
         gr <- numeric(n)
-        for (i in 1:n) {
+        for (i in seq_along(n)) {
             hh[i] <- heps
-            gr[i] <- (fn(x0 + hh) - fn(x0 - hh)) / (2*heps)
+            gr[i] <- (fn(x0 + hh) - fn(x0 - hh)) / (2 * heps)
             hh[i] <- 0
         }
         return(gr)
@@ -70,7 +70,7 @@ nl.grad <-
 
 #' @export
 nl.jacobian <-
-    function(x0, fn, heps = .Machine$double.eps^(1/3), ...)
+    function(x0, fn, heps = .Machine$double.eps ^ (1 / 3), ...)
     {
     if (!is.numeric(x0) || length(x0) == 0)
         stop("Argument 'x' must be a non-empty numeric vector.")
@@ -82,9 +82,9 @@ nl.jacobian <-
     m <- length(fn(x0))
     jacob <- matrix(NA, m, n)
     hh <- numeric(n)
-    for (i in 1:n) {
+    for (i in seq_along(n)) {
         hh[i] <- heps
-        jacob[, i] <- (fn(x0 + hh) - fn(x0 - hh)) / (2*heps)
+        jacob[, i] <- (fn(x0 + hh) - fn(x0 - hh)) / (2 * heps)
         hh[i] <- 0
     }
     return(jacob)

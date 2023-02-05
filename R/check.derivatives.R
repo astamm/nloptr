@@ -61,36 +61,36 @@
 #' library('nloptr')
 #'
 #' # example with correct gradient
-#' f <- function( x, a ) {
-#' 	return( sum( ( x - a )^2 ) )
+#' f <- function(x, a) {
+#' 	return(sum((x - a)^2))
 #' }
 #'
-#' f_grad <- function( x, a ) {
-#' 	return( 2*( x - a ) )
+#' f_grad <- function(x, a) {
+#' 	return(2*(x - a))
 #' }
 #'
-#' check.derivatives( .x=1:10, func=f, func_grad=f_grad,
-#'     check_derivatives_print='none', a=runif(10) )
+#' check.derivatives(.x=1:10, func=f, func_grad=f_grad,
+#'     check_derivatives_print='none', a=runif(10))
 #'
 #' # example with incorrect gradient
-#' f_grad <- function( x, a ) {
-#' 	return( 2*( x - a ) + c(0,.1,rep(0,8)) )
+#' f_grad <- function(x, a) {
+#' 	return(2*(x - a) + c(0,.1,rep(0,8)))
 #' }
 #'
-#' check.derivatives( .x=1:10, func=f, func_grad=f_grad,
-#'     check_derivatives_print='errors', a=runif(10) )
+#' check.derivatives(.x=1:10, func=f, func_grad=f_grad,
+#'     check_derivatives_print='errors', a=runif(10))
 #'
 #' # example with incorrect gradient of vector-valued function
-#' g <- function( x, a ) {
-#' 	return( c( sum(x-a), sum( (x-a)^2 ) ) )
+#' g <- function(x, a) {
+#' 	return(c(sum(x-a), sum((x-a)^2)))
 #' }
 #'
-#' g_grad <- function( x, a ) {
-#' 	return( rbind( rep(1,length(x)) + c(0,.01,rep(0,8)), 2*(x-a) + c(0,.1,rep(0,8)) ) )
+#' g_grad <- function(x, a) {
+#' 	return(rbind(rep(1,length(x)) + c(0,.01,rep(0,8)), 2*(x-a) + c(0,.1,rep(0,8))))
 #' }
 #'
-#' check.derivatives( .x=1:10, func=g, func_grad=g_grad,
-#'     check_derivatives_print='all', a=runif(10) )
+#' check.derivatives(.x=1:10, func=g, func_grad=g_grad,
+#'     check_derivatives_print='all', a=runif(10))
 #'
 check.derivatives <-
     function(
@@ -101,78 +101,79 @@ check.derivatives <-
         check_derivatives_print = 'all',
         func_grad_name = 'grad_f',
         ...
-    )
+   )
 {
 
-    analytic_grad <- func_grad( .x, ... )
+    analytic_grad <- func_grad(.x, ...)
 
-    finite_diff_grad <- finite.diff( func, .x, ... )
+    finite_diff_grad <- finite.diff(func, .x, ...)
 
     relative_error <- ifelse(
                         finite_diff_grad == 0,
                         analytic_grad,
-                        abs( ( analytic_grad - finite_diff_grad ) / finite_diff_grad )
-                      )
+                        abs((analytic_grad - finite_diff_grad) / finite_diff_grad)
+                     )
 
     flag_derivative_warning <- relative_error > check_derivatives_tol
 
-    if ( ! ( check_derivatives_print %in% c('all','errors','none') ) ) {
-        warning( paste( "Value '", check_derivatives_print, "' for check_derivatives_print is unknown; use 'all' (default), 'errors', or 'none'.", sep='' ) )
+    if (! (check_derivatives_print %in% c('all','errors','none'))) {
+        warning("Value '", check_derivatives_print,
+                "' for check_derivatives_print is unknown; use 'all'",
+                "(default), 'errors', or 'none'.")
         check_derivatives_print <- 'none'
     }
 
     # determine indices of vector / matrix for printing
     # format indices with width, such that they are aligned vertically
-    if ( is.matrix( analytic_grad ) ) {
+    if (is.matrix(analytic_grad)) {
         indices <- paste(
-                    format( rep( 1:nrow(analytic_grad), times=ncol(analytic_grad) ), width=1 + sum( nrow(analytic_grad) > 10^(1:10) ) ),
-                    format( rep( 1:ncol(analytic_grad), each=nrow(analytic_grad) ), width=1 + sum( ncol(analytic_grad) > 10^(1:10) ) ),
+                    format(rep(1:nrow(analytic_grad), times = ncol(analytic_grad)), width = 1 + sum(nrow(analytic_grad) > 10^(1:10))),
+                    format(rep(1:ncol(analytic_grad), each = nrow(analytic_grad)), width = 1 + sum(ncol(analytic_grad) > 10^(1:10))),
                     sep=', '
-                   )
+                  )
     }
     else {
-        indices <- format( 1:length(analytic_grad), width=1 + sum( length(analytic_grad) > 10^(1:10) ) )
+        indices <- format(1:length(analytic_grad), width = 1 + sum(length(analytic_grad) > 10^(1:10)))
     }
 
     # Print results.
-    message( "Derivative checker results: ", sum( flag_derivative_warning ), " error(s) detected." )
-    if ( check_derivatives_print == 'all' ) {
+    message("Derivative checker results: ", sum(flag_derivative_warning), " error(s) detected.")
+    if (check_derivatives_print == 'all') {
 
-        message( "\n",
+        message("\n",
             paste(
-                ifelse( flag_derivative_warning, "*"," "),
+                ifelse(flag_derivative_warning, "*"," "),
                 " ", func_grad_name, "[ ", indices, " ] = ",
-                format(analytic_grad, scientific=TRUE),
+                format(analytic_grad, scientific = TRUE),
                 " ~ ",
-                format(finite_diff_grad, scientific=TRUE),
+                format(finite_diff_grad, scientific = TRUE),
                 "   [",
-                format( relative_error, scientific=TRUE),
-                "]", sep='', collapse="\n"
-            ),
+                format(relative_error, scientific = TRUE),
+                "]", sep = '', collapse = "\n"
+           ),
             "\n\n"
-        )
+       )
     }
-    else if ( check_derivatives_print == 'errors' ) {
-        if ( sum( flag_derivative_warning ) > 0 ) {
-            message( "\n",
+    else if (check_derivatives_print == 'errors') {
+        if (sum(flag_derivative_warning) > 0) {
+            message("\n",
                 paste(
-                    ifelse( flag_derivative_warning[ flag_derivative_warning ], "*"," "),
+                    ifelse(flag_derivative_warning[ flag_derivative_warning ], "*"," "),
                     " ", func_grad_name, "[ ", indices[ flag_derivative_warning ], " ] = ",
-                    format(analytic_grad[ flag_derivative_warning ], scientific=TRUE),
+                    format(analytic_grad[ flag_derivative_warning ], scientific = TRUE),
                     " ~ ",
-                    format(finite_diff_grad[ flag_derivative_warning ], scientific=TRUE),
+                    format(finite_diff_grad[ flag_derivative_warning ], scientific = TRUE),
                     "   [",
-                    format( relative_error[ flag_derivative_warning ], scientific=TRUE),
-                    "]", sep='', collapse="\n"
-                ),
+                    format(relative_error[ flag_derivative_warning ], scientific = TRUE),
+                    "]", sep = '', collapse = "\n"
+               ),
                 "\n\n"
-            )
+           )
         }
     }
-    else if ( check_derivatives_print == 'none' ) {
+    else if (check_derivatives_print == 'none') {
 
     }
-
 
     return(
         list(
@@ -180,6 +181,6 @@ check.derivatives <-
             "finite_difference"       = finite_diff_grad,
             "relative_error"          = relative_error,
             "flag_derivative_warning" = flag_derivative_warning
-        )
-    )
+       )
+   )
 }
