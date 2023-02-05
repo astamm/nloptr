@@ -129,7 +129,7 @@ is.nloptr <- function(x) {
            }
 
        } else {
-            if (anyNA(g0_ineq))) {stop('inequality constraints in x0 returns NA')}
+            if (anyNA(g0_ineq)) {stop('inequality constraints in x0 returns NA')}
 
             # check whether algorihtm needs a derivative
             if (x$options$algorithm %in% list_algorithmsD) {
