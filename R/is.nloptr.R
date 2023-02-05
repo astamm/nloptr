@@ -47,7 +47,7 @@ is.nloptr <- function(x) {
    }
 
     # Check whether bounds are defined for all controls
-    if (any(is.na(x$x0))) {stop('x0 contains NA')}
+    if (anyNA(x$x0)) {stop('x0 contains NA')}
     if (length(x$x0) != length(x$lower_bounds)) {stop('length(lb) != length(x0)')}
     if (length(x$x0) != length(x$upper_bounds)) {stop('length(ub) != length(x0)')}
 
@@ -85,7 +85,7 @@ is.nloptr <- function(x) {
     f0 <- x$eval_f(x$x0)
     if (is.list(f0)) {
         if (is.na(f0$objective)) {stop('objective in x0 returns NA')}
-        if (any(is.na(f0$gradient))) {stop('gradient of objective in x0 returns NA')}
+        if (anyNA(f0$gradient)) {stop('gradient of objective in x0 returns NA')}
         if (length(f0$gradient) != length(x$x0)) {stop('wrong number of elements in gradient of objective')}
 
         # check whether algorihtm needs a derivative
@@ -95,7 +95,7 @@ is.nloptr <- function(x) {
        }
 
    } else {
-        if (any(is.na(f0))) {stop('objective in x0 returns NA')}
+        if (anyNA(f0)) {stop('objective in x0 returns NA')}
 
         # check whether algorihtm needs a derivative
         if (x$options$algorithm %in% list_algorithmsD) {
@@ -109,8 +109,8 @@ is.nloptr <- function(x) {
     if (!is.null(x$eval_g_ineq)) {
         g0_ineq <- x$eval_g_ineq(x$x0)
         if (is.list(g0_ineq)) {
-            if (any(is.na(g0_ineq$constraints))) {stop('inequality constraints in x0 returns NA')}
-            if (any(is.na(g0_ineq$jacobian))) {stop('jacobian of inequality constraints in x0 returns NA')}
+            if (anyNA(g0_ineq$constraints)) {stop('inequality constraints in x0 returns NA')}
+            if (anyNA(g0_ineq$jacobian)) {stop('jacobian of inequality constraints in x0 returns NA')}
 
             if (length(g0_ineq$jacobian) != length(g0_ineq$constraints)*length(x$x0)) {
                 stop(paste('wrong number of elements in jacobian of inequality constraints (is ',
@@ -128,7 +128,7 @@ is.nloptr <- function(x) {
            }
 
        } else {
-            if (any(is.na(g0_ineq))) {stop('inequality constraints in x0 returns NA')}
+            if (anyNA(g0_ineq))) {stop('inequality constraints in x0 returns NA')}
 
             # check whether algorihtm needs a derivative
             if (x$options$algorithm %in% list_algorithmsD) {
@@ -142,8 +142,8 @@ is.nloptr <- function(x) {
     if (!is.null(x$eval_g_eq)) {
         g0_eq <- x$eval_g_eq(x$x0)
         if (is.list(g0_eq)) {
-            if (any(is.na(g0_eq$constraints))) {stop('equality constraints in x0 returns NA')}
-            if (any(is.na(g0_eq$jacobian))) {stop('jacobian of equality constraints in x0 returns NA')}
+            if (anyNA(g0_eq$constraints)) {stop('equality constraints in x0 returns NA')}
+            if (anyNA(g0_eq$jacobian)) {stop('jacobian of equality constraints in x0 returns NA')}
 
             if (length(g0_eq$jacobian) != length(g0_eq$constraints)*length(x$x0)) {
                 stop(paste('wrong number of elements in jacobian of equality constraints (is ',
@@ -161,7 +161,7 @@ is.nloptr <- function(x) {
            }
 
        } else {
-            if (any(is.na(g0_eq))) {stop('equality constraints in x0 returns NA')}
+            if (anyNA(g0_eq)) {stop('equality constraints in x0 returns NA')}
 
             # check whether algorihtm needs a derivative
             if (x$options$algorithm %in% list_algorithmsD) {
