@@ -80,7 +80,7 @@ nl.jacobian <-
 
     n <- length(x0)
     m <- length(fn(x0))
-    jacob <- matrix(NA, m, n)
+    jacob <- matrix(NA_real_, m, n)
     hh <- double(n)
     for (i in seq_along(n)) {
         hh[i] <- heps
