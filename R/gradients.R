@@ -59,7 +59,7 @@ nl.grad <-
 
         n <- length(x0)
         hh <- rep(0, n)
-        gr <- numeric(n)
+        gr <- double(n)
         for (i in seq_along(n)) {
             hh[i] <- heps
             gr[i] <- (fn(x0 + hh) - fn(x0 - hh)) / (2 * heps)
@@ -81,7 +81,7 @@ nl.jacobian <-
     n <- length(x0)
     m <- length(fn(x0))
     jacob <- matrix(NA, m, n)
-    hh <- numeric(n)
+    hh <- double(n)
     for (i in seq_along(n)) {
         hh[i] <- heps
         jacob[, i] <- (fn(x0 + hh) - fn(x0 - hh)) / (2 * heps)
