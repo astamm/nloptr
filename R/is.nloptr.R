@@ -34,8 +34,8 @@
 is.nloptr <- function(x) {
 
     # Check whether the object exists and is a list
-    if(is.null(x)) {return(FALSE)}
-    if(!is.list(x)) {return(FALSE)}
+    if (is.null(x)) {return(FALSE)}
+    if (!is.list(x)) {return(FALSE)}
 
     # Check whether the needed wrapper functions are supplied
     if (!is.function(x$eval_f)) {stop('eval_f is not a function')}
@@ -74,7 +74,8 @@ is.nloptr <- function(x) {
 
     # check if an existing algorithm was supplied
     if (!(x$options$algorithm %in% list_algorithms)) {
-        stop(paste('Incorrect algorithm supplied. Use one of the following:\n', paste(list_algorithms, collapse = '\n')))
+        stop('Incorrect algorithm supplied. Use one of the following:\n',
+             paste(list_algorithms, collapse = '\n'))
    }
 
     # determine subset of algorithms that need a derivative
