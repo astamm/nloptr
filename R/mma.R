@@ -72,13 +72,13 @@
 #'     return(h)
 #' }
 #' gr.hs100 <- function(x) {
-#'    c(  2 * x[1] -  20,
+#'    c( 2 * x[1] -  20,
 #'       10 * x[2] - 120,
 #'        4 * x[3]^3,
 #'        6 * x[4] - 66,
 #'       60 * x[5]^5,
 #'       14 * x[6]   - 4 * x[7] - 10,
-#'        4 * x[7]^3 - 4 * x[6] -  8 )}
+#'        4 * x[7]^3 - 4 * x[6] -  8)}
 #' hinjac.hs100 <- function(x) {
 #'     matrix(c(4*x[1], 12*x[2]^3, 1, 8*x[4], 5, 0, 0,
 #'         7, 3, 20*x[3], 1, -1, 0, 0,
@@ -122,7 +122,7 @@ mma <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
 
 
     if (!is.null(hin)) {
-        if ( getOption('nloptr.show.inequality.warning') ) {
+        if (getOption('nloptr.show.inequality.warning')) {
             message('For consistency with the rest of the package the inequality sign may be switched from >= to <= in a future nloptr version.')
         }
 
