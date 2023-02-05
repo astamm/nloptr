@@ -100,11 +100,10 @@ is.nloptr <- function(x) {
 
         # check whether algorihtm needs a derivative
         if (x$options$algorithm %in% list_algorithmsD) {
-            stop(paste('A gradient for the objective function is needed by algorithm',
-                         x$options$algorithm, 'but was not supplied.\n'))
+            stop("A gradient for the objective function is needed by algorithm ",
+                 x$options$algorithm, " but was not supplied.\n")
        }
    }
-
 
     # Check the whether we don't have NA's if we evaluate the inequality constraints in x0
     if (!is.null(x$eval_g_ineq)) {
@@ -113,13 +112,13 @@ is.nloptr <- function(x) {
             if (anyNA(g0_ineq$constraints)) {stop('inequality constraints in x0 returns NA')}
             if (anyNA(g0_ineq$jacobian)) {stop('jacobian of inequality constraints in x0 returns NA')}
 
-            if (length(g0_ineq$jacobian) != length(g0_ineq$constraints)*length(x$x0)) {
-                stop(paste('wrong number of elements in jacobian of inequality constraints (is ',
-                           length(g0_ineq$jacobian),
-                           ', but should be ',
-                           length(g0_ineq$constraints), ' x ',
-                           length(x$x0), ' = ',
-                           length(g0_ineq$constraints)*length(x$x0), ')', sep=''))
+            if (length(g0_ineq$jacobian) != length(g0_ineq$constraints) * length(x$x0)) {
+                stop('wrong number of elements in jacobian of inequality constraints (is ',
+                     length(g0_ineq$jacobian),
+                     ', but should be ',
+                     length(g0_ineq$constraints), ' x ',
+                     length(x$x0), ' = ',
+                     length(g0_ineq$constraints) * length(x$x0), ')')
            }
 
             # check whether algorihtm needs a derivative
@@ -133,8 +132,8 @@ is.nloptr <- function(x) {
 
             # check whether algorihtm needs a derivative
             if (x$options$algorithm %in% list_algorithmsD) {
-                stop(paste('A gradient for the inequality constraints is needed by algorithm',
-                             x$options$algorithm, 'but was not supplied.\n'))
+                stop('A gradient for the inequality constraints is needed by algorithm ',
+                     x$options$algorithm, ' but was not supplied.\n')
            }
        }
    }
@@ -147,12 +146,12 @@ is.nloptr <- function(x) {
             if (anyNA(g0_eq$jacobian)) {stop('jacobian of equality constraints in x0 returns NA')}
 
             if (length(g0_eq$jacobian) != length(g0_eq$constraints)*length(x$x0)) {
-                stop(paste('wrong number of elements in jacobian of equality constraints (is ',
-                           length(g0_eq$jacobian),
-                           ', but should be ',
-                           length(g0_eq$constraints), ' x ',
-                           length(x$x0), ' = ',
-                           length(g0_eq$constraints)*length(x$x0), ')', sep=''))
+                stop('wrong number of elements in jacobian of equality constraints (is ',
+                     length(g0_eq$jacobian),
+                     ', but should be ',
+                     length(g0_eq$constraints), ' x ',
+                     length(x$x0), ' = ',
+                     length(g0_eq$constraints) * length(x$x0), ')')
            }
 
             # check whether algorihtm needs a derivative
@@ -166,13 +165,11 @@ is.nloptr <- function(x) {
 
             # check whether algorihtm needs a derivative
             if (x$options$algorithm %in% list_algorithmsD) {
-                stop(paste('A gradient for the equality constraints is needed by algorithm',
-                             x$options$algorithm, 'but was not supplied.\n'))
+                stop('A gradient for the equality constraints is needed by algorithm ',
+                     x$options$algorithm, ' but was not supplied.\n')
            }
        }
    }
-
-
 
     # check if we have a correct algorithm for the equality constraints
     if (x$num_constraints_eq > 0) {
@@ -182,8 +179,9 @@ is.nloptr <- function(x) {
                            "NLOPT_LN_AUGLAG_EQ",
                            "NLOPT_GN_ISRES",
                            "NLOPT_LD_SLSQP")
-        if(!(x$options$algorithm %in% eq_algorithms)) {
-            stop(paste('If you want to use equality constraints, then you should use one of these algorithms', paste(eq_algorithms, collapse=', ')))
+        if (!(x$options$algorithm %in% eq_algorithms)) {
+            stop('If you want to use equality constraints, then you should use one of these algorithms: ',
+                 paste(eq_algorithms, collapse = ', '))
        }
    }
 
@@ -198,7 +196,9 @@ is.nloptr <- function(x) {
               "NLOPT_GN_MLSL_LDS",
               "NLOPT_GD_MLSL_LDS")) {
         if (is.null(x$local_options)) {
-            stop(paste('The algorithm', x$options$algorithm, 'needs a local optimizer; specify an algorithm and termination condition in local_opts'))
+            stop('The algorithm ',
+                 x$options$algorithm,
+                 ' needs a local optimizer; specify an algorithm and termination condition in local_opts')
        }
    }
 
@@ -206,20 +206,20 @@ is.nloptr <- function(x) {
     # constraints is of the same size as the number of constraints.
     if (x$num_constraints_ineq !=
          length(x$options$tol_constraints_ineq)) {
-        stop(paste('The vector tol_constraints_ineq in the options list has size',
-                   length(x$options$tol_constraints_ineq),
-                   'which is unequal to the number of inequality constraints,',
-                   x$num_constraints_ineq, '.'))
+        stop('The vector tol_constraints_ineq in the options list has size ',
+             length(x$options$tol_constraints_ineq),
+             ' which is unequal to the number of inequality constraints, ',
+             x$num_constraints_ineq, '.')
    }
 
     # Check if the vector with tolerances for the equality
     # constraints is of the same size as the number of constraints.
     if (x$num_constraints_eq !=
          length(x$options$tol_constraints_eq)) {
-        stop(paste('The vector tol_constraints_eq in the options list has size',
-                   length(x$options$tol_constraints_eq),
-                   'which is unequal to the number of equality constraints,',
-                   x$num_constraints_eq, '.'))
+        stop('The vector tol_constraints_eq in the options list has size ',
+             length(x$options$tol_constraints_eq),
+             ' which is unequal to the number of equality constraints, ',
+             x$num_constraints_eq, '.')
    }
 
     return(TRUE)
