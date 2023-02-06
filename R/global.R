@@ -276,15 +276,14 @@ isres <-
 #'     return(fun)
 #' }
 #'
-#' S <- mlsl(x0 = rep(0, 6), hartmann6, lower = rep(0,6), upper = rep(1,6),
-#'             nl.info = TRUE, control=list(xtol_rel=1e-8, maxeval=1000))
-#' ## Number of Iterations....: 4050
-#' ## Termination conditions:  maxeval: 10000	xtol_rel: 1e-06
+#' S <- crs2lm(x0 = rep(0, 6), hartmann6, lower = rep(0, 6), upper = rep(1, 6),
+#'             nl.info = TRUE, xtol_rel=1e-8, maxeval = 10000)
+#' ## Number of Iterations....: 5106
+#' ## Termination conditions:  maxeval: 10000	xtol_rel: 1e-08
 #' ## Number of inequality constraints:  0
 #' ## Number of equality constraints:    0
-#' ## Optimal value of objective function:  -3.32236801141328
-#' ## Optimal value of controls:
-#' ##     0.2016893 0.1500105 0.4768738 0.2753326 0.3116516 0.6573004
+#' ## Optimal value of objective function:  -3.32236801141551
+#' ## Optimal value of controls: 0.2016895 0.1500107 0.476874 0.2753324 0.3116516 0.6573005
 #'
 crs2lm <-
 function(x0, fn, lower, upper,
