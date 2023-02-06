@@ -147,23 +147,26 @@ expect_equal(isresTest$value, isresControl$objective, tolerance = 1e-4)
 expect_identical(stogoTest$convergence, stogoControl$status)
 expect_identical(stogoTest$message, stogoControl$message)
 
-# Passing hin and heq
-## Not testing because even 1e5 simulations is not enough for convergence and
-## the values jump around a lot.
-## (AA: 2023-02-06)
-# isresTest <- suppressMessages(isres(c(-1.2, 1), fr, lower = c(-3, -3),
-#                                     upper = c(3, 3), hin = hin, heq = heq,
-#                                     maxeval = 1e5, xtol_rel = 1e-3))
-#
-# isresControl <- nloptr(x0 = c(-1.2, 1),
-#                        eval_f = fr,
-#                        eval_g_ineq = hin2,
-#                        eval_g_eq = heq,
-#                        lb = c(-3, -3),
-#                        ub = c(3, 3),
-#                        opts = list(algorithm = "NLOPT_GN_ISRES",
-#                                    maxeval = 1e5, xtol_rel = 1e-3,
-#                                    population = 60))
+# Passing heq
+# Need a rediculously loose tolerance on ISRES now.
+# (AA: 2023-02-06)
+isresTest <- suppressMessages(isres(c(-1.2, 1), fr, lower = c(-3, -3),
+                                    upper = c(3, 3), heq = heq, maxeval = 2e4L,
+                                    xtol_rel = 1e-6))
+
+isresControl <- nloptr(x0 = c(-1.2, 1),
+                       eval_f = fr,
+                       eval_g_eq = heq,
+                       lb = c(-3, -3),
+                       ub = c(3, 3),
+                       opts = list(algorithm = "NLOPT_GN_ISRES",
+                                   maxeval = 2e4L, xtol_rel = 1e-6,
+                                   population = 60))
+
+expect_equal(isresTest$par, isresControl$solution, tolerance = 1e-1)
+expect_equal(isresTest$value, isresControl$objective, tolerance = 1e-1)
+expect_identical(stogoTest$convergence, stogoControl$status)
+expect_identical(stogoTest$message, stogoControl$message)
 
 ## CRS2LM
 # Test printout if nl.info passed. The word "Call:" should be in output if
