@@ -48,16 +48,29 @@ hinjac.hs100 <- function(x) {
            -11), 4, 7, byrow = TRUE)
 }
 
-gr.hs100.proper <- function(x) nl.grad(x, fn.hs100)
+gr.hs100.proper <- function(x) nl.grad(x, fn.hs100) # See example
 
-hin2.hs100 <- function(x) -hin.hs100(x)
-hinjac2.hs100 <- function(x) -hinjac.hs100(x)
-hinjac2.hs100.proper <- function(x) nl.jacobian(x, hin2.hs100)
+hin2.hs100 <- function(x) -hin.hs100(x)             # Needed for nloptr call
+hinjac2.hs100 <- function(x) -hinjac.hs100(x)       # Needed for nloptr call
+hinjac.hs100.proper <- function(x) nl.jacobian(x, hin.hs100)   # See example
+hinjac2.hs100.proper <- function(x) nl.jacobian(x, hin2.hs100) # See example
 
-# Test
+# Test messages
 expect_message(ccsaq(x0.hs100, fn.hs100, hin = hin.hs100, nl.info = FALSE,
                      control = list(xtol_rel = 1e-8)), ineqMess)
 
+# Test printout if nl.info passed. The word "Call:" should be in output if
+# passed and not if not passed.
+expect_output(suppressMessages(ccsaq(x0.hs100, fn.hs100, hin = hin.hs100,
+                                     nl.info = TRUE,
+                                     control = list(xtol_rel = 1e-8))),
+                               "Call:", fixed = TRUE)
+
+expect_silent(suppressMessages(ccsaq(x0.hs100, fn.hs100, hin = hin.hs100,
+                                     nl.info = FALSE,
+                                     control = list(xtol_rel = 1e-8))))
+
+# Test no passed gradient or Jacobian
 ccsaqTest <- suppressMessages(ccsaq(x0.hs100, fn.hs100, hin = hin.hs100,
                                     nl.info = FALSE,
                                     control = list(xtol_rel = 1e-8)))
@@ -71,7 +84,28 @@ ccsaqControl <- nloptr(x0 = x0.hs100,
                                    xtol_rel = 1e-8)
                        )
 
-# Test Values
+expect_identical(ccsaqTest$par, ccsaqControl$solution)
+expect_identical(ccsaqTest$value, ccsaqControl$objective)
+expect_identical(ccsaqTest$iter, ccsaqControl$iterations)
+expect_identical(ccsaqTest$convergence, ccsaqControl$status)
+expect_identical(ccsaqTest$message, ccsaqControl$message)
+
+# Test passed gradient and Jacobian
+ccsaqTest <- suppressMessages(ccsaq(x0.hs100, fn.hs100, gr = gr.hs100.proper,
+                                    hin = hin.hs100,
+                                    hinjac = hinjac.hs100.proper,
+                                    nl.info = FALSE,
+                                    control = list(xtol_rel = 1e-8)))
+
+ccsaqControl <- nloptr(x0 = x0.hs100,
+                       eval_f = fn.hs100,
+                       eval_grad_f = gr.hs100.proper,
+                       eval_g_ineq = hin2.hs100,
+                       eval_jac_g_ineq = hinjac2.hs100.proper,
+                       opts = list(algorithm = "NLOPT_LD_CCSAQ",
+                                   xtol_rel = 1e-8)
+)
+
 expect_identical(ccsaqTest$par, ccsaqControl$solution)
 expect_identical(ccsaqTest$value, ccsaqControl$objective)
 expect_identical(ccsaqTest$iter, ccsaqControl$iterations)
