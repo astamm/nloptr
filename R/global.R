@@ -181,7 +181,7 @@ isres <-
                 message('For consistency with the rest of the package the inequality sign may be switched from >= to <= in a future nloptr version.')
             }
 
-            .hin <- match(hin)
+            .hin <- match.fun(hin)
             hin <- function(x) (-1) * .hin(x)   # change  hin >= 0  to  hin <= 0 !
         }
 
