@@ -50,13 +50,15 @@ expect_output(mlsl(x0 = x0, hartmann6, lower = lb, upper = ub, nl.info = TRUE),
 expect_silent(mlsl(x0 = x0, hartmann6, lower = lb, upper = ub))
 
 # Test Warning
-## Cannot test for warning because "gr" gets overridden to NULL and then the
-## global algorithm spits back an error. Need to discuss with Aymeric or Hans.
-## (AA: 2023-02-06)
+# Have to wrap warning test in expect_error because Cannot test for warning
+# because "gr" gets overridden to NULL and then the global algorithm spits back
+# an error. Need to discuss with Aymeric or Hans if that is intended behavior.
+# (AA: 2023-02-06)
 
-# expect_warning(mlsl(x0 = rep(0, 6), fn = hartmann6, lower = rep(0,6),
-#                     upper = rep(1,6), local.method = "MMA"),
-#                "Only gradient-based LBFGS available as local method.")
+expect_error(expect_warning(mlsl(x0, hartmann6, hart.gr, lb, ub,
+                                 local.method = "MMA"),
+                            "Only gradient-based LBFGS available as local met",
+                            fixed = TRUE))
 
 # No passed gradient: Low discrepancy
 mlslTest <- mlsl(x0, hartmann6, lower = lb, upper = ub, control = ctl)
