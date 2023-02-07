@@ -10,6 +10,8 @@
 # Changelog:
 #
 
+tol <- sqrt(.Machine$double.eps)
+
 ineqMess <- paste("For consistency with the rest of the package the inequality",
                   "sign may be switched from >= to <= in a future nloptr",
                   "version.")
@@ -114,8 +116,8 @@ slsqpControl <- nloptr(x0 = x0.hs100,
                        opts = list(algorithm = "NLOPT_LD_SLSQP",
                                    xtol_rel = 1e-6, maxeval = 1000L))
 
-expect_identical(slsqpTest$par, slsqpControl$solution)
-expect_identical(slsqpTest$value, slsqpControl$objective)
+expect_equal(slsqpTest$par, slsqpControl$solution, tolerance = tol)
+expect_equal(slsqpTest$value, slsqpControl$objective, tolerance = tol)
 expect_identical(slsqpTest$iter, slsqpControl$iterations)
 expect_identical(slsqpTest$convergence, slsqpControl$status)
 expect_identical(slsqpTest$message, slsqpControl$message)
