@@ -88,7 +88,7 @@ is.nloptr <- function( x ) {
         if ( any( is.na( f0$gradient ) ) ) { stop('gradient of objective in x0 returns NA') }
         if ( length( f0$gradient ) != length( x$x0 ) ) { stop('wrong number of elements in gradient of objective') }
 
-        # check whether algorihtm needs a derivative
+        # check whether algorithm needs a derivative
         if ( x$options$algorithm %in% list_algorithmsN ) {
             warning( 'a gradient was supplied for the objective function, but algorithm ',
                       x$options$algorithm, ' does not use gradients.' )
@@ -97,7 +97,7 @@ is.nloptr <- function( x ) {
     } else {
         if (any( is.na( f0 ) )) { stop('objective in x0 returns NA') }
 
-        # check whether algorihtm needs a derivative
+        # check whether algorithm needs a derivative
         if ( x$options$algorithm %in% list_algorithmsD ) {
             stop( paste( 'A gradient for the objective function is needed by algorithm',
                          x$options$algorithm, 'but was not supplied.\n' ) )
@@ -121,7 +121,7 @@ is.nloptr <- function( x ) {
                            length( g0_ineq$constraints )*length( x$x0 ), ')', sep=''))
             }
 
-            # check whether algorihtm needs a derivative
+            # check whether algorithm needs a derivative
             if ( x$options$algorithm %in% list_algorithmsN ) {
                 warning( 'a gradient was supplied for the inequality constraints, but algorithm ',
                          x$options$algorithm, ' does not use gradients.' )
@@ -130,7 +130,7 @@ is.nloptr <- function( x ) {
         } else {
             if ( any( is.na( g0_ineq ) ) ) { stop('inequality constraints in x0 returns NA') }
 
-            # check whether algorihtm needs a derivative
+            # check whether algorithm needs a derivative
             if ( x$options$algorithm %in% list_algorithmsD ) {
                 stop( paste( 'A gradient for the inequality constraints is needed by algorithm',
                              x$options$algorithm, 'but was not supplied.\n' ) )
@@ -154,7 +154,7 @@ is.nloptr <- function( x ) {
                            length( g0_eq$constraints )*length( x$x0 ), ')', sep=''))
             }
 
-            # check whether algorihtm needs a derivative
+            # check whether algorithm needs a derivative
             if ( x$options$algorithm %in% list_algorithmsN ) {
                 warning( 'a gradient was supplied for the equality constraints, but algorithm ',
                          x$options$algorithm, ' does not use gradients.' )
@@ -163,7 +163,7 @@ is.nloptr <- function( x ) {
         } else {
             if ( any( is.na( g0_eq ) ) ) { stop('equality constraints in x0 returns NA') }
 
-            # check whether algorihtm needs a derivative
+            # check whether algorithm needs a derivative
             if ( x$options$algorithm %in% list_algorithmsD ) {
                 stop( paste( 'A gradient for the equality constraints is needed by algorithm',
                              x$options$algorithm, 'but was not supplied.\n' ) )
