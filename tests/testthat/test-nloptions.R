@@ -23,7 +23,7 @@ opts <- list(
 opts2 <- opts
 names(opts2) <- ""
 
-expect_equal(nl.opts(NULL), opts)
+expect_identical(nl.opts(NULL), opts)
 expect_error(nl.opts("C"),
              "Argument `optlist` must be a named list.", fixed = TRUE)
 expect_error(nl.opts(opts2),

@@ -11,7 +11,7 @@
 #
 
 ctlNM <- list(algorithm = "NLOPT_LN_NELDERMEAD", xtol_rel = 1e-8)
-ctlLB <- list(algorithm = 'NLOPT_LD_LBFGS', xtol_rel = 1e-8)
+ctlLB <- list(algorithm = "NLOPT_LD_LBFGS", xtol_rel = 1e-8)
 
 # Check whether the object exists and is a list
 expect_false(is.nloptr(NULL))
@@ -78,7 +78,8 @@ expect_warning(nloptr(x0 = -1, f0, g0, opts = ctlNM),
 expect_error(nloptr(x0 = -1, f0, opts = ctlLB),
              "A gradient for the objective function is needed", fixed = TRUE)
 
-# Check the whether we don't have NA's if we evaluate the inequality constraints in x0
+# Check the whether we don't have NA's if we evaluate the inequality constraints
+# in x0
 hin <- function(x) NA_real_
 expect_error(nloptr(x0 = -1, f0, g0, eval_g_ineq = hin, opts = ctlLB),
              "inequality constraints in x0 returns NA", fixed = TRUE)
