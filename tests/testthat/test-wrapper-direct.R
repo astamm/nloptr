@@ -1,5 +1,5 @@
 # Copyright (C) 2023 Avraham Adler. All Rights Reserved.
-# This code is published under the L-GPL.
+# SPDX-License-Identifier: LGPL-3.0-or-later
 #
 # File:   test-wrapper-direct
 # Author: Avraham Adler
