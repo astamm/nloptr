@@ -19,7 +19,7 @@ flb <- function(x) {
 x0 <- rep(3, 25L)
 lb <- rep(2, 25L)
 ub <- rep(4, 25L)
-control <- list(xtol_rel = 1e-8)
+ctl <- list(xtol_rel = 1e-8)
 
 # Test printout if nl.info passed. The word "Call:" should be in output if
 # passed and not if not passed.
@@ -28,7 +28,7 @@ expect_output(tnewton(x0, flb, nl.info = TRUE), "Call:", fixed = TRUE)
 expect_silent(tnewton(x0, flb))
 
 # No passed gradient; Restart; Precond
-tnTest <- tnewton(x0, flb, lower = lb, upper = ub, control = control)
+tnTest <- tnewton(x0, flb, lower = lb, upper = ub, control = ctl)
 
 tnControl <- nloptr(x0 = x0,
                     eval_f = flb,
@@ -44,7 +44,7 @@ expect_identical(tnTest$convergence, tnControl$status)
 expect_identical(tnTest$message, tnControl$message)
 
 # No passed gradient: Restart; No Precond
-tnTest <- tnewton(x0, flb, lower = lb, upper = ub, control = control,
+tnTest <- tnewton(x0, flb, lower = lb, upper = ub, control = ctl,
                   precond = FALSE)
 
 tnControl <- nloptr(x0 = x0,
@@ -61,7 +61,7 @@ expect_identical(tnTest$convergence, tnControl$status)
 expect_identical(tnTest$message, tnControl$message)
 
 # No passed gradient: No Restart; Precond
-tnTest <- tnewton(x0, flb, lower = lb, upper = ub, control = control,
+tnTest <- tnewton(x0, flb, lower = lb, upper = ub, control = ctl,
                   restart = FALSE)
 
 tnControl <- nloptr(x0 = x0,
@@ -78,7 +78,7 @@ expect_identical(tnTest$convergence, tnControl$status)
 expect_identical(tnTest$message, tnControl$message)
 
 # No passed gradient: No Restart; No Precond
-tnTest <- tnewton(x0, flb, lower = lb, upper = ub, control = control,
+tnTest <- tnewton(x0, flb, lower = lb, upper = ub, control = ctl,
                   restart = FALSE, precond = FALSE)
 
 tnControl <- nloptr(x0 = x0,
@@ -102,7 +102,7 @@ gr <- function(x) {
   c(-(2 * .expr5 + 100 * (2 * (2 * x[1L] * .expr2))),
     100 * (2 * .expr2))
 }
-tnTest <- tnewton(c(-1.2, 2), fr, gr, control = control)
+tnTest <- tnewton(c(-1.2, 2), fr, gr, control = ctl)
 
 tnControl <- nloptr(x0 = c(-1.2, 2),
                     eval_f = fr,

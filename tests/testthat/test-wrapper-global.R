@@ -49,25 +49,26 @@ hartmann6 <- function(x) {
   fun
 }
 
+x0 <- c(-1.2, 1)
+lb <- c(-3, -3)
+ub <- c(3, 3)
+
 ## StoGo
 # Test printout if nl.info passed. The word "Call:" should be in output if
 # passed and not if not passed.
-expect_output(suppressMessages(stogo(c(-1.2, 1), fr, lower = c(-3, -3),
-                                     upper = c(3, 3), nl.info = TRUE)),
+expect_output(stogo(x0, fr, lower = lb, upper = ub, nl.info = TRUE),
               "Call:", fixed = TRUE)
 
-expect_silent(suppressMessages(stogo(c(-1.2, 1), fr, lower = c(-3, -3),
-                                     upper = c(3, 3))))
+expect_silent(stogo(x0, fr, lower = lb, upper = ub))
 
 # No passed gradient; Randomized: FALSE
-stogoTest <- suppressMessages(stogo(c(-1.2, 1), fr, lower = c(-3, -3),
-                                    upper = c(3, 3)))
+stogoTest <- stogo(x0, fr, lower = lb, upper = ub)
 
-stogoControl <- nloptr(x0 = c(-1.2, 1),
+stogoControl <- nloptr(x0 = x0,
                        eval_f = fr,
                        eval_grad_f = function(x) nl.grad(x, fr),
-                       lb = c(-3, -3),
-                       ub = c(3, 3),
+                       lb = lb,
+                       ub = ub,
                        opts = list(algorithm = "NLOPT_GD_STOGO",
                                     xtol_rel = 1e-6, maxeval = 10000L))
 
@@ -78,14 +79,13 @@ expect_identical(stogoTest$convergence, stogoControl$status)
 expect_identical(stogoTest$message, stogoControl$message)
 
 # Passed gradient; Randomized: FALSE
-stogoTest <- suppressMessages(stogo(c(-1.2, 1), fr, lower = c(-3, -3), gr = gr,
-                                    upper = c(3, 3)))
+stogoTest <- stogo(x0, fr, gr, lb, ub)
 
-stogoControl <- nloptr(x0 = c(-1.2, 1),
+stogoControl <- nloptr(x0 = x0,
                        eval_f = fr,
                        eval_grad_f = gr,
-                       lb = c(-3, -3),
-                       ub = c(3, 3),
+                       lb = lb,
+                       ub = ub,
                        opts = list(algorithm = "NLOPT_GD_STOGO",
                                    xtol_rel = 1e-6, maxeval = 10000L))
 
@@ -96,14 +96,13 @@ expect_identical(stogoTest$convergence, stogoControl$status)
 expect_identical(stogoTest$message, stogoControl$message)
 
 # Passed gradient; Randomized: TRUE
-stogoTest <- suppressMessages(stogo(c(-1.2, 1), fr, lower = c(-3, -3), gr = gr,
-                                    upper = c(3, 3), randomized = TRUE))
+stogoTest <- stogo(x0, fr, gr, lb, ub, randomized = TRUE)
 
-stogoControl <- nloptr(x0 = c(-1.2, 1),
+stogoControl <- nloptr(x0 = x0,
                        eval_f = fr,
                        eval_grad_f = gr,
-                       lb = c(-3, -3),
-                       ub = c(3, 3),
+                       lb = lb,
+                       ub = ub,
                        opts = list(algorithm = "NLOPT_GD_STOGO_RAND",
                                    xtol_rel = 1e-6, maxeval = 10000L))
 
@@ -115,29 +114,24 @@ expect_identical(stogoTest$message, stogoControl$message)
 
 ## ISRES
 # Test message
-expect_message(isres(c(-1.2, 1), fr, lower = c(-3, -3), upper = c(3, 3),
-                     hin = hin, nl.info = FALSE), ineqMess)
+expect_message(isres(x0, fr, lower = lb, upper = ub, hin = hin), ineqMess)
 
 # Test printout if nl.info passed. The word "Call:" should be in output if
 # passed and not if not passed.
-expect_output(suppressMessages(isres(c(-1.2, 1), fr, lower = c(-3, -3),
-                                     upper = c(3, 3), nl.info = TRUE)),
-              "Call:", fixed = TRUE)
+expect_output(isres(x0, fr, lb, ub, nl.info = TRUE), "Call:", fixed = TRUE)
 
-expect_silent(suppressMessages(isres(c(-1.2, 1), fr, lower = c(-3, -3),
-                                     upper = c(3, 3))))
+expect_silent(isres(x0, fr, lb, ub))
 
 # As ISRES is stochastic, more iterations and a much looser tolerance is needed.
 # Also, iteration count will almost surely not be equal.
 
 # No passed hin or heq
-isresTest <- suppressMessages(isres(c(-1.2, 1), fr, lower = c(-3, -3),
-                                    upper = c(3, 3), maxeval = 2e4L))
+isresTest <- isres(x0, fr, lb, ub, maxeval = 2e4L)
 
-isresControl <- nloptr(x0 = c(-1.2, 1),
+isresControl <- nloptr(x0 = x0,
                        eval_f = fr,
-                       lb = c(-3, -3),
-                       ub = c(3, 3),
+                       lb = lb,
+                       ub = ub,
                        opts = list(algorithm = "NLOPT_GN_ISRES",
                                    maxeval = 2e4L, xtol_rel = 1e-6,
                                    population = 60))
@@ -150,15 +144,13 @@ expect_identical(stogoTest$message, stogoControl$message)
 # Passing heq
 # Need a rediculously loose tolerance on ISRES now.
 # (AA: 2023-02-06)
-isresTest <- suppressMessages(isres(c(-1.2, 1), fr, lower = c(-3, -3),
-                                    upper = c(3, 3), heq = heq, maxeval = 2e4L,
-                                    xtol_rel = 1e-6))
+isresTest <- isres(x0, fr, lb, ub, heq = heq, maxeval = 2e4L)
 
-isresControl <- nloptr(x0 = c(-1.2, 1),
+isresControl <- nloptr(x0 = x0,
                        eval_f = fr,
                        eval_g_eq = heq,
-                       lb = c(-3, -3),
-                       ub = c(3, 3),
+                       lb = lb,
+                       ub = ub,
                        opts = list(algorithm = "NLOPT_GN_ISRES",
                                    maxeval = 2e4L, xtol_rel = 1e-6,
                                    population = 60))
@@ -171,24 +163,21 @@ expect_identical(stogoTest$message, stogoControl$message)
 ## CRS2LM
 # Test printout if nl.info passed. The word "Call:" should be in output if
 # passed and not if not passed.
-expect_output(suppressMessages(crs2lm(x0 = rep(0, 6L), hartmann6,
-                                      lower = rep(0, 6L), upper = rep(1, 6L),
-                                      nl.info = TRUE, xtol_rel = 1e-8,
-                                      maxeval = 10000L)),
+x0 <- lb <- rep(0, 6L)
+ub <- rep(1, 6L)
+
+expect_output(crs2lm(x0 = x0, hartmann6, lower = lb, upper = ub, nl.info = TRUE),
               "Call:", fixed = TRUE)
 
-expect_silent(suppressMessages(crs2lm(x0 = rep(0, 6L), hartmann6,
-                                      lower = rep(0, 6L), upper = rep(1, 6L),
-                                      xtol_rel = 1e-8, maxeval = 10000L)))
+expect_silent(crs2lm(x0 = x0, hartmann6, lower = lb, upper = ub))
 
-crs2lmTest <- suppressMessages(crs2lm(x0 = rep(0, 6L), hartmann6, ranseed = 43L,
-                                      lower = rep(0, 6L), upper = rep(1, 6L),
-                                      xtol_rel = 1e-8, maxeval = 10000L))
+crs2lmTest <- crs2lm(x0 = x0, hartmann6, lower = lb, upper = ub, ranseed = 43L,
+                     xtol_rel = 1e-8, maxeval = 10000L)
 
-crs2lmControl <- nloptr(x0 = rep(0, 6L),
+crs2lmControl <- nloptr(x0 = x0,
                         eval_f = hartmann6,
-                        lb = rep(0, 6L),
-                        ub = rep(1, 6L),
+                        lb = lb,
+                        ub = ub,
                         opts = list(algorithm = "NLOPT_GN_CRS2_LM",
                                     xtol_rel = 1e-8,
                                     maxeval = 10000L,

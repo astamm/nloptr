@@ -38,15 +38,16 @@ hartmann6 <- function(x) {
 
 hart.gr <- function(x) nl.grad(x, hartmann6)
 
+x0 <- lb <- rep(0, 6L)
+ub <- rep(1, 6L)
+ctl <- list(xtol_rel = 1e-8, maxeval = 1000L)
 
 # Test printout if nl.info passed. The word "Call:" should be in output if
 # passed and not if not passed.
-expect_output(mlsl(x0 = rep(0, 6), hartmann6, lower = rep(0,6),
-                   upper = rep(1,6), nl.info = TRUE),
+expect_output(mlsl(x0 = x0, hartmann6, lower = lb, upper = ub, nl.info = TRUE),
               "Call:", fixed = TRUE)
 
-expect_silent(mlsl(x0 = rep(0, 6), hartmann6, lower = rep(0,6),
-                   upper = rep(1,6)))
+expect_silent(mlsl(x0 = x0, hartmann6, lower = lb, upper = ub))
 
 # Test Warning
 ## Cannot test for warning because "gr" gets overridden to NULL and then the
@@ -58,15 +59,13 @@ expect_silent(mlsl(x0 = rep(0, 6), hartmann6, lower = rep(0,6),
 #                "Only gradient-based LBFGS available as local method.")
 
 # No passed gradient: Low discrepancy
-mlslTest <- mlsl(x0 = rep(0, 6L), hartmann6, lower = rep(0, 6L),
-                 upper = rep(1, 6L), control = list(xtol_rel = 1e-8,
-                                                    maxeval = 1000L))
+mlslTest <- mlsl(x0, hartmann6, lower = lb, upper = ub, control = ctl)
 
-mlslControl <- nloptr(x0 = rep(0, 6L),
+mlslControl <- nloptr(x0 = x0,
                       eval_f = hartmann6,
                       eval_grad_f = hart.gr,
-                      lb = rep(0, 6L),
-                      ub = rep(1, 6L),
+                      lb = lb,
+                      ub = ub,
                       opts = list(algorithm = "NLOPT_GD_MLSL_LDS",
                                   xtol_rel = 1e-8, maxeval = 1000L,
                                   local_opts = list(
@@ -80,15 +79,14 @@ expect_identical(mlslTest$convergence, mlslControl$status)
 expect_identical(mlslTest$message, mlslControl$message)
 
 # Passed gradient: No low discrepancy
-mlslTest <- mlsl(x0 = rep(0, 6L), hartmann6, gr = hart.gr, lower = rep(0, 6L),
-                 upper = rep(1, 6L), low.discrepancy = FALSE,
-                 control = list(xtol_rel = 1e-8, maxeval = 1000L))
+mlslTest <- mlsl(x0, hartmann6, hart.gr, lb, ub, low.discrepancy = FALSE,
+                 control = ctl)
 
-mlslControl <- nloptr(x0 = rep(0, 6L),
+mlslControl <- nloptr(x0 = x0,
                       eval_f = hartmann6,
                       eval_grad_f = hart.gr,
-                      lb = rep(0, 6L),
-                      ub = rep(1, 6L),
+                      lb = lb,
+                      ub = ub,
                       opts = list(algorithm = "NLOPT_GD_MLSL",
                                   xtol_rel = 1e-8, maxeval = 1000L,
                                   local_opts = list(

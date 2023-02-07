@@ -36,46 +36,30 @@ hin2.hs100 <- function(x) -hin.hs100(x) # Needed for nloptr call
 
 fr <- function(x) {100 * (x[2L] - x[1L] ^ 2) ^ 2 + (1 - x[1L]) ^ 2}
 
+ctl <- list(xtol_rel = 1e-8)
+
 # Test messages
-expect_message(cobyla(x0.hs100, fn.hs100, hin = hin.hs100, nl.info = FALSE,
-                      control = list(xtol_rel = 1e-8)), ineqMess)
+expect_message(cobyla(x0.hs100, fn.hs100, hin = hin.hs100), ineqMess)
 
 # Test printout if nl.info passed. The word "Call:" should be in output if
 # passed and not if not passed.
-expect_output(suppressMessages(cobyla(x0.hs100, fn.hs100, hin = hin.hs100,
-                                     nl.info = TRUE,
-                                     control = list(xtol_rel = 1e-8))),
-                               "Call:", fixed = TRUE)
-expect_output(suppressMessages(bobyqa(c(0, 0), fr, lower = c(0, 0),
-                                      upper = c(0.5, 0.5), nl.info = TRUE,
-                                      control = list(xtol_rel = 1e-6))),
-              "Call:", fixed = TRUE)
+expect_output(cobyla(x0.hs100, fn.hs100, nl.info = TRUE), "Call:", fixed = TRUE)
+expect_output(bobyqa(x0.hs100, fn.hs100, nl.info = TRUE), "Call:", fixed = TRUE)
+expect_output(newuoa(x0.hs100, fn.hs100, nl.info = TRUE), "Call:", fixed = TRUE)
 
-expect_output(suppressMessages(newuoa(c(1, 2), fr, nl.info = TRUE,
-                                      control = list(xtol_rel = 1e-6))),
-              "Call:", fixed = TRUE)
-
-expect_silent(suppressMessages(cobyla(x0.hs100, fn.hs100, hin = hin.hs100,
-                                     nl.info = FALSE,
-                                     control = list(xtol_rel = 1e-8))))
-
-expect_silent(suppressMessages(bobyqa(c(0, 0), fr, lower = c(0, 0),
-                                      upper = c(0.5, 0.5), nl.info = FALSE,
-                                      control = list(xtol_rel = 1e-6))))
-
-expect_silent(suppressMessages(newuoa(c(1, 2), fr, nl.info = FALSE,
-                                      control = list(xtol_rel = 1e-6))))
+expect_silent(cobyla(x0.hs100, fn.hs100))
+expect_silent(bobyqa(x0.hs100, fn.hs100))
+expect_silent(newuoa(x0.hs100, fn.hs100))
 
 # Test COBYLA algorithm
 cobylaTest <- suppressMessages(cobyla(x0.hs100, fn.hs100, hin = hin.hs100,
-                                    nl.info = FALSE,
-                                    control = list(xtol_rel = 1e-8)))
+                                    control = ctl))
 
 cobylaControl <- nloptr(x0 = x0.hs100,
                        eval_f = fn.hs100,
                        eval_g_ineq = hin2.hs100,
                        opts = list(algorithm = "NLOPT_LN_COBYLA",
-                                   xtol_rel = 1e-6, maxeval = 1000L))
+                                   xtol_rel = 1e-8, maxeval = 1000L))
 
 expect_identical(cobylaTest$par, cobylaControl$solution)
 expect_identical(cobylaTest$value, cobylaControl$objective)

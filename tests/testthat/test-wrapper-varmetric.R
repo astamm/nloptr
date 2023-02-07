@@ -19,7 +19,7 @@ flb <- function(x) {
 x0 <- rep(3, 25L)
 lb <- rep(2, 25L)
 ub <- rep(4, 25L)
-control <- list(xtol_rel = 1e-8)
+ctl <- list(xtol_rel = 1e-8)
 
 # Test printout if nl.info passed. The word "Call:" should be in output if
 # passed and not if not passed.
@@ -28,7 +28,7 @@ expect_output(varmetric(x0, flb, nl.info = TRUE), "Call:", fixed = TRUE)
 expect_silent(varmetric(x0, flb))
 
 # No passed gradient; Rank 1
-varTest <- varmetric(x0, flb, lower = lb, upper = ub, control = control,
+varTest <- varmetric(x0, flb, lower = lb, upper = ub, control = ctl,
                      rank2 = FALSE)
 
 varControl <- nloptr(x0 = x0,
@@ -45,7 +45,7 @@ expect_identical(varTest$convergence, varControl$status)
 expect_identical(varTest$message, varControl$message)
 
 # No passed gradient; Rank 2
-varTest <- varmetric(x0, flb, lower = lb, upper = ub, control = control)
+varTest <- varmetric(x0, flb, lower = lb, upper = ub, control = ctl)
 
 varControl <- nloptr(x0 = x0,
                      eval_f = flb,
@@ -68,7 +68,7 @@ gr <- function(x) {
   c(-(2 * .expr5 + 100 * (2 * (2 * x[1L] * .expr2))),
     100 * (2 * .expr2))
 }
-varTest <- varmetric(c(-1.2, 2), fr, gr, control = control)
+varTest <- varmetric(c(-1.2, 2), fr, gr, control = ctl)
 
 varControl <- nloptr(x0 = c(-1.2, 2),
                     eval_f = fr,

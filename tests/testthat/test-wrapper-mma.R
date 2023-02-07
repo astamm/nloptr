@@ -49,34 +49,27 @@ hinjac.hs100 <- function(x) {
            -11), 4L, 7L, byrow = TRUE)
 }
 
-hin2.hs100 <- function(x) -hin.hs100(x)     # Needed for nloptr call
+hin2.hs100 <- function(x) -hin.hs100(x)        # Needed for nloptr call
 hinjac2.hs100 <- function(x) -hinjac.hs100(x)  # Needed for nloptr call
 
+ctl <- list(xtol_rel = 1e-8)
+
 # Test messages
-expect_message(mma(x0.hs100, fn.hs100, gr = gr.hs100, hin = hin.hs100,
-                   hinjac = hinjac.hs100, nl.info = FALSE,
-                   control = list(xtol_rel = 1e-8)), ineqMess)
+expect_message(mma(x0.hs100, fn.hs100, hin = hin.hs100), ineqMess)
 
 # Test printout if nl.info passed. The word "Call:" should be in output if
 # passed and not if not passed.
-expect_output(suppressMessages(mma(x0.hs100, fn.hs100, gr = gr.hs100, hin = hin.hs100,
-                                   hinjac = hinjac.hs100, nl.info = TRUE,
-                                   control = list(xtol_rel = 1e-8))),
-                               "Call:", fixed = TRUE)
+expect_output(suppressMessages(mma(x0.hs100, fn.hs100, nl.info = TRUE)),
+              "Call:", fixed = TRUE)
 
-
-expect_silent(suppressMessages(mma(x0.hs100, fn.hs100, gr = gr.hs100,
-                                   hin = hin.hs100, hinjac = hinjac.hs100,
-                                   nl.info = FALSE,
-                                   control = list(xtol_rel = 1e-8))))
+expect_silent(suppressMessages(mma(x0.hs100, fn.hs100)))
 
 # Test MMA algorithm passing both gradient and Jacobian. Yes, this is the
 # incorrect answer but it properly tests the functionality.
 # (AA: 2023-02-06)
 mmaTest <- suppressMessages(mma(x0.hs100, fn.hs100, gr = gr.hs100,
                                 hin = hin.hs100, hinjac = hinjac.hs100,
-                                nl.info = FALSE,
-                                control = list(xtol_rel = 1e-8)))
+                                control = ctl))
 
 mmaControl <- nloptr(x0 = x0.hs100,
                      eval_f = fn.hs100,
@@ -95,8 +88,7 @@ expect_identical(mmaTest$message, mmaControl$message)
 # Test MMA algorithm passing neither gradient nor Jacobian. As everyone is on
 # Windows64, timing should be less of an issue.
 mmaTest <- suppressMessages(mma(x0.hs100, fn.hs100, hin = hin.hs100,
-                                nl.info = FALSE,
-                                control = list(xtol_rel = 1e-8)))
+                                control = ctl))
 
 mmaControl <- nloptr(x0 = x0.hs100,
                      eval_f = fn.hs100,

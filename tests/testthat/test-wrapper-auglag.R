@@ -32,18 +32,16 @@ expect_error(auglag(x0, fn, localsolver = "NLOPT_LN_NELDERMEAD"),
              "Only local solvers allowed: BOBYQA, COBYLA, LBFGS, MMA, SLSQP.")
 
 # Test messages
-expect_message(auglag(x0, fn, gr = NULL, hin = hin, heq = heq), ineqMess)
+expect_message(auglag(x0, fn, hin = hin), ineqMess)
 
 # Test printout if nl.info passed. The word "Call:" should be in output if
 # passed and not if not passed.
-expect_output(suppressMessages(auglag(x0, fn, gr = NULL, hin = hin, heq = heq,
-                                      nl.info = TRUE)), "Call:", fixed = TRUE)
+expect_output(auglag(x0, fn, nl.info = TRUE), "Call:", fixed = TRUE)
 
-expect_silent(suppressMessages(auglag(x0, fn, gr = NULL, hin = hin, heq = heq,
-                                      nl.info = FALSE)))
+expect_silent(auglag(x0, fn))
 
 # Test COBYLA version
-augTest <- suppressMessages(auglag(x0, fn, gr = NULL, hin = hin, heq = heq))
+augTest <- suppressMessages(auglag(x0, fn, hin = hin, heq = heq))
 
 augControl <- nloptr(x0 = x0,
                      eval_f = fn,
@@ -53,9 +51,7 @@ augControl <- nloptr(x0 = x0,
                                  xtol_rel = 1e-6,
                                  maxeval = 1000L,
                                  local_opts = list(algorithm = "NLOPT_LN_COBYLA",
-                                                   xtol_rel = 1e-6)
-                                 )
-                     )
+                                                   xtol_rel = 1e-6)))
 
 expect_identical(augTest$par, augControl$solution)
 expect_identical(augTest$value, augControl$objective)
@@ -65,7 +61,7 @@ expect_identical(augTest$convergence, augControl$status)
 expect_identical(augTest$message, augControl$message)
 
 # Test BOBYQA version
-augTest <- suppressMessages(auglag(x0, fn, gr = NULL, hin = hin, heq = heq,
+augTest <- suppressMessages(auglag(x0, fn, hin = hin, heq = heq,
                                    localsolver = "BOBYQA"))
 
 augControl <- nloptr(x0 = x0,
@@ -76,9 +72,7 @@ augControl <- nloptr(x0 = x0,
                                  xtol_rel = 1e-6,
                                  maxeval = 1000L,
                                  local_opts = list(algorithm = "NLOPT_LN_BOBYQA",
-                                                   xtol_rel = 1e-6)
-                     )
-)
+                                                   xtol_rel = 1e-6)))
 
 expect_identical(augTest$par, augControl$solution)
 expect_identical(augTest$value, augControl$objective)
@@ -89,7 +83,7 @@ expect_identical(augTest$message, augControl$message)
 
 # Test SLSQP version
 # No passed hin/heq Jacobian
-augTest <- suppressMessages(auglag(x0, fn, gr = NULL, hin = hin, heq = heq,
+augTest <- suppressMessages(auglag(x0, fn, hin = hin, heq = heq,
                                    localsolver = "SLSQP"))
 augControl <- nloptr(x0 = x0,
                      eval_f = fn,
@@ -103,9 +97,7 @@ augControl <- nloptr(x0 = x0,
                                  maxeval = 1000L,
                                  local_opts = list(algorithm = "NLOPT_LD_SLSQP",
                                                    eval_grad_f = gr,
-                                                   xtol_rel = 1e-6)
-                                 )
-                     )
+                                                   xtol_rel = 1e-6)))
 
 expect_identical(augTest$par, augControl$solution)
 expect_identical(augTest$value, augControl$objective)
@@ -115,7 +107,7 @@ expect_identical(augTest$convergence, augControl$status)
 expect_identical(augTest$message, augControl$message)
 
 # Passed hin/heq Jacobian
-augTest <- suppressMessages(auglag(x0, fn, gr = NULL, hin = hin, heq = heq,
+augTest <- suppressMessages(auglag(x0, fn, hin = hin, heq = heq,
                                    hinjac = hinjac, heqjac = heqjac,
                                    localsolver = "SLSQP"))
 
@@ -127,7 +119,7 @@ expect_identical(augTest$convergence, augControl$status)
 expect_identical(augTest$message, augControl$message)
 
 # Test LBFGS version
-augTest <- suppressMessages(auglag(x0, fn, gr = NULL, hin = hin, heq = heq,
+augTest <- suppressMessages(auglag(x0, fn, hin = hin, heq = heq,
                                    localsolver = "LBFGS"))
 augControl <- nloptr(x0 = x0,
                      eval_f = fn,
@@ -141,9 +133,7 @@ augControl <- nloptr(x0 = x0,
                                  maxeval = 1000L,
                                  local_opts = list(algorithm = "NLOPT_LD_LBFGS",
                                                    eval_grad_f = gr,
-                                                   xtol_rel = 1e-6)
-                     )
-)
+                                                   xtol_rel = 1e-6)))
 
 expect_identical(augTest$par, augControl$solution)
 expect_identical(augTest$value, augControl$objective)
@@ -153,7 +143,7 @@ expect_identical(augTest$convergence, augControl$status)
 expect_identical(augTest$message, augControl$message)
 
 # Test MMA version
-augTest <- suppressMessages(auglag(x0, fn, gr = NULL, hin = hin, heq = heq,
+augTest <- suppressMessages(auglag(x0, fn, hin = hin, heq = heq,
                                    localsolver = "MMA"))
 augControl <- nloptr(x0 = x0,
                      eval_f = fn,
@@ -167,9 +157,7 @@ augControl <- nloptr(x0 = x0,
                                  maxeval = 1000L,
                                  local_opts = list(algorithm = "NLOPT_LD_MMA",
                                                    eval_grad_f = gr,
-                                                   xtol_rel = 1e-6)
-                     )
-)
+                                                   xtol_rel = 1e-6)))
 
 expect_identical(augTest$par, augControl$solution)
 expect_identical(augTest$value, augControl$objective)

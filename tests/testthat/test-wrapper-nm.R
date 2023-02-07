@@ -16,18 +16,19 @@ fphv <- function(x) {
     (sqrt(x[1L] ^ 2 + x[2L] ^ 2) - 1) ^ 2 + x[3L] ^ 2
 }
 
+x0 <- c(-1, 0.5, 0.5)
+
 ## Nelder-Mead
 
 # Test printout if nl.info passed. The word "Call:" should be in output if
 # passed and not if not passed.
-expect_output(neldermead(c(-1, 0, 0), fphv, nl.info = TRUE),
-              "Call:", fixed = TRUE)
+expect_output(neldermead(x0, fphv, nl.info = TRUE), "Call:", fixed = TRUE)
 
-expect_silent(neldermead(c(-1, 0, 0), fphv))
+expect_silent(neldermead(x0, fphv))
 
-nmTest <- neldermead(c(-1, 0.5, 0.5), fphv)
+nmTest <- neldermead(x0, fphv)
 
-nmControl <- nloptr(x0 = c(-1, 0.5, 0.5),
+nmControl <- nloptr(x0 = x0,
                     eval_f = fphv,
                     opts = list(algorithm = "NLOPT_LN_NELDERMEAD",
                                   xtol_rel = 1e-6, maxeval = 1000L))
@@ -41,13 +42,13 @@ expect_identical(nmTest$message, nmControl$message)
 ## Subplex
 # Test printout if nl.info passed. The word "Call:" should be in output if
 # passed and not if not passed.
-expect_output(sbplx(c(-1, 0, 0), fphv, nl.info = TRUE), "Call:", fixed = TRUE)
+expect_output(sbplx(x0, fphv, nl.info = TRUE), "Call:", fixed = TRUE)
 
-expect_silent(sbplx(c(-1, 0, 0), fphv))
+expect_silent(sbplx(x0, fphv))
 
-sbplTest <- sbplx(c(-1, 0.5, 0.5), fphv)
+sbplTest <- sbplx(x0, fphv)
 
-sbplControl <- nloptr(x0 = c(-1, 0.5, 0.5),
+sbplControl <- nloptr(x0 = x0,
                       eval_f = fphv,
                       opts = list(algorithm = "NLOPT_LN_SBPLX",
                                   xtol_rel = 1e-6, maxeval = 1000L))

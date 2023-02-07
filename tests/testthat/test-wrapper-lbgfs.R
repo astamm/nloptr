@@ -16,30 +16,26 @@ flb <- function(x) {
   sum(c(1, rep(4, p - 1)) * (x - c(1, x[-p]) ^ 2) ^ 2)
 }
 
+x0 <- rep(3, 25L)
+lb <- rep(2, 25L)
+ub <- rep(4, 25L)
+ctl <- list(xtol_rel = 1e-8)
+
+
 # Test printout if nl.info passed. The word "Call:" should be in output if
 # passed and not if not passed.
-expect_output(suppressMessages(lbfgs(rep(3, 25), flb,
-                                     lower = rep(2, 25L),
-                                     upper = rep(4, 25L),
-                                     nl.info = TRUE,
-                                     control = list(xtol_rel = 1e-8))),
-              "Call:", fixed = TRUE)
+expect_output(lbfgs(x0, flb, nl.info = TRUE), "Call:", fixed = TRUE)
 
-expect_silent(suppressMessages(lbfgs(rep(3, 25), flb,
-                                     lower = rep(2, 25L),
-                                     upper = rep(4, 25L),
-                                     control = list(xtol_rel = 1e-8))))
+expect_silent(lbfgs(x0, flb))
 
 # No passed gradient
-lbfgsTest <- suppressMessages(lbfgs(rep(3, 25L), flb, lower = rep(2, 25L),
-                                    upper = rep(4, 25L),
-                                    control = list(xtol_rel = 1e-8)))
+lbfgsTest <- lbfgs(x0, flb, lower = lb, upper = ub, control = ctl)
 
-lbfgsControl <- nloptr(x0 = rep(3, 25L),
+lbfgsControl <- nloptr(x0 = x0,
                        eval_f = flb,
                        eval_grad_f = function(x) nl.grad(x, flb),
-                       lb = rep(2, 25L),
-                       ub = rep(4, 25L),
+                       lb = lb,
+                       ub = ub,
                        opts = list(algorithm = "NLOPT_LD_LBFGS",
                                     xtol_rel = 1e-8, maxeval = 1000L))
 
@@ -57,9 +53,9 @@ gr <- function(x) {
   c(-(2 * .expr5 + 100 * (2 * (2 * x[1L] * .expr2))),
     100 * (2 * .expr2))
 }
-lbfgsTest <- suppressMessages(lbfgs(c(-1.2, 2), fr, gr = gr, lower = c(-3, -3),
-                                    upper = c(3, 3),
-                                    control = list(xtol_rel = 1e-8)))
+
+lbfgsTest <- lbfgs(c(-1.2, 2), fr, gr, lower = c(-3, -3), upper = c(3, 3),
+                   control = ctl)
 
 lbfgsControl <- nloptr(x0 = c(-1.2, 2),
                        eval_f = fr,

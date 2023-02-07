@@ -55,25 +55,20 @@ hinjac2.hs100 <- function(x) -hinjac.hs100(x)       # Needed for nloptr call
 hinjac.hs100.proper <- function(x) nl.jacobian(x, hin.hs100)   # See example
 hinjac2.hs100.proper <- function(x) nl.jacobian(x, hin2.hs100) # See example
 
+ctl <- list(xtol_rel = 1e-8)
+
 # Test messages
-expect_message(ccsaq(x0.hs100, fn.hs100, hin = hin.hs100, nl.info = FALSE,
-                     control = list(xtol_rel = 1e-8)), ineqMess)
+expect_message(ccsaq(x0.hs100, fn.hs100, hin = hin.hs100), ineqMess)
 
 # Test printout if nl.info passed. The word "Call:" should be in output if
 # passed and not if not passed.
-expect_output(suppressMessages(ccsaq(x0.hs100, fn.hs100, hin = hin.hs100,
-                                     nl.info = TRUE,
-                                     control = list(xtol_rel = 1e-8))),
-                               "Call:", fixed = TRUE)
+expect_output(ccsaq(x0.hs100, fn.hs100, nl.info = TRUE), "Call:", fixed = TRUE)
 
-expect_silent(suppressMessages(ccsaq(x0.hs100, fn.hs100, hin = hin.hs100,
-                                     nl.info = FALSE,
-                                     control = list(xtol_rel = 1e-8))))
+expect_silent(ccsaq(x0.hs100, fn.hs100))
 
 # Test no passed gradient or Jacobian
 ccsaqTest <- suppressMessages(ccsaq(x0.hs100, fn.hs100, hin = hin.hs100,
-                                    nl.info = FALSE,
-                                    control = list(xtol_rel = 1e-8)))
+                                    control = ctl))
 
 ccsaqControl <- nloptr(x0 = x0.hs100,
                        eval_f = fn.hs100,
@@ -94,8 +89,7 @@ expect_identical(ccsaqTest$message, ccsaqControl$message)
 ccsaqTest <- suppressMessages(ccsaq(x0.hs100, fn.hs100, gr = gr.hs100.proper,
                                     hin = hin.hs100,
                                     hinjac = hinjac.hs100.proper,
-                                    nl.info = FALSE,
-                                    control = list(xtol_rel = 1e-8)))
+                                    control = ctl))
 
 ccsaqControl <- nloptr(x0 = x0.hs100,
                        eval_f = fn.hs100,

@@ -11,7 +11,7 @@
 #
 
 # DirectL is not identical when calling randomized = TRUE. May be an issue with
-# the randomization at the C level. For now, need to pass this tolarance for it
+# the randomization at the C level. For now, need to pass this tolerance for it
 # to work.
 # (AA: 2026-02-06)
 tol <- 1e-6
@@ -40,40 +40,28 @@ hartmann6 <- function(x) {
   fun
 }
 
+lb <- rep(0, 6L)
+ub <- rep(1, 6L)
+x0 <- rep(0.5, 6L)
+ctl <- list(xtol_rel = 1e-8, maxeval = 1000L)
+
 # Test printout if nl.info passed. The word "Call:" should be in output if
 # passed and not if not passed.
-expect_output(suppressMessages(direct(hartmann6, rep(0, 6L), rep(1, 6L),
-                                       nl.info = TRUE,
-                                       control = list(xtol_rel = 1e-8,
-                                                      maxeval = 1000L))),
-              "Call:", fixed = TRUE)
+expect_output(direct(hartmann6, lb, ub, nl.info = TRUE), "Call:", fixed = TRUE)
 
-expect_output(suppressMessages(directL(hartmann6, rep(0, 6L), rep(1, 6L),
-                                       nl.info = TRUE,
-                                       control = list(xtol_rel = 1e-8,
-                                                    maxeval = 1000L))),
-              "Call:", fixed = TRUE)
+expect_output(directL(hartmann6, lb, ub, nl.info = TRUE), "Call:", fixed = TRUE)
 
-expect_silent(suppressMessages(direct(hartmann6, rep(0, 6L), rep(1, 6L),
-                                      nl.info = FALSE,
-                                      control = list(xtol_rel = 1e-8,
-                                                     maxeval = 1000L))))
+expect_silent(direct(hartmann6, lb, ub))
 
-expect_silent(suppressMessages(directL(hartmann6, rep(0, 6L), rep(1, 6L),
-                                       nl.info = FALSE,
-                                       control = list(xtol_rel = 1e-8,
-                                                      maxeval = 1000L))))
+expect_silent(directL(hartmann6, lb, ub))
 
 # Test DIRECT algorithm Scaled: TRUE Original: FALSE
-directTest <- suppressMessages(direct(hartmann6, rep(0, 6L), rep(1, 6L),
-                                    nl.info = FALSE,
-                                    control = list(xtol_rel = 1e-8,
-                                                   maxeval = 1000L)))
+directTest <- direct(hartmann6, lb, ub, control = ctl)
 
-directControl <- nloptr(x0 = (rep(0, 6L) + rep(1, 6L)) / 2,
+directControl <- nloptr(x0 = x0,
                         eval_f = hartmann6,
-                        lb = rep(0, 6L),
-                        ub = rep(1, 6L),
+                        lb = lb,
+                        ub = ub,
                         opts = list(algorithm = "NLOPT_GN_DIRECT",
                                     xtol_rel = 1e-8, maxeval = 1000L))
 
@@ -84,15 +72,12 @@ expect_identical(directTest$convergence, directControl$status)
 expect_identical(directTest$message, directControl$message)
 
 # Test DIRECT algorithm Scaled: FALSE Original: FALSE
-directTest <- suppressMessages(direct(hartmann6, rep(0, 6L), rep(1, 6L),
-                                      nl.info = FALSE, scaled = FALSE,
-                                      control = list(xtol_rel = 1e-8,
-                                                     maxeval = 1000L)))
+directTest <- direct(hartmann6, lb, ub, scaled = FALSE, control = ctl)
 
-directControl <- nloptr(x0 = (rep(0, 6L) + rep(1, 6L)) / 2,
+directControl <- nloptr(x0 = x0,
                         eval_f = hartmann6,
-                        lb = rep(0, 6L),
-                        ub = rep(1, 6L),
+                        lb = lb,
+                        ub = ub,
                         opts = list(algorithm = "NLOPT_GN_DIRECT_NOSCAL",
                                     xtol_rel = 1e-8, maxeval = 1000L))
 
@@ -103,16 +88,13 @@ expect_identical(directTest$convergence, directControl$status)
 expect_identical(directTest$message, directControl$message)
 
 # Test DIRECT algorithm Original: TRUE
-directTest <- suppressMessages(direct(hartmann6, rep(0, 6L), rep(1, 6L),
-                                      nl.info = FALSE, scaled = FALSE,
-                                      original = TRUE,
-                                      control = list(xtol_rel = 1e-8,
-                                                     maxeval = 1000L)))
+directTest <- direct(hartmann6, lb, ub, scaled = FALSE, original = TRUE,
+                     control = ctl)
 
-directControl <- nloptr(x0 = (rep(0, 6L) + rep(1, 6L)) / 2,
+directControl <- nloptr(x0 = x0,
                         eval_f = hartmann6,
-                        lb = rep(0, 6L),
-                        ub = rep(1, 6L),
+                        lb = lb,
+                        ub = ub,
                         opts = list(algorithm = "NLOPT_GN_ORIG_DIRECT",
                                     xtol_rel = 1e-8, maxeval = 1000L))
 
@@ -123,15 +105,12 @@ expect_identical(directTest$convergence, directControl$status)
 expect_identical(directTest$message, directControl$message)
 
 # Test DIRECTL algorithm Randomized: FALSE Original: FALSE
-directLTest <- suppressMessages(directL(hartmann6, rep(0, 6L), rep(1, 6L),
-                                        nl.info = FALSE,
-                                        control = list(xtol_rel = 1e-8,
-                                                       maxeval = 1000L)))
+directLTest <- directL(hartmann6, lb, ub, control = ctl)
 
-directLControl <- nloptr(x0 = (rep(0, 6L) + rep(1, 6L)) / 2,
+directLControl <- nloptr(x0 = x0,
                         eval_f = hartmann6,
-                        lb = rep(0, 6L),
-                        ub = rep(1, 6L),
+                        lb = lb,
+                        ub = ub,
                         opts = list(algorithm = "NLOPT_GN_DIRECT_L",
                                     xtol_rel = 1e-8, maxeval = 1000L))
 
@@ -142,17 +121,12 @@ expect_identical(directLTest$convergence, directLControl$status)
 expect_identical(directLTest$message, directLControl$message)
 
 # Test DIRECTL algorithm Randomized: TRUE Original: FALSE
-set.seed(198L)
-directLTest <- suppressMessages(directL(hartmann6, rep(0, 6L), rep(1, 6L),
-                                        nl.info = FALSE, randomized = TRUE,
-                                        control = list(xtol_rel = 1e-8,
-                                                       maxeval = 1000L)))
+directLTest <- directL(hartmann6, lb, ub, randomized = TRUE, control = ctl)
 
-set.seed(198L)
-directLControl <- nloptr(x0 = (rep(0, 6L) + rep(1, 6L)) / 2,
+directLControl <- nloptr(x0 = x0,
                          eval_f = hartmann6,
-                         lb = rep(0, 6L),
-                         ub = rep(1, 6L),
+                         lb = lb,
+                         ub = ub,
                          opts = list(algorithm = "NLOPT_GN_DIRECT_L_RAND",
                                      xtol_rel = 1e-8, maxeval = 1000L))
 
@@ -166,16 +140,13 @@ expect_identical(directLTest$convergence, directLControl$status)
 expect_identical(directLTest$message, directLControl$message)
 
 # Test DIRECTL algorithm Original: TRUE
-directLTest <- suppressMessages(directL(hartmann6, rep(0, 6L), rep(1, 6L),
-                                        nl.info = FALSE, randomized = TRUE,
-                                        original = TRUE,
-                                        control = list(xtol_rel = 1e-8,
-                                                       maxeval = 1000L)))
+directLTest <- directL(hartmann6, lb, ub, randomized = TRUE, original = TRUE,
+                       control = ctl)
 
-directLControl <- nloptr(x0 = (rep(0, 6L) + rep(1, 6L)) / 2,
+directLControl <- nloptr(x0 = x0,
                          eval_f = hartmann6,
-                         lb = rep(0, 6L),
-                         ub = rep(1, 6L),
+                         lb = lb,
+                         ub = ub,
                          opts = list(algorithm = "NLOPT_GN_ORIG_DIRECT_L",
                                      xtol_rel = 1e-8, maxeval = 1000L))
 

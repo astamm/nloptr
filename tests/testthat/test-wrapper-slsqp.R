@@ -63,14 +63,13 @@ expect_message(slsqp(x0.hs100, fn = fn.hs100, hin = hin.hs100), ineqMess)
 
 # Test printout if nl.info passed. The word "Call:" should be in output if
 # passed and not if not passed.
-expect_output(suppressMessages(slsqp(x0.hs100, fn = fn.hs100, hin = hin.hs100,
-                                     nl.info = TRUE)), "Call:", fixed = TRUE)
+expect_output(slsqp(x0.hs100, fn = fn.hs100, nl.info = TRUE),
+              "Call:", fixed = TRUE)
 
-expect_silent(suppressMessages(slsqp(x0.hs100, fn = fn.hs100, hin = hin.hs100)))
+expect_silent(slsqp(x0.hs100, fn = fn.hs100))
 
 # No passed gradient or Inequality Jacobians
-
-slsqpTest <- suppressMessages(slsqp(x0.hs100, fn = fn.hs100, hin = hin.hs100))
+slsqpTest <- suppressMessages(slsqp(x0.hs100, fn.hs100, hin = hin.hs100))
 
 slsqpControl <- nloptr(x0 = x0.hs100,
                        eval_f = fn.hs100,
@@ -87,7 +86,6 @@ expect_identical(slsqpTest$convergence, slsqpControl$status)
 expect_identical(slsqpTest$message, slsqpControl$message)
 
 # Passed gradient or Inequality Jacobians
-
 slsqpTest <- suppressMessages(slsqp(x0.hs100, fn = fn.hs100, gr = gr.hs100,
                                     hin = hin.hs100, hinjac = hinjac.hs100))
 
