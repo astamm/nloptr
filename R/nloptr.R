@@ -463,12 +463,9 @@ function(x0,
     # nloptr.options.description is a data.frame with options
     # that is loaded when nloptr is loaded.
     nloptr.default.options <- nloptr.get.default.options()
-    list_algorithms <-  unlist(
-                            strsplit(
-                                nloptr.default.options[nloptr.default.options$name == "algorithm", "possible_values"],
-                                ", "
-                           )
-                       )
+    list_algorithms <-  unlist(strsplit(
+        nloptr.default.options[nloptr.default.options$name == "algorithm", "possible_values"],
+        split = ", ", fixed = TRUE))
 
     # run derivative checker
     if (opts$check_derivatives) {
@@ -476,8 +473,7 @@ function(x0,
         if (opts$algorithm %in% list_algorithms[grep("NLOPT_[G,L]N", list_algorithms)]) {
             warning("Skipping derivative checker because algorithm '",
                     opts$algorithm, "' does not use gradients.")
-       }
-        else {
+        } else {
             # check derivatives of objective function
             message("Checking gradients of objective function.")
             check.derivatives(
