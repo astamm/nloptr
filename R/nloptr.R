@@ -325,8 +325,8 @@ function(x0,
                 for (i in seq_along(mx1)) {
                     stop(funname, " requires argument '", fnms[mx1[i]],
                          "' but this has not been passed to the 'nloptr' function.\n")
-               }
-           }
+                }
+            }
             m2 <- match(rnms, fnms)
             if (anyNA(m2)) {
                 mx2 <- which(is.na(m2))
@@ -334,12 +334,10 @@ function(x0,
                     stop(rnms[mx2[i]],
                          "' passed to (...) in 'nloptr' but this is not required in the ",
                          funname, " function.\n")
-               }
-           }
-       }
-        return(0)
-   }
-
+                }
+            }
+        }
+    }
 
     # extract list of additional arguments and check user-defined functions
     arglist <- list(...)
@@ -354,101 +352,92 @@ function(x0,
     if (is.null(lb)) {lb <- rep(-Inf, length(x0))}
     if (is.null(ub)) {ub <- rep(Inf, length(x0))}
 
-    # if eval_f does not return a list, write a wrapper function combining eval_f and eval_grad_f
+    # if eval_f does not return a list, write a wrapper function combining
+    # eval_f and eval_grad_f
     if (is.list(eval_f(x0, ...)) || is.null(eval_grad_f)) {
-
-            eval_f_wrapper <- function(x) {eval_f(x, ...)}
-
-   } else {
-
+        eval_f_wrapper <- function(x) {eval_f(x, ...)}
+    } else {
         eval_f_wrapper <- function(x) {
-            return(list("objective" = eval_f(x, ...),
-                        "gradient"  = eval_grad_f(x, ...)))
-       }
-   }
+            list("objective" = eval_f(x, ...),
+                 "gradient"  = eval_grad_f(x, ...))
+        }
+    }
 
-    # change the environment of the inequality constraint functions that we're calling
+    # change the environment of the inequality constraint functions that we're
+    # calling
     num_constraints_ineq <- 0
     if (!is.null(eval_g_ineq)) {
 
-        # if eval_g_ineq does not return a list, write a wrapper function combining eval_g_ineq and eval_jac_g_ineq
+        # if eval_g_ineq does not return a list, write a wrapper function
+        # combining eval_g_ineq and eval_jac_g_ineq
         if (is.list(eval_g_ineq(x0, ...)) || is.null(eval_jac_g_ineq)) {
-
             eval_g_ineq_wrapper <- function(x) {eval_g_ineq(x, ...)}
-
-       } else {
-
+        } else {
             eval_g_ineq_wrapper <- function(x) {
-                return(list("constraints" = eval_g_ineq(x, ...),
-                              "jacobian"  = eval_jac_g_ineq(x, ...)))
-           }
-       }
+                list("constraints" = eval_g_ineq(x, ...),
+                     "jacobian"  = eval_jac_g_ineq(x, ...))
+            }
+        }
 
         # determine number of constraints
         tmp_constraints <- eval_g_ineq_wrapper(x0)
         if (is.list(tmp_constraints)) {
             num_constraints_ineq <- length(tmp_constraints$constraints)
-       } else {
+        } else {
             num_constraints_ineq <- length(tmp_constraints)
-       }
-
-   } else {
+        }
+    } else {
         # define dummy function
         eval_g_ineq_wrapper <- NULL
-   }
+    }
 
-
-    # change the environment of the equality constraint functions that we're calling
+    # change the environment of the equality constraint functions that we're
+    # calling
     num_constraints_eq <- 0
     if (!is.null(eval_g_eq)) {
 
-        # if eval_g_eq does not return a list, write a wrapper function combining eval_g_eq and eval_jac_g_eq
+        # if eval_g_eq does not return a list, write a wrapper function
+        # combining eval_g_eq and eval_jac_g_eq
         if (is.list(eval_g_eq(x0, ...)) || is.null(eval_jac_g_eq)) {
-
             eval_g_eq_wrapper <- function(x) {eval_g_eq(x, ...)}
-
-       } else {
-
+        } else {
             eval_g_eq_wrapper <- function(x) {
-                return(list("constraints" = eval_g_eq(x, ...),
-                              "jacobian"  = eval_jac_g_eq(x, ...)))
-           }
-
-       }
+                list("constraints" = eval_g_eq(x, ...),
+                     "jacobian"  = eval_jac_g_eq(x, ...))
+            }
+        }
 
         # determine number of constraints
         tmp_constraints <- eval_g_eq_wrapper(x0)
         if (is.list(tmp_constraints)) {
             num_constraints_eq <- length(tmp_constraints$constraints)
-       } else {
+        } else {
             num_constraints_eq <- length(tmp_constraints)
-       }
-
-   } else {
+        }
+    } else {
         # define dummy function
         eval_g_eq_wrapper <- NULL
-   }
-
+    }
 
     # extract local options from list of options if they exist
     if ("local_opts" %in% names(opts)) {
         res.opts.add <- nloptr.add.default.options(
-                        opts.user                = opts$local_opts,
-                        x0                       = x0,
-                        num_constraints_ineq     = num_constraints_ineq,
-                        num_constraints_eq       = num_constraints_eq)
+            opts.user                = opts$local_opts,
+            x0                       = x0,
+            num_constraints_ineq     = num_constraints_ineq,
+            num_constraints_eq       = num_constraints_eq)
         local_opts   <- res.opts.add$opts.user
         opts$local_opts <- NULL
-   } else {
+    } else {
         local_opts <- NULL
-   }
+    }
 
     # add defaults to list of options
     res.opts.add <- nloptr.add.default.options(
-                opts.user                = opts,
-                x0                       = x0,
-                num_constraints_ineq     = num_constraints_ineq,
-                num_constraints_eq       = num_constraints_eq)
+        opts.user                = opts,
+        x0                       = x0,
+        num_constraints_ineq     = num_constraints_ineq,
+        num_constraints_eq       = num_constraints_eq)
     opts <- res.opts.add$opts.user
 
     # add the termination criteria to the list
@@ -457,11 +446,11 @@ function(x0,
     # print description of options if requested
     if (opts$print_options_doc) {
         nloptr.print.options(opts.user = opts)
-   }
+    }
 
     # define list with all algorithms
-    # nloptr.options.description is a data.frame with options
-    # that is loaded when nloptr is loaded.
+    # nloptr.options.description is a data.frame with options that is loaded
+    # when nloptr is loaded.
     nloptr.default.options <- nloptr.get.default.options()
     list_algorithms <-  unlist(strsplit(
         nloptr.default.options[nloptr.default.options$name == "algorithm", "possible_values"],
@@ -469,7 +458,6 @@ function(x0,
 
     # run derivative checker
     if (opts$check_derivatives) {
-
         if (opts$algorithm %in% grep("NLOPT_[G,L]N",
                                      list_algorithms, value = TRUE)) {
             warning("Skipping derivative checker because algorithm '",
@@ -483,8 +471,7 @@ function(x0,
                 func_grad = function(x) {eval_f_wrapper(x)$gradient},
                 check_derivatives_tol = opts$check_derivatives_tol,
                 check_derivatives_print = opts$check_derivatives_print,
-                func_grad_name = "eval_grad_f"
-           )
+                func_grad_name = "eval_grad_f")
 
             if (num_constraints_ineq > 0) {
                 # check derivatives of inequality constraints
@@ -495,9 +482,8 @@ function(x0,
                     func_grad = function(x) {eval_g_ineq_wrapper(x)$jacobian},
                     check_derivatives_tol = opts$check_derivatives_tol,
                     check_derivatives_print = opts$check_derivatives_print,
-                    func_grad_name = "eval_jac_g_ineq"
-               )
-           }
+                    func_grad_name = "eval_jac_g_ineq")
+            }
 
             if (num_constraints_eq > 0) {
                 # check derivatives of equality constraints
@@ -508,24 +494,22 @@ function(x0,
                     func_grad = function(x) {eval_g_eq_wrapper(x)$jacobian},
                     check_derivatives_tol = opts$check_derivatives_tol,
                     check_derivatives_print = opts$check_derivatives_print,
-                    func_grad_name = "eval_jac_g_eq"
-               )
-           }
-       }
+                    func_grad_name = "eval_jac_g_eq")
+            }
+        }
+    }
 
-   }
-
-    ret <- list("x0"                    = x0,
-                 "eval_f"               = eval_f_wrapper,
-                 "lower_bounds"         = lb,
-                 "upper_bounds"         = ub,
-                 "num_constraints_ineq" = num_constraints_ineq,
-                 "eval_g_ineq"          = eval_g_ineq_wrapper,
-                 "num_constraints_eq"   = num_constraints_eq,
-                 "eval_g_eq"            = eval_g_eq_wrapper,
-                 "options"              = opts,
-                 "local_options"        = local_opts,
-                 "nloptr_environment"   = new.env())
+    ret <- list("x0"                   = x0,
+                "eval_f"               = eval_f_wrapper,
+                "lower_bounds"         = lb,
+                "upper_bounds"         = ub,
+                "num_constraints_ineq" = num_constraints_ineq,
+                "eval_g_ineq"          = eval_g_ineq_wrapper,
+                "num_constraints_eq"   = num_constraints_eq,
+                "eval_g_eq"            = eval_g_eq_wrapper,
+                "options"              = opts,
+                "local_options"        = local_opts,
+                "nloptr_environment"   = new.env())
 
     attr(ret, "class") <- "nloptr"
 
@@ -535,7 +519,7 @@ function(x0,
     # add the termination criteria to the list
     ret$termination_conditions <- termination_conditions
 
-    # check whether we have a correctly formed ipoptr object
+    # check whether we have a correctly formed nloptr object
     is.nloptr(ret)
 
     # Count the number of times that we try to solve the problem.
@@ -545,7 +529,8 @@ function(x0,
         # Update the number of evaluations.
         num.evals <- num.evals + 1
 
-        # choose correct minimzation function based on wether constrained were supplied
+        # choose correct minimization function based on whether constrained were
+        # supplied
         solution <- .Call(NLoptR_Optimize, ret)
 
         # remove the environment from the return object
@@ -557,23 +542,25 @@ function(x0,
         ret$iterations <- solution$iterations
         ret$objective  <- solution$objective
         ret$solution   <- solution$solution
-        ret$version    <- paste(c(solution$version_major, solution$version_minor, solution$version_bugfix), collapse = ".")
+        ret$version    <- paste(c(solution$version_major,
+                                  solution$version_minor,
+                                  solution$version_bugfix),
+                                collapse = ".")
         ret$num.evals  <- num.evals
 
-        # If maxtime is set to a positive number in the options
-        # or if the return status of the solver is not equal to
-        # 6, we can stop trying to solve the problem.
+        # If maxtime is set to a positive number in the options or if the return
+        # status of the solver is not equal to 6, we can stop trying to solve
+        # the problem.
         #
-        # Solution status 6: NLOPT_MAXTIME_REACHED: Optimization
-        # stopped because maxtime (above) was reached.
+        # Solution status 6: NLOPT_MAXTIME_REACHED: Optimization stopped because
+        # maxtime (above) was reached.
         #
-        # This loop is need, because sometimes the solver exits
-        # with this code, even if maxtime is set to 0 or a negative
-        # number.
+        # This loop is needed because sometimes the solver exits with this code
+        # even if maxtime is set to 0 or a negative number.
         if (opts$maxtime > 0 || solution$status != 6) {
             solve.continue <- FALSE
-       }
-   }
+        }
+    }
 
-    return(ret)
+    ret # return call unnecessary; .Primitive return will be called.
 }
