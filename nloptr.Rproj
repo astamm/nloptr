@@ -18,5 +18,8 @@ LineEndingConversion: Posix
 
 BuildType: Package
 PackageUseDevtools: Yes
-PackageInstallArgs: --no-multiarch --with-keep.source --clean
+PackageInstallArgs: --no-multiarch --with-keep.source --clean  --preclean
+PackageBuildArgs: --md5 --compact-vignettes="both"
+PackageBuildBinaryArgs: --clean  --preclean
+PackageCheckArgs: --as-cran --timings
 PackageRoxygenize: rd,collate,namespace
