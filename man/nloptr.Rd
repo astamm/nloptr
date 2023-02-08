@@ -28,13 +28,13 @@ elements "objective" and "gradient" (see below for an example).}
 \item{eval_grad_f}{function that returns the value of the gradient of the
 objective function. Not all of the algorithms require a gradient.}
 
-\item{lb}{vector with lower bounds of the controls (use -Inf for controls
-without lower bound), by default there are no lower bounds for any of the
-controls.}
+\item{lb}{vector with lower bounds of the controls (use \code{-Inf} for
+controls without lower bound), by default there are no lower bounds for any
+of the controls.}
 
-\item{ub}{vector with upper bounds of the controls (use Inf for controls
-without upper bound), by default there are no upper bounds for any of the
-controls.}
+\item{ub}{vector with upper bounds of the controls (use \code{Inf} for
+controls without upper bound), by default there are no upper bounds for any
+of the controls.}
 
 \item{eval_g_ineq}{function to evaluate (non-)linear inequality constraints
 that should hold in the solution.  It can also return gradient information
@@ -45,40 +45,43 @@ below for an example).}
 inequality constraints that should hold in the solution.}
 
 \item{eval_g_eq}{function to evaluate (non-)linear equality constraints that
-should hold in the solution.  It can also return gradient information at the
-same time in a list with elements "constraints" and "jacobian" (see below for
-an example).}
+should hold in the solution.  It can also return gradient information at
+the same time in a list with elements "constraints" and "jacobian" (see
+below for an example).}
 
 \item{eval_jac_g_eq}{function to evaluate the jacobian of the (non-)linear
 equality constraints that should hold in the solution.}
 
-\item{opts}{list with options. The option "algorithm" is required. Check the
-\href{https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/}{NLopt website}
-for a full list of available algorithms. Other options control the
-termination conditions (minf_max, ftol_rel, ftol_abs, xtol_rel, xtol_abs,
-maxeval, maxtime). Default is xtol_rel = 1e-4. More information
+\item{opts}{list with options. The option "\code{algorithm}" is required.
+Check the
+\href{https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/}{NLopt
+website} for a full list of available algorithms. Other options control the
+termination conditions (\code{minf_max, ftol_rel, ftol_abs, xtol_rel,}
+\code{xtol_abs, maxeval, maxtime}). Default is \code{xtol_rel} = 1e-4. More
+information
 \href{https://nlopt.readthedocs.io/en/latest/NLopt_Introduction/#termination-conditions}{here}.
 A full description of all options is shown by the function
 \code{nloptr.print.options()}.
 
-Some algorithms with equality constraints require the option local_opts,
-which contains a list with an algorithm and a termination condition for the
-local algorithm. See ?\code{nloptr-package} for an example.
+Some algorithms with equality constraints require the option
+\code{local_opts}, which contains a list with an algorithm and a termination
+condition for the local algorithm. See \code{?`nloptr-package`} for an
+example.
 
-The option print_level controls how much output is shown during the
+The option \code{print_level} controls how much output is shown during the
 optimization process. Possible values: \tabular{ll}{0 (default) \tab no
 output \cr 1 \tab show iteration number and value of objective function \cr
 2 \tab 1 + show value of (in)equalities \cr 3 \tab 2 + show value of
 controls}
 
-The option check_derivatives (default = FALSE) can be used to run to compare
-the analytic gradients with finite difference approximations.  The option
-check_derivatives_print ('all' (default), 'errors', 'none') controls the
-output of the derivative checker, if it is run, showing all comparisons,
-only those that resulted in an error, or none.  The option
-check_derivatives_tol (default = 1e-04), determines when a difference
-between an analytic gradient and its finite difference approximation is
-flagged as an error.}
+The option \code{check_derivatives} (default = \code{FALSE}) can be used to
+run to compare the analytic gradients with finite difference approximations.
+The option \code{check_derivatives_print} (\code{'all'} (default),
+\code{'errors'}, \code{'none'}) controls the output of the derivative
+checker, if it is run, showing all comparisons, only those that resulted in
+an error, or none.  The option \code{check_derivatives_tol} (default =
+1e-04), determines when a difference between an analytic gradient and its
+finite difference approximation is flagged as an error.}
 
 \item{...}{arguments that will be passed to the user-defined objective and
 constraints functions.}
@@ -97,32 +100,34 @@ success)}
 }
 \description{
 nloptr is an R interface to NLopt, a free/open-source library for nonlinear
-optimization started by Steven G. Johnson, providing a common interface for
-a number of different free optimization routines available online as well as
+optimization started by Steven G. Johnson, providing a common interface for a
+number of different free optimization routines available online as well as
 original implementations of various other algorithms. The NLopt library is
 available under the GNU Lesser General Public License (LGPL), and the
 copyrights are owned by a variety of authors. Most of the information here
-has been taken from \href{https://nlopt.readthedocs.io/en/latest/}{the NLopt website},
-where more details are available.
+has been taken from \href{https://nlopt.readthedocs.io/en/latest/}{the NLopt
+website}, where more details are available.
 }
 \details{
 NLopt addresses general nonlinear optimization problems of the form:
 
-min f(x) x in R^n
+\deqn{\min f(x)\quad x\in R^n}{min f(x) x in R^n}
 
-s.t.  g(x) <= 0 h(x) = 0 lb <= x <= ub
+\deqn{\textrm{s.t. }\\ g(x) \leq 0\\ h(x) = 0\\ lb \leq x \leq ub}{
+s.t.  g(x) <= 0 h(x) = 0 lb <= x <= ub}
 
-where f is the objective function to be minimized and x represents the n
-optimization parameters. This problem may optionally be subject to the bound
-constraints (also called box constraints), lb and ub. For partially or
-totally unconstrained problems the bounds can take -Inf or Inf. One may also
-optionally have m nonlinear inequality constraints (sometimes called a
-nonlinear programming problem), which can be specified in g(x), and equality
-constraints that can be specified in h(x). Note that not all of the
-algorithms in NLopt can handle constraints.
+where \eqn{f(x)} is the objective function to be minimized and \eqn{x}
+represents the \eqn{n} optimization parameters. This problem may optionally
+be subject to the bound constraints (also called box constraints), \eqn{lb}
+and \eqn{ub}. For partially or totally unconstrained problems the bounds can
+take \code{-Inf} or \code{Inf}. One may also optionally have \eqn{m}
+nonlinear inequality constraints (sometimes called a nonlinear programming
+problem), which can be specified in \eqn{g(x)}, and equality constraints that
+can be specified in \eqn{h(x)}. Note that not all of the algorithms in NLopt
+can handle constraints.
 }
 \note{
-See ?\code{nloptr-package} for an extended example.
+See \code{?`nloptr-package`} for an extended example.
 }
 \examples{
 
@@ -187,7 +192,7 @@ library('nloptr')
 
 
 # objective function
-eval_f0 <- function(x, a, b){
+eval_f0 <- function(x, a, b) {
     return(sqrt(x[2]))
 }
 
@@ -197,7 +202,7 @@ eval_g0 <- function(x, a, b) {
 }
 
 # gradient of objective function
-eval_grad_f0 <- function(x, a, b){
+eval_grad_f0 <- function(x, a, b) {
     return(c(0, .5/sqrt(x[2])))
 }
 
@@ -211,7 +216,7 @@ eval_jac_g0 <- function(x, a, b) {
 # functions with gradients in objective and constraint function
 # this can be useful if the same calculations are needed for
 # the function value and the gradient
-eval_f1 <- function(x, a, b){
+eval_f1 <- function(x, a, b) {
     return(list("objective"=sqrt(x[2]),
                  "gradient"=c(0,.5/sqrt(x[2]))))
 }
@@ -266,7 +271,7 @@ print(res2)
 }
 \references{
 Steven G. Johnson, The NLopt nonlinear-optimization package,
-\url{https://nlopt.readthedocs.io/en/latest/}
+\url{http://github.com/stevengj/nlopt}
 }
 \seealso{
 \code{\link[nloptr:nloptr.print.options]{nloptr.print.options}}
