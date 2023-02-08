@@ -1,5 +1,5 @@
 # Copyright (C) 2010 Jelmer Ypma. All Rights Reserved.
-# This code is published under the L-GPL.
+# SPDX-License-Identifier: LGPL-3.0-or-later
 #
 # File:   test-hs071.R
 # Author: Jelmer Ypma
@@ -24,78 +24,73 @@
 # Optimal solution = (1.00000000, 4.74299963, 3.82114998, 1.37940829)
 #
 # CHANGELOG:
-#   05/05/2014: Changed example to use unit testing framework testthat.
-#   12/12/2019: Corrected warnings and using updated testtthat framework (Avraham Adler)
+#   2014-05-05: Changed example to use unit testing framework testthat.
+#   2019-12-12: Corrected warnings and using updated testtthat framework (Avraham Adler)
+#   2023-02-07: Remove wrapping tests in "test_that" to reduce duplication. (Avraham Adler)
 
-test_that( "Test HS071.", {
+# f(x) = x1*x4*(x1 + x2 + x3) + x3
+eval_f <- function(x) {
+    list("objective" = x[1] * x[4] * (x[1] + x[2] + x[3]) + x[3],
+         "gradient" = c(x[1] * x[4] + x[4] * (x[1] + x[2] + x[3]),
+                        x[1] * x[4],
+                        x[1] * x[4] + 1,
+                        x[1] * (x[1] + x[2] + x[3])))
+}
 
-    #
-    # f(x) = x1*x4*(x1 + x2 + x3) + x3
-    #
-    eval_f <- function( x ) {
-        return( list( "objective" = x[1]*x[4]*(x[1] + x[2] + x[3]) + x[3],
-                      "gradient" = c( x[1] * x[4] + x[4] * (x[1] + x[2] + x[3]),
-                                      x[1] * x[4],
-                                      x[1] * x[4] + 1.0,
-                                      x[1] * (x[1] + x[2] + x[3]) ) ) )
-    }
+# Inequality constraints.
+eval_g_ineq <- function(x) {
+    constr <- c(25 - x[1] * x[2] * x[3] * x[4])
+    grad <- c(-x[2] * x[3] * x[4],
+              -x[1] * x[3] * x[4],
+              -x[1] * x[2] * x[4],
+              -x[1] * x[2] * x[3])
+    list("constraints" = constr, "jacobian" = grad)
+}
 
-    # Inequality constraints.
-    eval_g_ineq <- function( x ) {
-        constr <- c( 25 - x[1] * x[2] * x[3] * x[4] )
+# Equality constraints.
+eval_g_eq <- function(x) {
+    constr <- c(x[1] ^ 2 + x[2] ^ 2 + x[3] ^ 2 + x[4] ^ 2 - 40)
+    grad <- c(2.0 * x[1],
+              2.0 * x[2],
+              2.0 * x[3],
+              2.0 * x[4])
+    list("constraints" = constr, "jacobian" = grad)
+}
 
-        grad   <- c( -x[2]*x[3]*x[4],
-                     -x[1]*x[3]*x[4],
-                     -x[1]*x[2]*x[4],
-                     -x[1]*x[2]*x[3] )
-        return( list( "constraints"=constr, "jacobian"=grad ) )
-    }
+# Initial values.
+x0 <- c(1, 5, 5, 1)
 
-    # Equality constraints.
-    eval_g_eq <- function( x ) {
-        constr <- c( x[1]^2 + x[2]^2 + x[3]^2 + x[4]^2 - 40 )
+# Lower and upper bounds of control.
+lb <- c(1, 1, 1, 1)
+ub <- c(5, 5, 5, 5)
 
-        grad   <- c(  2.0*x[1],
-                      2.0*x[2],
-                      2.0*x[3],
-                      2.0*x[4] )
-        return( list( "constraints"=constr, "jacobian"=grad ) )
-    }
+# Optimal solution.
+solution.opt <- c(1.00000000, 4.74299963, 3.82114998, 1.37940829)
 
-    # Initial values.
-    x0 <- c( 1, 5, 5, 1 )
+# Set optimization options.
+local_opts <- list("algorithm" = "NLOPT_LD_MMA", "xtol_rel"  = 1.0e-7)
+opts <- list("algorithm"   = "NLOPT_LD_AUGLAG",
+             "xtol_rel"    = 1.0e-7,
+             "maxeval"     = 1000,
+             "local_opts"  = local_opts,
+             "print_level" = 0)
 
-    # Lower and upper bounds of control.
-    lb <- c( 1, 1, 1, 1 )
-    ub <- c( 5, 5, 5, 5 )
+# Do optimization.
+res <- nloptr(x0          = x0,
+              eval_f      = eval_f,
+              lb          = lb,
+              ub          = ub,
+              eval_g_ineq = eval_g_ineq,
+              eval_g_eq   = eval_g_eq,
+              opts        = opts)
 
-    # Optimal solution.
-    solution.opt <- c(1.00000000, 4.74299963, 3.82114998, 1.37940829)
+# Run some checks on the optimal solution.
+expect_equal(res$solution, solution.opt, tolerance = 1e-5)
+expect_true(all(res$solution >= lb))
+expect_true(all(res$solution <= ub))
 
-    # Set optimization options.
-    local_opts <- list( "algorithm" = "NLOPT_LD_MMA",
-                        "xtol_rel"  = 1.0e-7 )
-    opts <- list( "algorithm"   = "NLOPT_LD_AUGLAG",
-                  "xtol_rel"    = 1.0e-7,
-                  "maxeval"     = 1000,
-                  "local_opts"  = local_opts,
-                  "print_level" = 0 )
+# Check whether constraints are violated (up to specified tolerance).
 
-    # Do optimization.
-    res <- nloptr( x0          = x0,
-                   eval_f      = eval_f,
-                   lb          = lb,
-                   ub          = ub,
-                   eval_g_ineq = eval_g_ineq,
-                   eval_g_eq   = eval_g_eq,
-                   opts        = opts )
-
-    # Run some checks on the optimal solution.
-    expect_equal(res$solution, solution.opt, tolerance = 1e-5)
-    expect_true(all(res$solution >= lb))
-    expect_true(all(res$solution <= ub))
-
-    # Check whether constraints are violated (up to specified tolerance).
-    expect_true( eval_g_ineq( res$solution )$constr <= res$options$tol_constraints_ineq)
-    expect_equal(eval_g_eq(res$solution)$constr, 0, tolerance = res$options$tol_constraints_eq)
-} )
+expect_true(eval_g_ineq(res$solution)$constr <= res$options$tol_constraints_ineq)
+expect_equal(eval_g_eq(res$solution)$constr, 0,
+             tolerance = res$options$tol_constraints_eq)

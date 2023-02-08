@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-3.0-or-later
 # File:   ccsaq.R
 # Author: Julien Chiquet
 # Date:   02 October 2018

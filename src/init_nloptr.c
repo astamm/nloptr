@@ -104,4 +104,5 @@ void R_init_nloptr(DllInfo *info) {
     // Register routines to improve lookup from R using .Call interface.
     R_registerRoutines(info, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(info, FALSE);
+    R_forceSymbols(info, TRUE);
 }

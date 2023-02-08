@@ -1,5 +1,5 @@
 # Copyright (C) 2010 Jelmer Ypma. All Rights Reserved.
-# This code is published under the L-GPL.
+# SPDX-License-Identifier: LGPL-3.0-or-later
 #
 # File:   test-systemofeq.R
 # Author: Jelmer Ypma
@@ -13,108 +13,75 @@
 # Optimal solution for x: -1.61803398875
 #
 # CHANGELOG:
-#   16/06/2011: added NLOPT_LD_SLSQP
-#   05/05/2014: Changed example to use unit testing framework testthat.
-#   12/12/2019: Corrected warnings and using updated testtthat framework (Avraham Adler)
+#   2011-06-16: added NLOPT_LD_SLSQP
+#   2014-05-05: Changed example to use unit testing framework testthat.
+#   2019-12-12: Corrected warnings and using updated testtthat framework (Avraham Adler)
+#   2023-02-07: Remove wrapping tests in "test_that" to reduce duplication. (Avraham Adler)
 
-test_that( "Solve system of equations using NLOPT_LD_MMA with local optimizer NLOPT_LD_MMA.", {
-    # Objective function.
-    eval_f0 <- function( x, params ) {
-        return( 1 )
-    }
+tol <- sqrt(.Machine$double.eps)
 
-    # Gradient of objective function.
-    eval_grad_f0 <- function( x, params ) {
-        return( 0 )
-    }
+# Test Solve system of equations using NLOPT_LD_MMA with local optimizer
+# NLOPT_LD_MMA.
 
-    # Equality constraint function.
-    eval_g0_eq <- function( x, params ) {
-        return( params[1]*x^2 + params[2]*x + params[3] )
-    }
+# Objective function.
+eval_f0 <- function(x, params) 1
 
-    # Jacobian of constraint.
-    eval_jac_g0_eq <- function( x, params ) {
-        return( 2*params[1]*x + params[2] )
-    }
+# Gradient of objective function.
+eval_grad_f0 <- function(x, params) 0
 
-    # Define vector with addiitonal data.
-    params <- c(1, 1, -1)
+# Equality constraint function.
+eval_g0_eq <- function(x, params) {
+    params[1] * x ^ 2 + params[2] * x + params[3]
+}
 
-    # Define optimal solution.
-    solution.opt <- -1.61803398875
+# Jacobian of constraint.
+eval_jac_g0_eq <- function(x, params) {
+    2 * params[1] * x + params[2]
+}
 
-    #
-    # Solve using NLOPT_LD_MMA with local optimizer NLOPT_LD_MMA.
-    #
-    local_opts <- list( "algorithm" = "NLOPT_LD_MMA",
-                        "xtol_rel"  = 1.0e-6 )
+# Define vector with addiitonal data.
+params <- c(1, 1, -1)
 
-    opts <- list( "algorithm"  = "NLOPT_LD_AUGLAG",
-                  "xtol_rel"   = 1.0e-6,
-                  "local_opts" = local_opts )
+# Define optimal solution.
+solution.opt <- -1.61803398875
 
-    res <- nloptr( x0            = -5,
-                   eval_f        = eval_f0,
-                   eval_grad_f   = eval_grad_f0,
-                   eval_g_eq     = eval_g0_eq,
-                   eval_jac_g_eq = eval_jac_g0_eq,
-                   opts          = opts,
-                   params        = params )
+local_opts <- list("algorithm" = "NLOPT_LD_MMA", "xtol_rel"  = 1.0e-6)
 
-    # Run some checks on the optimal solution.
-    expect_equal(res$solution, solution.opt)
+opts <- list("algorithm"  = "NLOPT_LD_AUGLAG",
+             "xtol_rel"   = 1.0e-6,
+             "local_opts" = local_opts)
 
-    # Check whether constraints are violated (up to specified tolerance).
-    expect_equal(eval_g0_eq(res$solution, params = params), 0,
-                 tolerance = res$options$tol_constraints_eq)
-} )
+res <- nloptr(x0            = -5,
+              eval_f        = eval_f0,
+              eval_grad_f   = eval_grad_f0,
+              eval_g_eq     = eval_g0_eq,
+              eval_jac_g_eq = eval_jac_g0_eq,
+              opts          = opts,
+              params        = params)
 
-test_that( "Solve system of equations using NLOPT_LD_SLSQP.", {
-    # Objective function.
-    eval_f0 <- function( x, params ) {
-        return( 1 )
-    }
+# Run some checks on the optimal solution.
+expect_equal(res$solution, solution.opt, tolerance = tol)
 
-    # Gradient of objective function.
-    eval_grad_f0 <- function( x, params ) {
-        return( 0 )
-    }
+# Check whether constraints are violated (up to specified tolerance).
+expect_equal(eval_g0_eq(res$solution, params = params), 0,
+             tolerance = res$options$tol_constraints_eq)
 
-    # Equality constraint function.
-    eval_g0_eq <- function( x, params ) {
-        return( params[1]*x^2 + params[2]*x + params[3] )
-    }
+# Test Solve system of equations using NLOPT_LD_SLSQP.
+# Solve using NLOPT_LD_SLSQP.
 
-    # Jacobian of constraint.
-    eval_jac_g0_eq <- function( x, params ) {
-        return( 2*params[1]*x + params[2] )
-    }
+opts <- list("algorithm" = "NLOPT_LD_SLSQP", "xtol_rel"  = 1.0e-6)
 
-    # Define vector with addiitonal data.
-    params <- c(1, 1, -1)
+res <- nloptr(x0            = -5,
+              eval_f        = eval_f0,
+              eval_grad_f   = eval_grad_f0,
+              eval_g_eq     = eval_g0_eq,
+              eval_jac_g_eq = eval_jac_g0_eq,
+              opts          = opts,
+              params        = params)
 
-    # Define optimal solution.
-    solution.opt <- -1.61803398875
+# Run some checks on the optimal solution.
+expect_equal(res$solution, solution.opt, tolerance = tol)
 
-    #
-    # Solve using NLOPT_LD_SLSQP.
-    #
-    opts <- list( "algorithm" = "NLOPT_LD_SLSQP",
-                  "xtol_rel"  = 1.0e-6 )
-
-    res <- nloptr( x0            = -5,
-                   eval_f        = eval_f0,
-                   eval_grad_f   = eval_grad_f0,
-                   eval_g_eq     = eval_g0_eq,
-                   eval_jac_g_eq = eval_jac_g0_eq,
-                   opts          = opts,
-                   params        = params )
-
-    # Run some checks on the optimal solution.
-    expect_equal(res$solution, solution.opt)
-
-    # Check whether constraints are violated (up to specified tolerance).
-    expect_equal(eval_g0_eq(res$solution, params = params), 0,
-                 tolerance = res$options$tol_constraints_eq)
-} )
+# Check whether constraints are violated (up to specified tolerance).
+expect_equal(eval_g0_eq(res$solution, params = params), 0,
+             tolerance = res$options$tol_constraints_eq)

@@ -1,5 +1,5 @@
 # Copyright (C) 2010 Jelmer Ypma. All Rights Reserved.
-# This code is published under the L-GPL.
+# SPDX-License-Identifier: LGPL-3.0-or-later
 #
 # File:   test-hs023.R
 # Author: Jelmer Ypma
@@ -31,65 +31,61 @@
 # Optimal solution = (1, 1)
 #
 # CHANGELOG:
-#   05/05/2014: Changed example to use unit testing framework testthat.
-#   12/12/2019: Corrected warnings and using updated testtthat framework (Avraham Adler)
+#   2014-05-05: Changed example to use unit testing framework testthat.
+#   2019-12-12: Corrected warnings and using updated testtthat framework (Avraham Adler)
+#   2023-02-07: Remove wrapping tests in "test_that" to reduce duplication. (Avraham Adler)
+#
 
-test_that( "Test HS023.", {
-    #
-    # f(x) = x1^2 + x2^2
-    #
-    eval_f <- function( x ) {
-        return( list( "objective" = x[1]^2 + x[2]^2,
-                      "gradient" = c( 2*x[1],
-                                      2*x[2] ) ) )
-    }
+# f(x) = x1^2 + x2^2
+eval_f <- function(x) {
+    list("objective" = x[1] ^ 2 + x[2] ^ 2,
+          "gradient" = c(2 * x[1], 2 * x[2]))
+}
 
-    # Inequality constraints.
-    eval_g_ineq <- function( x ) {
-        constr <- c( 1 - x[1] - x[2],
-                     1 - x[1]^2 - x[2]^2,
-                     9 - 9*x[1]^2 - x[2]^2,
-                     x[2] - x[1]^2,
-                     x[1] - x[2]^2 )
+# Inequality constraints.
+eval_g_ineq <- function(x) {
+    constr <- c(1 - x[1] - x[2],
+                1 - x[1] ^ 2 - x[2] ^ 2,
+                9 - 9 * x[1] ^ 2 - x[2] ^ 2,
+                x[2] - x[1] ^ 2,
+                x[1] - x[2] ^ 2)
+    grad <- rbind(c(-1, -1),
+                  c(-2 * x[1], -2 * x[2]),
+                  c(-18 * x[1], -2 * x[2]),
+                  c(-2 * x[1], 1),
+                  c(1, -2 * x[2]))
+    list("constraints" = constr, "jacobian" = grad)
+}
 
-        grad   <- rbind( c( -1, -1 ),
-                         c( -2*x[1], -2*x[2] ),
-                         c( -18*x[1], -2*x[2] ),
-                         c( -2*x[1], 1 ),
-                         c( 1, -2*x[2] ) )
+# Initial values.
+x0 <- c(3, 1)
 
-        return( list( "constraints"=constr, "jacobian"=grad ) )
-    }
+# Lower and upper bounds of control.
+lb <- c(-50, -50)
+ub <- c( 50,  50)
 
-    # Initial values.
-    x0 <- c( 3, 1 )
+# Optimal solution.
+solution.opt <- c(1, 1)
 
-    # Lower and upper bounds of control.
-    lb <- c( -50, -50 )
-    ub <- c(  50,  50 )
+# Solve with MMA.
+opts <- list("algorithm"            = "NLOPT_LD_MMA",
+             "xtol_rel"             = 1.0e-6,
+             "tol_constraints_ineq" = rep(1.0e-6, 5),
+             "print_level"          = 0)
 
-    # Optimal solution.
-    solution.opt <- c( 1, 1 )
+res <- nloptr(
+    x0          = x0,
+    eval_f      = eval_f,
+    lb          = lb,
+    ub          = ub,
+    eval_g_ineq = eval_g_ineq,
+    opts        = opts)
 
-    # Solve with MMA.
-    opts <- list( "algorithm"            = "NLOPT_LD_MMA",
-                  "xtol_rel"             = 1.0e-6,
-                  "tol_constraints_ineq" = rep( 1.0e-6, 5 ),
-                  "print_level"          = 0 )
+# Run some checks on the optimal solution.
+expect_equal(res$solution, solution.opt, tolerance = 1e-6)
+expect_true(all(res$solution >= lb))
+expect_true(all(res$solution <= ub))
 
-    res <- nloptr(
-        x0          = x0,
-        eval_f      = eval_f,
-        lb          = lb,
-        ub          = ub,
-        eval_g_ineq = eval_g_ineq,
-        opts        = opts )
-
-    # Run some checks on the optimal solution.
-    expect_equal(res$solution, solution.opt, tolerance = 1e-6)
-    expect_true(all(res$solution >= lb))
-    expect_true(all(res$solution <= ub))
-
-    # Check whether constraints are violated (up to specified tolerance).
-    expect_true(all(eval_g_ineq(res$solution )$constr <= res$options$tol_constraints_ineq))
-} )
+# Check whether constraints are violated (up to specified tolerance).
+expect_true(all(eval_g_ineq(res$solution)$constr <=
+                    res$options$tol_constraints_ineq))

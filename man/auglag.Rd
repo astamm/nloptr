@@ -14,7 +14,7 @@ auglag(
   hinjac = NULL,
   heq = NULL,
   heqjac = NULL,
-  localsolver = c("COBYLA"),
+  localsolver = "COBYLA",
   localtol = 1e-06,
   ineq2local = FALSE,
   nl.info = FALSE,

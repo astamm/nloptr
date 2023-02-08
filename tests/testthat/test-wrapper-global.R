@@ -172,7 +172,7 @@ expect_output(crs2lm(x0 = x0, hartmann6, lower = lb, upper = ub, nl.info = TRUE)
 expect_silent(crs2lm(x0 = x0, hartmann6, lower = lb, upper = ub))
 
 crs2lmTest <- crs2lm(x0 = x0, hartmann6, lower = lb, upper = ub, ranseed = 43L,
-                     xtol_rel = 1e-8, maxeval = 10000L)
+                     xtol_rel = 1e-8, maxeval = 100L)
 
 crs2lmControl <- nloptr(x0 = x0,
                         eval_f = hartmann6,
@@ -180,12 +180,12 @@ crs2lmControl <- nloptr(x0 = x0,
                         ub = ub,
                         opts = list(algorithm = "NLOPT_GN_CRS2_LM",
                                     xtol_rel = 1e-8,
-                                    maxeval = 10000L,
+                                    maxeval = 100L,
                                     ranseed = 43L,
                                     population = 70))
 
-expect_identical(stogoTest$par, stogoControl$solution)
-expect_identical(stogoTest$value, stogoControl$objective)
-expect_identical(stogoTest$iter, stogoControl$iterations)
-expect_identical(stogoTest$convergence, stogoControl$status)
-expect_identical(stogoTest$message, stogoControl$message)
+expect_identical(crs2lmTest$par, crs2lmControl$solution)
+expect_identical(crs2lmTest$value, crs2lmControl$objective)
+expect_identical(crs2lmTest$iter, crs2lmControl$iterations)
+expect_identical(crs2lmTest$convergence, crs2lmControl$status)
+expect_identical(crs2lmTest$message, crs2lmControl$message)

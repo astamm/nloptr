@@ -42,7 +42,7 @@ SystemRequirements: cmake (>= 3.2.0) which is used only on Linux or macOS
 Biarch: true
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.3
 LinkingTo: testthat
 Suggests: 
     knitr,

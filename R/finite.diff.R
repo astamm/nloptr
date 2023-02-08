@@ -1,5 +1,5 @@
 # Copyright (C) 2011 Jelmer Ypma. All Rights Reserved.
-# This code is published under the L-GPL.
+# SPDX-License-Identifier: LGPL-3.0-or-later
 #
 # File:   finite.diff.R
 # Author: Jelmer Ypma

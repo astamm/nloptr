@@ -40,7 +40,8 @@ hart.gr <- function(x) nl.grad(x, hartmann6)
 
 x0 <- lb <- rep(0, 6L)
 ub <- rep(1, 6L)
-ctl <- list(xtol_rel = 1e-8, maxeval = 1000L)
+ctl <- list(xtol_rel = 1e-8, maxeval = 750L)
+lopt <- list(algorithm = "NLOPT_LD_LBFGS", xtol_rel = 1e-4)
 
 # Test printout if nl.info passed. The word "Call:" should be in output if
 # passed and not if not passed.
@@ -69,10 +70,8 @@ mlslControl <- nloptr(x0 = x0,
                       lb = lb,
                       ub = ub,
                       opts = list(algorithm = "NLOPT_GD_MLSL_LDS",
-                                  xtol_rel = 1e-8, maxeval = 1000L,
-                                  local_opts = list(
-                                    algorithm = "NLOPT_LD_LBFGS",
-                                    xtol_rel  = 1e-4)))
+                                  xtol_rel = 1e-8, maxeval = 750L,
+                                  local_opts = lopt))
 
 expect_identical(mlslTest$par, mlslControl$solution)
 expect_identical(mlslTest$value, mlslControl$objective)
@@ -90,13 +89,14 @@ mlslControl <- nloptr(x0 = x0,
                       lb = lb,
                       ub = ub,
                       opts = list(algorithm = "NLOPT_GD_MLSL",
-                                  xtol_rel = 1e-8, maxeval = 1000L,
-                                  local_opts = list(
-                                    algorithm = "NLOPT_LD_LBFGS",
-                                    xtol_rel  = 1e-4)))
+                                  xtol_rel = 1e-8, maxeval = 750L,
+                                  local_opts = lopt))
 
 expect_equal(mlslTest$par, mlslControl$solution, tolerance = tol)
 expect_equal(mlslTest$value, mlslControl$objective, tolerance = tol)
-expect_identical(mlslTest$iter, mlslControl$iterations)
+# See https://nlopt.readthedocs.io/en/latest/NLopt_Reference/#stopping-criteria
+# "This is not a strict maximum: the number of function evaluations may exceed
+# maxeval slightly, depending upon the algorithm."
+expect_lte(abs(mlslTest$iter - mlslControl$iterations), 10L)
 expect_identical(mlslTest$convergence, mlslControl$status)
 expect_identical(mlslTest$message, mlslControl$message)
