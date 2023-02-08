@@ -62,38 +62,38 @@
 #'
 #' stogo(x0 = x0, fn = fn, lower = lb, upper = ub)
 #'
-stogo <-
-    function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
-             maxeval = 10000, xtol_rel = 1e-6, randomized = FALSE,
-             nl.info = FALSE, ...)  # control = list()
-    {
-        # opts <- nl.opts(control)
-        opts <- list()
-        opts$maxeval    <- maxeval
-        opts$xtol_rel   <- xtol_rel
-        if (randomized) opts["algorithm"] <- "NLOPT_GD_STOGO_RAND"
-        else            opts["algorithm"] <- "NLOPT_GD_STOGO"
+stogo <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
+                  maxeval = 10000, xtol_rel = 1e-6, randomized = FALSE,
+                  nl.info = FALSE, ...) { # control = list()
 
-        fun <- match.fun(fn)
-        fn  <- function(x) fun(x, ...)
-
-        if (is.null(gr)) {
-            gr <- function(x) nl.grad(x, fn)
-        }
-
-        S0 <- nloptr(x0,
-                     eval_f = fn,
-                     eval_grad_f = gr,
-                     lb = lower,
-                     ub = upper,
-                     opts = opts)
-
-        if (nl.info) print(S0)
-        S1 <- list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-                   convergence = S0$status, message = S0$message)
-        return(S1)
+    # opts <- nl.opts(control)
+    opts <- list()
+    opts$maxeval <- maxeval
+    opts$xtol_rel <- xtol_rel
+    if (randomized) {
+        opts["algorithm"] <- "NLOPT_GD_STOGO_RAND"
+    } else {
+        opts["algorithm"] <- "NLOPT_GD_STOGO"
     }
 
+    fun <- match.fun(fn)
+    fn <- function(x) fun(x, ...)
+
+    if (is.null(gr)) {gr <- function(x) nl.grad(x, fn)}
+
+    S0 <- nloptr(x0,
+                 eval_f = fn,
+                 eval_grad_f = gr,
+                 lb = lower,
+                 ub = upper,
+                 opts = opts)
+
+    if (nl.info) print(S0)
+
+    list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+         convergence = S0$status, message = S0$message)
+
+}
 
 #-- Supports nonlinear constraints: quite inaccurate! -------------- ISRES ---
 
@@ -161,48 +161,49 @@ stogo <-
 #'
 #' isres(x0 = x0, fn = fn, lower = lb, upper = ub)
 #'
-isres <-
-    function(x0, fn, lower, upper, hin = NULL, heq = NULL,
-             maxeval = 10000, pop.size = 20*(length(x0)+1),
-             xtol_rel = 1e-6, nl.info = FALSE, ...)
-    {
-        #opts <- nl.opts(control)
-        opts <- list()
-        opts$maxeval    <- maxeval
-        opts$xtol_rel   <- xtol_rel
-        opts$population <- pop.size
-        opts$algorithm  <- "NLOPT_GN_ISRES"
 
-        fun <- match.fun(fn)
-        fn  <- function(x) fun(x, ...)
+isres <- function(x0, fn, lower, upper, hin = NULL, heq = NULL,
+                  maxeval = 10000, pop.size = 20 * (length(x0) + 1),
+                  xtol_rel = 1e-6, nl.info = FALSE, ...) {
 
-        if (!is.null(hin)) {
-            if ( getOption('nloptr.show.inequality.warning') ) {
-                message('For consistency with the rest of the package the inequality sign may be switched from >= to <= in a future nloptr version.')
-            }
+    #opts <- nl.opts(control)
+    opts <- list()
+    opts$maxeval    <- maxeval
+    opts$xtol_rel   <- xtol_rel
+    opts$population <- pop.size
+    opts$algorithm  <- "NLOPT_GN_ISRES"
 
-            .hin <- match.fun(hin)
-            hin <- function(x) (-1) * .hin(x)   # change  hin >= 0  to  hin <= 0 !
+    fun <- match.fun(fn)
+    fn  <- function(x) fun(x, ...)
+
+    if (!is.null(hin)) {
+        if (getOption("nloptr.show.inequality.warning")) {
+            message("For consistency with the rest of the package the ",
+                    "inequality sign may be switched from >= to <= in a ",
+                    "future nloptr version.")
         }
 
-        if (!is.null(heq)) {
-            .heq <- match.fun(heq)
-            heq <- function(x) .heq(x)
-        }
-
-        S0 <- nloptr(x0 = x0,
-                     eval_f = fn,
-                     lb = lower,
-                     ub = upper,
-                     eval_g_ineq = hin,
-                     eval_g_eq = heq,
-                     opts = opts)
-
-        if (nl.info) print(S0)
-        S1 <- list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-                   convergence = S0$status, message = S0$message)
-        return(S1)
+        .hin <- match.fun(hin)
+        hin <- function(x) -.hin(x)   # change  hin >= 0  to  hin <= 0 !
     }
+
+    if (!is.null(heq)) {
+        .heq <- match.fun(heq)
+        heq <- function(x) .heq(x)
+    }
+
+    S0 <- nloptr(x0 = x0,
+                 eval_f = fn,
+                 lb = lower,
+                 ub = upper,
+                 eval_g_ineq = hin,
+                 eval_g_eq = heq,
+                 opts = opts)
+
+    if (nl.info) print(S0)
+    list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+         convergence = S0$status, message = S0$message)
+}
 
 
 #-- ------------------------------------------------------------------ CRS ---
@@ -285,31 +286,30 @@ isres <-
 #' ## Optimal value of objective function:  -3.32236801141551
 #' ## Optimal value of controls: 0.2016895 0.1500107 0.476874 0.2753324 0.3116516 0.6573005
 #'
-crs2lm <-
-function(x0, fn, lower, upper,
-            maxeval = 10000, pop.size = 10*(length(x0)+1), ranseed = NULL,
-            xtol_rel = 1e-6, nl.info = FALSE, ...)
-{
+
+crs2lm <- function(x0, fn, lower, upper, maxeval = 10000,
+                   pop.size = 10 * (length(x0) + 1), ranseed = NULL,
+                    xtol_rel = 1e-6, nl.info = FALSE, ...) {
+
     #opts <- nl.opts(control)
     opts <- list()
-    opts$maxeval    <- maxeval
-    opts$xtol_rel   <- xtol_rel
+    opts$maxeval <- maxeval
+    opts$xtol_rel <- xtol_rel
     opts$population <- pop.size
-    if (!is.null(ranseed))
-       opts$ranseed <- as.integer(ranseed)
+    if (!is.null(ranseed)) {opts$ranseed <- as.integer(ranseed)}
     opts$algorithm  <- "NLOPT_GN_CRS2_LM"
 
     fun <- match.fun(fn)
     fn  <- function(x) fun(x, ...)
 
     S0 <- nloptr(x0,
-                eval_f = fn,
-                lb = lower,
-                ub = upper,
-                opts = opts)
+                 eval_f = fn,
+                 lb = lower,
+                 ub = upper,
+                 opts = opts)
 
     if (nl.info) print(S0)
-    S1 <- list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-                convergence = S0$status, message = S0$message)
-    return(S1)
+
+    list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+         convergence = S0$status, message = S0$message)
 }
