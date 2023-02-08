@@ -343,16 +343,16 @@ function(x0,
 
     # extract list of additional arguments and check user-defined functions
     arglist <- list(...)
-    .checkfunargs(eval_f, arglist, 'eval_f')
-    if (!is.null(eval_grad_f)) {.checkfunargs(eval_grad_f, arglist, 'eval_grad_f')}
-    if (!is.null(eval_g_ineq)) {.checkfunargs(eval_g_ineq, arglist, 'eval_g_ineq')}
-    if (!is.null(eval_jac_g_ineq)) {.checkfunargs(eval_jac_g_ineq, arglist, 'eval_jac_g_ineq')}
-    if (!is.null(eval_g_eq)) {.checkfunargs(eval_g_eq, arglist, 'eval_g_eq')}
-    if (!is.null(eval_jac_g_eq)) {.checkfunargs(eval_jac_g_eq, arglist, 'eval_jac_g_eq')}
+    .checkfunargs(eval_f, arglist, "eval_f")
+    if (!is.null(eval_grad_f)) {.checkfunargs(eval_grad_f, arglist, "eval_grad_f")}
+    if (!is.null(eval_g_ineq)) {.checkfunargs(eval_g_ineq, arglist, "eval_g_ineq")}
+    if (!is.null(eval_jac_g_ineq)) {.checkfunargs(eval_jac_g_ineq, arglist, "eval_jac_g_ineq")}
+    if (!is.null(eval_g_eq)) {.checkfunargs(eval_g_eq, arglist, "eval_g_eq")}
+    if (!is.null(eval_jac_g_eq)) {.checkfunargs(eval_jac_g_eq, arglist, "eval_jac_g_eq")}
 
     # define 'infinite' lower and upper bounds of the control if they haven't been set
     if (is.null(lb)) {lb <- rep(-Inf, length(x0))}
-    if (is.null(ub)) {ub <- rep( Inf, length(x0))}
+    if (is.null(ub)) {ub <- rep(Inf, length(x0))}
 
     # if eval_f does not return a list, write a wrapper function combining eval_f and eval_grad_f
     if (is.list(eval_f(x0, ...)) |
@@ -364,7 +364,7 @@ function(x0,
 
         eval_f_wrapper <- function(x) {
             return(list("objective" = eval_f(x, ...),
-                          "gradient"  = eval_grad_f(x, ...)))
+                        "gradient"  = eval_grad_f(x, ...)))
        }
    }
 
@@ -489,7 +489,7 @@ function(x0,
                 func_grad = function(x) {eval_f_wrapper(x)$gradient},
                 check_derivatives_tol = opts$check_derivatives_tol,
                 check_derivatives_print = opts$check_derivatives_print,
-                func_grad_name = 'eval_grad_f'
+                func_grad_name = "eval_grad_f"
            )
 
             if (num_constraints_ineq > 0) {
@@ -501,7 +501,7 @@ function(x0,
                     func_grad = function(x) {eval_g_ineq_wrapper(x)$jacobian},
                     check_derivatives_tol = opts$check_derivatives_tol,
                     check_derivatives_print = opts$check_derivatives_print,
-                    func_grad_name = 'eval_jac_g_ineq'
+                    func_grad_name = "eval_jac_g_ineq"
                )
            }
 
@@ -514,7 +514,7 @@ function(x0,
                     func_grad = function(x) {eval_g_eq_wrapper(x)$jacobian},
                     check_derivatives_tol = opts$check_derivatives_tol,
                     check_derivatives_print = opts$check_derivatives_print,
-                    func_grad_name = 'eval_jac_g_eq'
+                    func_grad_name = "eval_jac_g_eq"
                )
            }
        }
@@ -563,7 +563,7 @@ function(x0,
         ret$iterations <- solution$iterations
         ret$objective  <- solution$objective
         ret$solution   <- solution$solution
-        ret$version    <- paste(c(solution$version_major, solution$version_minor, solution$version_bugfix), collapse = '.')
+        ret$version    <- paste(c(solution$version_major, solution$version_minor, solution$version_bugfix), collapse = ".")
         ret$num.evals  <- num.evals
 
         # If maxtime is set to a positive number in the options
