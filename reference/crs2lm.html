@@ -182,34 +182,32 @@ algorithm for global optimization,'' J. Optim. Theory Appl. 130 (2), 253-264
 <span class="r-in"><span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">fun</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">S</span> <span class="op">&lt;-</span> <span class="fu"><a href="mlsl.html">mlsl</a></span><span class="op">(</span>x0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">6</span><span class="op">)</span>, <span class="va">hartmann6</span>, lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">6</span><span class="op">)</span>, upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">6</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>            nl.info <span class="op">=</span> <span class="cn">TRUE</span>, control<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>xtol_rel<span class="op">=</span><span class="fl">1e-8</span>, maxeval<span class="op">=</span><span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">S</span> <span class="op">&lt;-</span> <span class="fu">crs2lm</span><span class="op">(</span>x0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">6</span><span class="op">)</span>, <span class="va">hartmann6</span>, lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">6</span><span class="op">)</span>, upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">6</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>            nl.info <span class="op">=</span> <span class="cn">TRUE</span>, xtol_rel<span class="op">=</span><span class="fl">1e-8</span>, maxeval <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> nloptr(x0 = x0, eval_f = fn, eval_grad_f = gr, lb = lower, ub = upper, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     opts = opts)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> nloptr(x0 = x0, eval_f = fn, lb = lower, ub = upper, opts = opts)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Minimization using NLopt version 2.7.1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NLopt solver status: 5 ( NLOPT_MAXEVAL_REACHED: Optimization stopped because </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> maxeval (above) was reached. )</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NLopt solver status: 4 ( NLOPT_XTOL_REACHED: Optimization stopped because </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> xtol_rel or xtol_abs (above) was reached. )</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Number of Iterations....: 1000 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Termination conditions:  stopval: -Inf	xtol_rel: 1e-08	maxeval: 1000	ftol_rel: 0	ftol_abs: 0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of Iterations....: 5131 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Termination conditions:  maxeval: 10000	xtol_rel: 1e-08 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of inequality constraints:  0 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of equality constraints:    0 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Current value of objective function:  -3.32236801141544 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Current value of controls: 0.2016895 0.1500107 0.476874 0.2753324 0.3116516 0.6573005</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Optimal value of objective function:  -3.32236801141551 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Optimal value of controls: 0.2016895 0.1500107 0.476874 0.2753324 0.3116516 0.6573005</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span><span class="co">## Number of Iterations....: 4050</span></span></span>
-<span class="r-in"><span><span class="co">## Termination conditions:  maxeval: 10000  xtol_rel: 1e-06</span></span></span>
+<span class="r-in"><span><span class="co">## Number of Iterations....: 5106</span></span></span>
+<span class="r-in"><span><span class="co">## Termination conditions:  maxeval: 10000  xtol_rel: 1e-08</span></span></span>
 <span class="r-in"><span><span class="co">## Number of inequality constraints:  0</span></span></span>
 <span class="r-in"><span><span class="co">## Number of equality constraints:    0</span></span></span>
-<span class="r-in"><span><span class="co">## Optimal value of objective function:  -3.32236801141328</span></span></span>
-<span class="r-in"><span><span class="co">## Optimal value of controls:</span></span></span>
-<span class="r-in"><span><span class="co">##     0.2016893 0.1500105 0.4768738 0.2753326 0.3116516 0.6573004</span></span></span>
+<span class="r-in"><span><span class="co">## Optimal value of objective function:  -3.32236801141551</span></span></span>
+<span class="r-in"><span><span class="co">## Optimal value of controls: 0.2016895 0.1500107 0.476874 0.2753324 0.3116516 0.6573005</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
