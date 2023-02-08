@@ -303,22 +303,22 @@ function(x0,
           ...) {
 
     # internal function to check the arguments of the functions
-    .checkfunargs = function(fun, arglist, funname) {
+    .checkfunargs <- function(fun, arglist, funname) {
         if (!is.function(fun)) stop(paste(funname, " must be a function\n", sep = ""))
-        flist = formals(fun)
+        flist <- formals(fun)
         if (length(flist) > 1) {
-            fnms  = names(flist)[2:length(flist)]    # remove first argument, which is x
-            rnms  = names(arglist)
-            m1 = match(fnms, rnms)
+            fnms <- names(flist)[2:length(flist)]    # remove first argument, which is x
+            rnms <- names(arglist)
+            m1 <- match(fnms, rnms)
             if (any(is.na(m1))) {
-                mx1 = which(is.na(m1))
+                mx1 <- which(is.na(m1))
                 for (i in 1:length(mx1)) {
                     stop(paste(funname, " requires argument '", fnms[mx1[i]], "' but this has not been passed to the 'nloptr' function.\n", sep = ""))
                }
            }
-            m2 = match(rnms, fnms)
+            m2 <- match(rnms, fnms)
             if (any(is.na(m2))) {
-                mx2 = which(is.na(m2))
+                mx2 <- which(is.na(m2))
                 for (i in 1:length(mx2)) {
                     stop(paste(rnms[mx2[i]], "' passed to (...) in 'nloptr' but this is not required in the ", funname, " function.\n", sep = ""))
                }
@@ -329,7 +329,7 @@ function(x0,
 
 
     # extract list of additional arguments and check user-defined functions
-    arglist = list(...)
+    arglist <- list(...)
     .checkfunargs(eval_f, arglist, 'eval_f')
     if (!is.null(eval_grad_f)) {.checkfunargs(eval_grad_f, arglist, 'eval_grad_f')}
     if (!is.null(eval_g_ineq)) {.checkfunargs(eval_g_ineq, arglist, 'eval_g_ineq')}
