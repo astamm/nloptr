@@ -470,7 +470,8 @@ function(x0,
     # run derivative checker
     if (opts$check_derivatives) {
 
-        if (opts$algorithm %in% list_algorithms[grep("NLOPT_[G,L]N", list_algorithms)]) {
+        if (opts$algorithm %in% grep("NLOPT_[G,L]N",
+                                     list_algorithms, value = TRUE)) {
             warning("Skipping derivative checker because algorithm '",
                     opts$algorithm, "' does not use gradients.")
         } else {
