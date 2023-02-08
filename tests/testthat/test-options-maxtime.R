@@ -16,7 +16,7 @@
 # Objective function with sleep added such that maxtime will be reached when
 # solving the optimization problem.
 eval_f <- function(x) {
-    Sys.sleep(2)
+    Sys.sleep(0.1)
     x ^ 2
 }
 
@@ -27,7 +27,7 @@ x0 <- 5
 
 # Define optimizer options.
 opts <- list("algorithm" = "NLOPT_LD_LBFGS",
-             "maxtime"   = 1,
+             "maxtime"   = 0.05,
              "xtol_rel"  = 1e-4)
 # Solve problem.
 res <- nloptr(
