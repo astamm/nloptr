@@ -355,8 +355,7 @@ function(x0,
     if (is.null(ub)) {ub <- rep(Inf, length(x0))}
 
     # if eval_f does not return a list, write a wrapper function combining eval_f and eval_grad_f
-    if (is.list(eval_f(x0, ...)) |
-         is.null(eval_grad_f)) {
+    if (is.list(eval_f(x0, ...)) || is.null(eval_grad_f)) {
 
             eval_f_wrapper <- function(x) {eval_f(x, ...)}
 
@@ -373,8 +372,7 @@ function(x0,
     if (!is.null(eval_g_ineq)) {
 
         # if eval_g_ineq does not return a list, write a wrapper function combining eval_g_ineq and eval_jac_g_ineq
-        if (is.list(eval_g_ineq(x0, ...)) |
-             is.null(eval_jac_g_ineq)) {
+        if (is.list(eval_g_ineq(x0, ...)) || is.null(eval_jac_g_ineq)) {
 
             eval_g_ineq_wrapper <- function(x) {eval_g_ineq(x, ...)}
 
@@ -405,8 +403,7 @@ function(x0,
     if (!is.null(eval_g_eq)) {
 
         # if eval_g_eq does not return a list, write a wrapper function combining eval_g_eq and eval_jac_g_eq
-        if (is.list(eval_g_eq(x0, ...)) |
-             is.null(eval_jac_g_eq)) {
+        if (is.list(eval_g_eq(x0, ...)) || is.null(eval_jac_g_eq)) {
 
             eval_g_eq_wrapper <- function(x) {eval_g_eq(x, ...)}
 
@@ -547,7 +544,7 @@ function(x0,
     # Count the number of times that we try to solve the problem.
     num.evals <- 0
     solve.continue <- TRUE
-    while (num.evals <= 10 & solve.continue) {
+    while (num.evals <= 10 && solve.continue) {
         # Update the number of evaluations.
         num.evals <- num.evals + 1
 
@@ -576,7 +573,7 @@ function(x0,
         # This loop is need, because sometimes the solver exits
         # with this code, even if maxtime is set to 0 or a negative
         # number.
-        if (opts$maxtime > 0 | solution$status != 6) {
+        if (opts$maxtime > 0 || solution$status != 6) {
             solve.continue <- FALSE
        }
    }
