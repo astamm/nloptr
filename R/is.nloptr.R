@@ -35,12 +35,12 @@
 
 is.nloptr <- function(x) {
 
-    # Helper values
-    lx0 <- length(x$x0)
-
     # Check whether the object exists and is a list
     if (is.null(x)) return(FALSE) # Proper use of return to break out early :)
     if (!is.list(x)) return(FALSE)
+
+    # Helper values now that we are certain x is a list
+    lx0 <- length(x$x0)
 
     # Check whether the needed wrapper functions are supplied
     if (!is.function(x$eval_f)) stop("eval_f is not a function")
