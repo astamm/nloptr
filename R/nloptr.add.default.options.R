@@ -17,10 +17,12 @@
 #    opts.user with default options added for those options
 #              that were not part of the original opts.user.
 #
-# Changelog:
-#   17-08-2016: Fixed bug that sometimes caused segmentation faults
-#               due to uninitialized tolerances for the (in)equality
-#               constraints (thanks to Florian Schwendiger).
+# CHANGELOG:
+#   2016-08-17: Fixed bug that sometimes caused segmentation faults due to
+#               uninitialized tolerances for the (in)equality constraints
+#               (thanks to Florian Schwendiger).
+#   2023-02-08: Tweaks for efficiency and readability (Avraham Adler)
+#
 
 nloptr.add.default.options <- function(
         opts.user,

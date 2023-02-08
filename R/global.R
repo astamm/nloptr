@@ -6,6 +6,9 @@
 # Date:   27 January 2014
 #
 # Wrapper to solve optimization problem using StoGo.
+#
+# CHANGELOG
+#   2023-02-08: Tweaks for efficiency and readability (Avraham Adler)
 
 #-- Does not work: maybe C++ support missing? ---------------------- StoGo ---
 
