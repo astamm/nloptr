@@ -15,74 +15,57 @@
 # we could use a bound constraint as well here
 #
 # CHANGELOG:
-#   05/05/2014: Changed example to use unit testing framework testthat.
-#   12/12/2019: Corrected warnings and using updated testtthat framework (Avraham Adler)
+#   2014-05-05: Changed example to use unit testing framework testthat.
+#   2019-12-12: Corrected warnings and using updated testtthat framework (Avraham Adler)
+#   2023-02-07: Remove wrapping tests in "test_that" to reduce duplication. (Avraham Adler)
+#
 
-test_that( "Test simple constrained optimization problem with gradient information." , {
-    # Objective function.
-    eval_f <- function(x) {
-        return( x^2 )
-    }
+tol <- sqrt(.Machine$double.eps)
 
-    # Gradient of objective function.
-    eval_grad_f <- function(x) {
-        return( 2*x )
-    }
+# Test simple constrained optimization problem with gradient information.
 
-    # Inequality constraint function.
-    eval_g_ineq <- function( x ) {
-        return( 5 - x )
-    }
+# Objective function
+eval_f <- function(x) x ^ 2
 
-    # Jacobian of constraint.
-    eval_jac_g_ineq <- function( x ) {
-        return( -1 )
-    }
+# Gradient of objective function.
+eval_grad_f <- function(x) 2 * x
 
-    # Optimal solution.
-    solution.opt <- 5
+# Inequality constraint function.
+eval_g_ineq <- function(x) 5 - x
 
-    # Solve using NLOPT_LD_MMA with gradient information supplied in separate function
-    res <- nloptr( x0              = 1,
-                   eval_f          = eval_f,
-                   eval_grad_f     = eval_grad_f,
-                   eval_g_ineq     = eval_g_ineq,
-                   eval_jac_g_ineq = eval_jac_g_ineq,
-                   opts            = list("algorithm"="NLOPT_LD_MMA", "xtol_rel" = 1e-4) )
+# Jacobian of constraint.
+eval_jac_g_ineq <- function(x) -1
 
-    # Run some checks on the optimal solution.
-    expect_equal(res$solution, solution.opt)
+# Optimal solution.
+solution.opt <- 5
 
-    # Check whether constraints are violated (up to specified tolerance).
-    expect_true(eval_g_ineq(res$solution) <= res$options$tol_constraints_ineq)
-} )
+# Solve using NLOPT_LD_MMA with gradient information supplied in separate function
+res <- nloptr(x0              = 1,
+              eval_f          = eval_f,
+              eval_grad_f     = eval_grad_f,
+              eval_g_ineq     = eval_g_ineq,
+              eval_jac_g_ineq = eval_jac_g_ineq,
+              opts            = list("algorithm" = "NLOPT_LD_MMA",
+                                     "xtol_rel" = 1e-4))
 
-test_that( "Test simple constrained optimization problem without gradient information." , {
-    # Objective function.
-    eval_f <- function(x) {
-        return( x^2 )
-    }
+# Run some checks on the optimal solution.
+expect_equal(res$solution, solution.opt, tolerance = tol)
 
-    # Inequality constraint function.
-    eval_g_ineq <- function(x) {
-        return( 5 - x )
-    }
+# Check whether constraints are violated (up to specified tolerance).
+expect_true(eval_g_ineq(res$solution) <= res$options$tol_constraints_ineq)
 
-    # Optimal solution.
-    solution.opt <- 5
+# Test simple constrained optimization problem without gradient information.
 
-    # Solve using NLOPT_LN_COBYLA without gradient information
-    res <- nloptr( x0              = 1,
-                   eval_f          = eval_f,
-                   eval_g_ineq     = eval_g_ineq,
-                   opts            = list(
-                       "algorithm"            = "NLOPT_LN_COBYLA",
-                       "xtol_rel"             = 1e-6,
-                       "tol_constraints_ineq" = 1e-6 ) )
+# Solve using NLOPT_LN_COBYLA without gradient information
+res <- nloptr(x0              = 1,
+              eval_f          = eval_f,
+              eval_g_ineq     = eval_g_ineq,
+              opts            = list("algorithm"            = "NLOPT_LN_COBYLA",
+                                     "xtol_rel"             = 1e-6,
+                                     "tol_constraints_ineq" = 1e-6))
 
-    # Run some checks on the optimal solution.
-    expect_equal(res$solution, solution.opt, tolerance = 1e-6)
+# Run some checks on the optimal solution.
+expect_equal(res$solution, solution.opt, tolerance = 1e-6)
 
-    # Check whether constraints are violated (up to specified tolerance).
-    expect_true(eval_g_ineq( res$solution ) <= res$options$tol_constraints_ineq)
-} )
+# Check whether constraints are violated (up to specified tolerance).
+expect_true(eval_g_ineq(res$solution) <= res$options$tol_constraints_ineq)
