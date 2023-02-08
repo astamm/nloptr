@@ -317,12 +317,12 @@ function(x0,
         if (!is.function(fun)) stop(funname, " must be a function\n")
         flist <- formals(fun)
         if (length(flist) > 1) {
-            fnms <- names(flist)[2:length(flist)]    # remove first argument, which is x
+            fnms <- names(flist)[2:length(flist)] # remove first argument which is x
             rnms <- names(arglist)
             m1 <- match(fnms, rnms)
             if (anyNA(m1)) {
                 mx1 <- which(is.na(m1))
-                for (i in 1:length(mx1)) {
+                for (i in seq_along(mx1)) {
                     stop(funname, " requires argument '", fnms[mx1[i]],
                          "' but this has not been passed to the 'nloptr' function.\n")
                }
@@ -330,7 +330,7 @@ function(x0,
             m2 <- match(rnms, fnms)
             if (anyNA(m2)) {
                 mx2 <- which(is.na(m2))
-                for (i in 1:length(mx2)) {
+                for (i in seq_along(mx2)) {
                     stop(rnms[mx2[i]],
                          "' passed to (...) in 'nloptr' but this is not required in the ",
                          funname, " function.\n")
@@ -436,10 +436,10 @@ function(x0,
     # extract local options from list of options if they exist
     if ("local_opts" %in% names(opts)) {
         res.opts.add <- nloptr.add.default.options(
-                        opts.user                 = opts$local_opts,
-                        x0                         = x0,
+                        opts.user                = opts$local_opts,
+                        x0                       = x0,
                         num_constraints_ineq     = num_constraints_ineq,
-                        num_constraints_eq         = num_constraints_eq)
+                        num_constraints_eq       = num_constraints_eq)
         local_opts   <- res.opts.add$opts.user
         opts$local_opts <- NULL
    } else {
@@ -448,10 +448,10 @@ function(x0,
 
     # add defaults to list of options
     res.opts.add <- nloptr.add.default.options(
-                opts.user                 = opts,
-                x0                         = x0,
+                opts.user                = opts,
+                x0                       = x0,
                 num_constraints_ineq     = num_constraints_ineq,
-                num_constraints_eq         = num_constraints_eq)
+                num_constraints_eq       = num_constraints_eq)
     opts <- res.opts.add$opts.user
 
     # add the termination criteria to the list
@@ -521,7 +521,7 @@ function(x0,
 
    }
 
-    ret <- list("x0"                   = x0,
+    ret <- list("x0"                    = x0,
                  "eval_f"               = eval_f_wrapper,
                  "lower_bounds"         = lb,
                  "upper_bounds"         = ub,
