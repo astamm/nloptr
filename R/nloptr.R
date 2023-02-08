@@ -213,7 +213,7 @@
 #'
 #'
 #' # objective function
-#' eval_f0 <- function(x, a, b){
+#' eval_f0 <- function(x, a, b) {
 #'     return(sqrt(x[2]))
 #'}
 #'
@@ -223,7 +223,7 @@
 #'}
 #'
 #' # gradient of objective function
-#' eval_grad_f0 <- function(x, a, b){
+#' eval_grad_f0 <- function(x, a, b) {
 #'     return(c(0, .5/sqrt(x[2])))
 #'}
 #'
@@ -237,7 +237,7 @@
 #' # functions with gradients in objective and constraint function
 #' # this can be useful if the same calculations are needed for
 #' # the function value and the gradient
-#' eval_f1 <- function(x, a, b){
+#' eval_f1 <- function(x, a, b) {
 #'     return(list("objective"=sqrt(x[2]),
 #'                  "gradient"=c(0,.5/sqrt(x[2]))))
 #'}
@@ -304,22 +304,22 @@ function(x0,
 
     # internal function to check the arguments of the functions
     .checkfunargs = function(fun, arglist, funname) {
-        if(!is.function(fun)) stop(paste(funname, " must be a function\n", sep = ""))
+        if (!is.function(fun)) stop(paste(funname, " must be a function\n", sep = ""))
         flist = formals(fun)
         if (length(flist) > 1) {
             fnms  = names(flist)[2:length(flist)]    # remove first argument, which is x
             rnms  = names(arglist)
             m1 = match(fnms, rnms)
-            if(any(is.na(m1))){
+            if (any(is.na(m1))) {
                 mx1 = which(is.na(m1))
-                for(i in 1:length(mx1)){
+                for (i in 1:length(mx1)) {
                     stop(paste(funname, " requires argument '", fnms[mx1[i]], "' but this has not been passed to the 'nloptr' function.\n", sep = ""))
                }
            }
             m2 = match(rnms, fnms)
-            if(any(is.na(m2))){
+            if (any(is.na(m2))) {
                 mx2 = which(is.na(m2))
-                for(i in 1:length(mx2)){
+                for (i in 1:length(mx2)) {
                     stop(paste(rnms[mx2[i]], "' passed to (...) in 'nloptr' but this is not required in the ", funname, " function.\n", sep = ""))
                }
            }
@@ -331,11 +331,11 @@ function(x0,
     # extract list of additional arguments and check user-defined functions
     arglist = list(...)
     .checkfunargs(eval_f, arglist, 'eval_f')
-    if(!is.null(eval_grad_f)) {.checkfunargs(eval_grad_f, arglist, 'eval_grad_f')}
-    if(!is.null(eval_g_ineq)) {.checkfunargs(eval_g_ineq, arglist, 'eval_g_ineq')}
-    if(!is.null(eval_jac_g_ineq)) {.checkfunargs(eval_jac_g_ineq, arglist, 'eval_jac_g_ineq')}
-    if(!is.null(eval_g_eq)) {.checkfunargs(eval_g_eq, arglist, 'eval_g_eq')}
-    if(!is.null(eval_jac_g_eq)) {.checkfunargs(eval_jac_g_eq, arglist, 'eval_jac_g_eq')}
+    if (!is.null(eval_grad_f)) {.checkfunargs(eval_grad_f, arglist, 'eval_grad_f')}
+    if (!is.null(eval_g_ineq)) {.checkfunargs(eval_g_ineq, arglist, 'eval_g_ineq')}
+    if (!is.null(eval_jac_g_ineq)) {.checkfunargs(eval_jac_g_ineq, arglist, 'eval_jac_g_ineq')}
+    if (!is.null(eval_g_eq)) {.checkfunargs(eval_g_eq, arglist, 'eval_g_eq')}
+    if (!is.null(eval_jac_g_eq)) {.checkfunargs(eval_jac_g_eq, arglist, 'eval_jac_g_eq')}
 
     # define 'infinite' lower and upper bounds of the control if they haven't been set
     if (is.null(lb)) {lb <- rep(-Inf, length(x0))}
@@ -455,7 +455,7 @@ function(x0,
     nloptr.default.options <- nloptr.get.default.options()
     list_algorithms <-  unlist(
                             strsplit(
-                                nloptr.default.options[nloptr.default.options$name=="algorithm", "possible_values"],
+                                nloptr.default.options[nloptr.default.options$name == "algorithm", "possible_values"],
                                 ", "
                            )
                        )
@@ -549,7 +549,7 @@ function(x0,
         ret$iterations <- solution$iterations
         ret$objective  <- solution$objective
         ret$solution   <- solution$solution
-        ret$version    <- paste(c(solution$version_major, solution$version_minor, solution$version_bugfix), collapse='.')
+        ret$version    <- paste(c(solution$version_major, solution$version_minor, solution$version_bugfix), collapse = '.')
         ret$num.evals  <- num.evals
 
         # If maxtime is set to a positive number in the options
