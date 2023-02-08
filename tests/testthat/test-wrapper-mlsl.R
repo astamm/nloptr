@@ -94,6 +94,9 @@ mlslControl <- nloptr(x0 = x0,
 
 expect_equal(mlslTest$par, mlslControl$solution, tolerance = tol)
 expect_equal(mlslTest$value, mlslControl$objective, tolerance = tol)
-expect_identical(mlslTest$iter, mlslControl$iterations)
+# See https://nlopt.readthedocs.io/en/latest/NLopt_Reference/#stopping-criteria
+# "This is not a strict maximum: the number of function evaluations may exceed
+# maxeval slightly, depending upon the algorithm."
+expect_lte(abs(mlslTest$iter - mlslControl$iterations), 10L)
 expect_identical(mlslTest$convergence, mlslControl$status)
 expect_identical(mlslTest$message, mlslControl$message)
