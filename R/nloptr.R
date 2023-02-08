@@ -324,7 +324,8 @@ function(x0,
                 mx1 <- which(is.na(m1))
                 for (i in seq_along(mx1)) {
                     stop(funname, " requires argument '", fnms[mx1[i]],
-                         "' but this has not been passed to the 'nloptr' function.\n")
+                         "' but this has not been passed to the 'nloptr' ",
+                         "function.\n")
                 }
             }
             m2 <- match(rnms, fnms)
@@ -332,8 +333,8 @@ function(x0,
                 mx2 <- which(is.na(m2))
                 for (i in seq_along(mx2)) {
                     stop(rnms[mx2[i]],
-                         "' passed to (...) in 'nloptr' but this is not required in the ",
-                         funname, " function.\n")
+                         "' passed to (...) in 'nloptr' but this is not ",
+                         "required in the ", funname, " function.\n")
                 }
             }
         }
