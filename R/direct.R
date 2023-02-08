@@ -1,5 +1,5 @@
 # Copyright (C) 2014 Hans W. Borchers. All Rights Reserved.
-# This code is published under the L-GPL.
+# SPDX-License-Identifier: LGPL-3.0-or-later
 #
 # File:   direct.R
 # Author: Hans W. Borchers
