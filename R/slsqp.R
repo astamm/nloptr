@@ -110,17 +110,19 @@ slsqp <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
     }
 
     if (!is.null(hin)) {
-        if ( getOption('nloptr.show.inequality.warning') ) {
-            message('For consistency with the rest of the package the inequality sign may be switched from >= to <= in a future nloptr version.')
+        if (getOption("nloptr.show.inequality.warning")) {
+            message("For consistency with the rest of the package the ",
+                    "inequality sign may be switched from >= to <= in a ",
+                    "future nloptr version.")
         }
 
         .hin <- match.fun(hin)
-        hin <- function(x) (-1) * .hin(x)   # change  hin >= 0  to  hin <= 0 !
+        hin <- function(x) -.hin(x)            # change  hin >= 0  to  hin <= 0 !
         if (is.null(hinjac)) {
             hinjac <- function(x) nl.jacobian(x, hin)
         } else {
             .hinjac <- match.fun(hinjac)
-            hinjac <- function(x) (-1) * .hinjac(x)
+            hinjac <- function(x) -.hinjac(x)
         }
     }
 
@@ -147,7 +149,7 @@ slsqp <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
                 opts = opts)
 
     if (nl.info) print(S0)
-    S1 <- list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-                convergence = S0$status, message = S0$message)
-    return(S1)
+
+    list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+         convergence = S0$status, message = S0$message)
 }
