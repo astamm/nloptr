@@ -15,6 +15,8 @@
 #       ... : arguments that are passed to the user-defined function (func)
 #
 # Output: matrix with finite difference approximations
+# 2023-09-02 Note: This function is not exported and thus not being tested or
+#            cleaned (Avraham Adler).
 
 
 # http://en.wikipedia.org/wiki/Numerical_differentiation
