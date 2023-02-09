@@ -192,17 +192,3 @@
       	your program.
       
 
----
-
-    Code
-      nloptr.print.options(opts.show = "check_derivatives")
-    Output
-      check_derivatives
-      	possible values: TRUE or FALSE
-      	default value:   FALSE
-      
-      	The option check_derivatives can be activated to compare the
-      	user-supplied analytic gradients with finite difference
-      	approximations.
-      
-
