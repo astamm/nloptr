@@ -182,6 +182,17 @@ minus2mess <- paste("NLOPT_INVALID_ARGS: Invalid arguments (e.g. lower bounds",
 expect_identical(testRun$status, -2L)
 expect_identical(testRun$message, minus2mess)
 
+## case NLOPT_FAILURE
+fnl <- function(x) list("objective" = (x[1] - 1) ^ 2 + (x[2] - 1) ^ 2,
+                        "gradient" = c(4 * (x[1] - 1), 3 - (x[2] - 1)))
+x0 <- c(3, 3)
+testRun <- nloptr(x0, fnl,
+                  opts = list(algorithm = "NLOPT_LD_LBFGS", xtol_rel = 1e-8))
+
+expect_identical(testRun$status, -1L)
+expect_identical(testRun$message, "NLOPT_FAILURE: Generic failure code.")
+
+
 # The remaining messages, including print levels and checking derivatives are
 # complicated enough that moving to a snapshot is warranted. Snapshots should be
 # wrapped in "test_that" so that the comments make sense. Otherwise they pull
