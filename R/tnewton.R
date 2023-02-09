@@ -6,12 +6,16 @@
 # Date:   27 January 2014
 #
 # Wrapper to solve optimization problem using Preconditioned Truncated Newton.
-
+#
+# CHANGELOG
+#   2023-02-08: Removed unneeded or inefficient calls, updated code stylistically,
+#               updated help by using LaTeX and code decorations. (Avraham Adler)
+#
 
 
 #' Preconditioned Truncated Newton
 #'
-#' Truncated Newton methods, also calledNewton-iterative methods, solve an
+#' Truncated Newton methods, also called Newton-iterative methods, solve an
 #' approximating Newton system using a conjugate-gradient approach and are
 #' related to limited-memory BFGS.
 #'
@@ -55,19 +59,18 @@
 #'
 #' flb <- function(x) {
 #'     p <- length(x)
-#'     sum(c(1, rep(4, p-1)) * (x - c(1, x[-p])^2)^2)
+#'     sum(c(1, rep(4, p - 1)) * (x - c(1, x[-p]) ^ 2) ^ 2)
 #' }
 #' # 25-dimensional box constrained: par[24] is *not* at boundary
-#' S <- tnewton(rep(3, 25), flb, lower=rep(2, 25), upper=rep(4, 25),
-#'                 nl.info = TRUE, control = list(xtol_rel=1e-8))
+#' S <- tnewton(rep(3, 25L), flb, lower = rep(2, 25L), upper = rep(4, 25L),
+#'              nl.info = TRUE, control = list(xtol_rel = 1e-8))
 #' ## Optimal value of objective function:  368.105912874334
 #' ## Optimal value of controls: 2  ...  2  2.109093  4
 #'
-tnewton <-
-function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
-            precond = TRUE, restart = TRUE,
-            nl.info = FALSE, control = list(), ...)
-{
+tnewton <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
+                    precond = TRUE, restart = TRUE, nl.info = FALSE,
+                    control = list(), ...) {
+
     opts <- nl.opts(control)
     if (precond) {
         if (restart)
@@ -99,7 +102,7 @@ function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
                 opts = opts)
 
     if (nl.info) print(S0)
-    S1 <- list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-                convergence = S0$status, message = S0$message)
-    return(S1)
+
+    list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+         convergence = S0$status, message = S0$message)
 }
