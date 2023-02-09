@@ -1,10 +1,10 @@
 on:
   push:
-    branches: [main, master]
+    branches: [main, master, devel]
   pull_request:
-    branches: [main, master]
+    branches: [main, master, devel]
 
-name: with-rtools42
+name: with-rtools43
 
 jobs:
   R-CMD-check:
@@ -23,7 +23,7 @@ jobs:
       R_KEEP_PKG_SOURCE: yes
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: r-lib/actions/setup-pandoc@v2
 
@@ -32,7 +32,7 @@ jobs:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
-          rtools-version: '42'
+          rtools-version: '43'
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
@@ -40,3 +40,5 @@ jobs:
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2
+        with:
+          upload-snapshots: true
