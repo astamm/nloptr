@@ -10,9 +10,7 @@
 # CHANGELOG
 #   2023-02-08: Tweaks for efficiency and readability (Avraham Adler)
 
-#-- Does not work: maybe C++ support missing? ---------------------- StoGo ---
-
-
+#-- --------------------------------------------------------------------Stogo---
 #' Stochastic Global Optimization
 #'
 #' StoGO is a global optimization algorithm that works by systematically
