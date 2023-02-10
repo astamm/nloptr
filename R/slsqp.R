@@ -6,7 +6,12 @@
 # Date:   27 January 2014
 #
 # Wrapper to solve optimization problem using Sequential Quadratic Programming.
-
+#
+# CHANGELOG
+#
+# 2023-02-09: Direct Jacobian now converges to proper value so removing
+#             confusing commentary in example. (Avraham Adler)
+#
 
 
 #' Sequential Quadratic Programming (SQP)
@@ -78,19 +83,12 @@
 #'
 #' S <- slsqp(x0.hs100, fn = fn.hs100,     # no gradients and jacobians provided
 #'            hin = hin.hs100,
+#'            nl.info = TRUE,
 #'            control = list(xtol_rel = 1e-8, check_derivatives = TRUE))
 #' S
-#' ## Optimal value of objective function:  690.622270249131   *** WRONG ***
+#' ## Optimal value of objective function:  680.630057375943
+#' ## Optimal value of controls: 2.3305 1.951372 -0.4775407 4.365726 -0.6244871 1.038131 1.594227
 #'
-#' # Even the numerical derivatives seem to be too tight.
-#' # Let's try with a less accurate jacobian.
-#'
-#' hinjac.hs100 <- function(x) nl.jacobian(x, hin.hs100, heps = 1e-2)
-#' S <- slsqp(x0.hs100, fn = fn.hs100,
-#'            hin = hin.hs100, hinjac = hinjac.hs100,
-#'            control = list(xtol_rel = 1e-8))
-#' S
-#' ## Optimal value of objective function:  680.630057392593   *** CORRECT ***
 #'
 slsqp <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
                      hin = NULL, hinjac = NULL, heq = NULL, heqjac = NULL,
