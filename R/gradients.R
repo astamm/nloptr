@@ -14,6 +14,7 @@
 #             construct is 4 times faster than full vectorization with apply and
 #             around 25% faster than partial vectorization creating a heps using
 #             diag and pulling vectors off row-by-row in nl.grad & nl.jacobian.
+#             (Avraham Adler)
 #
 
 

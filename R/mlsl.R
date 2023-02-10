@@ -10,7 +10,8 @@
 # CHANGELOG:
 #   2014-05-05: Replaced cat by warning.
 #   2023-02-09: Cleanup and tweaks for safety and efficiency (Avraham Adler)
-#               Question, should passing a non-Gradient solver error out directly? It will anyway
+#               Question, should passing a non-Gradient solver error out directly?
+#               It will anyway (Avraham Adler)
 #
 
 
