@@ -15,8 +15,8 @@
 #                                   if it's an option that is passed on to NLopt).
 #
 # CHANGELOG:
-#   12/07/2014: Changed from creating a data.frame to a function returning a data.frame.
-
+#   2014-07-12: Changed from creating a data.frame to a function returning a data.frame.
+#   2023-02-09: Cleanup and tweaks for safety and efficiency (Avraham Adler)
 
 
 #' Return a data.frame with all the options that can be supplied to nloptr.
@@ -48,10 +48,9 @@
 #'
 #' @keywords optimize interface
 #'
-nloptr.get.default.options <-
-    function()
-{
-    dat.opts <- data.frame( rbind(
+nloptr.get.default.options <- function() {
+
+    dat.opts <- data.frame(rbind(
         c("algorithm",
           "character",
           "NLOPT_GN_DIRECT, NLOPT_GN_DIRECT_L, NLOPT_GN_DIRECT_L_RAND, NLOPT_GN_DIRECT_NOSCAL, NLOPT_GN_DIRECT_L_NOSCAL, NLOPT_GN_DIRECT_L_RAND_NOSCAL, NLOPT_GN_ORIG_DIRECT, NLOPT_GN_ORIG_DIRECT_L, NLOPT_GD_STOGO, NLOPT_GD_STOGO_RAND, NLOPT_LD_SLSQP, NLOPT_LD_LBFGS_NOCEDAL, NLOPT_LD_LBFGS, NLOPT_LN_PRAXIS, NLOPT_LD_VAR1, NLOPT_LD_VAR2, NLOPT_LD_TNEWTON, NLOPT_LD_TNEWTON_RESTART, NLOPT_LD_TNEWTON_PRECOND, NLOPT_LD_TNEWTON_PRECOND_RESTART, NLOPT_GN_CRS2_LM, NLOPT_GN_MLSL, NLOPT_GD_MLSL, NLOPT_GN_MLSL_LDS, NLOPT_GD_MLSL_LDS, NLOPT_LD_MMA, NLOPT_LD_CCSAQ, NLOPT_LN_COBYLA, NLOPT_LN_NEWUOA, NLOPT_LN_NEWUOA_BOUND, NLOPT_LN_NELDERMEAD, NLOPT_LN_SBPLX, NLOPT_LN_AUGLAG, NLOPT_LD_AUGLAG, NLOPT_LN_AUGLAG_EQ, NLOPT_LD_AUGLAG_EQ, NLOPT_LN_BOBYQA, NLOPT_GN_ISRES",
@@ -85,7 +84,7 @@ nloptr.get.default.options <-
         c("xtol_abs",
           "numeric",
           "xtol_abs > 0",
-          "rep( 0.0, length(x0) )",
+          "rep(0.0, length(x0))",
           TRUE,
           "xtol_abs is a vector of length n (the number of elements in x) giving the tolerances: stop when an optimization step (or an estimate of the optimum) changes every parameter x[i] by less than xtol_abs[i]. Criterion is disabled if all elements of xtol_abs are non-positive (default)."),
         c("maxeval",
@@ -103,15 +102,15 @@ nloptr.get.default.options <-
         c("tol_constraints_ineq",
           "numeric",
           "tol_constraints_ineq > 0.0",
-          "rep( 1e-8, num_constraints_ineq )",
+          "rep(1e-8, num_constraints_ineq)",
           FALSE,
           "The parameter tol_constraints_ineq is a vector of tolerances. Each tolerance corresponds to one of the inequality constraints. The tolerance is used for the purpose of stopping criteria only: a point x is considered feasible for judging whether to stop the optimization if eval_g_ineq(x) <= tol. A tolerance of zero means that NLopt will try not to consider any x to be converged unless eval_g_ineq(x) is strictly non-positive; generally, at least a small positive tolerance is advisable to reduce sensitivity to rounding errors. By default the tolerances for all inequality constraints are set to 1e-8."),
         c("tol_constraints_eq",
           "numeric",
           "tol_constraints_eq > 0.0",
-          "rep( 1e-8, num_constraints_eq )",
+          "rep(1e-8, num_constraints_eq)",
           FALSE,
-          "The parameter tol_constraints_eq is a vector of tolerances. Each tolerance corresponds to one of the equality constraints. The tolerance is used for the purpose of stopping criteria only: a point x is considered feasible for judging whether to stop the optimization if abs( eval_g_ineq(x) ) <= tol. For equality constraints, a small positive tolerance is strongly advised in order to allow NLopt to converge even if the equality constraint is slightly nonzero. By default the tolerances for all equality constraints are set to 1e-8."),
+          "The parameter tol_constraints_eq is a vector of tolerances. Each tolerance corresponds to one of the equality constraints. The tolerance is used for the purpose of stopping criteria only: a point x is considered feasible for judging whether to stop the optimization if abs(eval_g_ineq(x)) <= tol. For equality constraints, a small positive tolerance is strongly advised in order to allow NLopt to converge even if the equality constraint is slightly nonzero. By default the tolerances for all equality constraints are set to 1e-8."),
         c("print_level",
           "interger",
           "0, 1, 2, or 3",
@@ -161,9 +160,9 @@ nloptr.get.default.options <-
           "0",
           FALSE,
           "For stochastic optimization algorithms, pseudorandom numbers are generated. Set the random seed using ranseed if you want to use a 'deterministic' sequence of pseudorandom numbers, i.e. the same sequence from run to run. If ranseed is 0 (default), the seed for the random numbers is generated from the system time, so that you will get a different sequence of pseudorandom numbers each time you run your program.")
-    ),
-    stringsAsFactors = FALSE )
-    names( dat.opts ) <- c( "name", "type", "possible_values", "default", "is_termination_condition", "description" )
+   ),
+    stringsAsFactors = FALSE)
+    names(dat.opts) <- c("name", "type", "possible_values", "default", "is_termination_condition", "description")
 
-    return( dat.opts )
+    dat.opts
 }
