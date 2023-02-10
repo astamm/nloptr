@@ -8,8 +8,10 @@
 # Wrapper to solve optimization problem using Multi-Level Single-Linkage.
 #
 # CHANGELOG:
-#   05/05/2014: Replaced cat by warning.
-
+#   2014-05-05: Replaced cat by warning.
+#   2023-02-09: Cleanup and tweaks for safety and efficiency (Avraham Adler)
+#               Question, should passing a non-Gradient solver error out directly? It will anyway
+#
 
 
 #' Multi-level Single-linkage
@@ -20,15 +22,15 @@
 #' instead of pseudorandom numbers.
 #'
 #' MLSL is a `multistart' algorithm: it works by doing a sequence of local
-#' optimizations (using some other local optimization algorithm) from random or
-#' low-discrepancy starting points.  MLSL is distinguished, however by a
+#' optimizations---using some other local optimization algorithm---from random
+#' or low-discrepancy starting points. MLSL is distinguished, however, by a
 #' `clustering' heuristic that helps it to avoid repeated searches of the same
-#' local optima, and has some theoretical guarantees of finding all local
+#' local optima and also has some theoretical guarantees of finding all local
 #' optima in a finite number of local minimizations.
 #'
 #' The local-search portion of MLSL can use any of the other algorithms in
-#' NLopt, and in particular can use either gradient-based or derivative-free
-#' algorithms.  For this wrapper only gradient-based \code{L-BFGS} is available
+#' NLopt, and, in particular, can use either gradient-based or derivative-free
+#' algorithms. For this wrapper only gradient-based \code{L-BFGS} is available
 #' as local method.
 #'
 #' @param x0 initial point for searching the optimum.
@@ -56,8 +58,8 @@
 #' @author Hans W. Borchers
 #'
 #' @note If you don't set a stopping tolerance for your local-optimization
-#' algorithm, MLSL defaults to \code{ftol_rel=1e-15} and \code{xtol_rel=1e-7}
-#' for the local searches.
+#' algorithm, MLSL defaults to \code{ftol_rel = 1e-15} and
+#' \code{xtol_rel = 1e-7} for the local searches.
 #'
 #' @seealso \code{\link{direct}}
 #'
@@ -92,8 +94,9 @@
 #'     }
 #'     return(fun)
 #' }
-#' S <- mlsl(x0 = rep(0, 6), hartmann6, lower = rep(0,6), upper = rep(1,6),
-#'             nl.info = TRUE, control=list(xtol_rel=1e-8, maxeval=1000))
+#' S <- mlsl(x0 = rep(0, 6), hartmann6, lower = rep(0, 6), upper = rep(1, 6),
+#'             nl.info = TRUE, control = list(xtol_rel = 1e-8, maxeval = 1000))
+#'
 #' ## Number of Iterations....: 1000
 #' ## Termination conditions:
 #' ##   stopval: -Inf, xtol_rel: 1e-08, maxeval: 1000, ftol_rel: 0, ftol_abs: 0
@@ -103,19 +106,19 @@
 #' ## Current value of controls:
 #' ##   0.2016895 0.1500107 0.476874 0.2753324 0.3116516 0.6573005
 #'
-mlsl <-
-function(x0, fn, gr = NULL, lower, upper,
-            local.method = "LBFGS", low.discrepancy = TRUE,
-            nl.info = FALSE, control = list(), ...)
-{
-    local_opts <- list(algorithm = "NLOPT_LD_LBFGS",
-                       xtol_rel  = 1e-4)
+mlsl <- function(x0, fn, gr = NULL, lower, upper,
+                 local.method = "LBFGS", low.discrepancy = TRUE,
+                 nl.info = FALSE, control = list(), ...) {
+
+    local_opts <- list(algorithm = "NLOPT_LD_LBFGS", xtol_rel = 1e-4)
     opts <- nl.opts(control)
+
     if (low.discrepancy) {
         opts["algorithm"] <- "NLOPT_GD_MLSL_LDS"
     } else {
         opts["algorithm"] <- "NLOPT_GD_MLSL"
     }
+
     opts[["local_opts"]] <- local_opts
 
     fun <- match.fun(fn)
@@ -129,7 +132,8 @@ function(x0, fn, gr = NULL, lower, upper,
             gr <- function(x) .gr(x, ...)
         }
     } else {
-        warning("Only gradient-based LBFGS available as local method.")
+        warning("Only gradient-based LBFGS available as local method. ",
+                "To use another method please use the nloptr interface.")
         gr <- NULL
     }
 
@@ -141,7 +145,7 @@ function(x0, fn, gr = NULL, lower, upper,
                 opts = opts)
 
     if (nl.info) print(S0)
-    S1 <- list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-                convergence = S0$status, message = S0$message)
-    return(S1)
+
+    list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+         convergence = S0$status, message = S0$message)
 }
