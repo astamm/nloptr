@@ -9,11 +9,11 @@
 #
 # CHANGELOG
 #
-# 2023-02-09: Cleanup and tweaks for safety and efficiency (Avraham Adler)
-#             Changed nl.grad error message to be more mathematically precise.
-#             The loop is 4 times faster than full vectorization with apply and
-#             around 25% faster than partial vectorization creating a heps
-#             using diag and pulling vectors off row-by-row.
+# 2023-02-09: Cleanup and tweaks for safety and efficiency. Also Changed
+#             nl.grad error message to be more mathematically precise. The loop
+#             construct is 4 times faster than full vectorization with apply and
+#             around 25% faster than partial vectorization creating a heps using
+#             diag and pulling vectors off row-by-row in nl.grad & nl.jacobian.
 #
 
 
@@ -76,23 +76,22 @@ nl.grad <- function(x0, fn, heps = .Machine$double.eps ^ (1 / 3), ...) {
 }
 
 #' @export
-nl.jacobian <-
-    function(x0, fn, heps = .Machine$double.eps^(1/3), ...)
-    {
-    if (!is.numeric(x0) || length(x0) == 0)
+nl.jacobian <- function(x0, fn, heps = .Machine$double.eps ^ (1 / 3), ...) {
+
+    n <- length(x0)
+    if (!is.numeric(x0) || n == 0)
         stop("Argument 'x' must be a non-empty numeric vector.")
 
     fun <- match.fun(fn)
     fn  <- function(x) fun(x, ...)
 
-    n <- length(x0)
-    m <- length(fn(x0))
-    jacob <- matrix(NA, m, n)
-    hh <- numeric(n)
-    for (i in 1:n) {
+    jacob <- matrix(NA_real_, length(fn(x0)), n)
+    hh <- rep(0, n)
+    for (i in seq_len(n)) {
         hh[i] <- heps
-        jacob[, i] <- (fn(x0 + hh) - fn(x0 - hh)) / (2*heps)
+        jacob[, i] <- (fn(x0 + hh) - fn(x0 - hh)) / (2 * heps)
         hh[i] <- 0
     }
-    return(jacob)
+
+    jacob
 }
