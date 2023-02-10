@@ -7,61 +7,61 @@
       Checking gradients of objective function.
       Derivative checker results: 0 error(s) detected.
       
-        eval_grad_f[ 1 ] = 2e+00 ~ 2e+00   [1.490116e-08]
-        eval_grad_f[ 2 ] = 2e+00 ~ 2e+00   [1.490116e-08]
+        eval_grad_f[1] = 2e+00 ~ 2e+00   [1.490116e-08]
+        eval_grad_f[2] = 2e+00 ~ 2e+00   [1.490116e-08]
       
       
       Checking gradients of inequality constraints.
       
       Derivative checker results: 0 error(s) detected.
       
-        eval_jac_g_ineq[ 1, 1 ] = -4.0e+00 ~ -4.0e+00   [7.450581e-09]
-        eval_jac_g_ineq[ 2, 1 ] =  0.0e+00 ~  0.0e+00   [0.000000e+00]
-        eval_jac_g_ineq[ 1, 2 ] =  0.0e+00 ~  0.0e+00   [0.000000e+00]
-        eval_jac_g_ineq[ 2, 2 ] = -1.2e+01 ~ -1.2e+01   [1.490116e-08]
+        eval_jac_g_ineq[1, 1] = -4.0e+00 ~ -4.0e+00   [7.450581e-09]
+        eval_jac_g_ineq[2, 1] =  0.0e+00 ~  0.0e+00   [0.000000e+00]
+        eval_jac_g_ineq[1, 2] =  0.0e+00 ~  0.0e+00   [0.000000e+00]
+        eval_jac_g_ineq[2, 2] = -1.2e+01 ~ -1.2e+01   [1.490116e-08]
       
       
       Checking gradients of equality constraints.
       
       Derivative checker results: 0 error(s) detected.
       
-        eval_jac_g_eq[ 1, 1 ] =  2e+00 ~  2e+00   [0e+00]
-        eval_jac_g_eq[ 2, 1 ] =  1e+00 ~  1e+00   [0e+00]
-        eval_jac_g_eq[ 1, 2 ] =  2e+00 ~  2e+00   [0e+00]
-        eval_jac_g_eq[ 2, 2 ] = -1e+00 ~ -1e+00   [0e+00]
+        eval_jac_g_eq[1, 1] =  2e+00 ~  2e+00   [0e+00]
+        eval_jac_g_eq[2, 1] =  1e+00 ~  1e+00   [0e+00]
+        eval_jac_g_eq[1, 2] =  2e+00 ~  2e+00   [0e+00]
+        eval_jac_g_eq[2, 2] = -1e+00 ~ -1e+00   [0e+00]
       
       
     Output
       iteration: 1
-      	x = ( 2.000000, 2.000000 )
+      	x = (2.000000, 2.000000)
       	f(x) = 3.000000
-      	h(x) = ( 1.450000, -0.200000 )
-      	g(x) = ( -2.560000, -5.803000 )
+      	h(x) = (1.450000, -0.200000)
+      	g(x) = (-2.560000, -5.803000)
       iteration: 2
-      	x = ( 1.737500, 1.537500 )
+      	x = (1.737500, 1.537500)
       	f(x) = 1.832812
-      	h(x) = ( 0.121406, -0.000000 )
-      	g(x) = ( -1.578906, -1.437506 )
+      	h(x) = (0.121406, -0.000000)
+      	g(x) = (-1.578906, -1.437506)
       iteration: 3
-      	x = ( 1.700429, 1.500429 )
+      	x = (1.700429, 1.500429)
       	f(x) = 1.741031
-      	h(x) = ( 0.001374, -0.000000 )
-      	g(x) = ( -1.451460, -1.180899 )
+      	h(x) = (0.001374, -0.000000)
+      	g(x) = (-1.451460, -1.180899)
       iteration: 4
-      	x = ( 1.700000, 1.500000 )
+      	x = (1.700000, 1.500000)
       	f(x) = 1.740000
-      	h(x) = ( 0.000000, 0.000000 )
-      	g(x) = ( -1.450000, -1.178000 )
+      	h(x) = (0.000000, 0.000000)
+      	g(x) = (-1.450000, -1.178000)
       iteration: 5
-      	x = ( 1.700000, 1.500000 )
+      	x = (1.700000, 1.500000)
       	f(x) = 1.740000
-      	h(x) = ( 0.000000, 0.000000 )
-      	g(x) = ( -1.450000, -1.178000 )
+      	h(x) = (0.000000, 0.000000)
+      	g(x) = (-1.450000, -1.178000)
       iteration: 6
-      	x = ( 1.700000, 1.500000 )
+      	x = (1.700000, 1.500000)
       	f(x) = 1.740000
-      	h(x) = ( 0.000000, -0.000000 )
-      	g(x) = ( -1.450000, -1.178000 )
+      	h(x) = (0.000000, -0.000000)
+      	g(x) = (-1.450000, -1.178000)
       
       Call:
       nloptr(x0 = x0, eval_f = fn, eval_grad_f = gr, lb = lb, ub = ub, 
@@ -93,21 +93,21 @@
       Checking gradients of objective function.
       Derivative checker results: 0 error(s) detected.
       
-        eval_grad_f[ 1 ] = 6e+00 ~ 6e+00   [1.589457e-08]
+        eval_grad_f[1] = 6e+00 ~ 6e+00   [1.589457e-08]
       
       
       Checking gradients of inequality constraints.
       
       Derivative checker results: 0 error(s) detected.
       
-        eval_jac_g_ineq[ 1 ] = -1e+01 ~ -1e+01   [9.536743e-09]
+        eval_jac_g_ineq[1] = -1e+01 ~ -1e+01   [9.536743e-09]
       
       
       Checking gradients of equality constraints.
       
       Derivative checker results: 0 error(s) detected.
       
-        eval_jac_g_eq[ 1 ] = 1e+01 ~ 1e+01   [0e+00]
+        eval_jac_g_eq[1] = 1e+01 ~ 1e+01   [0e+00]
       
       
     Output
