@@ -10,7 +10,8 @@
 # CHANGELOG
 #
 # 2023-02-09: Direct Jacobian now converges to proper value so removing
-#             confusing commentary in example. (Avraham Adler)
+#             confusing commentary in example. Also Cleanup and tweaks for safety
+#             and efficiency (Avraham Adler)
 #
 
 

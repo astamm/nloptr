@@ -8,8 +8,7 @@
 # Wrapper to solve optimization problem using Preconditioned Truncated Newton.
 #
 # CHANGELOG
-#   2023-02-08: Removed unneeded or inefficient calls, updated code stylistically,
-#               updated help by using LaTeX and code decorations. (Avraham Adler)
+#   2023-02-08: Cleanup and tweaks for safety and efficiency (Avraham Adler)
 #
 
 

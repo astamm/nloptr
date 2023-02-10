@@ -16,7 +16,7 @@
 # 2011-01-13: added show.controls option
 # 2011-08-07: show 'optimal value' instead of 'current value'
 #             if status == 1, 2, 3, or 4
-# 2023-02-09: Cleanup and tweak for safety and efficiency (Avraham Adler)
+# 2023-02-09: Cleanup and tweaks for safety and efficiency (Avraham Adler)
 
 
 #' Print results after running nloptr

@@ -8,8 +8,8 @@
 # Wrapper to solve optimization problem using Varmetric.
 #
 # CHANGELOG
-#   2023-02-08: Removed unneeded or inefficient calls, updated code stylistically,
-#               updated help by using LaTeX and code decorations. (Avraham Adler)
+#   2023-02-08: Cleanup and tweaks for safety and efficiency (Avraham Adler)
+#
 
 
 #' Shifted Limited-memory Variable-metric
