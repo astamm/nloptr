@@ -52,17 +52,14 @@
 
 nloptr.print.options <-  function(opts.show = NULL, opts.user = NULL) {
 
-    # show all options if no list of options is supplied
-    if (is.null(opts.show)) {
-        nloptr.show.options <- nloptr.get.default.options()
-    } else {
-        nloptr.show.options <- nloptr.get.default.options()
-        nloptr.show.options <- nloptr.show.options[
-            nloptr.show.options$name %in% opts.show, ]
+    # Default is to show all options if no list of options is supplied
+    nloptr.show.options <- nloptr.get.default.options()
+    if (!is.null(opts.show)) {
+        nloptr.show.options <- subset(nloptr.show.options, name %in% opts.show)
     }
 
     # loop over all options and print values
-    for (row.cnt in seq_along(nrow(nloptr.show.options))) {
+    for (row.cnt in seq_len(nrow(nloptr.show.options))) {
         opt <- nloptr.show.options[row.cnt, ]
 
         value.current <- ifelse(is.null(opts.user[[opt$name]]),
