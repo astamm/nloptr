@@ -17,7 +17,7 @@ expect_error(nl.grad("C", fn1),
              "Argument 'x0' must be a numeric value.", fixed = TRUE)
 
 expect_error(nl.grad(2, fn2),
-             "Function 'f' must be a univariate function of 2 variables.",
+             "Function 'f' must be a scalar function (return a single value).",
              fixed = TRUE)
 
 expect_error(nl.jacobian("C", fn1),
@@ -25,3 +25,15 @@ expect_error(nl.jacobian("C", fn1),
 
 expect_error(nl.jacobian(NULL, fn1),
              "Argument 'x' must be a non-empty numeric vector.", fixed = TRUE)
+
+x0 <- c(-2, 2, 2, -1, -1)
+fnE <- function(x) exp(x[1] * x[2] * x[3] * x[4] * x[5])
+grE <- function(x) {
+  c(x[2] * x[3] * x[4] * x[5],
+    x[1] * x[3] * x[4] * x[5],
+    x[1] * x[2] * x[4] * x[5],
+    x[1] * x[2] * x[3] * x[5],
+    x[1] * x[2] * x[3] * x[4]) * exp(prod(x))
+}
+
+expect_equal(grE(x0), nl.grad(x0, fnE), tolerance = sqrt(.Machine$double.eps))
