@@ -6,7 +6,9 @@
 # Date:   27 January 2014
 #
 # Wrapper to solve optimization problem using COBYLA, BOBYQA, and NEWUOA.
-
+#
+# CHANGELOG
+#   2023-02-10: Tweaks for efficiency and readability (Avraham Adler)
 
 
 #' Constrained Optimization by Linear Approximations
@@ -15,8 +17,8 @@
 #' inequality and equality constraints (but see below).
 #'
 #' It constructs successive linear approximations of the objective function and
-#' constraints via a simplex of n+1 points (in n dimensions), and optimizes
-#' these approximations in a trust region at each step.
+#' constraints via a simplex of \eqn{n+1} points (in \eqn{n} dimensions), and
+#' optimizes these approximations in a trust region at each step.
 #'
 #' COBYLA supports equality constraints by transforming them into two
 #' inequality constraints. As this does not give full satisfaction with the
@@ -74,10 +76,9 @@
 #' ## Optimal value of objective function:  680.630057374431
 #'
 #' @export cobyla
-cobyla <-
-function(x0, fn, lower = NULL, upper = NULL, hin = NULL,
-            nl.info = FALSE, control = list(), ...)
-{
+cobyla <- function(x0, fn, lower = NULL, upper = NULL, hin = NULL,
+                   nl.info = FALSE, control = list(), ...) {
+
     opts <- nl.opts(control)
     opts["algorithm"] <- "NLOPT_LN_COBYLA"
 
@@ -85,28 +86,28 @@ function(x0, fn, lower = NULL, upper = NULL, hin = NULL,
     fn <- function(x) f1(x, ...)
 
     if (!is.null(hin)) {
-        if ( getOption('nloptr.show.inequality.warning') ) {
-            message('For consistency with the rest of the package the inequality sign may be switched from >= to <= in a future nloptr version.')
+        if (getOption("nloptr.show.inequality.warning")) {
+            message("For consistency with the rest of the package the ",
+                    "inequality sign may be switched from >= to <= in a ",
+                    "future nloptr version.")
         }
 
         f2  <- match.fun(hin)
-        hin <- function(x) (-1)*f2(x, ...)  # NLOPT expects hin <= 0
+        hin <- function(x) -f2(x, ...)          # NLOPT expects hin <= 0
     }
 
     S0 <- nloptr(x0,
-                eval_f = fn,
-                lb = lower,
-                ub = upper,
-                eval_g_ineq = hin,
-                opts = opts)
+                 eval_f = fn,
+                 lb = lower,
+                 ub = upper,
+                 eval_g_ineq = hin,
+                 opts = opts)
 
     if (nl.info) print(S0)
-    S1 <- list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-                convergence = S0$status, message = S0$message)
-    return(S1)
+
+    list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+         convergence = S0$status, message = S0$message)
 }
-
-
 
 
 #' Bound Optimization by Quadratic Approximation
@@ -136,8 +137,8 @@ function(x0, fn, lower = NULL, upper = NULL, hin = NULL,
 #' @export bobyqa
 #'
 #' @note Because BOBYQA constructs a quadratic approximation of the objective,
-#' it may perform poorly for objective functions that are not
-#' twice-differentiable.
+#'   it may perform poorly for objective functions that are not
+#'   twice-differentiable.
 #'
 #' @seealso \code{\link{cobyla}}, \code{\link{newuoa}}
 #'
@@ -152,26 +153,22 @@ function(x0, fn, lower = NULL, upper = NULL, hin = NULL,
 #' }
 #' (S <- bobyqa(c(0, 0, 0), fr, lower = c(0, 0, 0), upper = c(0.5, 0.5, 0.5)))
 #'
-bobyqa <-
-function(x0, fn, lower = NULL, upper = NULL,
-                 nl.info = FALSE, control = list(), ...)
-{
+bobyqa <- function(x0, fn, lower = NULL, upper = NULL, nl.info = FALSE,
+                   control = list(), ...) {
+
     opts <- nl.opts(control)
     opts["algorithm"] <- "NLOPT_LN_BOBYQA"
 
     fun <- match.fun(fn)
     fn <- function(x) fun(x, ...)
 
-    S0 <- nloptr(x0, fn, lb = lower, ub = upper,
-                opts = opts)
+    S0 <- nloptr(x0, fn, lb = lower, ub = upper, opts = opts)
 
     if (nl.info) print(S0)
-    S1 <- list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-                convergence = S0$status, message = S0$message)
-    return(S1)
+
+    list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+         convergence = S0$status, message = S0$message)
 }
-
-
 
 
 #' New Unconstrained Optimization with quadratic Approximation
@@ -218,9 +215,8 @@ function(x0, fn, lower = NULL, upper = NULL,
 #' }
 #' (S <- newuoa(c(1, 2), fr))
 #'
-newuoa <-
-function(x0, fn, nl.info = FALSE, control = list(), ...)
-{
+newuoa <- function(x0, fn, nl.info = FALSE, control = list(), ...) {
+
     opts <- nl.opts(control)
     opts["algorithm"] <- "NLOPT_LN_NEWUOA"
 
@@ -230,7 +226,7 @@ function(x0, fn, nl.info = FALSE, control = list(), ...)
     S0 <- nloptr(x0, fn, opts = opts)
 
     if (nl.info) print(S0)
-    S1 <- list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-                convergence = S0$status, message = S0$message)
-    return(S1)
+
+    list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+         convergence = S0$status, message = S0$message)
 }
