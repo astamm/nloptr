@@ -6,14 +6,14 @@ see commit logs for [#128](https://github.com/astamm/nloptr/pull/128),
 [#129](https://github.com/astamm/nloptr/pull/129),
 [#131](https://github.com/astamm/nloptr/pull/131), 
 [#132](https://github.com/astamm/nloptr/pull/132), and [TBD] for the full
-explanation of changes which include:
+description of the changes which include:
 
 * Expanded unit tests: coverage now over 97% with no file below 90%
 * Removed forcing `C++11`
 * Added safety checks to C code
-* Many safety and efficiency enhancements to underlying R code
+* Added many safety and efficiency enhancements to R code
 * Most R code style made self-consistent
-* Updated documentation for accuracy and mathematical formatting
+* Updated documentation and messages for accuracy and mathematical formatting
 * Updated Github actions
 * Some bugfixes (e.g. in `isres` or the warning in `nl.grad`.)
 
