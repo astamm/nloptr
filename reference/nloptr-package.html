@@ -73,21 +73,24 @@ where more details are available.</p>
     <div id="details">
     <h2>Details</h2>
     <p>NLopt addresses general nonlinear optimization problems of the form:</p>
-<p>min f(x) x in R^n</p>
-<p>s.t.  g(x) &lt;= 0 h(x) = 0 lb &lt;= x &lt;= ub</p>
-<p>where f is the objective function to be minimized and x represents the n
-optimization parameters. This problem may optionally be subject to the bound
-constraints (also called box constraints), lb and ub. For partially or
-totally unconstrained problems the bounds can take -Inf or Inf. One may also
-optionally have m nonlinear inequality constraints (sometimes called a
-nonlinear programming problem), which can be specified in g(x), and equality
-constraints that can be specified in h(x). Note that not all of the
-algorithms in NLopt can handle constraints.</p>
-<p>An optimization problem can be solved with the general nloptr interface, or
-using one of the wrapper functions for the separate algorithms; auglag,
-bobyqa, cobyla, crs2lm, direct, lbfgs, mlsl, mma, neldermead, newuoa, sbplx,
-slsqp, stogo, tnewton, varmetric.</p>
-<table class="table table"><tr><td>Package:</td><td>nloptr</td></tr><tr><td>Type:</td><td>Package</td></tr><tr><td>Version:</td><td>0.9.9</td></tr><tr><td>Date:</td><td>2013-11-22</td></tr><tr><td>License:</td><td>L-GPL</td></tr><tr><td>LazyLoad:</td><td>yes</td></tr></table></div>
+<p>$$\min f(x)\quad x\in R^n$$</p>
+<p>$$\textrm{s.t. }\\ g(x) \leq 0\\ h(x) = 0\\ lb \leq x \leq ub$$</p>
+<p>where \(f(x)\) is the objective function to be minimized and \(x\)
+represents the \(n\) optimization parameters. This problem may optionally
+be subject to the bound constraints (also called box constraints), \(lb\)
+and \(ub\). For partially or totally unconstrained problems the bounds can
+take <code>-Inf</code> or <code>Inf</code>. One may also optionally have \(m\)
+nonlinear inequality constraints (sometimes called a nonlinear programming
+problem), which can be specified in \(g(x)\), and equality constraints that
+can be specified in \(h(x)\). Note that not all of the algorithms in NLopt
+can handle constraints.</p>
+<p>An optimization problem can be solved with the general <code>nloptr</code>
+interface, or using one of the wrapper functions for the separate algorithms;
+<code>auglag</code>, <code>bobyqa</code>, <code>ccsaq</code>, <code>cobyla</code>, <code>crs2lm</code>,
+<code>direct</code>, <code>directL</code>, <code>isres</code>, <code>lbfgs</code>, <code>mlsl</code>,
+<code>mma</code>, <code>neldermead</code>, <code>newuoa</code>, <code>sbplx</code>, <code>slsqp</code>,
+<code>stogo</code>, <code>tnewton</code>, <code>varmetric</code>.</p>
+<table class="table table"><tr><td>Package:</td><td>nloptr</td></tr><tr><td>Type:</td><td>Package</td></tr><tr><td>Version:</td><td>2.0.3</td></tr><tr><td>Date:</td><td>2022-05-26</td></tr><tr><td>License:</td><td>L-GPL &gt;= 3</td></tr></table></div>
     <div id="note">
     <h2>Note</h2>
     <p>See ?nloptr for more examples.</p>
@@ -101,12 +104,12 @@ slsqp, stogo, tnewton, varmetric.</p>
     <h2>See also</h2>
     <div class="dont-index"><p><code><a href="https://rdrr.io/r/stats/optim.html" class="external-link">optim</a></code> <code><a href="https://rdrr.io/r/stats/nlm.html" class="external-link">nlm</a></code> <code><a href="https://rdrr.io/r/stats/nlminb.html" class="external-link">nlminb</a></code>
 <code>Rsolnp::Rsolnp</code> <code>Rsolnp::solnp</code> <code><a href="nloptr.html">nloptr</a></code>
-<code><a href="auglag.html">auglag</a></code> <code><a href="bobyqa.html">bobyqa</a></code> <code><a href="cobyla.html">cobyla</a></code>
-<code><a href="crs2lm.html">crs2lm</a></code> <code><a href="direct.html">direct</a></code> <code><a href="isres.html">isres</a></code>
-<code><a href="lbfgs.html">lbfgs</a></code> <code><a href="mlsl.html">mlsl</a></code> <code><a href="mma.html">mma</a></code>
-<code><a href="neldermead.html">neldermead</a></code> <code><a href="newuoa.html">newuoa</a></code> <code><a href="sbplx.html">sbplx</a></code>
-<code><a href="slsqp.html">slsqp</a></code> <code><a href="stogo.html">stogo</a></code> <code><a href="tnewton.html">tnewton</a></code>
-<code><a href="varmetric.html">varmetric</a></code></p></div>
+<code><a href="auglag.html">auglag</a></code> <code><a href="bobyqa.html">bobyqa</a></code>  <code><a href="ccsaq.html">ccsaq</a></code>
+<code><a href="cobyla.html">cobyla</a></code> <code><a href="crs2lm.html">crs2lm</a></code> <code><a href="direct.html">direct</a></code>
+<code><a href="direct.html">directL</a></code> <code><a href="isres.html">isres</a></code> <code><a href="lbfgs.html">lbfgs</a></code>
+<code><a href="mlsl.html">mlsl</a></code> <code><a href="mma.html">mma</a></code> <code><a href="neldermead.html">neldermead</a></code>
+<code><a href="newuoa.html">newuoa</a></code> <code><a href="sbplx.html">sbplx</a></code> <code><a href="slsqp.html">slsqp</a></code>
+<code><a href="stogo.html">stogo</a></code> <code><a href="tnewton.html">tnewton</a></code> <code><a href="varmetric.html">varmetric</a></code></p></div>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -119,82 +122,80 @@ slsqp, stogo, tnewton, varmetric.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example problem, number 71 from the Hock-Schittkowsky test suite.</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
-<span class="r-in"><span><span class="co"># \min_{x} x1*x4*(x1 + x2 + x3) + x3</span></span></span>
+<span class="r-in"><span><span class="co"># \min_{x} x1 * x4 * (x1 + x2 + x3) + x3</span></span></span>
 <span class="r-in"><span><span class="co"># s.t.</span></span></span>
-<span class="r-in"><span><span class="co">#    x1*x2*x3*x4 &gt;= 25</span></span></span>
-<span class="r-in"><span><span class="co">#    x1^2 + x2^2 + x3^2 + x4^2 = 40</span></span></span>
-<span class="r-in"><span><span class="co">#    1 &lt;= x1,x2,x3,x4 &lt;= 5</span></span></span>
+<span class="r-in"><span><span class="co">#    x1 * x2 * x3 * x4 &gt;= 25</span></span></span>
+<span class="r-in"><span><span class="co">#    x1 ^ 2 + x2 ^ 2 + x3 ^ 2 + x4 ^ 2 = 40</span></span></span>
+<span class="r-in"><span><span class="co">#    1 &lt;= x1, x2, x3, x4 &lt;= 5</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co"># we re-write the inequality as</span></span></span>
-<span class="r-in"><span><span class="co">#   25 - x1*x2*x3*x4 &lt;= 0</span></span></span>
+<span class="r-in"><span><span class="co">#   25 - x1 * x2 * x3 * x4 &lt;= 0</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
 <span class="r-in"><span><span class="co"># and the equality as</span></span></span>
-<span class="r-in"><span><span class="co">#   x1^2 + x2^2 + x3^2 + x4^2 - 40 = 0</span></span></span>
+<span class="r-in"><span><span class="co">#   x1 ^ 2 + x2 ^ 2 + x3 ^ 2 + x4 ^ 2 - 40 = 0</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
-<span class="r-in"><span><span class="co"># x0 = (1,5,5,1)</span></span></span>
+<span class="r-in"><span><span class="co"># x0 = (1, 5, 5, 1)</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
-<span class="r-in"><span><span class="co"># optimal solution = (1.00000000, 4.74299963, 3.82114998, 1.37940829)</span></span></span>
-<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># optimal solution = (1.000000, 4.742999, 3.821151, 1.379408)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://astamm.github.io/nloptr/index.html" class="external-link">'nloptr'</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
-<span class="r-in"><span><span class="co"># f(x) = x1*x4*(x1 + x2 + x3) + x3</span></span></span>
+<span class="r-in"><span><span class="co"># f(x) = x1 * x4 * (x1 + x2 + x3) + x3</span></span></span>
 <span class="r-in"><span><span class="co">#</span></span></span>
-<span class="r-in"><span><span class="va">eval_f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span> <span class="va">x</span> <span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span> <span class="st">"objective"</span> <span class="op">=</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span><span class="op">*</span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>,</span></span>
-<span class="r-in"><span>                  <span class="st">"gradient"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                                  <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span>,</span></span>
-<span class="r-in"><span>                                  <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">+</span> <span class="fl">1.0</span>,</span></span>
-<span class="r-in"><span>                                  <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span> <span class="op">)</span> <span class="op">)</span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">eval_f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"objective"</span> <span class="op">=</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>         <span class="st">"gradient"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                        <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>                        <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">+</span> <span class="fl">1.0</span>,</span></span>
+<span class="r-in"><span>                        <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># constraint functions</span></span></span>
 <span class="r-in"><span><span class="co"># inequalities</span></span></span>
-<span class="r-in"><span><span class="va">eval_g_ineq</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span> <span class="va">x</span> <span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>    <span class="va">constr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="fl">25</span> <span class="op">-</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">eval_g_ineq</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="va">constr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">25</span> <span class="op">-</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="va">grad</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="op">-</span><span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span>,</span></span>
-<span class="r-in"><span>                 <span class="op">-</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span>,</span></span>
-<span class="r-in"><span>                 <span class="op">-</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span>,</span></span>
-<span class="r-in"><span>                 <span class="op">-</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">)</span></span></span>
-<span class="r-in"><span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span> <span class="st">"constraints"</span><span class="op">=</span><span class="va">constr</span>, <span class="st">"jacobian"</span><span class="op">=</span><span class="va">grad</span> <span class="op">)</span> <span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="va">grad</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>                <span class="op">-</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>                <span class="op">-</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>                <span class="op">-</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"constraints"</span> <span class="op">=</span> <span class="va">constr</span>, <span class="st">"jacobian"</span> <span class="op">=</span> <span class="va">grad</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># equalities</span></span></span>
-<span class="r-in"><span><span class="va">eval_g_eq</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span> <span class="va">x</span> <span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>    <span class="va">constr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="fl">40</span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">eval_g_eq</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="va">constr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">^</span> <span class="fl">2</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">^</span> <span class="fl">2</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">^</span> <span class="fl">2</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">^</span> <span class="fl">2</span> <span class="op">-</span> <span class="fl">40</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>    <span class="va">grad</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>  <span class="fl">2.0</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span></span>
-<span class="r-in"><span>                  <span class="fl">2.0</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>,</span></span>
-<span class="r-in"><span>                  <span class="fl">2.0</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>,</span></span>
-<span class="r-in"><span>                  <span class="fl">2.0</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">)</span></span></span>
-<span class="r-in"><span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span> <span class="st">"constraints"</span><span class="op">=</span><span class="va">constr</span>, <span class="st">"jacobian"</span><span class="op">=</span><span class="va">grad</span> <span class="op">)</span> <span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="va">grad</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.0</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>              <span class="fl">2.0</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>              <span class="fl">2.0</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>,</span></span>
+<span class="r-in"><span>              <span class="fl">2.0</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"constraints"</span> <span class="op">=</span> <span class="va">constr</span>, <span class="st">"jacobian"</span> <span class="op">=</span> <span class="va">grad</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># initial values</span></span></span>
-<span class="r-in"><span><span class="va">x0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">1</span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># lower and upper bounds of control</span></span></span>
-<span class="r-in"><span><span class="va">lb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span> <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">ub</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">5</span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ub</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">local_opts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span> <span class="st">"algorithm"</span> <span class="op">=</span> <span class="st">"NLOPT_LD_MMA"</span>,</span></span>
-<span class="r-in"><span>                    <span class="st">"xtol_rel"</span>  <span class="op">=</span> <span class="fl">1.0e-7</span> <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">opts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span> <span class="st">"algorithm"</span> <span class="op">=</span> <span class="st">"NLOPT_LD_AUGLAG"</span>,</span></span>
-<span class="r-in"><span>              <span class="st">"xtol_rel"</span>  <span class="op">=</span> <span class="fl">1.0e-7</span>,</span></span>
-<span class="r-in"><span>              <span class="st">"maxeval"</span>   <span class="op">=</span> <span class="fl">1000</span>,</span></span>
-<span class="r-in"><span>              <span class="st">"local_opts"</span> <span class="op">=</span> <span class="va">local_opts</span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">local_opts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"algorithm"</span> <span class="op">=</span> <span class="st">"NLOPT_LD_MMA"</span>, <span class="st">"xtol_rel"</span>  <span class="op">=</span> <span class="fl">1.0e-7</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">opts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"algorithm"</span>  <span class="op">=</span> <span class="st">"NLOPT_LD_AUGLAG"</span>,</span></span>
+<span class="r-in"><span>             <span class="st">"xtol_rel"</span>   <span class="op">=</span> <span class="fl">1.0e-7</span>,</span></span>
+<span class="r-in"><span>             <span class="st">"maxeval"</span>    <span class="op">=</span> <span class="fl">1000</span>,</span></span>
+<span class="r-in"><span>             <span class="st">"local_opts"</span> <span class="op">=</span> <span class="va">local_opts</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="nloptr.html">nloptr</a></span><span class="op">(</span> x0<span class="op">=</span><span class="va">x0</span>,</span></span>
-<span class="r-in"><span>               eval_f<span class="op">=</span><span class="va">eval_f</span>,</span></span>
-<span class="r-in"><span>               lb<span class="op">=</span><span class="va">lb</span>,</span></span>
-<span class="r-in"><span>               ub<span class="op">=</span><span class="va">ub</span>,</span></span>
-<span class="r-in"><span>               eval_g_ineq<span class="op">=</span><span class="va">eval_g_ineq</span>,</span></span>
-<span class="r-in"><span>               eval_g_eq<span class="op">=</span><span class="va">eval_g_eq</span>,</span></span>
-<span class="r-in"><span>               opts<span class="op">=</span><span class="va">opts</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span> <span class="va">res</span> <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="nloptr.html">nloptr</a></span><span class="op">(</span>x0 <span class="op">=</span> <span class="va">x0</span>,</span></span>
+<span class="r-in"><span>              eval_f <span class="op">=</span> <span class="va">eval_f</span>,</span></span>
+<span class="r-in"><span>              lb <span class="op">=</span> <span class="va">lb</span>,</span></span>
+<span class="r-in"><span>              ub <span class="op">=</span> <span class="va">ub</span>,</span></span>
+<span class="r-in"><span>              eval_g_ineq <span class="op">=</span> <span class="va">eval_g_ineq</span>,</span></span>
+<span class="r-in"><span>              eval_g_eq <span class="op">=</span> <span class="va">eval_g_eq</span>,</span></span>
+<span class="r-in"><span>              opts <span class="op">=</span> <span class="va">opts</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>

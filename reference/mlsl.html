@@ -140,19 +140,19 @@ information.</p></dd>
 </dl></div>
     <div id="details">
     <h2>Details</h2>
-    <p>MLSL is a <code>multistart' algorithm: it works by doing a sequence of local optimizations (using some other local optimization algorithm) from random or low-discrepancy starting points.  MLSL is distinguished, however by a </code>clustering' heuristic that helps it to avoid repeated searches of the same
-local optima, and has some theoretical guarantees of finding all local
+    <p>MLSL is a <code>multistart' algorithm: it works by doing a sequence of local optimizations---using some other local optimization algorithm---from random or low-discrepancy starting points. MLSL is distinguished, however, by a </code>clustering' heuristic that helps it to avoid repeated searches of the same
+local optima and also has some theoretical guarantees of finding all local
 optima in a finite number of local minimizations.</p>
 <p>The local-search portion of MLSL can use any of the other algorithms in
-NLopt, and in particular can use either gradient-based or derivative-free
-algorithms.  For this wrapper only gradient-based <code>L-BFGS</code> is available
+NLopt, and, in particular, can use either gradient-based or derivative-free
+algorithms. For this wrapper only gradient-based <code>L-BFGS</code> is available
 as local method.</p>
     </div>
     <div id="note">
     <h2>Note</h2>
     <p>If you don't set a stopping tolerance for your local-optimization
-algorithm, MLSL defaults to <code>ftol_rel=1e-15</code> and <code>xtol_rel=1e-7</code>
-for the local searches.</p>
+algorithm, MLSL defaults to <code>ftol_rel = 1e-15</code> and
+<code>xtol_rel = 1e-7</code> for the local searches.</p>
     </div>
     <div id="references">
     <h2>References</h2>
@@ -196,8 +196,8 @@ Optimization and Applications, vol. 30, p. 297-318 (2005).</p>
 <span class="r-in"><span>    <span class="op">}</span></span></span>
 <span class="r-in"><span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">fun</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span><span class="va">S</span> <span class="op">&lt;-</span> <span class="fu">mlsl</span><span class="op">(</span>x0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">6</span><span class="op">)</span>, <span class="va">hartmann6</span>, lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">6</span><span class="op">)</span>, upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">6</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>            nl.info <span class="op">=</span> <span class="cn">TRUE</span>, control<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>xtol_rel<span class="op">=</span><span class="fl">1e-8</span>, maxeval<span class="op">=</span><span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">S</span> <span class="op">&lt;-</span> <span class="fu">mlsl</span><span class="op">(</span>x0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">6</span><span class="op">)</span>, <span class="va">hartmann6</span>, lower <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">6</span><span class="op">)</span>, upper <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">6</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>            nl.info <span class="op">=</span> <span class="cn">TRUE</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>xtol_rel <span class="op">=</span> <span class="fl">1e-8</span>, maxeval <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> nloptr(x0 = x0, eval_f = fn, eval_grad_f = gr, lb = lower, ub = upper, </span>
@@ -217,6 +217,7 @@ Optimization and Applications, vol. 30, p. 297-318 (2005).</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Current value of controls: 0.2016895 0.1500107 0.476874 0.2753324 0.3116516 0.6573005</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Number of Iterations....: 1000</span></span></span>
 <span class="r-in"><span><span class="co">## Termination conditions:</span></span></span>
 <span class="r-in"><span><span class="co">##   stopval: -Inf, xtol_rel: 1e-08, maxeval: 1000, ftol_rel: 0, ftol_abs: 0</span></span></span>
