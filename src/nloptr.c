@@ -67,7 +67,7 @@ getListElement (SEXP list, char *str)
     return elmt;
 }
 
-// convert string to nlopt_alogirthm
+// convert string to nlopt_algorithm
 nlopt_algorithm getAlgorithmCode( const char *algorithm_str ) {
 
     nlopt_algorithm algorithm;

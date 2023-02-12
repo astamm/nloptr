@@ -5,7 +5,8 @@ which should make the code safer, more efficient, and easier to follow. Please
 see commit logs for [#128](https://github.com/astamm/nloptr/pull/128),
 [#129](https://github.com/astamm/nloptr/pull/129),
 [#131](https://github.com/astamm/nloptr/pull/131), 
-[#132](https://github.com/astamm/nloptr/pull/132), and [TBD] for the full
+[#132](https://github.com/astamm/nloptr/pull/132),
+and [#133](https://github.com/astamm/nloptr/pull/133) for the full
 description of the changes which include:
 
 * Expanded unit tests: coverage now over 97% with no file below 90%
