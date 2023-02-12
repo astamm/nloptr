@@ -68,7 +68,7 @@
       
       xtol_abs
       	possible values: xtol_abs > 0
-      	default value:   rep( 0.0, length(x0) )
+      	default value:   rep(0.0, length(x0))
       
       	xtol_abs is a vector of length n (the number of elements in x) giving
       	the tolerances: stop when an optimization step (or an estimate of the
@@ -96,7 +96,7 @@
       
       tol_constraints_ineq
       	possible values: tol_constraints_ineq > 0.0
-      	default value:   rep( 1e-8, num_constraints_ineq )
+      	default value:   rep(1e-8, num_constraints_ineq)
       
       	The parameter tol_constraints_ineq is a vector of tolerances. Each
       	tolerance corresponds to one of the inequality constraints. The
@@ -110,13 +110,13 @@
       
       tol_constraints_eq
       	possible values: tol_constraints_eq > 0.0
-      	default value:   rep( 1e-8, num_constraints_eq )
+      	default value:   rep(1e-8, num_constraints_eq)
       
       	The parameter tol_constraints_eq is a vector of tolerances. Each
       	tolerance corresponds to one of the equality constraints. The
       	tolerance is used for the purpose of stopping criteria only: a point
       	x is considered feasible for judging whether to stop the optimization
-      	if abs( eval_g_ineq(x) ) <= tol. For equality constraints, a small
+      	if abs(eval_g_ineq(x)) <= tol. For equality constraints, a small
       	positive tolerance is strongly advised in order to allow NLopt to
       	converge even if the equality constraint is slightly nonzero. By
       	default the tolerances for all equality constraints are set to 1e-8.
@@ -190,19 +190,5 @@
       	random numbers is generated from the system time, so that you will
       	get a different sequence of pseudorandom numbers each time you run
       	your program.
-      
-
----
-
-    Code
-      nloptr.print.options(opts.show = "check_derivatives")
-    Output
-      check_derivatives
-      	possible values: TRUE or FALSE
-      	default value:   FALSE
-      
-      	The option check_derivatives can be activated to compare the
-      	user-supplied analytic gradients with finite difference
-      	approximations.
       
 

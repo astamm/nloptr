@@ -6,7 +6,10 @@
 # Date:   27 January 2014
 #
 # Wrapper to solve optimization problem using Nelder-Mead and Subplex.
-
+#
+# CHANGELOG
+# 2023-02-09: Cleanup and tweaks for safety and efficiency (Avraham Adler)
+#
 
 
 #' Nelder-Mead Simplex
@@ -76,26 +79,22 @@
 #' # $xmin = c(0.7085595, 0.5000000, 0.2500000)
 #' # $fmin = 0.3353605}
 #'
-neldermead <-
-function(x0, fn, lower = NULL, upper = NULL,
-                 nl.info = FALSE, control = list(), ...)
-{
+neldermead <- function(x0, fn, lower = NULL, upper = NULL, nl.info = FALSE,
+                       control = list(), ...) {
+
     opts <- nl.opts(control)
     opts["algorithm"] <- "NLOPT_LN_NELDERMEAD"
 
     fun <- match.fun(fn)
     fn <- function(x) fun(x, ...)
 
-    S0 <- nloptr(x0, fn, lb = lower, ub = upper,
-                opts = opts)
+    S0 <- nloptr(x0, fn, lb = lower, ub = upper, opts = opts)
 
     if (nl.info) print(S0)
-    S1 <- list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-                convergence = S0$status, message = S0$message)
-    return(S1)
+
+    list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+         convergence = S0$status, message = S0$message)
 }
-
-
 
 
 #' Subplex Algorithm
@@ -104,11 +103,11 @@ function(x0, fn, lower = NULL, upper = NULL,
 #' subspaces.
 #'
 #' SUBPLEX is claimed to be much more efficient and robust than the original
-#' Nelder-Mead, while retaining the latter's facility with discontinuous
+#' Nelder-Mead while retaining the latter's facility with discontinuous
 #' objectives.
 #'
-#' This implementation has explicit support for bound constraints (via the
-#' method in the Box paper as described on the \code{neldermead} help page).
+#' This implementation has explicit support for bound constraints via the
+#' method in the Box paper as described on the \code{neldermead} help page.
 #'
 #' @param x0 starting point for searching the optimum.
 #' @param fn objective function that is to be minimized.
@@ -152,21 +151,19 @@ function(x0, fn, lower = NULL, upper = NULL,
 #' x0 <- c(3, -1, 0, 1)
 #' sbplx(x0, psf, control = list(maxeval = Inf, ftol_rel = 1e-6))  #  0 0 0 0 (?)
 #'
-sbplx <-
-function(x0, fn, lower = NULL, upper = NULL,
-                 nl.info = FALSE, control = list(), ...)
-{
+sbplx <- function(x0, fn, lower = NULL, upper = NULL, nl.info = FALSE,
+                  control = list(), ...) {
+
     opts <- nl.opts(control)
     opts["algorithm"] <- "NLOPT_LN_SBPLX"
 
     fun <- match.fun(fn)
     fn <- function(x) fun(x, ...)
 
-    S0 <- nloptr(x0, fn, lb = lower, ub = upper,
-                opts = opts)
+    S0 <- nloptr(x0, fn, lb = lower, ub = upper, opts = opts)
 
     if (nl.info) print(S0)
-    S1 <- list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-                convergence = S0$status, message = S0$message)
-    return(S1)
+
+    list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+         convergence = S0$status, message = S0$message)
 }

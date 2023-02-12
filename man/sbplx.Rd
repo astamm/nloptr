@@ -43,11 +43,11 @@ subspaces.
 }
 \details{
 SUBPLEX is claimed to be much more efficient and robust than the original
-Nelder-Mead, while retaining the latter's facility with discontinuous
+Nelder-Mead while retaining the latter's facility with discontinuous
 objectives.
 
-This implementation has explicit support for bound constraints (via the
-method in the Box paper as described on the \code{neldermead} help page).
+This implementation has explicit support for bound constraints via the
+method in the Box paper as described on the \code{neldermead} help page.
 }
 \note{
 It is the request of Tom Rowan that reimplementations of his algorithm

@@ -6,6 +6,9 @@
 # Date:   27 January 2014
 #
 # Wrapper to solve optimization problem using Direct.
+#
+# CHANGELOG
+#   2023-02-10: Tweaks for efficiency and readability (Avraham Adler)
 
 #' DIviding RECTangles Algorithm for Global Optimization
 #'
@@ -101,43 +104,38 @@
 #' ## Current value of controls:
 #' ##     0.2016884 0.1500025 0.4768667 0.2753391 0.311648 0.6572931
 #'
-direct <-
-    function(fn, lower, upper, scaled = TRUE, original = FALSE,
-             nl.info = FALSE, control = list(), ...)
-    {
-        opts <- nl.opts(control)
-        if (scaled) {
-            opts["algorithm"] <- "NLOPT_GN_DIRECT"
-        } else {
-            opts["algorithm"] <- "NLOPT_GN_DIRECT_NOSCAL"
-        }
-        if (original)
-            opts["algorithm"] <- "NLOPT_GN_ORIG_DIRECT"
-
-        fun <- match.fun(fn)
-        fn  <- function(x) fun(x, ...)
-
-        x0 <- (lower + upper) / 2
-
-        S0 <- nloptr(x0,
-                     eval_f = fn,
-                     lb = lower,
-                     ub = upper,
-                     opts = opts)
-
-        if (nl.info) print(S0)
-        S1 <- list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-                   convergence = S0$status, message = S0$message)
-        return(S1)
+direct <- function(fn, lower, upper, scaled = TRUE, original = FALSE,
+                   nl.info = FALSE, control = list(), ...) {
+    opts <- nl.opts(control)
+    if (scaled) {
+        opts["algorithm"] <- "NLOPT_GN_DIRECT"
+    } else {
+        opts["algorithm"] <- "NLOPT_GN_DIRECT_NOSCAL"
     }
+    if (original) opts["algorithm"] <- "NLOPT_GN_ORIG_DIRECT"
 
+    fun <- match.fun(fn)
+    fn  <- function(x) fun(x, ...)
+
+    x0 <- (lower + upper) / 2
+
+    S0 <- nloptr(x0,
+                 eval_f = fn,
+                 lb = lower,
+                 ub = upper,
+                 opts = opts)
+
+    if (nl.info) print(S0)
+
+    list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+         convergence = S0$status, message = S0$message)
+}
 
 #' @export directL
 #' @rdname direct
-directL <-
-function(fn, lower, upper, randomized = FALSE, original = FALSE,
-            nl.info = FALSE, control = list(), ...)
-{
+directL <- function(fn, lower, upper, randomized = FALSE, original = FALSE,
+                    nl.info = FALSE, control = list(), ...) {
+
     opts <- nl.opts(control)
     if (randomized) {
         opts["algorithm"] <- "NLOPT_GN_DIRECT_L_RAND"
@@ -160,7 +158,7 @@ function(fn, lower, upper, randomized = FALSE, original = FALSE,
                 opts = opts)
 
     if (nl.info) print(S0)
-    S1 <- list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-                convergence = S0$status, message = S0$message)
-    return(S1)
+
+    list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+         convergence = S0$status, message = S0$message)
 }

@@ -54,19 +54,19 @@ A modification of MLSL is included using a low-discrepancy sequence (LDS)
 instead of pseudorandom numbers.
 }
 \details{
-MLSL is a \verb{multistart' algorithm: it works by doing a sequence of local optimizations (using some other local optimization algorithm) from random or low-discrepancy starting points.  MLSL is distinguished, however by a }clustering' heuristic that helps it to avoid repeated searches of the same
-local optima, and has some theoretical guarantees of finding all local
+MLSL is a \verb{multistart' algorithm: it works by doing a sequence of local optimizations---using some other local optimization algorithm---from random or low-discrepancy starting points. MLSL is distinguished, however, by a }clustering' heuristic that helps it to avoid repeated searches of the same
+local optima and also has some theoretical guarantees of finding all local
 optima in a finite number of local minimizations.
 
 The local-search portion of MLSL can use any of the other algorithms in
-NLopt, and in particular can use either gradient-based or derivative-free
-algorithms.  For this wrapper only gradient-based \code{L-BFGS} is available
+NLopt, and, in particular, can use either gradient-based or derivative-free
+algorithms. For this wrapper only gradient-based \code{L-BFGS} is available
 as local method.
 }
 \note{
 If you don't set a stopping tolerance for your local-optimization
-algorithm, MLSL defaults to \code{ftol_rel=1e-15} and \code{xtol_rel=1e-7}
-for the local searches.
+algorithm, MLSL defaults to \code{ftol_rel = 1e-15} and
+\code{xtol_rel = 1e-7} for the local searches.
 }
 \examples{
 
@@ -92,8 +92,9 @@ hartmann6 <- function(x) {
     }
     return(fun)
 }
-S <- mlsl(x0 = rep(0, 6), hartmann6, lower = rep(0,6), upper = rep(1,6),
-            nl.info = TRUE, control=list(xtol_rel=1e-8, maxeval=1000))
+S <- mlsl(x0 = rep(0, 6), hartmann6, lower = rep(0, 6), upper = rep(1, 6),
+            nl.info = TRUE, control = list(xtol_rel = 1e-8, maxeval = 1000))
+
 ## Number of Iterations....: 1000
 ## Termination conditions:
 ##   stopval: -Inf, xtol_rel: 1e-08, maxeval: 1000, ftol_rel: 0, ftol_abs: 0

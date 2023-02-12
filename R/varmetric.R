@@ -6,7 +6,10 @@
 # Date:   27 January 2014
 #
 # Wrapper to solve optimization problem using Varmetric.
-
+#
+# CHANGELOG
+#   2023-02-08: Cleanup and tweaks for safety and efficiency (Avraham Adler)
+#
 
 
 #' Shifted Limited-memory Variable-metric
@@ -61,11 +64,9 @@
 #' ## Optimal value of objective function:  368.105912874334
 #' ## Optimal value of controls: 2  ...  2  2.109093  4
 #'
-varmetric <-
-function(x0, fn, gr = NULL, rank2 = TRUE,
-            lower = NULL, upper = NULL,
-            nl.info = FALSE, control = list(), ...)
-{
+varmetric <- function(x0, fn, gr = NULL, rank2 = TRUE, lower = NULL,
+                      upper = NULL, nl.info = FALSE, control = list(), ...) {
+
     opts <- nl.opts(control)
     if (rank2)
         opts["algorithm"] <- "NLOPT_LD_VAR2"
@@ -73,7 +74,7 @@ function(x0, fn, gr = NULL, rank2 = TRUE,
         opts["algorithm"] <- "NLOPT_LD_VAR1"
 
     fun <- match.fun(fn)
-    fn  <- function(x) fun(x, ...)
+    fn <- function(x) fun(x, ...)
 
     if (is.null(gr)) {
         gr <- function(x) nl.grad(x, fn)
@@ -90,7 +91,6 @@ function(x0, fn, gr = NULL, rank2 = TRUE,
                 opts = opts)
 
     if (nl.info) print(S0)
-    S1 <- list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-                convergence = S0$status, message = S0$message)
-    return(S1)
+    list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+         convergence = S0$status, message = S0$message)
 }

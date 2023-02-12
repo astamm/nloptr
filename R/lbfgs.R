@@ -6,7 +6,11 @@
 # Date:   27 January 2014
 #
 # Wrapper to solve optimization problem using Low-storage BFGS.
-
+#
+# CHANGELOG
+#
+# 2023-02-09: Cleanup and tweaks for safety and efficiency (Avraham Adler)
+#
 
 
 #' Low-storage BFGS
@@ -67,10 +71,9 @@
 #' ## Optimal value of objective function:  368.105912874334
 #' ## Optimal value of controls: 2  ...  2  2.109093  4
 #'
-lbfgs <-
-function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
-            nl.info = FALSE, control = list(), ...)
-{
+lbfgs <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
+                  nl.info = FALSE, control = list(), ...) {
+
     opts <- nl.opts(control)
     opts["algorithm"] <- "NLOPT_LD_LBFGS"
 
@@ -92,7 +95,7 @@ function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
                 opts = opts)
 
     if (nl.info) print(S0)
-    S1 <- list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-                convergence = S0$status, message = S0$message)
-    return(S1)
+
+    list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+         convergence = S0$status, message = S0$message)
 }

@@ -47,8 +47,8 @@ inequality and equality constraints (but see below).
 }
 \details{
 It constructs successive linear approximations of the objective function and
-constraints via a simplex of n+1 points (in n dimensions), and optimizes
-these approximations in a trust region at each step.
+constraints via a simplex of \eqn{n+1} points (in \eqn{n} dimensions), and
+optimizes these approximations in a trust region at each step.
 
 COBYLA supports equality constraints by transforming them into two
 inequality constraints. As this does not give full satisfaction with the

@@ -6,7 +6,13 @@
 # Date:   27 January 2014
 #
 # Wrapper to solve optimization problem using Sequential Quadratic Programming.
-
+#
+# CHANGELOG
+#
+# 2023-02-09: Direct Jacobian now converges to proper value so removing
+#             confusing commentary in example. Also Cleanup and tweaks for safety
+#             and efficiency (Avraham Adler)
+#
 
 
 #' Sequential Quadratic Programming (SQP)
@@ -78,19 +84,12 @@
 #'
 #' S <- slsqp(x0.hs100, fn = fn.hs100,     # no gradients and jacobians provided
 #'            hin = hin.hs100,
+#'            nl.info = TRUE,
 #'            control = list(xtol_rel = 1e-8, check_derivatives = TRUE))
 #' S
-#' ## Optimal value of objective function:  690.622270249131   *** WRONG ***
+#' ## Optimal value of objective function:  680.630057375943
+#' ## Optimal value of controls: 2.3305 1.951372 -0.4775407 4.365726 -0.6244871 1.038131 1.594227
 #'
-#' # Even the numerical derivatives seem to be too tight.
-#' # Let's try with a less accurate jacobian.
-#'
-#' hinjac.hs100 <- function(x) nl.jacobian(x, hin.hs100, heps = 1e-2)
-#' S <- slsqp(x0.hs100, fn = fn.hs100,
-#'            hin = hin.hs100, hinjac = hinjac.hs100,
-#'            control = list(xtol_rel = 1e-8))
-#' S
-#' ## Optimal value of objective function:  680.630057392593   *** CORRECT ***
 #'
 slsqp <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
                      hin = NULL, hinjac = NULL, heq = NULL, heqjac = NULL,
@@ -110,17 +109,19 @@ slsqp <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
     }
 
     if (!is.null(hin)) {
-        if ( getOption('nloptr.show.inequality.warning') ) {
-            message('For consistency with the rest of the package the inequality sign may be switched from >= to <= in a future nloptr version.')
+        if (getOption("nloptr.show.inequality.warning")) {
+            message("For consistency with the rest of the package the ",
+                    "inequality sign may be switched from >= to <= in a ",
+                    "future nloptr version.")
         }
 
         .hin <- match.fun(hin)
-        hin <- function(x) (-1) * .hin(x)   # change  hin >= 0  to  hin <= 0 !
+        hin <- function(x) -.hin(x)            # change  hin >= 0  to  hin <= 0 !
         if (is.null(hinjac)) {
             hinjac <- function(x) nl.jacobian(x, hin)
         } else {
             .hinjac <- match.fun(hinjac)
-            hinjac <- function(x) (-1) * .hinjac(x)
+            hinjac <- function(x) -.hinjac(x)
         }
     }
 
@@ -147,7 +148,7 @@ slsqp <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
                 opts = opts)
 
     if (nl.info) print(S0)
-    S1 <- list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-                convergence = S0$status, message = S0$message)
-    return(S1)
+
+    list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+         convergence = S0$status, message = S0$message)
 }

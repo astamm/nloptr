@@ -67,7 +67,7 @@ getListElement (SEXP list, char *str)
     return elmt;
 }
 
-// convert string to nlopt_alogirthm
+// convert string to nlopt_algorithm
 nlopt_algorithm getAlgorithmCode( const char *algorithm_str ) {
 
     nlopt_algorithm algorithm;
@@ -238,11 +238,11 @@ double func_objective(unsigned n, const double *x, double *grad, void *data)
             Rprintf( "\tx = %f\n", x[ 0 ] );
         }
         else {
-            Rprintf( "\tx = ( %f", x[ 0 ] );
+            Rprintf( "\tx = (%f", x[ 0 ] );
             for (i=1;i<n;i++) {
                 Rprintf( ", %f", x[ i ] );
             }
-            Rprintf( " )\n" );
+            Rprintf( ")\n" );
         }
     }
 
@@ -372,11 +372,11 @@ void func_constraints_ineq(unsigned m, double* constraints, unsigned n, const do
             Rprintf( "\tg(x) = %f\n", constraints[ 0 ] );
         }
         else {
-            Rprintf( "\tg(x) = ( %f", constraints[ 0 ] );
+            Rprintf( "\tg(x) = (%f", constraints[ 0 ] );
             for (i=1;i<m;i++) {
                 Rprintf( ", %f", constraints[ i ] );
             }
-            Rprintf( " )\n" );
+            Rprintf( ")\n" );
         }
     }
 
@@ -483,11 +483,11 @@ void func_constraints_eq(unsigned m, double* constraints, unsigned n, const doub
             Rprintf( "\th(x) = %f\n", constraints[ 0 ] );
         }
         else {
-            Rprintf( "\th(x) = ( %f", constraints[ 0 ] );
+            Rprintf( "\th(x) = (%f", constraints[ 0 ] );
             for (i=1;i<m;i++) {
                 Rprintf( ", %f", constraints[ i ] );
             }
-            Rprintf( " )\n" );
+            Rprintf( ")\n" );
         }
     }
 

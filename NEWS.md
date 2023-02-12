@@ -1,23 +1,22 @@
 # nloptr 2.0.3.9000
 
 This is a patch version update from [Avraham Adler](https://github.com/aadler)
-which should make the code safer and more efficient. Please see commit logs for
-[#128](https://github.com/astamm/nloptr/pull/128),
+which should make the code safer, more efficient, and easier to follow. Please
+see commit logs for [#128](https://github.com/astamm/nloptr/pull/128),
 [#129](https://github.com/astamm/nloptr/pull/129),
-[#131](https://github.com/astamm/nloptr/pull/131),
-and [#132](https://github.com/astamm/nloptr/pull/132) for the full explanation
-of changes which include:
+[#131](https://github.com/astamm/nloptr/pull/131), 
+[#132](https://github.com/astamm/nloptr/pull/132),
+and [#133](https://github.com/astamm/nloptr/pull/133) for the full
+description of the changes which include:
 
-* Expanded unit tests; coverage now over 90%
+* Expanded unit tests: coverage now over 97% with no file below 90%
 * Removed forcing `C++11`
 * Added safety checks to C code
-* Many safety and efficiency enhancements to underlying R code
+* Added many safety and efficiency enhancements to R code
 * Most R code style made self-consistent
-* Updated some documentation to use more LaTeX/R code
+* Updated documentation and messages for accuracy and mathematical formatting
 * Updated Github actions
-* Some bugfixes (e.g. in `isres`)
-
-.
+* Some bugfixes (e.g. in `isres` or the warning in `nl.grad`.)
 
 # nloptr 2.0.3
 
