@@ -4,6 +4,10 @@
 # Date:   02 October 2018
 #
 # Wrapper to solve optimization problem using CCSAQ.
+#
+# CHANGELOG:
+#   2023-02-11: Tweaks for efficiency and readability (Avraham Adler)
+#
 
 #' Conservative Convex Separable Approximation with Affine Approximation plus Quadratic Penalty
 #'
@@ -51,30 +55,33 @@
 #' ##  Solve the Hock-Schittkowski problem no. 100 with analytic gradients
 #' x0.hs100 <- c(1, 2, 0, 4, 0, 1, 1)
 #' fn.hs100 <- function(x) {
-#'     (x[1]-10)^2 + 5*(x[2]-12)^2 + x[3]^4 + 3*(x[4]-11)^2 + 10*x[5]^6 +
-#'                   7*x[6]^2 + x[7]^4 - 4*x[6]*x[7] - 10*x[6] - 8*x[7]
+#'     (x[1] - 10) ^ 2 + 5 * (x[2] - 12) ^ 2 + x[3] ^ 4 + 3 * (x[4] - 11) ^ 2 +
+#'      10 * x[5] ^ 6 + 7 * x[6] ^ 2 + x[7] ^ 4 - 4 * x[6] * x[7] -
+#'      10 * x[6] - 8 * x[7]
 #' }
 #' hin.hs100 <- function(x) {
 #'     h <- numeric(4)
-#'     h[1] <- 127 - 2*x[1]^2 - 3*x[2]^4 - x[3] - 4*x[4]^2 - 5*x[5]
-#'     h[2] <- 282 - 7*x[1] - 3*x[2] - 10*x[3]^2 - x[4] + x[5]
-#'     h[3] <- 196 - 23*x[1] - x[2]^2 - 6*x[6]^2 + 8*x[7]
-#'     h[4] <- -4*x[1]^2 - x[2]^2 + 3*x[1]*x[2] -2*x[3]^2 - 5*x[6]	+11*x[7]
+#'     h[1] <- 127 - 2 * x[1] ^ 2 - 3 * x[2] ^ 4 - x[3] - 4 * x[4] ^ 2 - 5 * x[5]
+#'     h[2] <- 282 - 7 * x[1] - 3 * x[2] - 10 * x[3] ^ 2 - x[4] + x[5]
+#'     h[3] <- 196 - 23 * x[1] - x[2] ^ 2 - 6 * x[6] ^ 2 + 8 * x[7]
+#'     h[4] <- -4 * x[1] ^ 2 - x[2] ^ 2 + 3 * x[1] * x[2] -2 * x[3] ^ 2 -
+#'              5 * x[6] + 11 * x[7]
 #'     return(h)
 #' }
 #' gr.hs100 <- function(x) {
-#'    c(  2 * x[1] -  20,
-#'       10 * x[2] - 120,
-#'        4 * x[3]^3,
-#'        6 * x[4] - 66,
-#'       60 * x[5]^5,
-#'       14 * x[6]   - 4 * x[7] - 10,
-#'        4 * x[7]^3 - 4 * x[6] -  8 )}
+#'    c( 2 * x[1] -  20,
+#'      10 * x[2] - 120,
+#'       4 * x[3] ^ 3,
+#'       6 * x[4] - 66,
+#'      60 * x[5] ^ 5,
+#'      14 * x[6] - 4 * x[7] - 10,
+#'       4 * x[7] ^ 3 - 4 * x[6] -  8)
+#' }
 #' hinjac.hs100 <- function(x) {
-#'     matrix(c(4*x[1], 12*x[2]^3, 1, 8*x[4], 5, 0, 0,
-#'         7, 3, 20*x[3], 1, -1, 0, 0,
-#'         23, 2*x[2], 0, 0, 0, 12*x[6], -8,
-#'         8*x[1]-3*x[2], 2*x[2]-3*x[1], 4*x[3], 0, 0, 5, -11), 4, 7, byrow=TRUE)
+#'     matrix(c(4 * x[1], 12 * x[2] ^ 3, 1, 8 * x[4], 5, 0, 0, 7, 3, 20 * x[3],
+#'              1, -1, 0, 0, 23, 2 * x[2], 0, 0, 0, 12 * x[6], -8,
+#'              8 * x[1] - 3 * x[2], 2 * x[2] - 3 * x[1], 4 * x[3],
+#'              0, 0, 5, -11), 4, 7, byrow = TRUE)
 #' }
 #'
 #' # incorrect result with exact jacobian
@@ -86,9 +93,8 @@
 #' S <- ccsaq(x0.hs100, fn.hs100, hin = hin.hs100,
 #'             nl.info = TRUE, control = list(xtol_rel = 1e-8))
 #' }
-ccsaq <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
-                    hin = NULL, hinjac = NULL,
-                    nl.info = FALSE, control = list(), ...) {
+ccsaq <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL, hin = NULL,
+                  hinjac = NULL, nl.info = FALSE, control = list(), ...) {
 
     opts <- nl.opts(control)
     opts["algorithm"] <- "NLOPT_LD_CCSAQ"
@@ -103,33 +109,34 @@ ccsaq <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
         gr <- function(x) .gr(x, ...)
     }
 
-
     if (!is.null(hin)) {
-        if ( getOption('nloptr.show.inequality.warning') ) {
-            message('For consistency with the rest of the package the inequality sign may be switched from >= to <= in a future nloptr version.')
+        if (getOption("nloptr.show.inequality.warning")) {
+            message("For consistency with the rest of the package the ",
+                    "inequality sign may be switched from >= to <= in a ",
+                    "future nloptr version.")
         }
 
         .hin <- match.fun(hin)
-        hin <- function(x) (-1) * .hin(x)   # change  hin >= 0  to  hin <= 0 !
+        hin <- function(x) -.hin(x)           # change  hin >= 0  to  hin <= 0 !
         if (is.null(hinjac)) {
             hinjac <- function(x) nl.jacobian(x, hin)
         } else {
             .hinjac <- match.fun(hinjac)
-            hinjac <- function(x) (-1) * .hinjac(x)
+            hinjac <- function(x) -.hinjac(x)
         }
     }
 
     S0 <- nloptr(x0,
-                eval_f = fn,
-                eval_grad_f = gr,
-                lb = lower,
-                ub = upper,
-                eval_g_ineq = hin,
-                eval_jac_g_ineq = hinjac,
-                opts = opts)
+                 eval_f = fn,
+                 eval_grad_f = gr,
+                 lb = lower,
+                 ub = upper,
+                 eval_g_ineq = hin,
+                 eval_jac_g_ineq = hinjac,
+                 opts = opts)
 
     if (nl.info) print(S0)
-    S1 <- list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-                convergence = S0$status, message = S0$message)
-    return(S1)
+
+    list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+         convergence = S0$status, message = S0$message)
 }
