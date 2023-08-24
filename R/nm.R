@@ -32,9 +32,9 @@
 #'   \item{value}{the function value corresponding to \code{par}.}
 #'   \item{iter}{number of (outer) iterations, see \code{maxeval}.}
 #'   \item{convergence}{integer code indicating successful completion (> 0)
-#'     or a possible error number (< 0).}
+#'   or a possible error number (< 0).}
 #'   \item{message}{character string produced by NLopt and giving additional
-#'     information.}
+#'   information.}
 #'
 #' @export neldermead
 #'
@@ -55,22 +55,22 @@
 #'
 #' # Fletcher and Powell's helic valley
 #' fphv <- function(x)
-#'     100*(x[3] - 10*atan2(x[2], x[1])/(2*pi))^2 +
-#'         (sqrt(x[1]^2 + x[2]^2) - 1)^2 +x[3]^2
+#'   100*(x[3] - 10*atan2(x[2], x[1])/(2*pi))^2 +
+#'     (sqrt(x[1]^2 + x[2]^2) - 1)^2 +x[3]^2
 #' x0 <- c(-1, 0, 0)
-#' neldermead(x0, fphv)    #  1 0 0
+#' neldermead(x0, fphv)  #  1 0 0
 #'
 #' # Powell's Singular Function (PSF)
 #' psf <- function(x)  (x[1] + 10*x[2])^2 + 5*(x[3] - x[4])^2 +
-#'                     (x[2] - 2*x[3])^4 + 10*(x[1] - x[4])^4
+#'           (x[2] - 2*x[3])^4 + 10*(x[1] - x[4])^4
 #' x0 <- c(3, -1, 0, 1)
-#' neldermead(x0, psf)     #  0 0 0 0, needs maximum number of function calls
+#' neldermead(x0, psf)   #  0 0 0 0, needs maximum number of function calls
 #'
 #' \dontrun{
 #' # Bounded version of Nelder-Mead
 #' rosenbrock <- function(x) { ## Rosenbrock Banana function
-#'     100 * (x[2] - x[1]^2)^2 + (1 - x[1])^2 +
-#'     100 * (x[3] - x[2]^2)^2 + (1 - x[2])^2
+#'   100 * (x[2] - x[1]^2)^2 + (1 - x[1])^2 +
+#'   100 * (x[3] - x[2]^2)^2 + (1 - x[2])^2
 #' }
 #' lower <- c(-Inf, 0,   0)
 #' upper <- c( Inf, 0.5, 1)
@@ -82,18 +82,18 @@
 neldermead <- function(x0, fn, lower = NULL, upper = NULL, nl.info = FALSE,
                        control = list(), ...) {
 
-    opts <- nl.opts(control)
-    opts["algorithm"] <- "NLOPT_LN_NELDERMEAD"
+  opts <- nl.opts(control)
+  opts["algorithm"] <- "NLOPT_LN_NELDERMEAD"
 
-    fun <- match.fun(fn)
-    fn <- function(x) fun(x, ...)
+  fun <- match.fun(fn)
+  fn <- function(x) fun(x, ...)
 
-    S0 <- nloptr(x0, fn, lb = lower, ub = upper, opts = opts)
+  S0 <- nloptr(x0, fn, lb = lower, ub = upper, opts = opts)
 
-    if (nl.info) print(S0)
+  if (nl.info) print(S0)
 
-    list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-         convergence = S0$status, message = S0$message)
+  list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+       convergence = S0$status, message = S0$message)
 }
 
 
@@ -121,9 +121,9 @@ neldermead <- function(x0, fn, lower = NULL, upper = NULL, nl.info = FALSE,
 #'   \item{value}{the function value corresponding to \code{par}.}
 #'   \item{iter}{number of (outer) iterations, see \code{maxeval}.}
 #'   \item{convergence}{integer code indicating successful completion (> 0)
-#'     or a possible error number (< 0).}
+#'   or a possible error number (< 0).}
 #'   \item{message}{character string produced by NLopt and giving additional
-#'     information.}
+#'   information.}
 #'
 #' @export sbplx
 #'
@@ -140,30 +140,30 @@ neldermead <- function(x0, fn, lower = NULL, upper = NULL, nl.info = FALSE,
 #'
 #' # Fletcher and Powell's helic valley
 #' fphv <- function(x)
-#'     100*(x[3] - 10*atan2(x[2], x[1])/(2*pi))^2 +
-#'         (sqrt(x[1]^2 + x[2]^2) - 1)^2 +x[3]^2
+#'   100*(x[3] - 10*atan2(x[2], x[1])/(2*pi))^2 +
+#'     (sqrt(x[1]^2 + x[2]^2) - 1)^2 +x[3]^2
 #' x0 <- c(-1, 0, 0)
-#' sbplx(x0, fphv)    #  1 0 0
+#' sbplx(x0, fphv)  #  1 0 0
 #'
 #' # Powell's Singular Function (PSF)
 #' psf <- function(x)  (x[1] + 10*x[2])^2 + 5*(x[3] - x[4])^2 +
-#'                     (x[2] - 2*x[3])^4 + 10*(x[1] - x[4])^4
+#'           (x[2] - 2*x[3])^4 + 10*(x[1] - x[4])^4
 #' x0 <- c(3, -1, 0, 1)
 #' sbplx(x0, psf, control = list(maxeval = Inf, ftol_rel = 1e-6))  #  0 0 0 0 (?)
 #'
 sbplx <- function(x0, fn, lower = NULL, upper = NULL, nl.info = FALSE,
                   control = list(), ...) {
 
-    opts <- nl.opts(control)
-    opts["algorithm"] <- "NLOPT_LN_SBPLX"
+  opts <- nl.opts(control)
+  opts["algorithm"] <- "NLOPT_LN_SBPLX"
 
-    fun <- match.fun(fn)
-    fn <- function(x) fun(x, ...)
+  fun <- match.fun(fn)
+  fn <- function(x) fun(x, ...)
 
-    S0 <- nloptr(x0, fn, lb = lower, ub = upper, opts = opts)
+  S0 <- nloptr(x0, fn, lb = lower, ub = upper, opts = opts)
 
-    if (nl.info) print(S0)
+  if (nl.info) print(S0)
 
-    list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-         convergence = S0$status, message = S0$message)
+  list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+       convergence = S0$status, message = S0$message)
 }
