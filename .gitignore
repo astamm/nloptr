@@ -16,3 +16,4 @@ config.status
 src/Makevars
 src/*.dll
 windows
+.lintr

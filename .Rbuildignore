@@ -13,3 +13,4 @@ TODO
 ^src/nlopt/
 ^windows$
 ^CRAN-SUBMISSION$
+^.lintr$
