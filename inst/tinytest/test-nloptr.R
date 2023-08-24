@@ -8,6 +8,8 @@
 # Test code in nloptr.R and nloptr.c which is not tested elsewhere.
 #
 # Changelog:
+#   2023-08-23: Converted snapshots to equal_to_reference. This will not test
+#   the print levels. May have to add expect_stdout too.
 #
 # It is possible for NLOPT to go slightly beyond maxtime or maxeval, especially
 # for the global algorithms, which is why the stopping criterion has a
@@ -52,8 +54,8 @@ testRun <- nloptr(5, fn, lb = lb, ub = ub, opts = c(alg, ctl))
 
 expect_equal(testRun$solution, optSol, tolerance = tol)
 expect_equal(testRun$objective, optVal, tolerance = tol)
-expect_lte(testRun$iterations, ctl$maxeval + 5)
-expect_gt(testRun$status, 0)
+expect_true(testRun$iterations <= ctl$maxeval + 5)
+expect_true(testRun$status > 0)
 
 ## NLOPT_GN_DIRECT_L_RAND_NOSCAL
 alg <- list(algorithm = "NLOPT_GN_DIRECT_L_RAND_NOSCAL")
@@ -61,8 +63,8 @@ testRun <- nloptr(5, fn, lb = lb, ub = ub, opts = c(alg, ctl))
 
 expect_equal(testRun$solution, optSol, tolerance = tol)
 expect_equal(testRun$objective, optVal, tolerance = tol)
-expect_lte(testRun$iterations, ctl$maxeval + 5)
-expect_gt(testRun$status, 0)
+expect_true(testRun$iterations <= ctl$maxeval + 5)
+expect_true(testRun$status > 0)
 
 ## NLOPT_LN_PRAXIS
 alg <- list(algorithm = "NLOPT_LN_PRAXIS")
@@ -70,8 +72,8 @@ testRun <- nloptr(5, fn, lb = lb, ub = ub, opts = c(alg, ctl))
 
 expect_equal(testRun$solution, optSol, tolerance = tol)
 expect_equal(testRun$objective, optVal, tolerance = tol)
-expect_lte(testRun$iterations, ctl$maxeval + 5)
-expect_gt(testRun$status, 0)
+expect_true(testRun$iterations <= ctl$maxeval + 5)
+expect_true(testRun$status > 0)
 
 ## NLOPT_GN_MLSL
 alg <- list(algorithm = "NLOPT_GN_MLSL")
@@ -80,8 +82,8 @@ testRun <- nloptr(5, fn, lb = lb, ub = ub, opts = c(alg, ctl, lopts))
 
 expect_equal(testRun$solution, optSol, tolerance = tol)
 expect_equal(testRun$objective, optVal, tolerance = tol)
-expect_lte(testRun$iterations, ctl$maxeval + 5)
-expect_gt(testRun$status, 0)
+expect_true(testRun$iterations <= ctl$maxeval + 5)
+expect_true(testRun$status > 0)
 
 ## NLOPT_GN_MLSL_LDS
 alg <- list(algorithm = "NLOPT_GN_MLSL_LDS")
@@ -90,8 +92,8 @@ testRun <- nloptr(5, fn, lb = lb, ub = ub, opts = c(alg, ctl, lopts))
 
 expect_equal(testRun$solution, optSol, tolerance = tol)
 expect_equal(testRun$objective, optVal, tolerance = tol)
-expect_lte(testRun$iterations, ctl$maxeval + 5)
-expect_gt(testRun$status, 0)
+expect_true(testRun$iterations <= ctl$maxeval + 5)
+expect_true(testRun$status > 0)
 
 ## NLOPT_LN_AUGLAG_EQ
 x0 <- c(-2, 2, 2, -1, -1)
@@ -114,8 +116,8 @@ testRun <- nloptr(x0, fn1, eval_g_eq = eqn1,
 
 expect_equal(testRun$solution, optSol, tolerance = tol)
 expect_equal(testRun$objective, optVal, tolerance = tol)
-expect_lte(testRun$iterations,  10005L)
-expect_gt(testRun$status, 0)
+expect_true(testRun$iterations <=  10005L)
+expect_true(testRun$status > 0)
 
 ## NLOPT_LD_AUGLAG_EQ
 gr1 <- function(x) {
@@ -136,8 +138,8 @@ testRun <- nloptr(x0, fn1, gr1, eval_g_eq = eqn1, eval_jac_g_eq = heqjac,
 
 expect_equal(testRun$solution, optSol, tolerance = tol)
 expect_equal(testRun$objective, optVal, tolerance = tol)
-expect_lte(testRun$iterations,  10005L)
-expect_gt(testRun$status, 0)
+expect_true(testRun$iterations <=  10005L)
+expect_true(testRun$status > 0)
 
 ## NLOPT_LN_NEWUOA_BOUND
 fn <- function(x) x[1L] ^ 4 + x[2L] ^ 2 - 5 * x[1L] * x[2L] + 5
@@ -154,8 +156,8 @@ testRun <- nloptr(c(1, 1), fn, lb = lb, ub = ub, opts = c(alg, ctl))
 
 expect_equal(testRun$solution, optSol, tolerance = 1e-5)
 expect_equal(testRun$objective, optVal, tolerance = tol)
-expect_lte(testRun$iterations, ctl$maxeval + 5)
-expect_gt(testRun$status, 0)
+expect_true(testRun$iterations <= ctl$maxeval + 5)
+expect_true(testRun$status > 0)
 
 ## NLOPT_GN_ESCH
 alg <- list(algorithm = "NLOPT_GN_ESCH")
@@ -164,8 +166,8 @@ testRun <- nloptr(c(1, 1), fn, lb = lb, ub = ub, opts = c(alg, ctl))
 
 expect_equal(testRun$solution, optSol, tolerance = 1e-2)
 expect_equal(testRun$objective, optVal, tolerance = 1e-2)
-expect_lte(testRun$iterations, ctl$maxeval + 5)
-expect_gt(testRun$status, 0)
+expect_true(testRun$iterations <= ctl$maxeval + 5)
+expect_true(testRun$status > 0)
 
 ## NLOPT_LD_LBFGS_NOCEDAL
 # NLOPT_LD_LBFGS_NOCEDAL as this algorithm has not been included as of NLOPT
@@ -214,12 +216,12 @@ optSol <- c(1.7, 1.5)
 optVal <- 1.74
 
 ## MULTIVARIATE SNAPSHOT
-test_that("Message output for multivariate print levels and deriv checks.", {
-  expect_snapshot(
-    nloptr(x0, fn, gr, lb, ub, hin, hinjac, heq, heqjac,
-           opts = list(algorithm = "NLOPT_LD_SLSQP", xtol_rel = 1e-8,
-                       print_level = 3, check_derivatives = TRUE)))
-})
+expect_equal_to_reference(
+  nloptr(x0, fn, gr, lb, ub, hin, hinjac, heq, heqjac,
+         opts = list(algorithm = "NLOPT_LD_SLSQP", xtol_rel = 1e-8,
+                     print_level = 3, check_derivatives = TRUE)),
+  "MultivariateSnapshot.rds")
+
 
 ## UNIVARIATE FUNCTION
 x0 <- 5
@@ -234,21 +236,19 @@ ub <- 6
 optSol <- 2.7
 optVal <- 0.49
 
-## UNIVARIATE SNAPSHOT
-test_that("Message output for univariate print levels and deriv checks.", {
-  expect_snapshot(
-    nloptr(x0, fn, gr, lb, ub, hin, hinjac, heq, heqjac,
-           opts = list(algorithm = "NLOPT_LD_SLSQP", xtol_rel = 1e-8,
-                       print_level = 3, check_derivatives = TRUE)))
-})
+## UNIVARIATE SNAPSHOTS
+expect_equal_to_reference(
+  nloptr(x0, fn, gr, lb, ub, hin, hinjac, heq, heqjac,
+         opts = list(algorithm = "NLOPT_LD_SLSQP", xtol_rel = 1e-8,
+                     print_level = 3, check_derivatives = TRUE)),
+  "UnivariateSnapshot.rds")
 
-test_that("NLOPT_ROUNDOFF_LIMITED", {
-  expect_snapshot(
-    nloptr(x0, fn, gr,
-           opts = list(algorithm = "NLOPT_LD_SLSQP", xtol_rel = -Inf)))
-})
+expect_equal_to_reference(nloptr(x0, fn, gr,
+                                 opts = list(algorithm = "NLOPT_LD_SLSQP",
+                                             xtol_rel = -Inf)),
+                          "NLOPT_ROUNDOFF_LIMITED.rds")
 
-test_that("stopval triggered", {
-  expect_snapshot(
-    nloptr(c(4, 4), fn, opts = list(algorithm = "NLOPT_LN_SBPLX", stopval = 20)))
-})
+expect_equal_to_reference(nloptr(c(4, 4), fn,
+                                 opts = list(algorithm = "NLOPT_LN_SBPLX",
+                                             stopval = 20)),
+                          "Stopval_Triggered.rds")
