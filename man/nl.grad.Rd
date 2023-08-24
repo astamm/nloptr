@@ -38,11 +38,11 @@ recommended in the literature.
   fn2 <- function(x) c(sin(x), cos(x))
   x <- (0:1) * 2 * pi
   nl.jacobian(x, fn2)
-  ##      [,1] [,2]
-  ## [1,]    1    0
-  ## [2,]    0    1
-  ## [3,]    0    0
-  ## [4,]    0    0
+  ##    [,1] [,2]
+  ## [1,]  1  0
+  ## [2,]  0  1
+  ## [3,]  0  0
+  ## [4,]  0  0
 
 }
 \author{

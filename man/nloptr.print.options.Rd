@@ -28,7 +28,7 @@ nloptr.print.options()
 nloptr.print.options(opts.show = c("algorithm", "check_derivatives"))
 
 opts <- list("algorithm"="NLOPT_LD_LBFGS",
-             "xtol_rel"=1.0e-8)
+       "xtol_rel"=1.0e-8)
 nloptr.print.options(opts.user = opts)
 
 }
