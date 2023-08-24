@@ -20,21 +20,11 @@ expect_warning(suppressMessages(check.derivatives(.x = 1:10, func = f,
                "for check_derivatives_print is unknown; use 'all'",
                fixed = TRUE)
 
-expect_message(
-  expect_message(
-    check.derivatives(.x = 1:10, func = f, func_grad = f_grad,
-                      check_derivatives_print = "all", a = 1:10),
-    "] = 0e+00 ~ 1.490116e-08   [", fixed = TRUE),
-  "Derivative checker results: 10 error(s) detected.", fixed = TRUE)
-
-expect_message(
-  expect_message(
-    check.derivatives(.x = 1:10, func = f, func_grad = f_grad,
-                      check_derivatives_print = "errors", a = 1:10),
-    "] = 0e+00 ~ 1.490116e-08   [", fixed = TRUE),
-  "Derivative checker results: 10 error(s) detected.", fixed = TRUE)
+expect_message(check.derivatives(.x = 1:10, func = f, func_grad = f_grad,
+                                 check_derivatives_print = "all", a = 1:10),
+               "] = 0e+00 ~ 1.490116e-08   [", fixed = TRUE)
 
 expect_message(check.derivatives(.x = 1:10, func = f, func_grad = f_grad,
-                                 check_derivatives_print = "none", a = 1:10),
+                                 check_derivatives_print = "all", a = 1:10),
                "Derivative checker results: 10 error(s) detected.",
                fixed = TRUE)

@@ -11,7 +11,7 @@
 #   2013-10-27: Changed example to use unit testing framework testthat.
 #   2019-12-12: Corrected warnings and using updated testtthat framework (Avraham Adler)
 #   2023-02-10: Remove wrapping tests in "test_that" to reduce duplication.
-#               and add explicit accuracy checks for finite.diff.R (Avraham Adler)
+#               and add explicit accuracy checks for nloptr:::finite.diff.R (Avraham Adler)
 
 # Test derivative checker.
 
@@ -33,13 +33,14 @@ a <- c(0.75499595934525132, 0.9649918619543314, 0.041430773446336389,
        0.77428539283573627, 0.53199269832111895, 0.76871572202071548,
        0.7851746492087841)
 
-# Test finite.diff on multivariate scalar function
-expect_equal(finite.diff(f, 1:10, a = a), f_grad(1:10, a = a), tolerance = tol)
-
-expect_equal(finite.diff(f, 1:10, a = a), nl.grad(1:10, f, a = a),
+# Test nloptr:::finite.diff on multivariate scalar function
+expect_equal(nloptr:::finite.diff(f, 1:10, a = a), f_grad(1:10, a = a),
              tolerance = tol)
 
-# Test finite.diff on multivariate Jacobian of vector function
+expect_equal(nloptr:::finite.diff(f, 1:10, a = a), nl.grad(1:10, f, a = a),
+             tolerance = tol)
+
+# Test nloptr:::finite.diff on multivariate Jacobian of vector function
 x0 <- 1:3
 fn1 <- function(x) c(3 * x[1L] ^ 2 * x[2L] * log(x[3L]),
                      x[3] ^ 3 - 2 * x[1L] * x[2L])
@@ -50,7 +51,7 @@ jac1 <- function(x) matrix(c(6 * x[1L] * x[2L] * log(x[3L]),
                              -2 * x[2L], -2 * x[1L], 3 * x[3L] ^ 2),
                            nrow = 2L, byrow = TRUE)
 
-expect_equal(finite.diff(fn1, x0), jac1(x0), tolerance = tol)
+expect_equal(nloptr:::finite.diff(fn1, x0), jac1(x0), tolerance = tol)
 
 res <- suppressMessages(
   check.derivatives(
