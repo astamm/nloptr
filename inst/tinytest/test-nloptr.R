@@ -8,8 +8,7 @@
 # Test code in nloptr.R and nloptr.c which is not tested elsewhere.
 #
 # Changelog:
-#   2023-08-23: Converted snapshots to equal_to_reference. This will not test
-#   the print levels. May have to add expect_stdout too.
+#   2023-08-23: Converted snapshots to testing portions of outputs and messages.
 #
 # It is possible for NLOPT to go slightly beyond maxtime or maxeval, especially
 # for the global algorithms, which is why the stopping criterion has a
@@ -194,13 +193,9 @@ testRun <- nloptr(x0, fnl,
 expect_identical(testRun$status, -1L)
 expect_identical(testRun$message, "NLOPT_FAILURE: Generic failure code.")
 
+# Tinytest has no snapshot functionality. Instead, this will test the output
+# and message against portions of the expected, instead of the totality.
 
-# The remaining messages, including print levels and checking derivatives are
-# complicated enough that moving to a snapshot is warranted. Snapshots should be
-# wrapped in "test_that" so that the comments make sense. Otherwise they pull
-# from the nearest invocation of "test_that" which is slightly ridiculous.
-# However, different lines in the code seem to require different snapshots. So
-# will need a few here to cover both univariate and multivariate printing.
 
 ## MULTIVARIATE FUNCTION
 x0 <- c(2, 2)
@@ -215,13 +210,17 @@ heqjac <- function(x) matrix(c(x[2L], 1, x[1L], -1), 2L)
 optSol <- c(1.7, 1.5)
 optVal <- 1.74
 
-## MULTIVARIATE SNAPSHOT
-expect_equal_to_reference(
+expect_stdout(suppressMessages(
   nloptr(x0, fn, gr, lb, ub, hin, hinjac, heq, heqjac,
          opts = list(algorithm = "NLOPT_LD_SLSQP", xtol_rel = 1e-8,
-                     print_level = 3, check_derivatives = TRUE)),
-  "MultivariateSnapshot.rds")
+                     print_level = 3, check_derivatives = TRUE))),
+  "g(x) = (-1.450000, -1.178000)", fixed = TRUE)
 
+expect_message(nloptr(x0, fn, gr, lb, ub, hin, hinjac, heq, heqjac,
+                      opts = list(algorithm = "NLOPT_LD_SLSQP", xtol_rel = 1e-8,
+                                  print_level = 3, check_derivatives = TRUE)),
+               "eval_jac_g_ineq[1, 1] = -4.0e+00 ~ -4.0e+00   [7.450581e-09]",
+               fixed = TRUE)
 
 ## UNIVARIATE FUNCTION
 x0 <- 5
@@ -236,19 +235,26 @@ ub <- 6
 optSol <- 2.7
 optVal <- 0.49
 
-## UNIVARIATE SNAPSHOTS
-expect_equal_to_reference(
+## UNIVARIATE
+expect_stdout(suppressMessages(
   nloptr(x0, fn, gr, lb, ub, hin, hinjac, heq, heqjac,
          opts = list(algorithm = "NLOPT_LD_SLSQP", xtol_rel = 1e-8,
-                     print_level = 3, check_derivatives = TRUE)),
-  "UnivariateSnapshot.rds")
+                     print_level = 3, check_derivatives = TRUE))),
+  "g(x) = -2.000000", fixed = TRUE)
 
-expect_equal_to_reference(nloptr(x0, fn, gr,
-                                 opts = list(algorithm = "NLOPT_LD_SLSQP",
-                                             xtol_rel = -Inf)),
-                          "NLOPT_ROUNDOFF_LIMITED.rds")
+expect_message(nloptr(x0, fn, gr, lb, ub, hin, hinjac, heq, heqjac,
+                      opts = list(algorithm = "NLOPT_LD_SLSQP", xtol_rel = 1e-8,
+                                  print_level = 3, check_derivatives = TRUE)),
+               "eval_jac_g_ineq[1] = -1e+01 ~ -1e+01   [9.536743e-09]",
+               fixed = TRUE)
 
-expect_equal_to_reference(nloptr(c(4, 4), fn,
-                                 opts = list(algorithm = "NLOPT_LN_SBPLX",
-                                             stopval = 20)),
-                          "Stopval_Triggered.rds")
+# Test NLOPT_ROUNDOFF_LIMITED
+expect_match(
+  nloptr(x0, fn, gr,
+         opts = list(algorithm = "NLOPT_LD_SLSQP", xtol_rel = -Inf))$message,
+  "Roundoff errors led to a breakdown", fixed = TRUE)
+
+# Test triggering stopval
+expect_match(nloptr(c(4, 4), fn, opts = list(algorithm = "NLOPT_LN_SBPLX",
+                                             stopval = 20))$message,
+             "Optimization stopped because stopval", fixed = TRUE)
