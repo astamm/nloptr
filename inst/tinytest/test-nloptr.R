@@ -215,11 +215,14 @@ expect_stdout(suppressMessages(
                      print_level = 3, check_derivatives = TRUE))),
   "g(x) = (-1.450000, -1.178000)", fixed = TRUE)
 
-expect_message(nloptr(x0, fn, gr, lb, ub, hin, hinjac, heq, heqjac,
-                      opts = list(algorithm = "NLOPT_LD_SLSQP", xtol_rel = 1e-8,
-                                  print_level = 3, check_derivatives = TRUE)),
-               "eval_jac_g_ineq[1, 1] = -4.0e+00 ~ -4.0e+00   [7.450581e-09]",
-               fixed = TRUE)
+# Wrap in capture.output to prevent wall of text on screen when running. This is
+# to test the message; expect_stdout tests the output.
+expect_message(capture.output(
+  nloptr(x0, fn, gr, lb, ub, hin, hinjac, heq, heqjac,
+         opts = list(algorithm = "NLOPT_LD_SLSQP", xtol_rel = 1e-8,
+                     print_level = 3, check_derivatives = TRUE)),
+  type = "output"),
+  "eval_jac_g_ineq[1, 1] = -4.0e+00 ~ -4.0e+00   [7.450581e-09]", fixed = TRUE)
 
 ## UNIVARIATE FUNCTION
 x0 <- 5
@@ -241,11 +244,12 @@ expect_stdout(suppressMessages(
                      print_level = 3, check_derivatives = TRUE))),
   "g(x) = -2.000000", fixed = TRUE)
 
-expect_message(nloptr(x0, fn, gr, lb, ub, hin, hinjac, heq, heqjac,
-                      opts = list(algorithm = "NLOPT_LD_SLSQP", xtol_rel = 1e-8,
-                                  print_level = 3, check_derivatives = TRUE)),
-               "eval_jac_g_ineq[1] = -1e+01 ~ -1e+01   [9.536743e-09]",
-               fixed = TRUE)
+expect_message(capture.output(
+  nloptr(x0, fn, gr, lb, ub, hin, hinjac, heq, heqjac,
+         opts = list(algorithm = "NLOPT_LD_SLSQP", xtol_rel = 1e-8,
+                     print_level = 3, check_derivatives = TRUE)),
+  type = "output"),
+  "eval_jac_g_ineq[1] = -1e+01 ~ -1e+01   [9.536743e-09]", fixed = TRUE)
 
 # Test NLOPT_ROUNDOFF_LIMITED
 expect_true(grepl("Roundoff errors led to a breakdown",
