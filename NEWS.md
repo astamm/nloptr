@@ -1,8 +1,14 @@
+# nloptr 2.0.3.9100
+This is a patch version update which replaces the unit testing framework of
+`testthat` with `tinytest` (See 
+[Issue #136](https://github.com/astamm/nloptr/issues/136)). Other minor tweaks
+or corrections may be found in the commit logs.
+
 # nloptr 2.0.3.9000
 
-This is a patch version update from [Avraham Adler](https://github.com/aadler)
-which should make the code safer, more efficient, and easier to follow. Please
-see commit logs for [#128](https://github.com/astamm/nloptr/pull/128),
+This is a patch version update which should make the code safer, more efficient,
+and easier to follow. Please see commit logs for
+[#128](https://github.com/astamm/nloptr/pull/128),
 [#129](https://github.com/astamm/nloptr/pull/129),
 [#131](https://github.com/astamm/nloptr/pull/131), 
 [#132](https://github.com/astamm/nloptr/pull/132),
