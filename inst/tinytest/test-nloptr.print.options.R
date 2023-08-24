@@ -8,20 +8,16 @@
 # Test code in "nloptr.print.options" function that is not tested elsewhere.
 #
 # Changelog:
+#   2023-08-23: tinytest has no "snapshot" equivalent so removed that test.
+#               Converted the others to tinytest format.
 #
 
-expect_output(nloptr.print.options(opts.show = "check_derivatives"),
+expect_stdout(nloptr.print.options(opts.show = "check_derivatives"),
               "user-supplied analytic gradients with finite difference",
               fixed = TRUE)
 
-expect_output(nloptr(3, function(x) x ^ 2 + 1,
+expect_stdout(nloptr(3, function(x) x ^ 2 + 1,
                      opts = list(algorithm = "NLOPT_LN_NELDERMEAD",
                                  xtol_rel = 1e-8, print_options_doc = TRUE)),
               "user-supplied analytic gradients with finite difference",
               fixed = TRUE)
-
-# Classic case where snapshot is warranted so long as function does not change.
-test_that("Complicated message output from nloptr.print.options.", {
-  expect_snapshot(nloptr.print.options())
-
-})
