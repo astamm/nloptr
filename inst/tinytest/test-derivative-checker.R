@@ -5,13 +5,17 @@
 # Author: Jelmer Ypma
 # Date:   24 July 2010
 #
+# Maintenance assumed by Avraham Adler (AA) on 2023-02-10
+#
 # Example showing results of the derivative checker and finite-difference
 #
 # Changelog:
 #   2013-10-27: Changed example to use unit testing framework testthat.
-#   2019-12-12: Corrected warnings and using updated testtthat framework (Avraham Adler)
+#   2019-12-12: Corrected warnings and using updated testtthat framework (AA)
 #   2023-02-10: Remove wrapping tests in "test_that" to reduce duplication.
-#               and add explicit accuracy checks for nloptr:::finite.diff.R (Avraham Adler)
+#               and add explicit accuracy checks for nloptr:::finite.diff.R (AA)
+#   2023-08-23: Prefix finite.diff with nloptr::: as part of move to tinytest
+#
 
 # Test derivative checker.
 
