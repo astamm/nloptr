@@ -78,6 +78,18 @@ expect_warning(nloptr(x0 = -1, f0, g0, opts = ctlNM),
 expect_error(nloptr(x0 = -1, f0, opts = ctlLB),
              "A gradient for the objective function is needed", fixed = TRUE)
 
+# Malformed objects solely intended to trigger tests:
+## eval_f test
+expect_error(is.nloptr(list(eval_f = "Hello")), "eval_f is not a function")
+
+## eval_g_ineq test
+expect_error(is.nloptr(list(eval_f = fphv, eval_g_ineq = "GoodBye")),
+             "eval_g_ineq is not a function")
+
+## eval_g_eq test
+expect_error(is.nloptr(list(eval_f = fphv, eval_g_eq = 27)),
+             "eval_g_eq is not a function")
+
 ## MULTIVARIATE FUNCTION WITH CONSTRAINTS
 x0 <- c(2, 2)
 ub <- c(5, 5)
