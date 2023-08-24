@@ -9,7 +9,7 @@
 #
 # Changelog:
 #   2017-09-26: Fixed bug, BOBYQA is allowed as local solver
-#               (thanks to Leo Belzile).
+#         (thanks to Leo Belzile).
 #   2023-02-08: Tweaks for efficiency and readability (Avraham Adler)
 
 #' Augmented Lagrangian Algorithm
@@ -63,9 +63,9 @@
 #'   \item{global_solver}{the global NLOPT solver used.}
 #'   \item{local_solver}{the local NLOPT solver used, LBFGS or COBYLA.}
 #'   \item{convergence}{integer code indicating successful completion
-#'     (> 0) or a possible error number (< 0).}
+#'   (> 0) or a possible error number (< 0).}
 #'   \item{message}{character string produced by NLopt and giving additional
-#'      information.}
+#'    information.}
 #'
 #' @export
 #'
@@ -90,21 +90,21 @@
 #'
 #' x0 <- c(1, 1)
 #' fn <- function(x) (x[1]-2)^2 + (x[2]-1)^2
-#' hin <- function(x) -0.25*x[1]^2 - x[2]^2 + 1    # hin >= 0
-#' heq <- function(x) x[1] - 2*x[2] + 1            # heq == 0
+#' hin <- function(x) -0.25*x[1]^2 - x[2]^2 + 1  # hin >= 0
+#' heq <- function(x) x[1] - 2*x[2] + 1      # heq == 0
 #' gr <- function(x) nl.grad(x, fn)
 #' hinjac <- function(x) nl.jacobian(x, hin)
 #' heqjac <- function(x) nl.jacobian(x, heq)
 #'
 #' auglag(x0, fn, gr = NULL, hin = hin, heq = heq) # with COBYLA
-#' # $par:     0.8228761 0.9114382
+#' # $par:   0.8228761 0.9114382
 #' # $value:   1.393464
-#' # $iter:    1001
+#' # $iter:  1001
 #'
 #' auglag(x0, fn, gr = NULL, hin = hin, heq = heq, localsolver = "SLSQP")
-#' # $par:     0.8228757 0.9114378
+#' # $par:   0.8228757 0.9114378
 #' # $value:   1.393465
-#' # $iter     173
+#' # $iter   173
 #'
 #' ##  Example from the alabama::auglag help page
 #' fn <- function(x) (x[1] + 3*x[2] + x[3])^2 + 4 * (x[1] - x[2])^2
@@ -112,9 +112,9 @@
 #' hin <- function(x) c(6*x[2] + 4*x[3] - x[1]^3 - 3, x[1], x[2], x[3])
 #'
 #' auglag(runif(3), fn, hin = hin, heq = heq, localsolver="lbfgs")
-#' # $par:     2.380000e-09 1.086082e-14 1.000000e+00
+#' # $par:   2.380000e-09 1.086082e-14 1.000000e+00
 #' # $value:   1
-#' # $iter:    289
+#' # $iter:  289
 #'
 #' ##  Powell problem from the Rsolnp::solnp help page
 #' x0 <- c(-2, 2, 2, -1, -1)
@@ -127,92 +127,91 @@
 #' auglag(x0, fn1, heq = eqn1, localsolver = "mma")
 #' # $par: -3.988458e-10 -1.654201e-08 -3.752028e-10  8.904445e-10  8.926336e-10
 #' # $value:   1
-#' # $iter:    1001
+#' # $iter:  1001
 #'
 auglag <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL, hin = NULL,
                    hinjac = NULL, heq = NULL, heqjac = NULL,
-                   localsolver = "COBYLA", localtol = 1e-6,
-                   ineq2local = FALSE, nl.info = FALSE, control = list(), ...) {
+                   localsolver = "COBYLA", localtol = 1e-6, ineq2local = FALSE,
+                   nl.info = FALSE, control = list(), ...) {
+  if (ineq2local) {
+    # gsolver <- "NLOPT_LN_AUGLAG_EQ"
+    stop("Inequalities to local solver: feature not yet implemented.")
+  }
 
-    if (ineq2local) {
-        # gsolver <- "NLOPT_LN_AUGLAG_EQ"
-        stop("Inequalities to local solver: feature not yet implemented.")
+  localsolver <- toupper(localsolver)
+  if (localsolver %in% c("COBYLA", "BOBYQA")) {   # derivative-free
+    dfree <- TRUE
+    gsolver <- "NLOPT_LN_AUGLAG"
+    lsolver <- paste0("NLOPT_LN_", localsolver)
+  } else if (localsolver %in% c("LBFGS", "MMA", "SLSQP")) { # with derivatives
+    dfree <- FALSE
+    gsolver <- "NLOPT_LD_AUGLAG"
+    lsolver <- paste0("NLOPT_LD_", localsolver)
+  } else {
+    stop("Only local solvers allowed: BOBYQA, COBYLA, LBFGS, MMA, SLSQP.")
+  }
+
+  # Function and gradient, if needed
+  .fn <- match.fun(fn)
+  fn  <- function(x) .fn(x, ...)
+
+  if (!dfree && is.null(gr)) {gr <- function(x) nl.grad(x, fn)}
+
+  # Global and local options
+  opts <- nl.opts(control)
+  opts$algorithm <- gsolver
+  local_opts <- list(algorithm = lsolver,
+                     xtol_rel = localtol,
+                     eval_grad_f = if (!dfree) gr else NULL)
+  opts$local_opts <- local_opts
+
+  # Inequality constraints
+  if (!is.null(hin)) {
+    if (getOption("nloptr.show.inequality.warning")) {
+      message("For consistency with the rest of the package the ",
+              "inequality sign may be switched from >= to <= in a ",
+              "future nloptr version.")
     }
 
-    localsolver <- toupper(localsolver)
-    if (localsolver %in% c("COBYLA", "BOBYQA")) {   # derivative-free
-        dfree <- TRUE
-        gsolver <- "NLOPT_LN_AUGLAG"
-        lsolver <- paste0("NLOPT_LN_", localsolver)
-    } else if (localsolver %in% c("LBFGS", "MMA", "SLSQP")) { # with derivatives
-        dfree <- FALSE
-        gsolver <- "NLOPT_LD_AUGLAG"
-        lsolver <- paste0("NLOPT_LD_", localsolver)
+    .hin <- match.fun(hin)
+    hin <- function(x) -.hin(x)   # change  hin >= 0  to  hin <= 0 !
+  }
+  if (!dfree) {
+    if (is.null(hinjac)) {
+      hinjac <- function(x) nl.jacobian(x, hin)
     } else {
-        stop("Only local solvers allowed: BOBYQA, COBYLA, LBFGS, MMA, SLSQP.")
+      .hinjac <- match.fun(hinjac)
+      hinjac <- function(x) -.hinjac(x)
     }
+  }
 
-    # Function and gradient, if needed
-    .fn <- match.fun(fn)
-    fn  <- function(x) .fn(x, ...)
-
-    if (!dfree && is.null(gr)) {gr <- function(x) nl.grad(x, fn)}
-
-    # Global and local options
-    opts <- nl.opts(control)
-    opts$algorithm <- gsolver
-    local_opts <- list(algorithm = lsolver,
-                        xtol_rel = localtol,
-                        eval_grad_f = if (!dfree) gr else NULL)
-    opts$local_opts <- local_opts
-
-    # Inequality constraints
-    if (!is.null(hin)) {
-        if (getOption("nloptr.show.inequality.warning")) {
-            message("For consistency with the rest of the package the ",
-                    "inequality sign may be switched from >= to <= in a ",
-                    "future nloptr version.")
-        }
-
-        .hin <- match.fun(hin)
-        hin <- function(x) -.hin(x)   # change  hin >= 0  to  hin <= 0 !
+  # Equality constraints
+  if (!is.null(heq)) {
+    .heq <- match.fun(heq)
+    heq <- function(x) .heq(x)
+  }
+  if (!dfree) {
+    if (is.null(heqjac)) {
+      heqjac <- function(x) nl.jacobian(x, heq)
+    } else {
+      .heqjac <- match.fun(heqjac)
+      heqjac <- function(x) .heqjac(x)
     }
-    if (!dfree) {
-        if (is.null(hinjac)) {
-            hinjac <- function(x) nl.jacobian(x, hin)
-        } else {
-            .hinjac <- match.fun(hinjac)
-            hinjac <- function(x) -.hinjac(x)
-        }
-    }
+  }
 
-    # Equality constraints
-    if (!is.null(heq)) {
-        .heq <- match.fun(heq)
-        heq <- function(x) .heq(x)
-    }
-    if (!dfree) {
-        if (is.null(heqjac)) {
-            heqjac <- function(x) nl.jacobian(x, heq)
-        } else {
-            .heqjac <- match.fun(heqjac)
-            heqjac <- function(x) .heqjac(x)
-        }
-    }
+  S0 <- nloptr(x0,
+               eval_f = fn,
+               eval_grad_f = gr,
+               lb = lower,
+               ub = upper,
+               eval_g_ineq = hin,
+               eval_jac_g_ineq = hinjac,
+               eval_g_eq = heq,
+               eval_jac_g_eq = heqjac,
+               opts = opts)
 
-    S0 <- nloptr(x0,
-                 eval_f = fn,
-                 eval_grad_f = gr,
-                 lb = lower,
-                 ub = upper,
-                 eval_g_ineq = hin,
-                 eval_jac_g_ineq = hinjac,
-                 eval_g_eq = heq,
-                 eval_jac_g_eq = heqjac,
-                 opts = opts)
-
-    if (nl.info) print(S0)
-    list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-         global_solver = gsolver, local_solver = lsolver,
-         convergence = S0$status, message = S0$message)
+  if (nl.info) print(S0)
+  list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+       global_solver = gsolver, local_solver = lsolver, convergence = S0$status,
+       message = S0$message)
 }
