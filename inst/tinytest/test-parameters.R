@@ -40,7 +40,8 @@ res <- nloptr(
   eval_f      = eval_f,
   eval_grad_f = eval_grad_f,
   opts        = list("algorithm" = "NLOPT_LD_MMA", "xtol_rel" = 1e-6),
-  params      = params )
+  params      = params
+)
 
 # Solve using algebra
 # Minimize f(x) = ax^2 + bx + c.
@@ -48,4 +49,4 @@ res <- nloptr(
 expect_equal(res$solution, -params[2] / (2 * params[1]), tolerance = 1e-7)
 
 # With value of the objective function f(-b/(2a)).
-expect_equal(res$objective, eval_f(-params[2] / (2*params[1]), params))
+expect_equivalent(res$objective, eval_f(-params[2] / (2 * params[1]), params))

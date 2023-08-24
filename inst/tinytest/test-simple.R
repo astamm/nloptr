@@ -41,7 +41,8 @@ eval_jac_g_ineq <- function(x) -1
 # Optimal solution.
 solution.opt <- 5
 
-# Solve using NLOPT_LD_MMA with gradient information supplied in separate function
+# Solve using NLOPT_LD_MMA with gradient information supplied in separate
+# function.
 res <- nloptr(x0              = 1,
               eval_f          = eval_f,
               eval_grad_f     = eval_grad_f,

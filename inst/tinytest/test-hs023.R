@@ -40,23 +40,23 @@
 
 # f(x) = x1^2 + x2^2
 eval_f <- function(x) {
-    list("objective" = x[1] ^ 2 + x[2] ^ 2,
-          "gradient" = c(2 * x[1], 2 * x[2]))
+  list("objective" = x[1] ^ 2 + x[2] ^ 2,
+       "gradient" = c(2 * x[1], 2 * x[2]))
 }
 
 # Inequality constraints.
 eval_g_ineq <- function(x) {
-    constr <- c(1 - x[1] - x[2],
-                1 - x[1] ^ 2 - x[2] ^ 2,
-                9 - 9 * x[1] ^ 2 - x[2] ^ 2,
-                x[2] - x[1] ^ 2,
-                x[1] - x[2] ^ 2)
-    grad <- rbind(c(-1, -1),
-                  c(-2 * x[1], -2 * x[2]),
-                  c(-18 * x[1], -2 * x[2]),
-                  c(-2 * x[1], 1),
-                  c(1, -2 * x[2]))
-    list("constraints" = constr, "jacobian" = grad)
+  constr <- c(1 - x[1] - x[2],
+              1 - x[1] ^ 2 - x[2] ^ 2,
+              9 - 9 * x[1] ^ 2 - x[2] ^ 2,
+              x[2] - x[1] ^ 2,
+              x[1] - x[2] ^ 2)
+  grad <- rbind(c(-1, -1),
+                c(-2 * x[1], -2 * x[2]),
+                c(-18 * x[1], -2 * x[2]),
+                c(-2 * x[1], 1),
+                c(1, -2 * x[2]))
+  list("constraints" = constr, "jacobian" = grad)
 }
 
 # Initial values.
@@ -64,7 +64,7 @@ x0 <- c(3, 1)
 
 # Lower and upper bounds of control.
 lb <- c(-50, -50)
-ub <- c( 50,  50)
+ub <- c(50,  50)
 
 # Optimal solution.
 solution.opt <- c(1, 1)
@@ -76,12 +76,13 @@ opts <- list("algorithm"            = "NLOPT_LD_MMA",
              "print_level"          = 0)
 
 res <- nloptr(
-    x0          = x0,
-    eval_f      = eval_f,
-    lb          = lb,
-    ub          = ub,
-    eval_g_ineq = eval_g_ineq,
-    opts        = opts)
+  x0          = x0,
+  eval_f      = eval_f,
+  lb          = lb,
+  ub          = ub,
+  eval_g_ineq = eval_g_ineq,
+  opts        = opts
+)
 
 # Run some checks on the optimal solution.
 expect_equal(res$solution, solution.opt, tolerance = 1e-6)
@@ -89,5 +90,6 @@ expect_true(all(res$solution >= lb))
 expect_true(all(res$solution <= ub))
 
 # Check whether constraints are violated (up to specified tolerance).
-expect_true(all(eval_g_ineq(res$solution)$constr <=
-                    res$options$tol_constraints_ineq))
+expect_true(
+  all(eval_g_ineq(res$solution)$constr <= res$options$tol_constraints_ineq)
+)

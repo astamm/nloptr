@@ -33,31 +33,31 @@
 
 # f(x) = x1*x4*(x1 + x2 + x3) + x3
 eval_f <- function(x) {
-    list("objective" = x[1] * x[4] * (x[1] + x[2] + x[3]) + x[3],
-         "gradient" = c(x[1] * x[4] + x[4] * (x[1] + x[2] + x[3]),
-                        x[1] * x[4],
-                        x[1] * x[4] + 1,
-                        x[1] * (x[1] + x[2] + x[3])))
+  list("objective" = x[1] * x[4] * (x[1] + x[2] + x[3]) + x[3],
+       "gradient" = c(x[1] * x[4] + x[4] * (x[1] + x[2] + x[3]),
+                      x[1] * x[4],
+                      x[1] * x[4] + 1,
+                      x[1] * (x[1] + x[2] + x[3])))
 }
 
 # Inequality constraints.
 eval_g_ineq <- function(x) {
-    constr <- c(25 - x[1] * x[2] * x[3] * x[4])
-    grad <- c(-x[2] * x[3] * x[4],
-              -x[1] * x[3] * x[4],
-              -x[1] * x[2] * x[4],
-              -x[1] * x[2] * x[3])
-    list("constraints" = constr, "jacobian" = grad)
+  constr <- c(25 - x[1] * x[2] * x[3] * x[4])
+  grad <- c(-x[2] * x[3] * x[4],
+            -x[1] * x[3] * x[4],
+            -x[1] * x[2] * x[4],
+            -x[1] * x[2] * x[3])
+  list("constraints" = constr, "jacobian" = grad)
 }
 
 # Equality constraints.
 eval_g_eq <- function(x) {
-    constr <- c(x[1] ^ 2 + x[2] ^ 2 + x[3] ^ 2 + x[4] ^ 2 - 40)
-    grad <- c(2.0 * x[1],
-              2.0 * x[2],
-              2.0 * x[3],
-              2.0 * x[4])
-    list("constraints" = constr, "jacobian" = grad)
+  constr <- c(x[1] ^ 2 + x[2] ^ 2 + x[3] ^ 2 + x[4] ^ 2 - 40)
+  grad <- c(2.0 * x[1],
+            2.0 * x[2],
+            2.0 * x[3],
+            2.0 * x[4])
+  list("constraints" = constr, "jacobian" = grad)
 }
 
 # Initial values.

@@ -146,7 +146,7 @@ gr <- function(x) c(4 * x[1L] ^ 3 - 5 * x[2L], 2 * x[2L] - 5 * x[1L])
 
 lb <- c(0, 0)
 ub <- c(5, 5)
-# https://www.wolframalpha.com/input?i=minimum+of+x+%5E+4+%2B+y+%5E+2+-+5+*+x+*+y++%2B+5+
+# https://www.wolframalpha.com/input?i=minimum+of+x+%5E+4+%2B+y+%5E+2+-+5+*+x+*+y++%2B+5+ # nolint
 optSol <- c(5 / (2 * sqrt(2)), 25 / (4 * sqrt(2)))
 optVal <- -305 / 64
 
@@ -184,8 +184,10 @@ expect_identical(testRun$status, -2L)
 expect_identical(testRun$message, minus2mess)
 
 ## case NLOPT_FAILURE
-fnl <- function(x) list("objective" = (x[1] - 1) ^ 2 + (x[2] - 1) ^ 2,
-                        "gradient" = c(4 * (x[1] - 1), 3 - (x[2] - 1)))
+fnl <- function(x) {
+  list("objective" = (x[1] - 1) ^ 2 + (x[2] - 1) ^ 2,
+       "gradient" = c(4 * (x[1] - 1), 3 - (x[2] - 1)))
+}
 x0 <- c(3, 3)
 testRun <- nloptr(x0, fnl,
                   opts = list(algorithm = "NLOPT_LD_LBFGS", xtol_rel = 1e-8))
@@ -209,20 +211,26 @@ heqjac <- function(x) matrix(c(x[2L], 1, x[1L], -1), 2L)
 optSol <- c(1.7, 1.5)
 optVal <- 1.74
 
-expect_stdout(suppressMessages(
-  nloptr(x0, fn, gr, lb, ub, hin, hinjac, heq, heqjac,
-         opts = list(algorithm = "NLOPT_LD_SLSQP", xtol_rel = 1e-8,
-                     print_level = 3, check_derivatives = TRUE))),
-  "g(x) = (-1.450000, -1.178000)", fixed = TRUE)
+expect_stdout(
+  suppressMessages(
+    nloptr(x0, fn, gr, lb, ub, hin, hinjac, heq, heqjac,
+           opts = list(algorithm = "NLOPT_LD_SLSQP", xtol_rel = 1e-8,
+                       print_level = 3, check_derivatives = TRUE))
+  ),
+  "g(x) = (-1.450000, -1.178000)", fixed = TRUE
+)
 
 # Wrap in capture.output to prevent wall of text on screen when running. This is
 # to test the message; expect_stdout tests the output.
-expect_message(capture.output(
-  nloptr(x0, fn, gr, lb, ub, hin, hinjac, heq, heqjac,
-         opts = list(algorithm = "NLOPT_LD_SLSQP", xtol_rel = 1e-8,
-                     print_level = 3, check_derivatives = TRUE)),
-  type = "output"),
-  "eval_jac_g_ineq[1, 1] = -4.0e+00 ~ -4.0e+00   [7.450581e-09]", fixed = TRUE)
+expect_message(
+  capture.output(
+    nloptr(x0, fn, gr, lb, ub, hin, hinjac, heq, heqjac,
+           opts = list(algorithm = "NLOPT_LD_SLSQP", xtol_rel = 1e-8,
+                       print_level = 3, check_derivatives = TRUE)),
+    type = "output"
+  ),
+  "eval_jac_g_ineq[1, 1] = -4.0e+00 ~ -4.0e+00   [7.450581e-09]", fixed = TRUE
+)
 
 ## UNIVARIATE FUNCTION
 x0 <- 5
@@ -238,27 +246,37 @@ optSol <- 2.7
 optVal <- 0.49
 
 ## UNIVARIATE
-expect_stdout(suppressMessages(
-  nloptr(x0, fn, gr, lb, ub, hin, hinjac, heq, heqjac,
-         opts = list(algorithm = "NLOPT_LD_SLSQP", xtol_rel = 1e-8,
-                     print_level = 3, check_derivatives = TRUE))),
-  "g(x) = -2.000000", fixed = TRUE)
+expect_stdout(
+  suppressMessages(
+    nloptr(x0, fn, gr, lb, ub, hin, hinjac, heq, heqjac,
+           opts = list(algorithm = "NLOPT_LD_SLSQP", xtol_rel = 1e-8,
+                       print_level = 3, check_derivatives = TRUE))
+  ),
+  "g(x) = -2.000000", fixed = TRUE
+)
 
-expect_message(capture.output(
-  nloptr(x0, fn, gr, lb, ub, hin, hinjac, heq, heqjac,
-         opts = list(algorithm = "NLOPT_LD_SLSQP", xtol_rel = 1e-8,
-                     print_level = 3, check_derivatives = TRUE)),
-  type = "output"),
-  "eval_jac_g_ineq[1] = -1e+01 ~ -1e+01   [9.536743e-09]", fixed = TRUE)
+expect_message(
+  capture.output(
+    nloptr(x0, fn, gr, lb, ub, hin, hinjac, heq, heqjac,
+           opts = list(algorithm = "NLOPT_LD_SLSQP", xtol_rel = 1e-8,
+                       print_level = 3, check_derivatives = TRUE)),
+    type = "output"
+  ),
+  "eval_jac_g_ineq[1] = -1e+01 ~ -1e+01   [9.536743e-09]", fixed = TRUE
+)
 
 # Test NLOPT_ROUNDOFF_LIMITED
-expect_true(grepl("Roundoff errors led to a breakdown",
-                  nloptr(x0, fn, gr, opts = list(algorithm = "NLOPT_LD_SLSQP",
-                                                 xtol_rel = -Inf))$message,
-                  fixed = TRUE))
+expect_true(
+  grepl("Roundoff errors led to a breakdown",
+        nloptr(x0, fn, gr, opts = list(algorithm = "NLOPT_LD_SLSQP",
+                                       xtol_rel = -Inf))$message,
+        fixed = TRUE)
+)
 
 # Test triggering stopval
-expect_true(grepl("Optimization stopped because stopval",
-                  nloptr(c(4, 4), fn, opts = list(algorithm = "NLOPT_LN_SBPLX",
-                                                  stopval = 20))$message,
-                  fixed = TRUE))
+expect_true(
+  grepl("Optimization stopped because stopval",
+        nloptr(c(4, 4), fn, opts = list(algorithm = "NLOPT_LN_SBPLX",
+                                        stopval = 20))$message,
+        fixed = TRUE)
+)

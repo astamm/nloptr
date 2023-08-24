@@ -38,7 +38,7 @@ lbfgsControl <- nloptr(x0 = x0,
                        lb = lb,
                        ub = ub,
                        opts = list(algorithm = "NLOPT_LD_LBFGS",
-                                    xtol_rel = 1e-8, maxeval = 1000L))
+                                   xtol_rel = 1e-8, maxeval = 1000L))
 
 expect_identical(lbfgsTest$par, lbfgsControl$solution)
 expect_identical(lbfgsTest$value, lbfgsControl$objective)

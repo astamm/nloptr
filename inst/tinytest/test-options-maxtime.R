@@ -19,8 +19,8 @@
 # solving the optimization problem.
 #
 eval_f <- function(x) {
-    Sys.sleep(0.1)
-    x ^ 2
+  Sys.sleep(0.1)
+  x ^ 2
 }
 
 eval_grad_f <- function(x) 2 * x
@@ -34,10 +34,11 @@ opts <- list("algorithm" = "NLOPT_LD_LBFGS",
              "xtol_rel"  = 1e-4)
 # Solve problem.
 res <- nloptr(
-    x0          = x0,
-    eval_f      = eval_f,
-    eval_grad_f = eval_grad_f,
-    opts        = opts)
+  x0          = x0,
+  eval_f      = eval_f,
+  eval_grad_f = eval_grad_f,
+  opts        = opts
+)
 
 # Check results.
 expect_identical(res$status, 6L)

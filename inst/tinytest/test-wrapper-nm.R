@@ -32,7 +32,7 @@ nmTest <- neldermead(x0, fphv)
 nmControl <- nloptr(x0 = x0,
                     eval_f = fphv,
                     opts = list(algorithm = "NLOPT_LN_NELDERMEAD",
-                                  xtol_rel = 1e-6, maxeval = 1000L))
+                                xtol_rel = 1e-6, maxeval = 1000L))
 
 expect_identical(nmTest$par, nmControl$solution)
 expect_identical(nmTest$value, nmControl$objective)

@@ -25,7 +25,8 @@ fn.hs100 <- function(x) {
 
 hin.hs100 <- function(x) {
   h <- double(4L)
-  h[1L] <- 127 - 2 * x[1L] ^ 2 - 3 * x[2L] ^ 4 - x[3L] - 4 * x[4L] ^ 2 - 5 * x[5L]
+  h[1L] <- 127 - 2 * x[1L] ^ 2 - 3 * x[2L] ^ 4 - x[3L] - 4 * x[4L] ^ 2 - 5 *
+    x[5L]
   h[2L] <- 282 - 7 * x[1L] - 3 * x[2L] - 10 * x[3L] ^ 2 - x[4L] + x[5L]
   h[3L] <- 196 - 23 * x[1L] - x[2L] ^ 2 - 6 * x[6L] ^ 2 + 8 * x[7L]
   h[4L] <- -4 * x[1L] ^ 2 - x[2L] ^ 2 + 3 * x[1L] * x[2L] - 2 * x[3L] ^ 2 -
@@ -53,14 +54,15 @@ expect_silent(bobyqa(x0.hs100, fn.hs100))
 expect_silent(newuoa(x0.hs100, fn.hs100))
 
 # Test COBYLA algorithm
-cobylaTest <- suppressMessages(cobyla(x0.hs100, fn.hs100, hin = hin.hs100,
-                                    control = ctl))
+cobylaTest <- suppressMessages(
+  cobyla(x0.hs100, fn.hs100, hin = hin.hs100, control = ctl)
+)
 
 cobylaControl <- nloptr(x0 = x0.hs100,
-                       eval_f = fn.hs100,
-                       eval_g_ineq = hin2.hs100,
-                       opts = list(algorithm = "NLOPT_LN_COBYLA",
-                                   xtol_rel = 1e-8, maxeval = 1000L))
+                        eval_f = fn.hs100,
+                        eval_g_ineq = hin2.hs100,
+                        opts = list(algorithm = "NLOPT_LN_COBYLA",
+                                    xtol_rel = 1e-8, maxeval = 1000L))
 
 expect_identical(cobylaTest$par, cobylaControl$solution)
 expect_identical(cobylaTest$value, cobylaControl$objective)

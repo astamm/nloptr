@@ -31,7 +31,7 @@ expect_stdout(print(fit, 2),
 
 # Unsuccessful convergence (hit maxeval in this case)
 fit <- nloptr(x0, fn,
-       opts = list(algorithm = "NLOPT_LN_NELDERMEAD", xtol_rel = 1e-8))
+              opts = list(algorithm = "NLOPT_LN_NELDERMEAD", xtol_rel = 1e-8))
 
 expect_stdout(print(fit),
               "Current value of controls: 0.9999994 1.000001", fixed = TRUE)

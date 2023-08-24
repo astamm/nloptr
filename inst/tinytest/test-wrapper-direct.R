@@ -109,11 +109,11 @@ expect_identical(directTest$message, directControl$message)
 directLTest <- directL(hartmann6, lb, ub, control = ctl)
 
 directLControl <- nloptr(x0 = x0,
-                        eval_f = hartmann6,
-                        lb = lb,
-                        ub = ub,
-                        opts = list(algorithm = "NLOPT_GN_DIRECT_L",
-                                    xtol_rel = 1e-8, maxeval = 1000L))
+                         eval_f = hartmann6,
+                         lb = lb,
+                         ub = ub,
+                         opts = list(algorithm = "NLOPT_GN_DIRECT_L",
+                                     xtol_rel = 1e-8, maxeval = 1000L))
 
 expect_identical(directLTest$par, directLControl$solution)
 expect_identical(directLTest$value, directLControl$objective)

@@ -36,19 +36,16 @@ ub <- c(3,  3)
 # Define optimizer options.
 local_opts <- list("algorithm" = "NLOPT_LD_LBFGS", "xtol_rel"  = 1e-4)
 
-opts <- list("algorithm"  = "NLOPT_GD_MLSL",
-             "maxeval"    = 10000,
-             "population" = 4,
-             "local_opts" = local_opts)
+opts <- list("algorithm"  = "NLOPT_GD_MLSL", "maxeval"    = 10000,
+             "population" = 4, "local_opts" = local_opts)
 
 # Solve Rosenbrock Banana function.
-res <- nloptr(
-  x0          = x0,
-  lb          = lb,
-  ub          = ub,
-  eval_f      = eval_f,
-  eval_grad_f = eval_grad_f,
-  opts        = opts)
+res <- nloptr(x0          = x0,
+              lb          = lb,
+              ub          = ub,
+              eval_f      = eval_f,
+              eval_grad_f = eval_grad_f,
+              opts        = opts)
 
 # Check results.
 expect_equal(res$objective, 0, tolerance = tol)
@@ -64,12 +61,11 @@ opts <- list("algorithm"   = "NLOPT_GN_ISRES",
              "ranseed"     = 2718)
 
 # Solve Rosenbrock Banana function.
-res <- nloptr(
-  x0     = x0,
-  lb     = lb,
-  ub     = ub,
-  eval_f = eval_f,
-  opts   = opts)
+res <- nloptr(x0     = x0,
+              lb     = lb,
+              ub     = ub,
+              eval_f = eval_f,
+              opts   = opts)
 
 # Check results.
 expect_equal(res$objective, 0, tolerance = 1e-4)
@@ -86,12 +82,11 @@ opts <- list("algorithm"   = "NLOPT_GN_CRS2_LM",
              "ranseed"     = 2718)
 
 # Solve Rosenbrock Banana function.
-res1 <- nloptr(
-  x0     = x0,
-  lb     = lb,
-  ub     = ub,
-  eval_f = eval_f,
-  opts   = opts)
+res1 <- nloptr(x0     = x0,
+               lb     = lb,
+               ub     = ub,
+               eval_f = eval_f,
+               opts   = opts)
 
 # Define optimizer options.
 # This optimization uses a different seed for the random number generator and
@@ -102,12 +97,11 @@ opts <- list("algorithm"   = "NLOPT_GN_CRS2_LM",
              "ranseed"     = 3141)
 
 # Solve Rosenbrock Banana function.
-res2 <- nloptr(
-  x0     = x0,
-  lb     = lb,
-  ub     = ub,
-  eval_f = eval_f,
-  opts   = opts)
+res2 <- nloptr(x0     = x0,
+               lb     = lb,
+               ub     = ub,
+               eval_f = eval_f,
+               opts   = opts)
 
 # Define optimizer options.
 # This optimization uses the same seed for the random number generator and gives
@@ -118,12 +112,11 @@ opts <- list("algorithm"   = "NLOPT_GN_CRS2_LM",
              "ranseed"     = 3141)
 
 # Solve Rosenbrock Banana function.
-res3 <- nloptr(
-  x0     = x0,
-  lb     = lb,
-  ub     = ub,
-  eval_f = eval_f,
-  opts   = opts)
+res3 <- nloptr(x0     = x0,
+               lb     = lb,
+               ub     = ub,
+               eval_f = eval_f,
+               opts   = opts)
 
 # Check results.
 expect_equal(res1$objective, 0, tolerance = 1e-4)

@@ -32,14 +32,10 @@ eval_f0 <- function(x, params) 1
 eval_grad_f0 <- function(x, params) 0
 
 # Equality constraint function.
-eval_g0_eq <- function(x, params) {
-    params[1] * x ^ 2 + params[2] * x + params[3]
-}
+eval_g0_eq <- function(x, params) params[1] * x ^ 2 + params[2] * x + params[3]
 
 # Jacobian of constraint.
-eval_jac_g0_eq <- function(x, params) {
-    2 * params[1] * x + params[2]
-}
+eval_jac_g0_eq <- function(x, params) 2 * params[1] * x + params[2]
 
 # Define vector with addiitonal data.
 params <- c(1, 1, -1)

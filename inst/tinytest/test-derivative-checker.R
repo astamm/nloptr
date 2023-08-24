@@ -46,14 +46,17 @@ expect_equal(nloptr:::finite.diff(f, 1:10, a = a), nl.grad(1:10, f, a = a),
 
 # Test nloptr:::finite.diff on multivariate Jacobian of vector function
 x0 <- 1:3
-fn1 <- function(x) c(3 * x[1L] ^ 2 * x[2L] * log(x[3L]),
-                     x[3] ^ 3 - 2 * x[1L] * x[2L])
+fn1 <- function(x) {
+  c(3 * x[1L] ^ 2 * x[2L] * log(x[3L]), x[3] ^ 3 - 2 * x[1L] * x[2L])
+}
 
-jac1 <- function(x) matrix(c(6 * x[1L] * x[2L] * log(x[3L]),
-                             3 * x[1L] ^ 2 * log(x[3L]),
-                             3 * x[1L] ^ 2 * x[2L] / x[3L],
-                             -2 * x[2L], -2 * x[1L], 3 * x[3L] ^ 2),
-                           nrow = 2L, byrow = TRUE)
+jac1 <- function(x) {
+  matrix(c(6 * x[1L] * x[2L] * log(x[3L]),
+           3 * x[1L] ^ 2 * log(x[3L]),
+           3 * x[1L] ^ 2 * x[2L] / x[3L],
+           -2 * x[2L], -2 * x[1L], 3 * x[3L] ^ 2),
+         nrow = 2L, byrow = TRUE)
+}
 
 expect_equal(nloptr:::finite.diff(fn1, x0), jac1(x0), tolerance = tol)
 
@@ -62,9 +65,10 @@ res <- suppressMessages(
     .x = 1:10,
     func = f,
     func_grad = f_grad,
-    check_derivatives_print = 'none',
-    a = a)
+    check_derivatives_print = "none",
+    a = a
   )
+)
 
 expect_identical(sum(res$flag_derivative_warning), 0L)
 
@@ -76,9 +80,10 @@ res <- suppressMessages(
     .x = 1:10,
     func = f,
     func_grad = f_grad,
-    check_derivatives_print = 'none',
-    a = a)
+    check_derivatives_print = "none",
+    a = a
   )
+)
 
 expect_identical(sum(res$flag_derivative_warning), 1L)
 
@@ -96,8 +101,9 @@ res <- suppressMessages(
     .x = 1:10,
     func = g,
     func_grad = g_grad,
-    check_derivatives_print = 'none',
-    a = a)
+    check_derivatives_print = "none",
+    a = a
   )
+)
 
 expect_identical(sum(res$flag_derivative_warning), 2L)

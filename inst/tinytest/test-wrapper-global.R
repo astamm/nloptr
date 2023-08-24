@@ -71,7 +71,7 @@ stogoControl <- nloptr(x0 = x0,
                        lb = lb,
                        ub = ub,
                        opts = list(algorithm = "NLOPT_GD_STOGO",
-                                    xtol_rel = 1e-6, maxeval = 10000L))
+                                   xtol_rel = 1e-6, maxeval = 10000L))
 
 expect_identical(stogoTest$par, stogoControl$solution)
 expect_identical(stogoTest$value, stogoControl$objective)

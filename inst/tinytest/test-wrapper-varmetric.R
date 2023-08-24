@@ -33,11 +33,11 @@ varTest <- varmetric(x0, flb, lower = lb, upper = ub, control = ctl,
                      rank2 = FALSE)
 
 varControl <- nloptr(x0 = x0,
-                    eval_f = flb,
-                    eval_grad_f = function(x) nl.grad(x, flb),
-                    lb = lb, ub = ub,
-                    opts = list(algorithm = "NLOPT_LD_VAR1",
-                                xtol_rel = 1e-8, maxeval = 1000L))
+                     eval_f = flb,
+                     eval_grad_f = function(x) nl.grad(x, flb),
+                     lb = lb, ub = ub,
+                     opts = list(algorithm = "NLOPT_LD_VAR1",
+                                 xtol_rel = 1e-8, maxeval = 1000L))
 
 expect_identical(varTest$par, varControl$solution)
 expect_identical(varTest$value, varControl$objective)
@@ -72,10 +72,10 @@ gr <- function(x) {
 varTest <- varmetric(c(-1.2, 2), fr, gr, control = ctl)
 
 varControl <- nloptr(x0 = c(-1.2, 2),
-                    eval_f = fr,
-                    eval_grad_f = gr,
-                    opts = list(algorithm = "NLOPT_LD_VAR2",
-                                xtol_rel = 1e-8, maxeval = 1000L))
+                     eval_f = fr,
+                     eval_grad_f = gr,
+                     opts = list(algorithm = "NLOPT_LD_VAR2",
+                                 xtol_rel = 1e-8, maxeval = 1000L))
 
 expect_identical(varTest$par, varControl$solution)
 expect_identical(varTest$value, varControl$objective)

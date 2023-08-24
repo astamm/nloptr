@@ -52,7 +52,7 @@ expect_error(nloptr(x0 = c(-1.2, 1.5, 3), eval_f = fphv,
                                 xtol_rel = 1e-8)),
              "Incorrect algorithm supplied. Use one of the", fixed = TRUE)
 
-# Check the whether we don't have NA's if we evaluate the objective function in x0
+# Check that we don't have NA's if we evaluate the objective function in x0.
 f0 <- function(x) 3 * x ^ 1.5 - 2 * x ^ 0.5
 
 expect_error(suppressWarnings(nloptr(x0 = -1, eval_f = f0, opts = ctlNM)),
@@ -73,8 +73,8 @@ g0 <- function(x) 12 * x ^ 3 - 36 * x ^ 2 # Actual gradient
 ## Just checking...
 expect_silent(nloptr(x0 = -1, f0, g0, opts = ctlLB))
 expect_warning(nloptr(x0 = -1, f0, g0, opts = ctlNM),
-             "a gradient was supplied for the objective function",
-             fixed = TRUE)
+               "a gradient was supplied for the objective function",
+               fixed = TRUE)
 expect_error(nloptr(x0 = -1, f0, opts = ctlLB),
              "A gradient for the objective function is needed", fixed = TRUE)
 
