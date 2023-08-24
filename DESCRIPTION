@@ -21,8 +21,7 @@ Authors@R: c(person("Jelmer", "Ypma", role = "aut",
              person("Avraham", "Adler", role = "ctb", 
                     email = "Avraham.Adler@gmail.com",
                     comment = c(ORCID = "0000-0002-3039-0703")),
-             person("Xiongtao", "Dai", role = "ctb"), 
-
+             person("Xiongtao", "Dai", role = "ctb"),
              person("Jeroen", "Ooms", role = "ctb",
                     email = "jeroen@berkeley.edu"))
 Description: 
