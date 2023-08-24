@@ -196,7 +196,6 @@ expect_identical(testRun$message, "NLOPT_FAILURE: Generic failure code.")
 # Tinytest has no snapshot functionality. Instead, this will test the output
 # and message against portions of the expected, instead of the totality.
 
-
 ## MULTIVARIATE FUNCTION
 x0 <- c(2, 2)
 ub <- c(5, 5)
@@ -249,12 +248,13 @@ expect_message(nloptr(x0, fn, gr, lb, ub, hin, hinjac, heq, heqjac,
                fixed = TRUE)
 
 # Test NLOPT_ROUNDOFF_LIMITED
-expect_match(
+tinytest::expect_match(
   nloptr(x0, fn, gr,
          opts = list(algorithm = "NLOPT_LD_SLSQP", xtol_rel = -Inf))$message,
   "Roundoff errors led to a breakdown", fixed = TRUE)
 
 # Test triggering stopval
-expect_match(nloptr(c(4, 4), fn, opts = list(algorithm = "NLOPT_LN_SBPLX",
-                                             stopval = 20))$message,
-             "Optimization stopped because stopval", fixed = TRUE)
+tinytest::expect_match(
+  nloptr(c(4, 4), fn, opts = list(algorithm = "NLOPT_LN_SBPLX",
+                                  stopval = 20))$message,
+  "Optimization stopped because stopval", fixed = TRUE)
