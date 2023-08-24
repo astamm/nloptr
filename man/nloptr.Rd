@@ -41,7 +41,7 @@ that should hold in the solution.  It can also return gradient information
 at the same time in a list with elements "constraints" and "jacobian" (see
 below for an example).}
 
-\item{eval_jac_g_ineq}{function to evaluate the jacobian of the (non-)linear
+\item{eval_jac_g_ineq}{function to evaluate the Jacobian of the (non-)linear
 inequality constraints that should hold in the solution.}
 
 \item{eval_g_eq}{function to evaluate (non-)linear equality constraints that
@@ -49,7 +49,7 @@ should hold in the solution.  It can also return gradient information at
 the same time in a list with elements "constraints" and "jacobian" (see
 below for an example).}
 
-\item{eval_jac_g_eq}{function to evaluate the jacobian of the (non-)linear
+\item{eval_jac_g_eq}{function to evaluate the Jacobian of the (non-)linear
 equality constraints that should hold in the solution.}
 
 \item{opts}{list with options. The option "\code{algorithm}" is required.
@@ -209,7 +209,7 @@ eval_grad_f0 <- function(x, a, b) {
   return(c(0, .5/sqrt(x[2])))
 }
 
-# jacobian of constraint
+# Jacobian of constraint
 eval_jac_g0 <- function(x, a, b) {
   return(rbind(c(3*a[1]*(a[1]*x[1] + b[1])^2, -1.0),
          c(3*a[2]*(a[2]*x[1] + b[2])^2, -1.0)))
@@ -236,7 +236,7 @@ a <- c(2,-1)
 b <- c(0, 1)
 
 # Solve using NLOPT_LD_MMA with gradient information supplied in separate
- function.
+# function.
 res0 <- nloptr(x0=c(1.234,5.678),
         eval_f=eval_f0,
         eval_grad_f=eval_grad_f0,

@@ -118,7 +118,7 @@ S <- directL(hartmann6, rep(0,6), rep(1,6),
 }
 \references{
 D. R. Jones, C. D. Perttunen, and B. E. Stuckmann,
-``Lipschitzian optimization without the lipschitz constant,'' J.
+``Lipschitzian optimization without the Lipschitz constant,'' J.
 Optimization Theory and Applications, vol. 79, p. 157 (1993).
 
 J. M. Gablonsky and C. T. Kelley, ``A locally-biased form of the DIRECT

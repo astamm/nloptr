@@ -92,13 +92,13 @@
 #'   of the controls.
 #' @param eval_g_ineq function to evaluate (non-)linear inequality constraints
 #'   that should hold in the solution.  It can also return gradient information
-#'   at the same time in a list with elements "constraints" and "Jacobian" (see
+#'   at the same time in a list with elements "constraints" and "jacobian" (see
 #'   below for an example).
 #' @param eval_jac_g_ineq function to evaluate the Jacobian of the (non-)linear
 #'   inequality constraints that should hold in the solution.
 #' @param eval_g_eq function to evaluate (non-)linear equality constraints that
 #'   should hold in the solution.  It can also return gradient information at
-#'   the same time in a list with elements "constraints" and "Jacobian" (see
+#'   the same time in a list with elements "constraints" and "jacobian" (see
 #'   below for an example).
 #' @param eval_jac_g_eq function to evaluate the Jacobian of the (non-)linear
 #'   equality constraints that should hold in the solution.
@@ -263,7 +263,7 @@
 #'
 #' eval_g1 <- function(x, a, b) {
 #'   return(list("constraints"=(a*x[1] + b)^3 - x[2],
-#'           "Jacobian"=rbind(c(3*a[1]*(a[1]*x[1] + b[1])^2, -1.0),
+#'           "jacobian"=rbind(c(3*a[1]*(a[1]*x[1] + b[1])^2, -1.0),
 #'                   c(3*a[2]*(a[2]*x[1] + b[2])^2, -1.0))))
 #'}
 #'
@@ -273,7 +273,7 @@
 #' b <- c(0, 1)
 #'
 #' # Solve using NLOPT_LD_MMA with gradient information supplied in separate
-#'  function.
+#' # function.
 #' res0 <- nloptr(x0=c(1.234,5.678),
 #'         eval_f=eval_f0,
 #'         eval_grad_f=eval_grad_f0,
@@ -394,7 +394,7 @@ nloptr <- function(x0,
     } else {
       eval_g_ineq_wrapper <- function(x) {
         list("constraints" = eval_g_ineq(x, ...),
-             "Jacobian"  = eval_jac_g_ineq(x, ...))
+             "jacobian"  = eval_jac_g_ineq(x, ...))
       }
     }
 
@@ -422,7 +422,7 @@ nloptr <- function(x0,
     } else {
       eval_g_eq_wrapper <- function(x) {
         list("constraints" = eval_g_eq(x, ...),
-             "Jacobian"  = eval_jac_g_eq(x, ...))
+             "jacobian"  = eval_jac_g_eq(x, ...))
       }
     }
 
@@ -505,7 +505,7 @@ nloptr <- function(x0,
         check.derivatives(
           .x = x0,
           func = function(x) {eval_g_ineq_wrapper(x)$constraints},
-          func_grad = function(x) {eval_g_ineq_wrapper(x)$Jacobian},
+          func_grad = function(x) {eval_g_ineq_wrapper(x)$jacobian},
           check_derivatives_tol = opts$check_derivatives_tol,
           check_derivatives_print = opts$check_derivatives_print,
           func_grad_name = "eval_jac_g_ineq"
@@ -518,7 +518,7 @@ nloptr <- function(x0,
         check.derivatives(
           .x = x0,
           func = function(x) {eval_g_eq_wrapper(x)$constraints},
-          func_grad = function(x) {eval_g_eq_wrapper(x)$Jacobian},
+          func_grad = function(x) {eval_g_eq_wrapper(x)$jacobian},
           check_derivatives_tol = opts$check_derivatives_tol,
           check_derivatives_print = opts$check_derivatives_print,
           func_grad_name = "eval_jac_g_eq"
