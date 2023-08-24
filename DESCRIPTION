@@ -43,15 +43,11 @@ Biarch: true
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
-LinkingTo: testthat
 Suggests: 
     knitr,
     rmarkdown,
-    xml2,
-    testthat (>= 3.0.0),
     covr,
     tinytest
 VignetteBuilder: knitr
-Config/testthat/edition: 3
 URL: https://astamm.github.io/nloptr/index.html, https://github.com/astamm/nloptr
 BugReports: https://github.com/astamm/nloptr/issues
