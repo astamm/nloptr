@@ -248,13 +248,13 @@ expect_message(nloptr(x0, fn, gr, lb, ub, hin, hinjac, heq, heqjac,
                fixed = TRUE)
 
 # Test NLOPT_ROUNDOFF_LIMITED
-tinytest::expect_match(
-  nloptr(x0, fn, gr,
-         opts = list(algorithm = "NLOPT_LD_SLSQP", xtol_rel = -Inf))$message,
-  "Roundoff errors led to a breakdown", fixed = TRUE)
+expect_true(grepl("Roundoff errors led to a breakdown",
+                  nloptr(x0, fn, gr, opts = list(algorithm = "NLOPT_LD_SLSQP",
+                                                 xtol_rel = -Inf))$message,
+                  fixed = TRUE))
 
 # Test triggering stopval
-tinytest::expect_match(
-  nloptr(c(4, 4), fn, opts = list(algorithm = "NLOPT_LN_SBPLX",
-                                  stopval = 20))$message,
-  "Optimization stopped because stopval", fixed = TRUE)
+expect_true(grepl("Optimization stopped because stopval",
+                  nloptr(c(4, 4), fn, opts = list(algorithm = "NLOPT_LN_SBPLX",
+                                                  stopval = 20))$message,
+                  fixed = TRUE))
