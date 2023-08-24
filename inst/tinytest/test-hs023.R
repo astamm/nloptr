@@ -5,6 +5,8 @@
 # Author: Jelmer Ypma
 # Date:   16 August 2010
 #
+# Maintenance assumed by Avraham Adler (AA) on 2023-02-10
+#
 # Example problem, number 23 from the Hock-Schittkowsky test suite..
 #
 # \min_{x} x1^2 + x2^2
@@ -32,8 +34,8 @@
 #
 # CHANGELOG:
 #   2014-05-05: Changed example to use unit testing framework testthat.
-#   2019-12-12: Corrected warnings and using updated testtthat framework (Avraham Adler)
-#   2023-02-07: Remove wrapping tests in "test_that" to reduce duplication. (Avraham Adler)
+#   2019-12-12: Corrected warnings and using updated testtthat framework (AA)
+#   2023-02-07: Remove wrapping tests in "test_that" to reduce duplication. (AA)
 #
 
 # f(x) = x1^2 + x2^2

@@ -5,16 +5,19 @@
 # Author: Jelmer Ypma
 # Date:   22 March 2015
 #
+# Maintenance assumed by Avraham Adler (AA) on 2023-02-10
+#
 # Check whether the solver stop when maxtime
 # (set in the options) is reached.
 
 # CHANGELOG:
-#   2019-12-12: Corrected warnings and using updated testtthat framework (Avraham Adler)
-#   2023-02-07: Remove wrapping tests in "test_that" to reduce duplication. (Avraham Adler)
+#   2019-12-12: Corrected warnings and using updated testtthat framework (AA)
+#   2023-02-07: Remove wrapping tests in "test_that" to reduce duplication. (AA)
 
 # Test that solver stops when maxtime is reached.
 # Objective function with sleep added such that maxtime will be reached when
 # solving the optimization problem.
+#
 eval_f <- function(x) {
     Sys.sleep(0.1)
     x ^ 2

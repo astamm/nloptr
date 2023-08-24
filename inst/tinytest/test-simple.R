@@ -5,6 +5,8 @@
 # Author: Jelmer Ypma
 # Date:   20 June 2010
 #
+# Maintenance assumed by Avraham Adler (AA) on 2023-02-10
+#
 # Example showing how to solve a simple constrained problem.
 #
 # min x^2
@@ -16,8 +18,8 @@
 #
 # CHANGELOG:
 #   2014-05-05: Changed example to use unit testing framework testthat.
-#   2019-12-12: Corrected warnings and using updated testtthat framework (Avraham Adler)
-#   2023-02-07: Remove wrapping tests in "test_that" to reduce duplication. (Avraham Adler)
+#   2019-12-12: Corrected warnings and using updated testtthat framework (AA)
+#   2023-02-07: Remove wrapping tests in "test_that" to reduce duplication. (AA)
 #
 
 tol <- sqrt(.Machine$double.eps)

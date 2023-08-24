@@ -5,13 +5,15 @@
 # Author: Jelmer Ypma
 # Date:   8 August 2011
 #
+# Maintenance assumed by Avraham Adler (AA) on 2023-02-10
+#
 # Example showing how to solve the Rosenbrock Banana function
 # using a global optimization algorithm.
 #
 # Changelog:
 #   2013-10-27: Changed example to use unit testing framework testthat.
-#   2019-12-12: Corrected warnings and using updated testtthat framework (Avraham Adler)
-#   2023-02-07: Remove wrapping tests in "test_that" to reduce duplication. (Avraham Adler)
+#   2019-12-12: Corrected warnings and using updated testtthat framework (AA)
+#   2023-02-07: Remove wrapping tests in "test_that" to reduce duplication. (AA)
 
 tol <- sqrt(.Machine$double.eps)
 # Test Rosenbrock Banana optimization with global optimizer NLOPT_GD_MLSL.
