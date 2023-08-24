@@ -28,3 +28,7 @@ expect_message(check.derivatives(.x = 1:10, func = f, func_grad = f_grad,
                                  check_derivatives_print = "all", a = 1:10),
                "Derivative checker results: 10 error(s) detected.",
                fixed = TRUE)
+
+expect_message(check.derivatives(.x = 1:10, func = f, func_grad = f_grad,
+                                 check_derivatives_print = "errors", a = 1:10),
+               "] = 0e+00 ~ 2.980232e-08   [1e+00]", fixed = TRUE)
