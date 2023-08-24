@@ -167,8 +167,8 @@ expect_identical(stogoTest$message, stogoControl$message)
 x0 <- lb <- rep(0, 6L)
 ub <- rep(1, 6L)
 
-expect_stdout(crs2lm(x0 = x0, hartmann6, lower = lb, upper = ub, nl.info = TRUE),
-              "Call:", fixed = TRUE)
+expect_stdout(crs2lm(x0 = x0, hartmann6, lower = lb, upper = ub,
+                     nl.info = TRUE), "Call:", fixed = TRUE)
 
 expect_silent(crs2lm(x0 = x0, hartmann6, lower = lb, upper = ub))
 

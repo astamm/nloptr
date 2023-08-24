@@ -101,11 +101,15 @@ fnlNA <- function(x) list("objective" = NA_real_, "gradient" = gr(x))
 hin <- function(x) c(1.44 - x[1L] ^ 2, 2.197 - x[2L] ^ 3)
 hinjac <- function(x) matrix(c(-2 * x[1L], 0, 0, -3 * x[2L] ^ 2), 2L, 2L)
 hinl <- function(x) list("constraints" = hin(x), "jacobian" = hinjac(x))
-hinlNA <- function(x) list("constraints" = hin(NA_real_), "jacobian" = hinjac(x))
+hinlNA <- function(x) {
+  list("constraints" = hin(NA_real_), "jacobian" = hinjac(x))
+}
 heq <- function(x) c(x[1L] * x[2L] - 2.55, x[1L] - x[2L] - 0.2)
 heqjac <- function(x) matrix(c(x[2L], 1, x[1L], -1), 2L)
 heql <- function(x) list("constraints" = heq(x), "jacobian" = heqjac(x))
-heqlNA <- function(x) list("constraints" = heq(NA_real_), "jacobian" = heqjac(x))
+heqlNA <- function(x) {
+  list("constraints" = heq(NA_real_), "jacobian" = heqjac(x))
+}
 
 optSol <- c(1.7, 1.5)
 optVal <- 1.74
@@ -114,12 +118,14 @@ optVal <- 1.74
 # of these are testing the list versions of their functional parents. A list
 # version is when a function and its gradient are returned in the same call.
 expect_error(nloptr(x0, fnlNA,
-                    opts = list(algorithm = "NLOPT_LN_COBYLA", xtol_rel = 1e-8)),
+                    opts = list(algorithm = "NLOPT_LN_COBYLA",
+                                xtol_rel = 1e-8)),
              "objective in x0 returns NA", fixed = TRUE)
 
 hinE <- function(x) c(4, NA_real_)
 expect_error(nloptr(x0, fn, eval_g_ineq = hinE,
-                    opts = list(algorithm = "NLOPT_LN_COBYLA", xtol_rel = 1e-8)),
+                    opts = list(algorithm = "NLOPT_LN_COBYLA",
+                                xtol_rel = 1e-8)),
              "inequality constraints in x0 returns NA", fixed = TRUE)
 
 expect_error(nloptr(x0, fnl, eval_g_ineq = hinlNA,
@@ -149,11 +155,13 @@ expect_error(nloptr(x0, fn, gr, eval_g_ineq = hin,
 
 heqE <- function(x) c(x[1L] * x[2L] - 2.55, NA_real_)
 expect_error(nloptr(x0, fn, eval_g_eq = heqE,
-                    opts = list(algorithm = "NLOPT_LN_COBYLA", xtol_rel = 1e-8)),
+                    opts = list(algorithm = "NLOPT_LN_COBYLA",
+                                xtol_rel = 1e-8)),
              "equality constraints in x0 returns NA", fixed = TRUE)
 
 expect_error(nloptr(x0, fn, eval_g_eq = heqlNA,
-                    opts = list(algorithm = "NLOPT_LN_COBYLA", xtol_rel = 1e-8)),
+                    opts = list(algorithm = "NLOPT_LN_COBYLA",
+                                xtol_rel = 1e-8)),
              "equality constraints in x0 returns NA", fixed = TRUE)
 
 heqjacE <- function(x) c(-2 * x[1L], NA_real_)
@@ -184,7 +192,8 @@ expect_error(nloptr(x0, fn, gr, eval_g_eq = heq, eval_jac_g_eq = heqjac,
              fixed = TRUE)
 
 expect_error(nloptr(x0, fn, gr, eval_g_eq = heq, eval_jac_g_eq = heqjac,
-                    opts = list(algorithm = "NLOPT_LD_AUGLAG", xtol_rel = 1e-8)),
+                    opts = list(algorithm = "NLOPT_LD_AUGLAG",
+                                xtol_rel = 1e-8)),
              "needs a local optimizer; specify an algorithm and termination",
              fixed = TRUE)
 

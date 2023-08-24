@@ -51,8 +51,10 @@ augControl <- nloptr(x0 = x0,
                      opts = list(algorithm = "NLOPT_LN_AUGLAG",
                                  xtol_rel = 1e-6,
                                  maxeval = 1000L,
-                                 local_opts = list(algorithm = "NLOPT_LN_COBYLA",
-                                                   xtol_rel = 1e-6)))
+                                 local_opts = list(
+                                   algorithm = "NLOPT_LN_COBYLA",
+                                   xtol_rel = 1e-6
+                                 )))
 
 expect_identical(augTest$par, augControl$solution)
 expect_identical(augTest$value, augControl$objective)
@@ -72,8 +74,10 @@ augControl <- nloptr(x0 = x0,
                      opts = list(algorithm = "NLOPT_LN_AUGLAG",
                                  xtol_rel = 1e-6,
                                  maxeval = 1000L,
-                                 local_opts = list(algorithm = "NLOPT_LN_BOBYQA",
-                                                   xtol_rel = 1e-6)))
+                                 local_opts = list(
+                                   algorithm = "NLOPT_LN_BOBYQA",
+                                   xtol_rel = 1e-6
+                                 )))
 
 expect_identical(augTest$par, augControl$solution)
 expect_identical(augTest$value, augControl$objective)

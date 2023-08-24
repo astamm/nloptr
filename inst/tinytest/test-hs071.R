@@ -94,6 +94,9 @@ expect_true(all(res$solution <= ub))
 
 # Check whether constraints are violated (up to specified tolerance).
 
-expect_true(eval_g_ineq(res$solution)$constr <= res$options$tol_constraints_ineq)
+expect_true(
+  eval_g_ineq(res$solution)$constr <= res$options$tol_constraints_ineq
+)
+
 expect_equal(eval_g_eq(res$solution)$constr, 0,
              tolerance = res$options$tol_constraints_eq)
