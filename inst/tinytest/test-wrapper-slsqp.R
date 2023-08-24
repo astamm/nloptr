@@ -8,6 +8,7 @@
 # Test wrapper calls for the Sequential Quadratic Programming algorithm.
 #
 # Changelog:
+#   2023-08-23: Change _output to _stdout
 #
 
 tol <- sqrt(.Machine$double.eps)
@@ -63,7 +64,7 @@ expect_message(slsqp(x0.hs100, fn = fn.hs100, hin = hin.hs100), ineqMess)
 
 # Test printout if nl.info passed. The word "Call:" should be in output if
 # passed and not if not passed.
-expect_output(slsqp(x0.hs100, fn = fn.hs100, nl.info = TRUE),
+expect_stdout(slsqp(x0.hs100, fn = fn.hs100, nl.info = TRUE),
               "Call:", fixed = TRUE)
 
 expect_silent(slsqp(x0.hs100, fn = fn.hs100))

@@ -9,6 +9,7 @@
 # algorithms have issues, this test suite may not be completed.
 #
 # Changelog:
+#   2023-08-23: Change _output to _stdout
 #
 
 ineqMess <- paste("For consistency with the rest of the package the inequality",
@@ -56,7 +57,7 @@ ub <- c(3, 3)
 ## StoGo
 # Test printout if nl.info passed. The word "Call:" should be in output if
 # passed and not if not passed.
-expect_output(stogo(x0, fr, lower = lb, upper = ub, nl.info = TRUE),
+expect_stdout(stogo(x0, fr, lower = lb, upper = ub, nl.info = TRUE),
               "Call:", fixed = TRUE)
 
 expect_silent(stogo(x0, fr, lower = lb, upper = ub))
@@ -118,7 +119,7 @@ expect_message(isres(x0, fr, lower = lb, upper = ub, hin = hin), ineqMess)
 
 # Test printout if nl.info passed. The word "Call:" should be in output if
 # passed and not if not passed.
-expect_output(isres(x0, fr, lb, ub, nl.info = TRUE), "Call:", fixed = TRUE)
+expect_stdout(isres(x0, fr, lb, ub, nl.info = TRUE), "Call:", fixed = TRUE)
 
 expect_silent(isres(x0, fr, lb, ub))
 
@@ -166,7 +167,7 @@ expect_identical(stogoTest$message, stogoControl$message)
 x0 <- lb <- rep(0, 6L)
 ub <- rep(1, 6L)
 
-expect_output(crs2lm(x0 = x0, hartmann6, lower = lb, upper = ub, nl.info = TRUE),
+expect_stdout(crs2lm(x0 = x0, hartmann6, lower = lb, upper = ub, nl.info = TRUE),
               "Call:", fixed = TRUE)
 
 expect_silent(crs2lm(x0 = x0, hartmann6, lower = lb, upper = ub))

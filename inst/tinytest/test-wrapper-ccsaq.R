@@ -8,6 +8,7 @@
 # Test wrapper calls to ccsaq algorithm
 #
 # Changelog:
+#   2023-08-23: Change _output to _stdout
 #
 
 ineqMess <- paste("For consistency with the rest of the package the inequality",
@@ -62,7 +63,7 @@ expect_message(ccsaq(x0.hs100, fn.hs100, hin = hin.hs100), ineqMess)
 
 # Test printout if nl.info passed. The word "Call:" should be in output if
 # passed and not if not passed.
-expect_output(ccsaq(x0.hs100, fn.hs100, nl.info = TRUE), "Call:", fixed = TRUE)
+expect_stdout(ccsaq(x0.hs100, fn.hs100, nl.info = TRUE), "Call:", fixed = TRUE)
 
 expect_silent(ccsaq(x0.hs100, fn.hs100))
 

@@ -8,6 +8,7 @@
 # Test wrapper calls for Nelder-Mead and Subplex algorithms.
 #
 # Changelog:
+#   2023-08-23: Change _output to _stdout
 #
 
 ## Functions for the algorithms
@@ -22,7 +23,7 @@ x0 <- c(-1, 0.5, 0.5)
 
 # Test printout if nl.info passed. The word "Call:" should be in output if
 # passed and not if not passed.
-expect_output(neldermead(x0, fphv, nl.info = TRUE), "Call:", fixed = TRUE)
+expect_stdout(neldermead(x0, fphv, nl.info = TRUE), "Call:", fixed = TRUE)
 
 expect_silent(neldermead(x0, fphv))
 
@@ -42,7 +43,7 @@ expect_identical(nmTest$message, nmControl$message)
 ## Subplex
 # Test printout if nl.info passed. The word "Call:" should be in output if
 # passed and not if not passed.
-expect_output(sbplx(x0, fphv, nl.info = TRUE), "Call:", fixed = TRUE)
+expect_stdout(sbplx(x0, fphv, nl.info = TRUE), "Call:", fixed = TRUE)
 
 expect_silent(sbplx(x0, fphv))
 

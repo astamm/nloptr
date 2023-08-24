@@ -8,6 +8,7 @@
 # Test wrapper calls to DIRECT algorithms
 #
 # Changelog:
+#   2023-08-23: Change _output to _stdout
 #
 
 # DirectL is not identical when calling randomized = TRUE. May be an issue with
@@ -47,9 +48,9 @@ ctl <- list(xtol_rel = 1e-8, maxeval = 1000L)
 
 # Test printout if nl.info passed. The word "Call:" should be in output if
 # passed and not if not passed.
-expect_output(direct(hartmann6, lb, ub, nl.info = TRUE), "Call:", fixed = TRUE)
+expect_stdout(direct(hartmann6, lb, ub, nl.info = TRUE), "Call:", fixed = TRUE)
 
-expect_output(directL(hartmann6, lb, ub, nl.info = TRUE), "Call:", fixed = TRUE)
+expect_stdout(directL(hartmann6, lb, ub, nl.info = TRUE), "Call:", fixed = TRUE)
 
 expect_silent(direct(hartmann6, lb, ub))
 

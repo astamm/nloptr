@@ -8,6 +8,7 @@
 # Test wrapper calls to Preconditioned Truncated Newton algorithms.
 #
 # Changelog:
+#   2023-08-23: Change _output to _stdout
 #
 
 ## Functions for the algorithms
@@ -23,7 +24,7 @@ ctl <- list(xtol_rel = 1e-8)
 
 # Test printout if nl.info passed. The word "Call:" should be in output if
 # passed and not if not passed.
-expect_output(tnewton(x0, flb, nl.info = TRUE), "Call:", fixed = TRUE)
+expect_stdout(tnewton(x0, flb, nl.info = TRUE), "Call:", fixed = TRUE)
 
 expect_silent(tnewton(x0, flb))
 

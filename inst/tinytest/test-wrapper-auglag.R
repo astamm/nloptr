@@ -8,6 +8,7 @@
 # Test wrapper calls to auglag algorithm
 #
 # Changelog:
+#   2023-08-23: Change _output to _stdout
 #
 
 ineqMess <- paste("For consistency with the rest of the package the inequality",
@@ -36,7 +37,7 @@ expect_message(auglag(x0, fn, hin = hin), ineqMess)
 
 # Test printout if nl.info passed. The word "Call:" should be in output if
 # passed and not if not passed.
-expect_output(auglag(x0, fn, nl.info = TRUE), "Call:", fixed = TRUE)
+expect_stdout(auglag(x0, fn, nl.info = TRUE), "Call:", fixed = TRUE)
 
 expect_silent(auglag(x0, fn))
 

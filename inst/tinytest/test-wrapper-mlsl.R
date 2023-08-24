@@ -8,6 +8,7 @@
 # Test wrapper calls MLSL algorithm.
 #
 # Changelog:
+#   2023-08-23: Change _stdout to _stdout and _lte to _true
 #
 
 tol <- 8e-8
@@ -45,21 +46,14 @@ lopt <- list(algorithm = "NLOPT_LD_LBFGS", xtol_rel = 1e-4)
 
 # Test printout if nl.info passed. The word "Call:" should be in output if
 # passed and not if not passed.
-expect_output(mlsl(x0 = x0, hartmann6, lower = lb, upper = ub, nl.info = TRUE),
+expect_stdout(mlsl(x0 = x0, hartmann6, lower = lb, upper = ub, nl.info = TRUE),
               "Call:", fixed = TRUE)
 
 expect_silent(mlsl(x0 = x0, hartmann6, lower = lb, upper = ub))
 
 # Test Warning
-# Have to wrap warning test in expect_error because Cannot test for warning
-# because "gr" gets overridden to NULL and then the global algorithm spits back
-# an error. Need to discuss with Aymeric or Hans if that is intended behavior.
-# (AA: 2023-02-06)
-
-expect_error(expect_warning(mlsl(x0, hartmann6, hart.gr, lb, ub,
-                                 local.method = "MMA"),
-                            "Only gradient-based LBFGS available as local met",
-                            fixed = TRUE))
+expect_warning(mlsl(x0, hartmann6, hart.gr, lb, ub, local.method = "MMA"),
+               "Only gradient-based LBFGS available as local met", fixed = TRUE)
 
 # No passed gradient: Low discrepancy
 mlslTest <- mlsl(x0, hartmann6, lower = lb, upper = ub, control = ctl)
@@ -97,6 +91,6 @@ expect_equal(mlslTest$value, mlslControl$objective, tolerance = tol)
 # See https://nlopt.readthedocs.io/en/latest/NLopt_Reference/#stopping-criteria
 # "This is not a strict maximum: the number of function evaluations may exceed
 # maxeval slightly, depending upon the algorithm."
-expect_lte(abs(mlslTest$iter - mlslControl$iterations), 10L)
+expect_true(abs(mlslTest$iter - mlslControl$iterations) <= 10L)
 expect_identical(mlslTest$convergence, mlslControl$status)
 expect_identical(mlslTest$message, mlslControl$message)
