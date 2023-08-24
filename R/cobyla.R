@@ -175,7 +175,7 @@ bobyqa <- function(x0, fn, lower = NULL, upper = NULL, nl.info = FALSE,
 #'
 #' NEWUOA solves quadratic subproblems in a spherical trust regionvia a
 #' truncated conjugate-gradient algorithm. For bound-constrained problems,
-#' BOBYQA shold be used instead, as Powell developed it as an enhancement
+#' BOBYQA should be used instead, as Powell developed it as an enhancement
 #' thereof for bound constraints.
 #'
 #' This is an algorithm derived from the NEWUOA Fortran subroutine of Powell,

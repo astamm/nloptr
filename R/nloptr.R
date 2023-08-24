@@ -14,13 +14,13 @@
 #    lb : lower bounds of the control (optional)
 #    ub : upper bounds of the control (optional)
 #    eval_g_ineq : function to evaluate (non-)linear inequality constraints
-#            that should hold in the solution and its jacobian
+#            that should hold in the solution and its Jacobian
 #            (optional)
-#    eval_jac_g_ineq : function to evaluate jacobian of the (non-)linear
+#    eval_jac_g_ineq : function to evaluate Jacobian of the (non-)linear
 #              inequality constraints (optional)
 #    eval_g_eq : function to evaluate (non-)linear equality constraints that
-#          should hold in the solution and its jacobian (optional)
-#    eval_jac_g_eq : function to evaluate jacobian of the (non-)linear
+#          should hold in the solution and its Jacobian (optional)
+#    eval_jac_g_eq : function to evaluate Jacobian of the (non-)linear
 #            equality constraints (optional)
 #    opts : list with options that are passed to nlopt
 #    ... : arguments that are passed to user-defined functions
@@ -92,15 +92,15 @@
 #'   of the controls.
 #' @param eval_g_ineq function to evaluate (non-)linear inequality constraints
 #'   that should hold in the solution.  It can also return gradient information
-#'   at the same time in a list with elements "constraints" and "jacobian" (see
+#'   at the same time in a list with elements "constraints" and "Jacobian" (see
 #'   below for an example).
-#' @param eval_jac_g_ineq function to evaluate the jacobian of the (non-)linear
+#' @param eval_jac_g_ineq function to evaluate the Jacobian of the (non-)linear
 #'   inequality constraints that should hold in the solution.
 #' @param eval_g_eq function to evaluate (non-)linear equality constraints that
 #'   should hold in the solution.  It can also return gradient information at
-#'   the same time in a list with elements "constraints" and "jacobian" (see
+#'   the same time in a list with elements "constraints" and "Jacobian" (see
 #'   below for an example).
-#' @param eval_jac_g_eq function to evaluate the jacobian of the (non-)linear
+#' @param eval_jac_g_eq function to evaluate the Jacobian of the (non-)linear
 #'   equality constraints that should hold in the solution.
 #' @param opts list with options. The option "\code{algorithm}" is required.
 #'   Check the
@@ -246,7 +246,7 @@
 #'   return(c(0, .5/sqrt(x[2])))
 #'}
 #'
-#' # jacobian of constraint
+#' # Jacobian of constraint
 #' eval_jac_g0 <- function(x, a, b) {
 #'   return(rbind(c(3*a[1]*(a[1]*x[1] + b[1])^2, -1.0),
 #'          c(3*a[2]*(a[2]*x[1] + b[2])^2, -1.0)))
@@ -263,7 +263,7 @@
 #'
 #' eval_g1 <- function(x, a, b) {
 #'   return(list("constraints"=(a*x[1] + b)^3 - x[2],
-#'           "jacobian"=rbind(c(3*a[1]*(a[1]*x[1] + b[1])^2, -1.0),
+#'           "Jacobian"=rbind(c(3*a[1]*(a[1]*x[1] + b[1])^2, -1.0),
 #'                   c(3*a[2]*(a[2]*x[1] + b[2])^2, -1.0))))
 #'}
 #'
@@ -394,7 +394,7 @@ nloptr <- function(x0,
     } else {
       eval_g_ineq_wrapper <- function(x) {
         list("constraints" = eval_g_ineq(x, ...),
-             "jacobian"  = eval_jac_g_ineq(x, ...))
+             "Jacobian"  = eval_jac_g_ineq(x, ...))
       }
     }
 
@@ -422,7 +422,7 @@ nloptr <- function(x0,
     } else {
       eval_g_eq_wrapper <- function(x) {
         list("constraints" = eval_g_eq(x, ...),
-             "jacobian"  = eval_jac_g_eq(x, ...))
+             "Jacobian"  = eval_jac_g_eq(x, ...))
       }
     }
 
@@ -505,7 +505,7 @@ nloptr <- function(x0,
         check.derivatives(
           .x = x0,
           func = function(x) {eval_g_ineq_wrapper(x)$constraints},
-          func_grad = function(x) {eval_g_ineq_wrapper(x)$jacobian},
+          func_grad = function(x) {eval_g_ineq_wrapper(x)$Jacobian},
           check_derivatives_tol = opts$check_derivatives_tol,
           check_derivatives_print = opts$check_derivatives_print,
           func_grad_name = "eval_jac_g_ineq"
@@ -518,7 +518,7 @@ nloptr <- function(x0,
         check.derivatives(
           .x = x0,
           func = function(x) {eval_g_eq_wrapper(x)$constraints},
-          func_grad = function(x) {eval_g_eq_wrapper(x)$jacobian},
+          func_grad = function(x) {eval_g_eq_wrapper(x)$Jacobian},
           check_derivatives_tol = opts$check_derivatives_tol,
           check_derivatives_print = opts$check_derivatives_print,
           func_grad_name = "eval_jac_g_eq"

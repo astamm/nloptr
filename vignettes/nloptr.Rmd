@@ -298,7 +298,7 @@ and constraint functions, `a` and `b`.
 
 We can also use a different algorithm to solve the same minimization problem.
 The only thing we have to change is the algorithm that we want to use, in this
-case `NLOPT_LN_COBYLA`, which is an algorithm that doesn"t need gradient
+case `NLOPT_LN_COBYLA`, which is an algorithm that doesn't need gradient
 information [@Powell:1994; @Powell:1998].
 ```{r solveTutorialWithoutGradient}
 # Solve using NLOPT_LN_COBYLA without gradient information
