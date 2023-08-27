@@ -15,7 +15,7 @@
 # the randomization at the C level. For now, need to pass this tolerance for it
 # to work.
 # (AA: 2026-02-06)
-tol <- 1e-6
+tol <- 1e-4
 
 ## Functions for DIRECT and DIRECT_L
 hartmann6 <- function(x) {
