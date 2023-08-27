@@ -121,34 +121,8 @@ expect_identical(directLTest$iter, directLControl$iterations)
 expect_identical(directLTest$convergence, directLControl$status)
 expect_identical(directLTest$message, directLControl$message)
 
-# Test DIRECTL algorithm Randomized: TRUE Original: FALSE
-ctl <- list(xtol_rel = 1e-8, maxeval = 10000L)
-directLTest <- directL(hartmann6, lb, ub, randomized = TRUE, control = ctl)
-
-directLControl <- nloptr(x0 = x0,
-                         eval_f = hartmann6,
-                         lb = lb,
-                         ub = ub,
-                         opts = list(algorithm = "NLOPT_GN_DIRECT_L_RAND",
-                                     xtol_rel = 1e-8, maxeval = 10000L))
-
-directLControl <- nloptr(x0 = x0,
-                         eval_f = hartmann6,
-                         lb = lb,
-                         ub = ub,
-                         opts = list(algorithm = "NLOPT_GN_DIRECT_L_RAND",
-                                     xtol_rel = 1e-8, maxeval = 10000L))
-
-# May have something to do with the randomization. Setting seeds before the
-# calls does not help with check_identical
-# (AA: 2023-02-06)
-expect_equal(directLTest$par, directLControl$solution, tolerance = tol)
-expect_equal(directLTest$value, directLControl$objective, tolerance = tol)
-expect_identical(directLTest$iter, directLControl$iterations)
-expect_identical(directLTest$convergence, directLControl$status)
-expect_identical(directLTest$message, directLControl$message)
-
 # Test DIRECTL algorithm Original: TRUE
+ctl <- list(xtol_rel = 1e-8, maxeval = 10000L)
 directLTest <- directL(hartmann6, lb, ub, randomized = TRUE, original = TRUE,
                        control = ctl)
 
@@ -164,3 +138,25 @@ expect_identical(directLTest$value, directLControl$objective)
 expect_identical(directLTest$iter, directLControl$iterations)
 expect_identical(directLTest$convergence, directLControl$status)
 expect_identical(directLTest$message, directLControl$message)
+
+# Test DIRECTL algorithm Randomized: TRUE Original: FALSE
+ctl <- list(xtol_rel = 1e-8, maxeval = 50000L)
+
+directLTest <- directL(hartmann6, lb, ub, randomized = TRUE, control = ctl)
+
+directLControl <- nloptr(x0 = x0,
+                         eval_f = hartmann6,
+                         lb = lb,
+                         ub = ub,
+                         opts = list(algorithm = "NLOPT_GN_DIRECT_L_RAND",
+                                     xtol_rel = 1e-8, maxeval = 50000L))
+
+# May have something to do with the randomization. Setting seeds before the
+# calls does not help with check_identical
+# (AA: 2023-02-06)
+expect_equal(directLTest$par, directLControl$solution, tolerance = tol)
+expect_equal(directLTest$value, directLControl$objective, tolerance = tol)
+expect_identical(directLTest$iter, directLControl$iterations)
+expect_identical(directLTest$convergence, directLControl$status)
+expect_identical(directLTest$message, directLControl$message)
+
