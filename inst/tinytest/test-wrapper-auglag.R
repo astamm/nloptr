@@ -11,6 +11,8 @@
 #   2023-08-23: Change _output to _stdout
 #
 
+library(nloptr)
+
 ineqMess <- paste("For consistency with the rest of the package the inequality",
                   "sign may be switched from >= to <= in a future nloptr",
                   "version.")

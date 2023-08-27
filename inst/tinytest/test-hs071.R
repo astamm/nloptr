@@ -31,6 +31,8 @@
 #   2023-02-07: Remove wrapping tests in "test_that" to reduce duplication. (AA)
 #
 
+library(nloptr)
+
 # f(x) = x1*x4*(x1 + x2 + x3) + x3
 eval_f <- function(x) {
   list("objective" = x[1] * x[4] * (x[1] + x[2] + x[3]) + x[3],

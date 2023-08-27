@@ -22,6 +22,8 @@
 #   2023-02-07: Remove wrapping tests in "test_that" to reduce duplication. (AA)
 #
 
+library(nloptr)
+
 tol <- sqrt(.Machine$double.eps)
 
 # Test simple constrained optimization problem with gradient information.

@@ -11,6 +11,8 @@
 #   2023-08-23: Change _stdout to _stdout and _lte to _true
 #
 
+library(nloptr)
+
 tol <- 8e-8
 
 ## Functions for the algorithms

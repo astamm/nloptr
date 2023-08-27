@@ -10,6 +10,8 @@
 # Changelog:
 #
 
+library(nloptr)
+
 opts <- list(
   stopval = -Inf,            # stop minimization at this value
   xtol_rel = 1e-6,           # stop on small optimization step

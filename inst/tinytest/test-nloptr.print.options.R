@@ -12,6 +12,8 @@
 #               Converted the others to tinytest format.
 #
 
+library(nloptr)
+
 expect_stdout(nloptr.print.options(opts.show = "check_derivatives"),
               "user-supplied analytic gradients with finite difference",
               fixed = TRUE)

@@ -15,6 +15,8 @@
 #   2019-12-12: Corrected warnings and using updated testtthat framework (AA)
 #   2023-02-07: Remove wrapping tests in "test_that" to reduce duplication. (AA)
 
+library(nloptr)
+
 tol <- sqrt(.Machine$double.eps)
 # Test Rosenbrock Banana optimization with global optimizer NLOPT_GD_MLSL.
 
