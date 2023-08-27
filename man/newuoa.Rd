@@ -30,7 +30,7 @@ information.}
 \description{
 NEWUOA solves quadratic subproblems in a spherical trust regionvia a
 truncated conjugate-gradient algorithm. For bound-constrained problems,
-BOBYQA shold be used instead, as Powell developed it as an enhancement
+BOBYQA should be used instead, as Powell developed it as an enhancement
 thereof for bound constraints.
 }
 \details{
@@ -43,7 +43,7 @@ NEWUOA may be largely superseded by BOBYQA.
 \examples{
 
 fr <- function(x) {   ## Rosenbrock Banana function
-    100 * (x[2] - x[1]^2)^2 + (1 - x[1])^2
+  100 * (x[2] - x[1]^2)^2 + (1 - x[1])^2
 }
 (S <- newuoa(c(1, 2), fr))
 

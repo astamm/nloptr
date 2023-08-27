@@ -38,9 +38,9 @@
 #'   \item{value}{the function value corresponding to \code{par}.}
 #'   \item{iter}{number of (outer) iterations, see \code{maxeval}.}
 #'   \item{convergence}{integer code indicating successful completion (> 1)
-#'     or a possible error number (< 0).}
+#'   or a possible error number (< 0).}
 #'   \item{message}{character string produced by NLopt and giving additional
-#'     information.}
+#'   information.}
 #'
 #' @export tnewton
 #'
@@ -57,12 +57,12 @@
 #' @examples
 #'
 #' flb <- function(x) {
-#'     p <- length(x)
-#'     sum(c(1, rep(4, p - 1)) * (x - c(1, x[-p]) ^ 2) ^ 2)
+#'   p <- length(x)
+#'   sum(c(1, rep(4, p - 1)) * (x - c(1, x[-p]) ^ 2) ^ 2)
 #' }
 #' # 25-dimensional box constrained: par[24] is *not* at boundary
 #' S <- tnewton(rep(3, 25L), flb, lower = rep(2, 25L), upper = rep(4, 25L),
-#'              nl.info = TRUE, control = list(xtol_rel = 1e-8))
+#'        nl.info = TRUE, control = list(xtol_rel = 1e-8))
 #' ## Optimal value of objective function:  368.105912874334
 #' ## Optimal value of controls: 2  ...  2  2.109093  4
 #'
@@ -70,38 +70,38 @@ tnewton <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
                     precond = TRUE, restart = TRUE, nl.info = FALSE,
                     control = list(), ...) {
 
-    opts <- nl.opts(control)
-    if (precond) {
-        if (restart)
-            opts["algorithm"] <- "NLOPT_LD_TNEWTON_PRECOND_RESTART"
-        else
-            opts["algorithm"] <- "NLOPT_LD_TNEWTON_PRECOND"
-    } else {
-        if (restart)
-            opts["algorithm"] <- "NLOPT_LD_TNEWTON_RESTART"
-        else
-            opts["algorithm"] <- "NLOPT_LD_TNEWTON"
-    }
+  opts <- nl.opts(control)
+  if (precond) {
+    if (restart)
+      opts["algorithm"] <- "NLOPT_LD_TNEWTON_PRECOND_RESTART"
+    else
+      opts["algorithm"] <- "NLOPT_LD_TNEWTON_PRECOND"
+  } else {
+    if (restart)
+      opts["algorithm"] <- "NLOPT_LD_TNEWTON_RESTART"
+    else
+      opts["algorithm"] <- "NLOPT_LD_TNEWTON"
+  }
 
-    fun <- match.fun(fn)
-    fn  <- function(x) fun(x, ...)
+  fun <- match.fun(fn)
+  fn  <- function(x) fun(x, ...)
 
-    if (is.null(gr)) {
-        gr <- function(x) nl.grad(x, fn)
-    } else {
-        .gr <- match.fun(gr)
-        gr <- function(x) .gr(x, ...)
-    }
+  if (is.null(gr)) {
+    gr <- function(x) nl.grad(x, fn)
+  } else {
+    .gr <- match.fun(gr)
+    gr <- function(x) .gr(x, ...)
+  }
 
-    S0 <- nloptr(x0,
-                eval_f = fn,
-                eval_grad_f = gr,
-                lb = lower,
-                ub = upper,
-                opts = opts)
+  S0 <- nloptr(x0,
+               eval_f = fn,
+               eval_grad_f = gr,
+               lb = lower,
+               ub = upper,
+               opts = opts)
 
-    if (nl.info) print(S0)
+  if (nl.info) print(S0)
 
-    list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-         convergence = S0$status, message = S0$message)
+  list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+       convergence = S0$status, message = S0$message)
 }

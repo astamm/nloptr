@@ -10,11 +10,11 @@
 # CHANGELOG
 #
 # 2023-02-09: Cleanup and tweaks for safety and efficiency. Also Changed
-#             nl.grad error message to be more mathematically precise. The loop
-#             construct is 4 times faster than full vectorization with apply and
-#             around 25% faster than partial vectorization creating a heps using
-#             diag and pulling vectors off row-by-row in nl.grad & nl.jacobian.
-#             (Avraham Adler)
+#       nl.grad error message to be more mathematically precise. The loop
+#       construct is 4 times faster than full vectorization with apply and
+#       around 25% faster than partial vectorization creating a heps using
+#       diag and pulling vectors off row-by-row in nl.grad & nl.jacobian.
+#       (Avraham Adler)
 #
 
 
@@ -50,49 +50,49 @@
 #'   fn2 <- function(x) c(sin(x), cos(x))
 #'   x <- (0:1) * 2 * pi
 #'   nl.jacobian(x, fn2)
-#'   ##      [,1] [,2]
-#'   ## [1,]    1    0
-#'   ## [2,]    0    1
-#'   ## [3,]    0    0
-#'   ## [4,]    0    0
+#'   ##    [,1] [,2]
+#'   ## [1,]  1  0
+#'   ## [2,]  0  1
+#'   ## [3,]  0  0
+#'   ## [4,]  0  0
 #'
 nl.grad <- function(x0, fn, heps = .Machine$double.eps ^ (1 / 3), ...) {
 
-    if (!is.numeric(x0)) stop("Argument 'x0' must be a numeric value.")
+  if (!is.numeric(x0)) stop("Argument 'x0' must be a numeric value.")
 
-    fun <- match.fun(fn)
-    fn  <- function(x) fun(x, ...)
-    if (length(fn(x0)) != 1)
-        stop("Function 'f' must be a scalar function (return a single value).")
+  fun <- match.fun(fn)
+  fn  <- function(x) fun(x, ...)
+  if (length(fn(x0)) != 1)
+    stop("Function 'f' must be a scalar function (return a single value).")
 
-    n <- length(x0)
-    hh <- gr <- rep(0, n)
-    for (i in seq_len(n)) {
-        hh[i] <- heps
-        gr[i] <- (fn(x0 + hh) - fn(x0 - hh)) / (2 * heps)
-        hh[i] <- 0
-    }
+  n <- length(x0)
+  hh <- gr <- rep(0, n)
+  for (i in seq_len(n)) {
+    hh[i] <- heps
+    gr[i] <- (fn(x0 + hh) - fn(x0 - hh)) / (2 * heps)
+    hh[i] <- 0
+  }
 
-    gr
+  gr
 }
 
 #' @export
 nl.jacobian <- function(x0, fn, heps = .Machine$double.eps ^ (1 / 3), ...) {
 
-    n <- length(x0)
-    if (!is.numeric(x0) || n == 0)
-        stop("Argument 'x' must be a non-empty numeric vector.")
+  n <- length(x0)
+  if (!is.numeric(x0) || n == 0)
+    stop("Argument 'x' must be a non-empty numeric vector.")
 
-    fun <- match.fun(fn)
-    fn  <- function(x) fun(x, ...)
+  fun <- match.fun(fn)
+  fn  <- function(x) fun(x, ...)
 
-    jacob <- matrix(NA_real_, length(fn(x0)), n)
-    hh <- rep(0, n)
-    for (i in seq_len(n)) {
-        hh[i] <- heps
-        jacob[, i] <- (fn(x0 + hh) - fn(x0 - hh)) / (2 * heps)
-        hh[i] <- 0
-    }
+  jacob <- matrix(NA_real_, length(fn(x0)), n)
+  hh <- rep(0, n)
+  for (i in seq_len(n)) {
+    hh[i] <- heps
+    jacob[, i] <- (fn(x0 + hh) - fn(x0 - hh)) / (2 * heps)
+    hh[i] <- 0
+  }
 
-    jacob
+  jacob
 }

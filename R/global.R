@@ -37,9 +37,9 @@
 #'   \item{value}{the function value corresponding to \code{par}.}
 #'   \item{iter}{number of (outer) iterations, see \code{maxeval}.}
 #'   \item{convergence}{integer code indicating successful completion (> 0)
-#'     or a possible error number (< 0).}
+#'   or a possible error number (< 0).}
 #'   \item{message}{character string produced by NLopt and giving additional
-#'     information.}
+#'   information.}
 #'
 #' @export stogo
 #'
@@ -55,7 +55,7 @@
 #'
 #' ### Rosenbrock Banana objective function
 #' fn <- function(x)
-#'     return( 100 * (x[2] - x[1] * x[1])^2 + (1 - x[1])^2 )
+#'   return( 100 * (x[2] - x[1] * x[1])^2 + (1 - x[1])^2 )
 #'
 #' x0 <- c( -1.2, 1 )
 #' lb <- c( -3, -3 )
@@ -67,32 +67,32 @@ stogo <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
                   maxeval = 10000, xtol_rel = 1e-6, randomized = FALSE,
                   nl.info = FALSE, ...) { # control = list()
 
-    # opts <- nl.opts(control)
-    opts <- list()
-    opts$maxeval <- maxeval
-    opts$xtol_rel <- xtol_rel
-    if (randomized) {
-        opts["algorithm"] <- "NLOPT_GD_STOGO_RAND"
-    } else {
-        opts["algorithm"] <- "NLOPT_GD_STOGO"
-    }
+  # opts <- nl.opts(control)
+  opts <- list()
+  opts$maxeval <- maxeval
+  opts$xtol_rel <- xtol_rel
+  if (randomized) {
+    opts["algorithm"] <- "NLOPT_GD_STOGO_RAND"
+  } else {
+    opts["algorithm"] <- "NLOPT_GD_STOGO"
+  }
 
-    fun <- match.fun(fn)
-    fn <- function(x) fun(x, ...)
+  fun <- match.fun(fn)
+  fn <- function(x) fun(x, ...)
 
-    if (is.null(gr)) {gr <- function(x) nl.grad(x, fn)}
+  if (is.null(gr)) {gr <- function(x) nl.grad(x, fn)}
 
-    S0 <- nloptr(x0,
-                 eval_f = fn,
-                 eval_grad_f = gr,
-                 lb = lower,
-                 ub = upper,
-                 opts = opts)
+  S0 <- nloptr(x0,
+               eval_f = fn,
+               eval_grad_f = gr,
+               lb = lower,
+               ub = upper,
+               opts = opts)
 
-    if (nl.info) print(S0)
+  if (nl.info) print(S0)
 
-    list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-         convergence = S0$status, message = S0$message)
+  list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+       convergence = S0$status, message = S0$message)
 
 }
 
@@ -133,9 +133,9 @@ stogo <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
 #'   \item{value}{the function value corresponding to \code{par}.}
 #'   \item{iter}{number of (outer) iterations, see \code{maxeval}.}
 #'   \item{convergence}{integer code indicating successful completion (> 0)
-#'     or a possible error number (< 0).}
+#'   or a possible error number (< 0).}
 #'   \item{message}{character string produced by NLopt and giving additional
-#'     information.}
+#'   information.}
 #'
 #' @export isres
 #'
@@ -154,7 +154,7 @@ stogo <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
 #'
 #' ### Rosenbrock Banana objective function
 #' fn <- function(x)
-#'     return( 100 * (x[2] - x[1] * x[1])^2 + (1 - x[1])^2 )
+#'   return( 100 * (x[2] - x[1] * x[1])^2 + (1 - x[1])^2 )
 #'
 #' x0 <- c( -1.2, 1 )
 #' lb <- c( -3, -3 )
@@ -163,47 +163,47 @@ stogo <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
 #' isres(x0 = x0, fn = fn, lower = lb, upper = ub)
 #'
 
-isres <- function(x0, fn, lower, upper, hin = NULL, heq = NULL,
-                  maxeval = 10000, pop.size = 20 * (length(x0) + 1),
-                  xtol_rel = 1e-6, nl.info = FALSE, ...) {
+isres <- function(x0, fn, lower, upper, hin = NULL, heq = NULL, maxeval = 10000,
+                  pop.size = 20 * (length(x0) + 1), xtol_rel = 1e-6,
+                  nl.info = FALSE, ...) {
 
-    #opts <- nl.opts(control)
-    opts <- list()
-    opts$maxeval    <- maxeval
-    opts$xtol_rel   <- xtol_rel
-    opts$population <- pop.size
-    opts$algorithm  <- "NLOPT_GN_ISRES"
+  #opts <- nl.opts(control)
+  opts <- list()
+  opts$maxeval  <- maxeval
+  opts$xtol_rel   <- xtol_rel
+  opts$population <- pop.size
+  opts$algorithm  <- "NLOPT_GN_ISRES"
 
-    fun <- match.fun(fn)
-    fn  <- function(x) fun(x, ...)
+  fun <- match.fun(fn)
+  fn  <- function(x) fun(x, ...)
 
-    if (!is.null(hin)) {
-        if (getOption("nloptr.show.inequality.warning")) {
-            message("For consistency with the rest of the package the ",
-                    "inequality sign may be switched from >= to <= in a ",
-                    "future nloptr version.")
-        }
-
-        .hin <- match.fun(hin)
-        hin <- function(x) -.hin(x)   # change  hin >= 0  to  hin <= 0 !
+  if (!is.null(hin)) {
+    if (getOption("nloptr.show.inequality.warning")) {
+      message("For consistency with the rest of the package the ",
+              "inequality sign may be switched from >= to <= in a ",
+              "future nloptr version.")
     }
 
-    if (!is.null(heq)) {
-        .heq <- match.fun(heq)
-        heq <- function(x) .heq(x)
-    }
+    .hin <- match.fun(hin)
+    hin <- function(x) -.hin(x)   # change  hin >= 0  to  hin <= 0 !
+  }
 
-    S0 <- nloptr(x0 = x0,
-                 eval_f = fn,
-                 lb = lower,
-                 ub = upper,
-                 eval_g_ineq = hin,
-                 eval_g_eq = heq,
-                 opts = opts)
+  if (!is.null(heq)) {
+    .heq <- match.fun(heq)
+    heq <- function(x) .heq(x)
+  }
 
-    if (nl.info) print(S0)
-    list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-         convergence = S0$status, message = S0$message)
+  S0 <- nloptr(x0 = x0,
+               eval_f = fn,
+               lb = lower,
+               ub = upper,
+               eval_g_ineq = hin,
+               eval_g_eq = heq,
+               opts = opts)
+
+  if (nl.info) print(S0)
+  list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+       convergence = S0$status, message = S0$message)
 }
 
 
@@ -236,9 +236,9 @@ isres <- function(x0, fn, lower, upper, hin = NULL, heq = NULL,
 #'   \item{value}{the function value corresponding to \code{par}.}
 #'   \item{iter}{number of (outer) iterations, see \code{maxeval}.}
 #'   \item{convergence}{integer code indicating successful completion (> 0)
-#'     or a possible error number (< 0).}
+#'   or a possible error number (< 0).}
 #'   \item{message}{character string produced by NLopt and giving additional
-#'     information.}
+#'   information.}
 #'
 #' @export crs2lm
 #'
@@ -257,60 +257,61 @@ isres <- function(x0, fn, lower, upper, hin = NULL, heq = NULL,
 #'
 #' ### Minimize the Hartmann6 function
 #' hartmann6 <- function(x) {
-#'     n <- length(x)
-#'     a <- c(1.0, 1.2, 3.0, 3.2)
-#'     A <- matrix(c(10.0,  0.05, 3.0, 17.0,
-#'                    3.0, 10.0,  3.5,  8.0,
-#'                   17.0, 17.0,  1.7,  0.05,
-#'                    3.5,  0.1, 10.0, 10.0,
-#'                    1.7,  8.0, 17.0,  0.1,
-#'                    8.0, 14.0,  8.0, 14.0), nrow=4, ncol=6)
-#'     B  <- matrix(c(.1312,.2329,.2348,.4047,
-#'                    .1696,.4135,.1451,.8828,
-#'                    .5569,.8307,.3522,.8732,
-#'                    .0124,.3736,.2883,.5743,
-#'                    .8283,.1004,.3047,.1091,
-#'                    .5886,.9991,.6650,.0381), nrow=4, ncol=6)
-#'     fun <- 0.0
-#'     for (i in 1:4) {
-#'         fun <- fun - a[i] * exp(-sum(A[i,]*(x-B[i,])^2))
-#'     }
-#'     return(fun)
+#'   n <- length(x)
+#'   a <- c(1.0, 1.2, 3.0, 3.2)
+#'   A <- matrix(c(10.0,  0.05, 3.0, 17.0,
+#'          3.0, 10.0,  3.5,  8.0,
+#'           17.0, 17.0,  1.7,  0.05,
+#'          3.5,  0.1, 10.0, 10.0,
+#'          1.7,  8.0, 17.0,  0.1,
+#'          8.0, 14.0,  8.0, 14.0), nrow=4, ncol=6)
+#'   B  <- matrix(c(.1312,.2329,.2348,.4047,
+#'          .1696,.4135,.1451,.8828,
+#'          .5569,.8307,.3522,.8732,
+#'          .0124,.3736,.2883,.5743,
+#'          .8283,.1004,.3047,.1091,
+#'          .5886,.9991,.6650,.0381), nrow=4, ncol=6)
+#'   fun <- 0.0
+#'   for (i in 1:4) {
+#'     fun <- fun - a[i] * exp(-sum(A[i,]*(x-B[i,])^2))
+#'   }
+#'   return(fun)
 #' }
 #'
 #' S <- crs2lm(x0 = rep(0, 6), hartmann6, lower = rep(0, 6), upper = rep(1, 6),
-#'             nl.info = TRUE, xtol_rel=1e-8, maxeval = 10000)
+#'       nl.info = TRUE, xtol_rel=1e-8, maxeval = 10000)
 #' ## Number of Iterations....: 5106
 #' ## Termination conditions:  maxeval: 10000	xtol_rel: 1e-08
 #' ## Number of inequality constraints:  0
-#' ## Number of equality constraints:    0
+#' ## Number of equality constraints:  0
 #' ## Optimal value of objective function:  -3.32236801141551
-#' ## Optimal value of controls: 0.2016895 0.1500107 0.476874 0.2753324 0.3116516 0.6573005
+#' ## Optimal value of controls: 0.2016895 0.1500107 0.476874 0.2753324
+#' ##                            0.3116516 0.6573005
 #'
 
 crs2lm <- function(x0, fn, lower, upper, maxeval = 10000,
                    pop.size = 10 * (length(x0) + 1), ranseed = NULL,
-                    xtol_rel = 1e-6, nl.info = FALSE, ...) {
+                   xtol_rel = 1e-6, nl.info = FALSE, ...) {
 
-    #opts <- nl.opts(control)
-    opts <- list()
-    opts$maxeval <- maxeval
-    opts$xtol_rel <- xtol_rel
-    opts$population <- pop.size
-    if (!is.null(ranseed)) {opts$ranseed <- as.integer(ranseed)}
-    opts$algorithm  <- "NLOPT_GN_CRS2_LM"
+  #opts <- nl.opts(control)
+  opts <- list()
+  opts$maxeval <- maxeval
+  opts$xtol_rel <- xtol_rel
+  opts$population <- pop.size
+  if (!is.null(ranseed)) {opts$ranseed <- as.integer(ranseed)}
+  opts$algorithm  <- "NLOPT_GN_CRS2_LM"
 
-    fun <- match.fun(fn)
-    fn  <- function(x) fun(x, ...)
+  fun <- match.fun(fn)
+  fn  <- function(x) fun(x, ...)
 
-    S0 <- nloptr(x0,
-                 eval_f = fn,
-                 lb = lower,
-                 ub = upper,
-                 opts = opts)
+  S0 <- nloptr(x0,
+               eval_f = fn,
+               lb = lower,
+               ub = upper,
+               opts = opts)
 
-    if (nl.info) print(S0)
+  if (nl.info) print(S0)
 
-    list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-         convergence = S0$status, message = S0$message)
+  list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+       convergence = S0$status, message = S0$message)
 }

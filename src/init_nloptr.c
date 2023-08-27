@@ -34,7 +34,6 @@
 #include <nlopt.h>
 
 static const R_CallMethodDef CallEntries[] = {
-  {"run_testthat_tests", (DL_FUNC) &run_testthat_tests, 1},
   {"NLoptR_Optimize",    (DL_FUNC) &NLoptR_Optimize,    1},
   {NULL, NULL, 0}
 };

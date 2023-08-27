@@ -1,8 +1,18 @@
+# nloptr 2.0.3.9100
+
+* Replaced the unit testing framework of `testthat` with `tinytest` (See 
+[Issue #136](https://github.com/astamm/nloptr/issues/136)).
+* Brought coverage of `is.nloptr` to 100%. The only file not completely covered
+by unit tests is `nloptr.c`. The uncovered calls are error messages which get
+trapped by tests in R before the call gets to C.
+* Linted package for code correctness and consistency.
+* Updated vignette, DESCRIPTION, and NEWS.
+
 # nloptr 2.0.3.9000
 
-This is a patch version update from [Avraham Adler](https://github.com/aadler)
-which should make the code safer, more efficient, and easier to follow. Please
-see commit logs for [#128](https://github.com/astamm/nloptr/pull/128),
+This is a patch version update which should make the code safer, more efficient,
+and easier to follow. Please see commit logs for
+[#128](https://github.com/astamm/nloptr/pull/128),
 [#129](https://github.com/astamm/nloptr/pull/129),
 [#131](https://github.com/astamm/nloptr/pull/131), 
 [#132](https://github.com/astamm/nloptr/pull/132),

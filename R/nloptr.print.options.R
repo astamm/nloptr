@@ -8,10 +8,11 @@
 # Print list of all options with description.
 #
 # Input:
-#    opts.show:    the description of the options in this list are shown (optional, default is to show all options)
-#    opts.user:    list with user defined options (optional)
-# Output:     options, default values, user values if supplied)
-#             and description printed to screen. No return value.
+#  opts.show:  the description of the options in this list are shown
+#          (optional, default is to show all options)
+#  opts.user:  list with user defined options (optional)
+# Output:   options, default values, user values if supplied)
+#       and description printed to screen. No return value.
 #
 # 2011-08-08: Added opts.show argument to only show a subset of all options.
 # 2023-02-09: Cleanup and tweaks for safety and efficiency (Avraham Adler)
@@ -47,34 +48,37 @@
 #' nloptr.print.options(opts.show = c("algorithm", "check_derivatives"))
 #'
 #' opts <- list("algorithm"="NLOPT_LD_LBFGS",
-#'              "xtol_rel"=1.0e-8)
+#'        "xtol_rel"=1.0e-8)
 #' nloptr.print.options(opts.user = opts)
 #'
 
 nloptr.print.options <-  function(opts.show = NULL, opts.user = NULL) {
 
-    # Default is to show all options if no list of options is supplied
-    nloptr.show.options <- nloptr.get.default.options()
-    if (!is.null(opts.show)) {
-        nloptr.show.options <- subset(nloptr.show.options,
-                                      nloptr.show.options$name %in% opts.show)
+  # Default is to show all options if no list of options is supplied
+  nloptr.show.options <- nloptr.get.default.options()
+  if (!is.null(opts.show)) {
+    nloptr.show.options <- subset(nloptr.show.options,
+                                  nloptr.show.options$name %in% opts.show)
+  }
+
+  # loop over all options and print values
+  for (row.cnt in seq_len(nrow(nloptr.show.options))) {
+    opt <- nloptr.show.options[row.cnt, ]
+
+    value.current <- ifelse(is.null(opts.user[[opt$name]]),
+                            "(default)",
+                            opts.user[[opt$name]])
+
+    cat(opt$name, "\n", sep = "")
+    cat("\tpossible values: ", paste(strwrap(opt$possible_values, width = 50),
+                                     collapse = "\n\t         "),
+        "\n", sep = "")
+    cat("\tdefault value:   ", opt$default, "\n", sep = "")
+    if (!is.null(opts.user)) {
+      cat("\tcurrent value:   ", value.current, "\n", sep = "")
     }
-
-    # loop over all options and print values
-    for (row.cnt in seq_len(nrow(nloptr.show.options))) {
-        opt <- nloptr.show.options[row.cnt, ]
-
-        value.current <- ifelse(is.null(opts.user[[opt$name]]),
-                                "(default)",
-                                opts.user[[opt$name]])
-
-        cat(opt$name, "\n", sep = "")
-        cat("\tpossible values: ", paste(strwrap(opt$possible_values, width = 50), collapse = "\n\t                 "), "\n", sep = "")
-        cat("\tdefault value:   ", opt$default, "\n", sep = "")
-        if (!is.null(opts.user)) {
-            cat("\tcurrent value:   ", value.current, "\n", sep = "")
-        }
-        cat("\n\t", paste(strwrap(opt$description, width = 70), collapse = "\n\t"), "\n", sep = "")
-        cat("\n")
-    }
+    cat("\n\t", paste(strwrap(opt$description, width = 70),
+                      collapse = "\n\t"), "\n", sep = "")
+    cat("\n")
+  }
 }

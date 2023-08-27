@@ -38,9 +38,9 @@
 #'   \item{value}{the function value corresponding to \code{par}.}
 #'   \item{iter}{number of (outer) iterations, see \code{maxeval}.}
 #'   \item{convergence}{integer code indicating successful completion (> 0)
-#'     or a possible error number (< 0).}
+#'   or a possible error number (< 0).}
 #'   \item{message}{character string produced by NLopt and giving additional
-#'     information.}
+#'   information.}
 #'
 #' @author Hans W. Borchers
 #'
@@ -59,54 +59,54 @@
 #' ### Solve Hock-Schittkowski no. 100
 #' x0.hs100 <- c(1, 2, 0, 4, 0, 1, 1)
 #' fn.hs100 <- function(x) {
-#'     (x[1]-10)^2 + 5*(x[2]-12)^2 + x[3]^4 + 3*(x[4]-11)^2 + 10*x[5]^6 +
-#'                   7*x[6]^2 + x[7]^4 - 4*x[6]*x[7] - 10*x[6] - 8*x[7]
+#'   (x[1]-10)^2 + 5*(x[2]-12)^2 + x[3]^4 + 3*(x[4]-11)^2 + 10*x[5]^6 +
+#'           7*x[6]^2 + x[7]^4 - 4*x[6]*x[7] - 10*x[6] - 8*x[7]
 #' }
 #' hin.hs100 <- function(x) {
-#'     h <- numeric(4)
-#'     h[1] <- 127 - 2*x[1]^2 - 3*x[2]^4 - x[3] - 4*x[4]^2 - 5*x[5]
-#'     h[2] <- 282 - 7*x[1] - 3*x[2] - 10*x[3]^2 - x[4] + x[5]
-#'     h[3] <- 196 - 23*x[1] - x[2]^2 - 6*x[6]^2 + 8*x[7]
-#'     h[4] <- -4*x[1]^2 - x[2]^2 + 3*x[1]*x[2] -2*x[3]^2 - 5*x[6]	+11*x[7]
-#'     return(h)
+#'   h <- numeric(4)
+#'   h[1] <- 127 - 2*x[1]^2 - 3*x[2]^4 - x[3] - 4*x[4]^2 - 5*x[5]
+#'   h[2] <- 282 - 7*x[1] - 3*x[2] - 10*x[3]^2 - x[4] + x[5]
+#'   h[3] <- 196 - 23*x[1] - x[2]^2 - 6*x[6]^2 + 8*x[7]
+#'   h[4] <- -4*x[1]^2 - x[2]^2 + 3*x[1]*x[2] -2*x[3]^2 - 5*x[6]	+11*x[7]
+#'   return(h)
 #' }
 #'
 #' S <- cobyla(x0.hs100, fn.hs100, hin = hin.hs100,
-#'             nl.info = TRUE, control = list(xtol_rel = 1e-8, maxeval = 2000))
+#'       nl.info = TRUE, control = list(xtol_rel = 1e-8, maxeval = 2000))
 #' ## Optimal value of objective function:  680.630057374431
 #'
 #' @export cobyla
 cobyla <- function(x0, fn, lower = NULL, upper = NULL, hin = NULL,
                    nl.info = FALSE, control = list(), ...) {
 
-    opts <- nl.opts(control)
-    opts["algorithm"] <- "NLOPT_LN_COBYLA"
+  opts <- nl.opts(control)
+  opts["algorithm"] <- "NLOPT_LN_COBYLA"
 
-    f1 <- match.fun(fn)
-    fn <- function(x) f1(x, ...)
+  f1 <- match.fun(fn)
+  fn <- function(x) f1(x, ...)
 
-    if (!is.null(hin)) {
-        if (getOption("nloptr.show.inequality.warning")) {
-            message("For consistency with the rest of the package the ",
-                    "inequality sign may be switched from >= to <= in a ",
-                    "future nloptr version.")
-        }
-
-        f2  <- match.fun(hin)
-        hin <- function(x) -f2(x, ...)          # NLOPT expects hin <= 0
+  if (!is.null(hin)) {
+    if (getOption("nloptr.show.inequality.warning")) {
+      message("For consistency with the rest of the package the ",
+              "inequality sign may be switched from >= to <= in a ",
+              "future nloptr version.")
     }
 
-    S0 <- nloptr(x0,
-                 eval_f = fn,
-                 lb = lower,
-                 ub = upper,
-                 eval_g_ineq = hin,
-                 opts = opts)
+    f2 <- match.fun(hin)
+    hin <- function(x) -f2(x, ...)      # NLOPT expects hin <= 0
+  }
 
-    if (nl.info) print(S0)
+  S0 <- nloptr(x0,
+               eval_f = fn,
+               lb = lower,
+               ub = upper,
+               eval_g_ineq = hin,
+               opts = opts)
 
-    list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-         convergence = S0$status, message = S0$message)
+  if (nl.info) print(S0)
+
+  list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+       convergence = S0$status, message = S0$message)
 }
 
 
@@ -130,9 +130,9 @@ cobyla <- function(x0, fn, lower = NULL, upper = NULL, hin = NULL,
 #'   \item{value}{the function value corresponding to \code{par}.}
 #'   \item{iter}{number of (outer) iterations, see \code{maxeval}.}
 #'   \item{convergence}{integer code indicating successful completion (> 0)
-#'     or a possible error number (< 0).}
+#'   or a possible error number (< 0).}
 #'   \item{message}{character string produced by NLopt and giving additional
-#'     information.}
+#'   information.}
 #'
 #' @export bobyqa
 #'
@@ -149,25 +149,25 @@ cobyla <- function(x0, fn, lower = NULL, upper = NULL, hin = NULL,
 #' @examples
 #'
 #' fr <- function(x) {   ## Rosenbrock Banana function
-#'     100 * (x[2] - x[1]^2)^2 + (1 - x[1])^2
+#'   100 * (x[2] - x[1]^2)^2 + (1 - x[1])^2
 #' }
 #' (S <- bobyqa(c(0, 0, 0), fr, lower = c(0, 0, 0), upper = c(0.5, 0.5, 0.5)))
 #'
 bobyqa <- function(x0, fn, lower = NULL, upper = NULL, nl.info = FALSE,
                    control = list(), ...) {
 
-    opts <- nl.opts(control)
-    opts["algorithm"] <- "NLOPT_LN_BOBYQA"
+  opts <- nl.opts(control)
+  opts["algorithm"] <- "NLOPT_LN_BOBYQA"
 
-    fun <- match.fun(fn)
-    fn <- function(x) fun(x, ...)
+  fun <- match.fun(fn)
+  fn <- function(x) fun(x, ...)
 
-    S0 <- nloptr(x0, fn, lb = lower, ub = upper, opts = opts)
+  S0 <- nloptr(x0, fn, lb = lower, ub = upper, opts = opts)
 
-    if (nl.info) print(S0)
+  if (nl.info) print(S0)
 
-    list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-         convergence = S0$status, message = S0$message)
+  list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+       convergence = S0$status, message = S0$message)
 }
 
 
@@ -175,7 +175,7 @@ bobyqa <- function(x0, fn, lower = NULL, upper = NULL, nl.info = FALSE,
 #'
 #' NEWUOA solves quadratic subproblems in a spherical trust regionvia a
 #' truncated conjugate-gradient algorithm. For bound-constrained problems,
-#' BOBYQA shold be used instead, as Powell developed it as an enhancement
+#' BOBYQA should be used instead, as Powell developed it as an enhancement
 #' thereof for bound constraints.
 #'
 #' This is an algorithm derived from the NEWUOA Fortran subroutine of Powell,
@@ -192,9 +192,9 @@ bobyqa <- function(x0, fn, lower = NULL, upper = NULL, nl.info = FALSE,
 #'   \item{value}{the function value corresponding to \code{par}.}
 #'   \item{iter}{number of (outer) iterations, see \code{maxeval}.}
 #'   \item{convergence}{integer code indicating successful completion (> 0)
-#'     or a possible error number (< 0).}
+#'   or a possible error number (< 0).}
 #'   \item{message}{character string produced by NLopt and giving additional
-#'     information.}
+#'   information.}
 #'
 #' @export newuoa
 #'
@@ -211,22 +211,22 @@ bobyqa <- function(x0, fn, lower = NULL, upper = NULL, nl.info = FALSE,
 #' @examples
 #'
 #' fr <- function(x) {   ## Rosenbrock Banana function
-#'     100 * (x[2] - x[1]^2)^2 + (1 - x[1])^2
+#'   100 * (x[2] - x[1]^2)^2 + (1 - x[1])^2
 #' }
 #' (S <- newuoa(c(1, 2), fr))
 #'
 newuoa <- function(x0, fn, nl.info = FALSE, control = list(), ...) {
 
-    opts <- nl.opts(control)
-    opts["algorithm"] <- "NLOPT_LN_NEWUOA"
+  opts <- nl.opts(control)
+  opts["algorithm"] <- "NLOPT_LN_NEWUOA"
 
-    fun <- match.fun(fn)
-    fn <- function(x) fun(x, ...)
+  fun <- match.fun(fn)
+  fn <- function(x) fun(x, ...)
 
-    S0 <- nloptr(x0, fn, opts = opts)
+  S0 <- nloptr(x0, fn, opts = opts)
 
-    if (nl.info) print(S0)
+  if (nl.info) print(S0)
 
-    list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-         convergence = S0$status, message = S0$message)
+  list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+       convergence = S0$status, message = S0$message)
 }

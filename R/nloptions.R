@@ -51,13 +51,12 @@ nl.opts <- function(optlist = NULL) {
   if (!is.list(optlist) || "" %in% names(optlist))
     stop("Argument `optlist` must be a named list.")
 
-  for (option_name in names(optlist))
+  for (option_name in names(optlist)) {
     opts[[option_name]] <- optlist[[option_name]]
+  }
 
   if (!is.null(opts[["algorithm"]])) {
-    warning(
-      "Option `algorithm` cannot be set here. It will be overwritten."
-    )
+    warning("Option `algorithm` cannot be set here. It will be overwritten.")
     opts[["algorithm"]] <- NULL
   }
 

@@ -1,11 +1,14 @@
 Package: nloptr
 Type: Package
 Title: R Interface to NLopt
-Version: 2.0.3.9000
+Version: 2.0.3.9100
 Authors@R: c(person("Jelmer", "Ypma", role = "aut",
                     email = "uctpjyy@ucl.ac.uk"),
              person(c("Steven", "G."), "Johnson", role = "aut",
                     comment = "author of the NLopt C library"),
+             person("Aymeric", "Stamm", role = c("ctb", "cre"),
+                    email = "aymeric.stamm@math.cnrs.fr",
+                    comment = c(ORCID = "0000-0002-8725-3654")),
              person(c("Hans", "W."), "Borchers", role = "ctb",
                     email = "hwborchers@googlemail.com"),
              person("Dirk", "Eddelbuettel", role = "ctb",
@@ -18,10 +21,7 @@ Authors@R: c(person("Jelmer", "Ypma", role = "aut",
              person("Avraham", "Adler", role = "ctb", 
                     email = "Avraham.Adler@gmail.com",
                     comment = c(ORCID = "0000-0002-3039-0703")),
-             person("Xiongtao", "Dai", role = "ctb"), 
-             person("Aymeric", "Stamm", role = c("ctb", "cre"), 
-                    email = "aymeric.stamm@math.cnrs.fr", 
-                    comment = c(ORCID = "0000-0002-8725-3654")),
+             person("Xiongtao", "Dai", role = "ctb"),
              person("Jeroen", "Ooms", role = "ctb",
                     email = "jeroen@berkeley.edu"))
 Description: 
@@ -34,7 +34,7 @@ Description:
     requires 'CMake'. On Linux and 'macOS', if a suitable system build of 
     NLopt (2.7.0 or later) is found, it is used; otherwise, it is built 
     from included sources via 'CMake'. On Windows, NLopt is obtained through 
-    'rwinlib' for 'R <= 4.1.x' or grabbed from the 'Rtools42 toolchain' for 
+    'rwinlib' for 'R <= 4.1.x' or grabbed from the appropriate toolchain for
     'R >= 4.2.0'.
 License: LGPL (>= 3)
 SystemRequirements: cmake (>= 3.2.0) which is used only on Linux or macOS 
@@ -43,14 +43,7 @@ Biarch: true
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
-LinkingTo: testthat
-Suggests: 
-    knitr,
-    rmarkdown,
-    xml2,
-    testthat (>= 3.0.0),
-    covr
+Suggests:  knitr, rmarkdown, covr, tinytest
 VignetteBuilder: knitr
-Config/testthat/edition: 3
 URL: https://astamm.github.io/nloptr/index.html, https://github.com/astamm/nloptr
 BugReports: https://github.com/astamm/nloptr/issues

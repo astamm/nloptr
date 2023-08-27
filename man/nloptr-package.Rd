@@ -11,7 +11,8 @@ a number of different free optimization routines available online as well as
 original implementations of various other algorithms. The NLopt library is
 available under the GNU Lesser General Public License (LGPL), and the
 copyrights are owned by a variety of authors. Most of the information here
-has been taken from \href{https://nlopt.readthedocs.io/en/latest/}{the NLopt website},
+has been taken from
+\href{https://nlopt.readthedocs.io/en/latest/}{the NLopt website},
 where more details are available.
 }
 \details{
