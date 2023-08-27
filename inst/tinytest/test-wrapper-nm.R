@@ -11,6 +11,8 @@
 #   2023-08-23: Change _output to _stdout
 #
 
+library(nloptr)
+
 ## Functions for the algorithms
 fphv <- function(x) {
   100 * (x[3L] - 10 * atan2(x[2L], x[1L]) / (2 * pi)) ^ 2 +

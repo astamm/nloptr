@@ -15,6 +15,7 @@
 # weird-looking test. See
 # https://nlopt.readthedocs.io/en/latest/NLopt_Reference/#stopping-criteria
 
+library(nloptr)
 options(digits=7)
 
 tol <- sqrt(.Machine$double.eps)

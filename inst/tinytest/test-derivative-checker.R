@@ -17,6 +17,8 @@
 #   2023-08-23: Prefix finite.diff with nloptr::: as part of move to tinytest
 #
 
+library(nloptr)
+
 # Test derivative checker.
 
 tol <- 1e-7

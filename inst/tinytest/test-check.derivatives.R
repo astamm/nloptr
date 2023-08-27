@@ -10,6 +10,7 @@
 # Changelog:
 #
 
+library(nloptr)
 options(digits=7)
 
 f <- function(x, a) {sum((x - a) ^ 2)}

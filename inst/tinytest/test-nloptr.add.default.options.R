@@ -10,6 +10,8 @@
 # Changelog:
 #
 
+library(nloptr)
+
 fn <- function(x) x ^ 2 - 4 * x + 4
 
 expect_warning(nloptr(3, fn, opts = list(algorithm = "NLOPT_LN_NELDERMEAD")),

@@ -10,6 +10,8 @@
 # Changelog:
 #
 
+library(nloptr)
+
 tol <- sqrt(.Machine$double.eps)
 
 fn1 <- function(x) sum(x ^ 2)

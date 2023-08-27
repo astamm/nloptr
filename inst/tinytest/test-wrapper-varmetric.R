@@ -11,6 +11,8 @@
 #   2023-08-23: Change _output to _stdout
 #
 
+library(nloptr)
+
 ## Functions for the algorithms
 flb <- function(x) {
   p <- length(x)
