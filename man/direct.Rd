@@ -84,7 +84,6 @@ The DIRECT_L algorithm should be tried first.
 
 ### Minimize the Hartmann6 function
 hartmann6 <- function(x) {
-  n <- length(x)
   a <- c(1.0, 1.2, 3.0, 3.2)
   A <- matrix(c(10.0,  0.05, 3.0, 17.0,
          3.0, 10.0,  3.5,  8.0,
@@ -98,17 +97,17 @@ hartmann6 <- function(x) {
          .0124,.3736,.2883,.5743,
          .8283,.1004,.3047,.1091,
          .5886,.9991,.6650,.0381), nrow=4, ncol=6)
-  fun <- 0.0
+  fun <- 0
   for (i in 1:4) {
-    fun <- fun - a[i] * exp(-sum(A[i,]*(x-B[i,])^2))
+    fun <- fun - a[i] * exp(-sum(A[i,] * (x - B[i,]) ^ 2))
   }
-  return(fun)
+  fun
 }
-S <- directL(hartmann6, rep(0,6), rep(1,6),
-       nl.info = TRUE, control=list(xtol_rel=1e-8, maxeval=1000))
-## Number of Iterations....: 500
+S <- directL(hartmann6, rep(0, 6), rep(1, 6),
+       nl.info = TRUE, control = list(xtol_rel = 1e-8, maxeval = 1000))
+## Number of Iterations....: 1000
 ## Termination conditions:  stopval: -Inf
-##   xtol_rel: 1e-08,  maxeval: 500,  ftol_rel: 0,  ftol_abs: 0
+##   xtol_rel: 1e-08,  maxeval: 1000,  ftol_rel: 0,  ftol_abs: 0
 ## Number of inequality constraints:  0
 ## Number of equality constraints:  0
 ## Current value of objective function:  -3.32236800687327
