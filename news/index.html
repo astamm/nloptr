@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">nloptr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.3.9100</span>
       </span>
     </div>
 
@@ -51,8 +51,15 @@
     </div>
 
     <div class="section level2">
+<h2 class="page-header" data-toc-text="2.0.3.9100" id="nloptr-2039100">nloptr 2.0.3.9100<a class="anchor" aria-label="anchor" href="#nloptr-2039100"></a></h2>
+<ul><li>Replaced the unit testing framework of <code>testthat</code> with <code>tinytest</code> (See <a href="https://github.com/astamm/nloptr/issues/136" class="external-link">Issue </a><a href="https://github.com/astamm/nloptr/issues/136" class="external-link">#136</a>).</li>
+<li>Brought coverage of <code>is.nloptr</code> to 100%. The only file not completely covered by unit tests is <code>nloptr.c</code>. The uncovered calls are error messages which get trapped by tests in R before the call gets to C.</li>
+<li>Linted package for code correctness and consistency.</li>
+<li>Updated vignette, DESCRIPTION, and NEWS.</li>
+</ul></div>
+    <div class="section level2">
 <h2 class="page-header" data-toc-text="2.0.3.9000" id="nloptr-2039000">nloptr 2.0.3.9000<a class="anchor" aria-label="anchor" href="#nloptr-2039000"></a></h2>
-<p>This is a patch version update from <a href="https://github.com/aadler" class="external-link">Avraham Adler</a> which should make the code safer, more efficient, and easier to follow. Please see commit logs for <a href="https://github.com/astamm/nloptr/pull/128" class="external-link">#128</a>, <a href="https://github.com/astamm/nloptr/pull/129" class="external-link">#129</a>, <a href="https://github.com/astamm/nloptr/pull/131" class="external-link">#131</a>, <a href="https://github.com/astamm/nloptr/pull/132" class="external-link">#132</a>, and <a href="https://github.com/astamm/nloptr/pull/133" class="external-link">#133</a> for the full description of the changes which include:</p>
+<p>This is a patch version update which should make the code safer, more efficient, and easier to follow. Please see commit logs for <a href="https://github.com/astamm/nloptr/pull/128" class="external-link">#128</a>, <a href="https://github.com/astamm/nloptr/pull/129" class="external-link">#129</a>, <a href="https://github.com/astamm/nloptr/pull/131" class="external-link">#131</a>, <a href="https://github.com/astamm/nloptr/pull/132" class="external-link">#132</a>, and <a href="https://github.com/astamm/nloptr/pull/133" class="external-link">#133</a> for the full description of the changes which include:</p>
 <ul><li>Expanded unit tests: coverage now over 97% with no file below 90%</li>
 <li>Removed forcing <code>C++11</code>
 </li>
