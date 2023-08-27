@@ -11,6 +11,8 @@
 #   2023-08-23: Convert _output to _stdout for tinytest
 #
 
+options(digits=7)
+
 x0 <- c(3, 3)
 fn <- function(x) (x[1] - 1) ^ 2 + (x[2] - 1) ^ 2
 

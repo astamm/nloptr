@@ -10,6 +10,8 @@
 # Changelog:
 #
 
+options(digits=7)
+
 f <- function(x, a) {sum((x - a) ^ 2)}
 f_grad <- function(x, a) {2 * (x - a)}
 
