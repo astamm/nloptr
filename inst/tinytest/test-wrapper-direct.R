@@ -15,7 +15,7 @@
 # the randomization at the C level. For now, need to pass this tolerance for it
 # to work.
 # (AA: 2026-02-06)
-tol <- 1e-4
+tol <- 1e-6
 
 ## Functions for DIRECT and DIRECT_L
 hartmann6 <- function(x) {
@@ -124,6 +124,13 @@ expect_identical(directLTest$message, directLControl$message)
 # Test DIRECTL algorithm Randomized: TRUE Original: FALSE
 ctl <- list(xtol_rel = 1e-8, maxeval = 10000L)
 directLTest <- directL(hartmann6, lb, ub, randomized = TRUE, control = ctl)
+
+directLControl <- nloptr(x0 = x0,
+                         eval_f = hartmann6,
+                         lb = lb,
+                         ub = ub,
+                         opts = list(algorithm = "NLOPT_GN_DIRECT_L_RAND",
+                                     xtol_rel = 1e-8, maxeval = 10000L))
 
 directLControl <- nloptr(x0 = x0,
                          eval_f = hartmann6,
