@@ -7,6 +7,7 @@ by unit tests is `nloptr.c`. The uncovered calls are error messages which get
 trapped by tests in R before the call gets to C.
 * Linted package for code correctness and consistency.
 * Updated vignette, DESCRIPTION, and NEWS.
+* Updated package website to use bootstrap 5.
 
 # nloptr 2.0.3.9000
 
