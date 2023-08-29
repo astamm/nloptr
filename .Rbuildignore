@@ -14,3 +14,6 @@ TODO
 ^windows$
 ^CRAN-SUBMISSION$
 ^.lintr$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

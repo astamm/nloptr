@@ -17,3 +17,4 @@ src/Makevars
 src/*.dll
 windows
 .lintr
+docs
