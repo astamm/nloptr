@@ -190,7 +190,8 @@ is.nloptr <- function(x) {
                        "NLOPT_LD_AUGLAG_EQ",
                        "NLOPT_LN_AUGLAG_EQ",
                        "NLOPT_GN_ISRES",
-                       "NLOPT_LD_SLSQP")
+                       "NLOPT_LD_SLSQP",
+                       "NLOPT_LN_COBYLA")
     if (!(x$options$algorithm %in% eq_algorithms)) {
       stop("If you want to use equality constraints, ",
            "then you should use one of these algorithms ",
