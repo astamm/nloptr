@@ -97,7 +97,12 @@ slsqp <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL, hin = NULL,
                   control = list(), ...) {
 
   opts <- nl.opts(control)
-  opts["algorithm"] <- "NLOPT_LD_SLSQP"
+
+  if(is.null(gr)){
+    opts["algorithm"] <- "NLOPT_LN_SLSQP"
+  } else {
+    opts["algorithm"] <- "NLOPT_LD_SLSQP"
+  }
 
   fun <- match.fun(fn)
   fn  <- function(x) fun(x, ...)
