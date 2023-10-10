@@ -106,7 +106,7 @@ nlopt_algorithm getAlgorithmCode( const char *algorithm_str ) {
         algorithm = NLOPT_LD_SLSQP;
     }
     else if ( strcmp( algorithm_str, "NLOPT_LN_SLSQP" ) == 0 ) {
-        algorithm = NLOPT_LN_SLSQP;
+        algorithm = NLOPT_LD_SLSQP;
     }
     else if ( strcmp( algorithm_str, "NLOPT_LD_LBFGS_NOCEDAL" ) == 0 ) {
         algorithm = NLOPT_LD_LBFGS_NOCEDAL;
