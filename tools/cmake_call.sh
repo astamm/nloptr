@@ -36,7 +36,7 @@ ${CMAKE_BIN} \
   -D NLOPT_SWIG=OFF \
   -D NLOPT_TESTS=OFF \
   ${CMAKE_ADD_AR} ${CMAKE_ADD_RANLIB} ../nlopt-src
-make -j${NCORES}
+make -j${NCORES:-1}
 make install
 cd ..
 mv nlopt/lib* nlopt/lib
