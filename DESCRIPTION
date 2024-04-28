@@ -7,7 +7,7 @@ Authors@R: c(person("Jelmer", "Ypma", role = "aut",
              person(c("Steven", "G."), "Johnson", role = "aut",
                     comment = "author of the NLopt C library"),
              person("Aymeric", "Stamm", role = c("ctb", "cre"),
-                    email = "aymeric.stamm@math.cnrs.fr",
+                    email = "aymeric.stamm@cnrs.fr",
                     comment = c(ORCID = "0000-0002-8725-3654")),
              person(c("Hans", "W."), "Borchers", role = "ctb",
                     email = "hwborchers@googlemail.com"),
@@ -42,7 +42,7 @@ SystemRequirements: cmake (>= 3.2.0) which is used only on Linux or macOS
 Biarch: true
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Suggests: knitr, rmarkdown, covr, tinytest
 VignetteBuilder: knitr
 URL: https://astamm.github.io/nloptr/index.html, https://github.com/astamm/nloptr, https://astamm.github.io/nloptr/
