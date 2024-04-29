@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="nloptr">
-<title>Introduction to `nloptr`: an R interface to NLopt^[This package should be considered in beta and comments about any aspect of the package are welcome. This document is an R vignette prepared with the aid of `knitr` [@Xie:2014; @Xie:2015; @Xie:2016]. Financial support of the UK Economic and Social Research Council through a grant (RES-589-28-0001) to the ESRC Centre for Microdata Methods and Practice (CeMMAP) is gratefully acknowledged.] • nloptr</title>
+<title>nloptr • nloptr</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to `nloptr`: an R interface to NLopt^[This package should be considered in beta and comments about any aspect of the package are welcome. This document is an R vignette prepared with the aid of `knitr` [@Xie:2014; @Xie:2015; @Xie:2016]. Financial support of the UK Economic and Social Research Council through a grant (RES-589-28-0001) to the ESRC Centre for Microdata Methods and Practice (CeMMAP) is gratefully acknowledged.]">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="nloptr">
 <meta property="og:description" content="nloptr">
 <meta property="og:image" content="https://astamm.github.io/nloptr/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">nloptr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.3.9100</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -75,11 +75,11 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Introduction to `nloptr`: an R interface to NLopt^[This package should be considered in beta and comments about any aspect of the package are welcome. This document is an R vignette prepared with the aid of `knitr` [@Xie:2014; @Xie:2015; @Xie:2016]. Financial support of the UK Economic and Social Research Council through a grant (RES-589-28-0001) to the ESRC Centre for Microdata Methods and Practice (CeMMAP) is gratefully acknowledged.]</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>nloptr</h1>
                         <h4 data-toc-skip class="author">Jelmer Ypma,
 Aymeric Stamm, and Avraham Adler</h4>
             
-            <h4 data-toc-skip class="date">2024-04-28</h4>
+            <h4 data-toc-skip class="date">2024-04-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/astamm/nloptr/blob/HEAD/vignettes/nloptr.Rmd" class="external-link"><code>vignettes/nloptr.Rmd</code></a></small>
       <div class="d-none name"><code>nloptr.Rmd</code></div>
@@ -87,14 +87,20 @@ Aymeric Stamm, and Avraham Adler</h4>
 
     
     
-<p>This document describes how to use <code>nloptr</code>, which is an R
+<p>This document is an introduction to <code>nloptr</code>: an R
 interface to NLopt. <a href="https://nlopt.readthedocs.io/en/latest/" class="external-link">NLopt</a> is a
 free/open-source library for nonlinear optimization, started by Steven
 G. Johnson, providing a common interface for a number of different free
 optimization routines available online as well as original
 implementations of various other algorithms. The NLopt library is
 available under the GNU Lesser General Public License (LGPL), and the
-copyrights are owned by a variety of authors.</p>
+copyrights are owned by a variety of authors. This package should be
+considered in beta and comments about any aspect of the package are
+welcome. This document is an R vignette prepared with the aid of
+<code>knitr</code> <span class="citation">(Xie 2014, 2015, 2016)</span>.
+Financial support of the UK Economic and Social Research Council through
+a grant (RES-589-28-0001) to the ESRC Centre for Microdata Methods and
+Practice (CeMMAP) is gratefully acknowledged.</p>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
@@ -139,7 +145,7 @@ for information on how to cite NLopt and the algorithms you use.</p>
 <p>to install the package from source. You should now be able to load
 the R interface to NLopt and read the help.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://astamm.github.io/nloptr/index.html">"nloptr"</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/astamm/nloptr" class="external-link">"nloptr"</a></span><span class="op">)</span></span>
 <span><span class="op">?</span><span class="va">nloptr</span></span></code></pre></div>
 <p>The most recent experimental <em>source</em> version of
 <code>nloptr</code> can be installed from Github using the
@@ -169,7 +175,7 @@ function is given by: <span class="math display">\[
 the user. We will show examples with and without supplying the gradient.
 After loading the library.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://astamm.github.io/nloptr/index.html">nloptr</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/astamm/nloptr" class="external-link">nloptr</a></span><span class="op">)</span></span></code></pre></div>
 <p>We start by specifying the objective function and its gradient:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Rosenbrock Banana function</span></span>
@@ -272,7 +278,8 @@ instance:</p>
 </h2>
 <p>This section shows how to minimize a function subject to inequality
 constraints. This example is the same as the one used in the tutorial on
-the NLopt website. The problem we want to solve is: <span class="math display">\[
+the NLopt website. The problem we want to solve is:</p>
+<p><span class="math display">\[
 \begin{aligned}
 &amp;\min_{x \in R^n} \sqrt{x_2} \\
 s.t.&amp; x_2 \geq 0 \\
@@ -283,8 +290,8 @@ s.t.&amp; x_2 \geq 0 \\
 <p>where <span class="math inline">\(a_1 = 2\)</span>, <span class="math inline">\(b_1 = 0\)</span>, <span class="math inline">\(a_2
 = -1\)</span>, and <span class="math inline">\(b_2 = 1\)</span>. In
 order to solve this problem, we first have to re-formulate the
-constraints to be of the form <span class="math inline">\(g(x) \leq
-0\)</span>. Note that the first constraint is a bound on <span class="math inline">\(x_2\)</span>, which we will add later. The other
+constraints to be of the form <span class="math inline">\(g(x)
+\leq 0\)</span>. Note that the first constraint is a bound on <span class="math inline">\(x_2\)</span>, which we will add later. The other
 two constraints can be re-written as:</p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -826,7 +833,7 @@ problem.</p>
 <span><span class="co">##  get a different sequence of pseudorandom numbers each time you run</span></span>
 <span><span class="co">##  your program.</span></span></code></pre>
 </div>
-<div class="section level2">
+<div class="section level2 unnumbered">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
@@ -863,7 +870,7 @@ Approximations.”</span> <em>SIAM J. Optim.</em> 12 (2): 555–73.
 Xie, Yihui. 2014. <span>“Knitr: A Comprehensive Tool for Reproducible
 Research in <span>R</span>.”</span> In <em>Implementing Reproducible
 Computational Research</em>, edited by Victoria Stodden, Friedrich
-Leisch, and Roger D. Peng. Chapman; Hall/CRC. <a href="http://www.crcpress.com/product/isbn/9781466561595" class="external-link">http://www.crcpress.com/product/isbn/9781466561595</a>.
+Leisch, and Roger D. Peng. Chapman; Hall/CRC. <a href="https://www.routledge.com/Implementing-Reproducible-Research/Stodden-Leisch-Peng/p/book/9781466561595" class="external-link">https://www.routledge.com/Implementing-Reproducible-Research/Stodden-Leisch-Peng/p/book/9781466561595</a>.
 </div>
 <div id="ref-Xie:2015" class="csl-entry">
 ———. 2015. <em>Dynamic Documents with <span>R</span> and Knitr</em>. 2nd
@@ -875,7 +882,6 @@ Generation in r</em>. <a href="https://yihui.org/knitr/" class="external-link">h
 </div>
 </div>
 </div>
-
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
 </div>

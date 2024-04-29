@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="index.html">nloptr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.3.9100</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,10 +79,8 @@
 <!-- badges: start -->
 
 <p><a href="https://astamm.github.io/nloptr/"><strong>nloptr</strong></a> is an R interface to <a href="https://nlopt.readthedocs.io/en/latest/" class="external-link">NLopt</a>, a free/open-source library for nonlinear optimization started by Steven G. Johnson, providing a common interface for a number of different free optimization routines available online as well as original implementations of various other algorithms. It can be used to solve general nonlinear programming problems with nonlinear constraints and lower and upper bounds for the controls, such as</p>
-<div class="float">
-<img src="https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&amp;space;%5Cbg_white&amp;space;%5Cmin_%7Bx%20%5Cin%20%5Cmathbb%7BR%7D%5En%7D%20%5Cquad%20f%28x%29%2C" title="\min_{x \in \mathbb{R}^n} \quad f(x)," alt="_{x ^n} f(x),"><div class="figcaption">_{x ^n} f(x),</div>
-</div>
-<p>s.t. <img src="https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&amp;space;%5Cbg_white&amp;space;g%28x%29%20%5Cle%200" title="g(x) \le 0" alt="g(x) ">, <img src="https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&amp;space;%5Cbg_white&amp;space;h%28x%29%20%3D%200" title="h(x) = 0" alt="h(x) = 0"> and <img src="https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&amp;space;%5Cbg_white&amp;space;%5Cell%20%5Cle%20x%20%5Cle%20u" title="\ell \le x \le u" alt="x u">.</p>
+<p><span class="math display">min<sub><em>x</em> ∈ ℝ<sup><em>n</em></sup></sub>  <em>f</em>(<em>x</em>),</span></p>
+<p>s.t. <span class="math inline"><em>g</em>(<em>x</em>) ≤ 0</span>, <span class="math inline"><em>h</em>(<em>x</em>) = 0</span> and <span class="math inline">ℓ ≤ <em>x</em> ≤ <em>u</em></span>.</p>
 <p>The <a href="https://nlopt.readthedocs.io/en/latest/" class="external-link">NLopt</a> library is available under the GNU Lesser General Public License (LGPL), and the copyrights are owned by a variety of authors. See the <a href="https://nlopt.readthedocs.io/en/latest/Citing_NLopt/" class="external-link">website</a> for information on how to cite NLopt and the algorithms you use.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -105,7 +103,7 @@
 <h3 id="installing-cmake-macos-and-linux-only">Installing <a href="https://cmake.org" class="external-link">CMake</a> (macOS and Linux only)<a class="anchor" aria-label="anchor" href="#installing-cmake-macos-and-linux-only"></a>
 </h3>
 <p>Minimal version requirement for <code>cmake</code> is <code>3.2.0</code>.</p>
-<p>You can install <a href="https://cmake.org" class="external-link">CMake</a> by following <a href="https://cmake.org/install/" class="external-link">CMake installation instructions</a>. The important thing is that you add the <a href="https://cmake.org" class="external-link">CMake</a> binary to your <code>PATH</code>:</p>
+<p>You can install <a href="https://cmake.org" class="external-link">CMake</a> by following <a href="https://cmake.org/resources/" class="external-link">CMake installation instructions</a>. The important thing is that you add the <a href="https://cmake.org" class="external-link">CMake</a> binary to your <code>PATH</code>:</p>
 <ul>
 <li>On macOS, you can install <a href="https://cmake.org" class="external-link">CMake</a> and then run it. In the menu bar, there is an item <em>How to Install For Command Line Use</em> which you can click on to have proper instructions on how to update your <code>PATH</code>. Note that the location of the <a href="https://cmake.org" class="external-link">CMake</a> binary is always <code>/Applications/CMake.app/Contents/bin/cmake</code>. Hence, <a href="https://astamm.github.io/nloptr/"><strong>nloptr</strong></a> knows where to find it even if you do not update your <code>PATH</code>.</li>
 <li>On Linux, it will be automatically added unless you specifically change the default installation directory before building <a href="https://cmake.org" class="external-link">CMake</a>.</li>
