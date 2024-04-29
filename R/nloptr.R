@@ -163,7 +163,7 @@
 #'   \code{Rsolnp::solnp}
 #'
 #' @references Steven G. Johnson, The NLopt nonlinear-optimization package,
-#' \url{http://github.com/stevengj/nlopt}
+#' \url{https://github.com/stevengj/nlopt}
 #'
 #' @keywords optimize interface
 #'

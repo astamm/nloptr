@@ -276,7 +276,7 @@ print(res2)
 }
 \references{
 Steven G. Johnson, The NLopt nonlinear-optimization package,
-\url{http://github.com/stevengj/nlopt}
+\url{https://github.com/stevengj/nlopt}
 }
 \seealso{
 \code{\link[nloptr:nloptr.print.options]{nloptr.print.options}}
