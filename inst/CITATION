@@ -7,7 +7,7 @@ bibentry(bibtype = "Manual",
          author = person(given = "Steven G.", family = "Johnson"),
          title = "The NLopt nonlinear-optimization package",
          year = "2008",
-         url = "http://github.com/stevengj/nlopt",
+         url = "https://github.com/stevengj/nlopt",
          footer = paste("The authors and appropriate citations for the specific",
                         "optimization algorithms in NLopt are listed in the",
                         "NLopt Algorithms page.")

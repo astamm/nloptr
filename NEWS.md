@@ -1,3 +1,12 @@
+# nloptr 2.0.4
+
+* Updated roxygen version;
+* Updated maintainer email;
+* Deal with NA returns from detectCords (contributed by @jeroen in PR #150);
+* Setup rhub v2 checks;
+* Update cmake installation instructions on Mac with brew (#146);
+* Allow use of equality constraints with COBYLA (#135);
+
 # nloptr 2.0.3.9100
 
 * Replaced the unit testing framework of `testthat` with `tinytest` (See 

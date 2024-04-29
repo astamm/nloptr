@@ -1,5 +1,5 @@
 ---
-title: "Introduction to `nloptr`: an R interface to NLopt^[This package should be considered in beta and comments about any aspect of the package are welcome. This document is an R vignette prepared with the aid of `knitr` [@Xie:2014; @Xie:2015; @Xie:2016]. Financial support of the UK Economic and Social Research Council through a grant (RES-589-28-0001) to the ESRC Centre for Microdata Methods and Practice (CeMMAP) is gratefully acknowledged.]"
+title: "nloptr"
 author: "Jelmer Ypma, Aymeric Stamm, and Avraham Adler"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -22,15 +22,21 @@ options(width = 60)
 options(SweaveHooks = list(fig = function() par(mar = c(5.1, 4.1, 1.1, 2.1))))
 ```
 
-This document describes how to use `nloptr`, which is an R interface to NLopt.
+This document is an introduction to `nloptr`: an R interface to NLopt.
 [NLopt](https://nlopt.readthedocs.io/en/latest/) is a free/open-source library
 for nonlinear optimization, started by Steven G. Johnson, providing a common
 interface for a number of different free optimization routines available online
 as well as original implementations of various other algorithms. The NLopt
 library is available under the GNU Lesser General Public License (LGPL), and the
-copyrights are owned by a variety of authors.
+copyrights are owned by a variety of authors. This package should be considered
+in beta and comments about any aspect of the package are welcome. This document
+is an R vignette prepared with the aid of `knitr` [@Xie:2014; @Xie:2015;
+@Xie:2016]. Financial support of the UK Economic and Social Research Council
+through a grant (RES-589-28-0001) to the ESRC Centre for Microdata Methods and
+Practice (CeMMAP) is gratefully acknowledged.
 
-# Introduction
+## Introduction
+
 NLopt addresses general nonlinear optimization problems of the form:
 $$
 \begin{aligned}
@@ -60,7 +66,8 @@ Also, please see the
 [website](https://nlopt.readthedocs.io/en/latest/Citing_NLopt/) for information
 on how to cite NLopt and the algorithms you use.
 
-# Installation
+## Installation
+
 This package is on CRAN and can be installed from within R using
 ```{r installNLopt, eval=FALSE}
 install.packages("nloptr")
@@ -85,7 +92,8 @@ Github using the `remotes` package:
 remotes::install_github("astamm/nloptr")
 ```
 
-# Minimizing the Rosenbrock Banana function
+## Minimizing the Rosenbrock Banana function
+
 As a first example we will solve an unconstrained minimization problem. The
 function we look at is the Rosenbrock Banana function:
 $$
@@ -110,6 +118,7 @@ library(nloptr)
 ```
 
 We start by specifying the objective function and its gradient:
+
 ```{r defineRosenbrockBanana}
 ## Rosenbrock Banana function
 eval_f <- function(x) {
@@ -124,6 +133,7 @@ eval_grad_f <- function(x) {
 ```
 
 We define initial values
+
 ```{r setRosenbrockBananaInitialValues}
 # initial values
 x0 <- c(-1.2, 1)
@@ -133,6 +143,7 @@ and then minimize the function using the `nloptr` command. This command runs
 some checks on the supplied inputs and returns an object with the exit code of
 the solver, the optimal value of the objective function and the solution. Before
 we can minimize the function we need to specify which algorithm we want to use
+
 ```{r setRosenbrockBananaOptions}
 opts <- list("algorithm" = "NLOPT_LD_LBFGS",
              "xtol_rel" = 1.0e-8)
@@ -145,6 +156,7 @@ characters `LD` in the algorithm show that this algorithm looks for local minima
 termination criterium in terms of the relative x-tolerance. Other termination
 criteria are available (see Appendix `\ref{sec:descoptions}` for a full list of
 options). We then solve the minimization problem using
+
 ```{r solveRosenbrockBanana} 
 # solve Rosenbrock Banana function
 res <- nloptr(x0 = x0,
@@ -161,6 +173,7 @@ print(res)
 Sometimes the objective function and its gradient contain common terms. To
 economize on calculations, we can return the objective and its gradient in a
 list. For the Rosenbrock Banana function we have for instance:
+
 ```{r defineRosenbrockBananaList}
 ## Rosenbrock Banana function and gradient in one function
 eval_f_list <- function(x) {
@@ -172,6 +185,7 @@ eval_f_list <- function(x) {
 ```
 
 which we minimize using
+
 ```{r solveRosenbrockBananaList} 
 res <- nloptr(x0 = x0,
               eval_f = eval_f_list,
@@ -181,10 +195,12 @@ print(res)
 
 This gives the same results as before.
 
-# Minimization with inequality constraints
+## Minimization with inequality constraints
+
 This section shows how to minimize a function subject to inequality constraints.
 This example is the same as the one used in the tutorial on the NLopt website.
 The problem we want to solve is:
+
 $$
 \begin{aligned}
 &\min_{x \in R^n} \sqrt{x_2} \\
@@ -195,9 +211,9 @@ s.t.& x_2 \geq 0 \\
 $$
 
 where $a_1 = 2$, $b_1 = 0$, $a_2 = -1$, and $b_2 = 1$. In order to solve this
-problem, we first have to re-formulate the constraints to be of the form
-$g(x) \leq 0$. Note that the first constraint is a bound on $x_2$, which we will
-add later. The other two constraints can be re-written as:
+problem, we first have to re-formulate the constraints to be of the form $g(x)
+\leq 0$. Note that the first constraint is a bound on $x_2$, which we will add
+later. The other two constraints can be re-written as:
 
 $$
 \begin{aligned}
@@ -207,6 +223,7 @@ $$
 $$
 
 First, define R functions to calculate the objective function and its gradient:
+
 ```{r defineTutorialObjective}
 # objective function
 eval_f0 <- function(x, a, b) {
@@ -221,6 +238,7 @@ eval_grad_f0 <- function(x, a, b) {
 
 If needed, these can of course be calculated in the same function as before.
 Then define the two constraints and the Jacobian of the constraints:
+
 ```{r defineTutorialConstraints}
 # constraint function
 eval_g0 <- function(x, a, b) {
@@ -243,6 +261,7 @@ the number of constraints (in this case two). The number of columns should equal
 the number of control variables (two in this case as well).
 
 After defining values for the parameters
+
 ```{r defineTutorialParameters}
 # define parameters
 a <- c(2, -1)
@@ -251,6 +270,7 @@ b <- c(0, 1)
 
 we can minimize the function subject to the constraints with the following
 command:
+
 ```{r solveTutorialWithGradient}
 # Solve using NLOPT_LD_MMA with gradient information supplied in separate
 # function
@@ -300,6 +320,7 @@ We can also use a different algorithm to solve the same minimization problem.
 The only thing we have to change is the algorithm that we want to use, in this
 case `NLOPT_LN_COBYLA`, which is an algorithm that doesn't need gradient
 information [@Powell:1994; @Powell:1998].
+
 ```{r solveTutorialWithoutGradient}
 # Solve using NLOPT_LN_COBYLA without gradient information
 res1 <- nloptr(x0 = c(1.234, 5.678),
@@ -314,7 +335,8 @@ res1 <- nloptr(x0 = c(1.234, 5.678),
 print(res1)
 ```
 
-# Derivative checker
+## Derivative checker
+
 The derivative checker can be called when supplying a minimization problem to
 `nloptr`, using the options `check_derivatives`, `check_derivatives_tol` and
 `check_derivatives_print`, but it can also be used separately. For example,
@@ -344,6 +366,7 @@ g_grad <- function(x, a) {
 `a` is some vector containing data. The gradient contains some errors in this
 case. By calling the function `check.derivatives` we can check the user-supplied
 analytic gradients with a finite difference approximation at a point `.x`.
+
 ```{r derivativeCheckerPrint}
 res <- check.derivatives(
   .x = c(1, 2),
@@ -358,6 +381,7 @@ The errors are shown on screen, where the option `check_derivatives_print`
 determines the amount of output you see. The value of the analytic gradient and
 the value of the finite difference approximation at the supplied point is
 returned in a list.
+
 ```{r derivativeCheckerResult}
 res
 ```
@@ -366,21 +390,23 @@ Note that not all errors will be picked up by the derivative checker. For
 instance, if we run the check with `a = c(.5, .5)`, one of the errors is not
 flagged as an error.
 
-# Notes
+## Notes
+
 The `.R` scripts in the `tests` directory contain more examples. For instance,
 `hs071.R` and `systemofeq.R` show how to solve problems with equality
-constraints. See the
-[NLopt website](https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/#augmented-lagrangian-algorithm)
+constraints. See the [NLopt
+website](https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/#augmented-lagrangian-algorithm)
 for more details. Please let us know if there are any of features implemented in
 NLopt which should be implemented in `nloptr`.
 
-Sometimes the optimization procedure terminates with a message
-`maxtime was reached` without evaluating the objective function. Submitting the
-same problem again usually solves this problem.
+Sometimes the optimization procedure terminates with a message `maxtime was
+reached` without evaluating the objective function. Submitting the same problem
+again usually solves this problem.
 
-# Description of options
+## Description of options
+
 ```{r printAllOptions}
 nloptr::nloptr.print.options()
 ```
 
-# References
+## References

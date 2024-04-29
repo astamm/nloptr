@@ -1,7 +1,7 @@
 Package: nloptr
 Type: Package
 Title: R Interface to NLopt
-Version: 2.0.3.9100
+Version: 2.0.4
 Authors@R: c(person("Jelmer", "Ypma", role = "aut",
                     email = "uctpjyy@ucl.ac.uk"),
              person(c("Steven", "G."), "Johnson", role = "aut",
@@ -45,5 +45,5 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
 Suggests: knitr, rmarkdown, covr, tinytest
 VignetteBuilder: knitr
-URL: https://astamm.github.io/nloptr/index.html, https://github.com/astamm/nloptr, https://astamm.github.io/nloptr/
+URL: https://github.com/astamm/nloptr, https://astamm.github.io/nloptr/
 BugReports: https://github.com/astamm/nloptr/issues

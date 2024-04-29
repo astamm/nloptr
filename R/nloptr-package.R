@@ -1,5 +1,3 @@
-"_PACKAGE"
-#'
 #' R interface to NLopt
 #'
 #' nloptr is an R interface to NLopt, a free/open-source library for nonlinear
@@ -38,8 +36,6 @@
 #'
 #' \tabular{ll}{Package: \tab nloptr\cr Type: \tab Package\cr Version: \tab
 #' 2.0.3\cr Date: \tab 2022-05-26\cr License: \tab L-GPL >= 3\cr}
-#'
-#' @docType package
 #'
 #' @name nloptr-package
 #'
@@ -142,4 +138,4 @@
 #'               eval_g_eq = eval_g_eq,
 #'               opts = opts)
 #' print(res)
-NULL
+"_PACKAGE"
