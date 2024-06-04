@@ -8,29 +8,37 @@
 # Wrapper to solve optimization problem using COBYLA, BOBYQA, and NEWUOA.
 #
 # CHANGELOG
-#   2023-02-10: Tweaks for efficiency and readability (Avraham Adler)
-
+# 2023-02-10: Tweaks for efficiency and readability (Avraham Adler)
+# 2024-06-04: Switched desired direction of the hin/hinjac inequalities, leaving
+#       the old behavior as the default for now. Also cleaned up the HS100
+#       example (Avraham Adler).
+#
 
 #' Constrained Optimization by Linear Approximations
 #'
-#' COBYLA is an algorithm for derivative-free optimization with nonlinear
-#' inequality and equality constraints (but see below).
+#' \acronym{COBYLA} is an algorithm for derivative-free optimization with
+#' nonlinear inequality and equality constraints (but see below).
 #'
 #' It constructs successive linear approximations of the objective function and
 #' constraints via a simplex of \eqn{n+1} points (in \eqn{n} dimensions), and
 #' optimizes these approximations in a trust region at each step.
 #'
-#' COBYLA supports equality constraints by transforming them into two
-#' inequality constraints. As this does not give full satisfaction with the
-#' implementation in NLOPT, it has not been made available here.
+#' \acronym{COBYLA} supports equality constraints by transforming them into two
+#' inequality constraints. This functionality has not been added to the wrapper.
+#' To use \acronym{COBYLA} with equality constraints, please use the full
+#' \code{nloptr} invocation.
 #'
 #' @param x0 starting point for searching the optimum.
 #' @param fn objective function that is to be minimized.
 #' @param lower,upper lower and upper bound constraints.
 #' @param hin function defining the inequality constraints, that is
 #' \code{hin>=0} for all components.
-#' @param nl.info logical; shall the original NLopt info been shown.
+#' @param nl.info logical; shall the original \acronym{NLopt} info be shown.
 #' @param control list of options, see \code{nl.opts} for help.
+#' @param deprecatedBehavior logical; if \code{TRUE} (default for now), the old
+#' behavior of the Jacobian function is used, where the equality is \eqn{\ge 0}
+#' instead of \eqn{\le 0}. This will be reversed in a future release and
+#' eventually removed.
 #' @param ... additional arguments passed to the function.
 #'
 #' @return List with components:
@@ -45,7 +53,7 @@
 #' @author Hans W. Borchers
 #'
 #' @note The original code, written in Fortran by Powell, was converted in C
-#' for the Scipy project.
+#' for the \acronym{SciPy} project.
 #'
 #' @seealso \code{\link{bobyqa}}, \code{\link{newuoa}}
 #'
@@ -56,28 +64,38 @@
 #'
 #' @examples
 #'
-#' ### Solve Hock-Schittkowski no. 100
+#' ##  Solve the Hock-Schittkowski problem no. 100 with analytic gradients
+#' ##  See https://apmonitor.com/wiki/uploads/Apps/hs100.apm
+#'
 #' x0.hs100 <- c(1, 2, 0, 4, 0, 1, 1)
-#' fn.hs100 <- function(x) {
-#'   (x[1]-10)^2 + 5*(x[2]-12)^2 + x[3]^4 + 3*(x[4]-11)^2 + 10*x[5]^6 +
-#'           7*x[6]^2 + x[7]^4 - 4*x[6]*x[7] - 10*x[6] - 8*x[7]
-#' }
-#' hin.hs100 <- function(x) {
-#'   h <- numeric(4)
-#'   h[1] <- 127 - 2*x[1]^2 - 3*x[2]^4 - x[3] - 4*x[4]^2 - 5*x[5]
-#'   h[2] <- 282 - 7*x[1] - 3*x[2] - 10*x[3]^2 - x[4] + x[5]
-#'   h[3] <- 196 - 23*x[1] - x[2]^2 - 6*x[6]^2 + 8*x[7]
-#'   h[4] <- -4*x[1]^2 - x[2]^2 + 3*x[1]*x[2] -2*x[3]^2 - 5*x[6]	+11*x[7]
-#'   return(h)
+#' fn.hs100 <- function(x) {(x[1] - 10) ^ 2 + 5 * (x[2] - 12) ^ 2 + x[3] ^ 4 +
+#'                          3 * (x[4] - 11) ^ 2 + 10 * x[5] ^ 6 + 7 * x[6] ^ 2 +
+#'                          x[7] ^ 4 - 4 * x[6] * x[7] - 10 * x[6] - 8 * x[7]}
+#'
+#' hin.hs100 <- function(x) {c(
+#' 2 * x[1] ^ 2 + 3 * x[2] ^ 4 + x[3] + 4 * x[4] ^ 2 + 5 * x[5] - 127,
+#' 7 * x[1] + 3 * x[2] + 10 * x[3] ^ 2 + x[4] - x[5] - 282,
+#' 23 * x[1] + x[2] ^ 2 + 6 * x[6] ^ 2 - 8 * x[7] - 196,
+#' 4 * x[1] ^ 2 + x[2] ^ 2 - 3 * x[1] * x[2] + 2 * x[3] ^ 2 + 5 * x[6] -
+#'  11 * x[7])
 #' }
 #'
 #' S <- cobyla(x0.hs100, fn.hs100, hin = hin.hs100,
-#'       nl.info = TRUE, control = list(xtol_rel = 1e-8, maxeval = 2000))
-#' ## Optimal value of objective function:  680.630057374431
+#'       nl.info = TRUE, control = list(xtol_rel = 1e-8, maxeval = 2000),
+#'       deprecatedBehavior = FALSE)
+#'
+#' ##  The optimum value of the objective function should be 680.6300573
+#' ##  A suitable parameter vector is roughly
+#' ##  (2.330, 1.9514, -0.4775, 4.3657, -0.6245, 1.0381, 1.5942)
+#'
+#' S
 #'
 #' @export cobyla
+#'
+
 cobyla <- function(x0, fn, lower = NULL, upper = NULL, hin = NULL,
-                   nl.info = FALSE, control = list(), ...) {
+                   nl.info = FALSE, control = list(),
+                   deprecatedBehavior = TRUE, ...) {
 
   opts <- nl.opts(control)
   opts["algorithm"] <- "NLOPT_LN_COBYLA"
@@ -86,14 +104,13 @@ cobyla <- function(x0, fn, lower = NULL, upper = NULL, hin = NULL,
   fn <- function(x) f1(x, ...)
 
   if (!is.null(hin)) {
-    if (getOption("nloptr.show.inequality.warning")) {
-      message("For consistency with the rest of the package the ",
-              "inequality sign may be switched from >= to <= in a ",
-              "future nloptr version.")
+    if (deprecatedBehavior) {
+      message("The old behavior for hin >= 0 has been deprecated. Please ",
+              "restate the inequality to be <=0. The ability to use the old ",
+              "behavior will be removed in a future release.")
+      .hin <- match.fun(hin)
+      hin <- function(x) -.hin(x)      # change  hin >= 0  to  hin <= 0 !
     }
-
-    f2 <- match.fun(hin)
-    hin <- function(x) -f2(x, ...)      # NLOPT expects hin <= 0
   }
 
   S0 <- nloptr(x0,
@@ -109,19 +126,20 @@ cobyla <- function(x0, fn, lower = NULL, upper = NULL, hin = NULL,
        convergence = S0$status, message = S0$message)
 }
 
-
 #' Bound Optimization by Quadratic Approximation
 #'
-#' BOBYQA performs derivative-free bound-constrained optimization using an
-#' iteratively constructed quadratic approximation for the objective function.
+#' \acronym{BOBYQA} performs derivative-free bound-constrained optimization
+#' using an iteratively constructed quadratic approximation for the objective
+#' function.
 #'
-#' This is an algorithm derived from the BOBYQA Fortran subroutine of Powell,
-#' converted to C and modified for the NLOPT stopping criteria.
+#' This is an algorithm derived from the \acronym{BOBYQA} Fortran subroutine of
+#' Powell, converted to C and modified for the \acronym{NLopt} stopping
+#' criteria.
 #'
 #' @param x0 starting point for searching the optimum.
 #' @param fn objective function that is to be minimized.
 #' @param lower,upper lower and upper bound constraints.
-#' @param nl.info logical; shall the original NLopt info been shown.
+#' @param nl.info logical; shall the original \acronym{NLopt} info be shown.
 #' @param control list of options, see \code{nl.opts} for help.
 #' @param ... additional arguments passed to the function.
 #'
@@ -131,13 +149,13 @@ cobyla <- function(x0, fn, lower = NULL, upper = NULL, hin = NULL,
 #'   \item{iter}{number of (outer) iterations, see \code{maxeval}.}
 #'   \item{convergence}{integer code indicating successful completion (> 0)
 #'   or a possible error number (< 0).}
-#'   \item{message}{character string produced by NLopt and giving additional
-#'   information.}
+#'   \item{message}{character string produced by \acronym{NLopt} and giving
+#'   additional information.}
 #'
 #' @export bobyqa
 #'
-#' @note Because BOBYQA constructs a quadratic approximation of the objective,
-#'   it may perform poorly for objective functions that are not
+#' @note Because \acronym{BOBYQA} constructs a quadratic approximation of the
+#'   objective, it may perform poorly for objective functions that are not
 #'   twice-differentiable.
 #'
 #' @seealso \code{\link{cobyla}}, \code{\link{newuoa}}
@@ -148,11 +166,24 @@ cobyla <- function(x0, fn, lower = NULL, upper = NULL, hin = NULL,
 #'
 #' @examples
 #'
-#' fr <- function(x) {   ## Rosenbrock Banana function
-#'   100 * (x[2] - x[1]^2)^2 + (1 - x[1])^2
-#' }
-#' (S <- bobyqa(c(0, 0, 0), fr, lower = c(0, 0, 0), upper = c(0.5, 0.5, 0.5)))
+#' ## Rosenbrock Banana function
 #'
+#' rbf <- function(x) {(1 - x[1]) ^ 2 + 100 * (x[2] - x[1] ^ 2) ^ 2}
+#'
+#' ## The function as written above has a minimum of 0 at (1, 1)
+#'
+#' S <- bobyqa(c(0, 0), rbf)
+#'
+#'
+#' S
+#'
+#' ## Rosenbrock Banana function with both parameters constrained to [0, 0.5]
+#'
+#' S <- bobyqa(c(0, 0), rbf, lower = c(0, 0), upper = c(0.5, 0.5))
+#'
+#' S
+#'
+
 bobyqa <- function(x0, fn, lower = NULL, upper = NULL, nl.info = FALSE,
                    control = list(), ...) {
 
@@ -170,20 +201,20 @@ bobyqa <- function(x0, fn, lower = NULL, upper = NULL, nl.info = FALSE,
        convergence = S0$status, message = S0$message)
 }
 
-
 #' New Unconstrained Optimization with quadratic Approximation
 #'
-#' NEWUOA solves quadratic subproblems in a spherical trust regionvia a
-#' truncated conjugate-gradient algorithm. For bound-constrained problems,
-#' BOBYQA should be used instead, as Powell developed it as an enhancement
-#' thereof for bound constraints.
+#' \acronym{NEWUOA} solves quadratic subproblems in a spherical trust region via
+#' a truncated conjugate-gradient algorithm. For bound-constrained problems,
+#' \acronym{BOBYQA} should be used instead, as Powell developed it as an
+#' enhancement thereof for bound constraints.
 #'
-#' This is an algorithm derived from the NEWUOA Fortran subroutine of Powell,
-#' converted to C and modified for the NLOPT stopping criteria.
+#' This is an algorithm derived from the \acronym{NEWUOA} Fortran subroutine of
+#' Powell, converted to C and modified for the \acronym{NLopt} stopping
+#' criteria.
 #'
 #' @param x0 starting point for searching the optimum.
 #' @param fn objective function that is to be minimized.
-#' @param nl.info logical; shall the original NLopt info been shown.
+#' @param nl.info logical; shall the original \acronym{NLopt} info be shown.
 #' @param control list of options, see \code{nl.opts} for help.
 #' @param ... additional arguments passed to the function.
 #'
@@ -200,7 +231,7 @@ bobyqa <- function(x0, fn, lower = NULL, upper = NULL, nl.info = FALSE,
 #'
 #' @author Hans W. Borchers
 #'
-#' @note NEWUOA may be largely superseded by BOBYQA.
+#' @note \acronym{NEWUOA} may be largely superseded by \acronym{BOBYQA}.
 #'
 #' @seealso \code{\link{bobyqa}}, \code{\link{cobyla}}
 #'
@@ -210,11 +241,17 @@ bobyqa <- function(x0, fn, lower = NULL, upper = NULL, nl.info = FALSE,
 #'
 #' @examples
 #'
-#' fr <- function(x) {   ## Rosenbrock Banana function
-#'   100 * (x[2] - x[1]^2)^2 + (1 - x[1])^2
-#' }
-#' (S <- newuoa(c(1, 2), fr))
+#' ## Rosenbrock Banana function
 #'
+#' rbf <- function(x) {(1 - x[1]) ^ 2 + 100 * (x[2] - x[1] ^ 2) ^ 2}
+#'
+#' S <- newuoa(c(1, 2), rbf)
+#'
+#' ## The function as written above has a minimum of 0 at (1, 1)
+#'
+#' S
+#'
+
 newuoa <- function(x0, fn, nl.info = FALSE, control = list(), ...) {
 
   opts <- nl.opts(control)

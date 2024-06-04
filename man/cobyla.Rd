@@ -12,6 +12,7 @@ cobyla(
   hin = NULL,
   nl.info = FALSE,
   control = list(),
+  deprecatedBehavior = TRUE,
   ...
 )
 }
@@ -25,9 +26,14 @@ cobyla(
 \item{hin}{function defining the inequality constraints, that is
 \code{hin>=0} for all components.}
 
-\item{nl.info}{logical; shall the original NLopt info been shown.}
+\item{nl.info}{logical; shall the original \acronym{NLopt} info be shown.}
 
 \item{control}{list of options, see \code{nl.opts} for help.}
+
+\item{deprecatedBehavior}{logical; if \code{TRUE} (default for now), the old
+behavior of the Jacobian function is used, where the equality is \eqn{\ge 0}
+instead of \eqn{\le 0}. This will be reversed in a future release and
+eventually removed.}
 
 \item{...}{additional arguments passed to the function.}
 }
@@ -42,42 +48,50 @@ or a possible error number (< 0).}
 information.}
 }
 \description{
-COBYLA is an algorithm for derivative-free optimization with nonlinear
-inequality and equality constraints (but see below).
+\acronym{COBYLA} is an algorithm for derivative-free optimization with
+nonlinear inequality and equality constraints (but see below).
 }
 \details{
 It constructs successive linear approximations of the objective function and
 constraints via a simplex of \eqn{n+1} points (in \eqn{n} dimensions), and
 optimizes these approximations in a trust region at each step.
 
-COBYLA supports equality constraints by transforming them into two
-inequality constraints. As this does not give full satisfaction with the
-implementation in NLOPT, it has not been made available here.
+\acronym{COBYLA} supports equality constraints by transforming them into two
+inequality constraints. This functionality has not been added to the wrapper.
+To use \acronym{COBYLA} with equality constraints, please use the full
+\code{nloptr} invocation.
 }
 \note{
 The original code, written in Fortran by Powell, was converted in C
-for the Scipy project.
+for the \acronym{SciPy} project.
 }
 \examples{
 
-### Solve Hock-Schittkowski no. 100
+##  Solve the Hock-Schittkowski problem no. 100 with analytic gradients
+##  See https://apmonitor.com/wiki/uploads/Apps/hs100.apm
+
 x0.hs100 <- c(1, 2, 0, 4, 0, 1, 1)
-fn.hs100 <- function(x) {
-  (x[1]-10)^2 + 5*(x[2]-12)^2 + x[3]^4 + 3*(x[4]-11)^2 + 10*x[5]^6 +
-          7*x[6]^2 + x[7]^4 - 4*x[6]*x[7] - 10*x[6] - 8*x[7]
-}
-hin.hs100 <- function(x) {
-  h <- numeric(4)
-  h[1] <- 127 - 2*x[1]^2 - 3*x[2]^4 - x[3] - 4*x[4]^2 - 5*x[5]
-  h[2] <- 282 - 7*x[1] - 3*x[2] - 10*x[3]^2 - x[4] + x[5]
-  h[3] <- 196 - 23*x[1] - x[2]^2 - 6*x[6]^2 + 8*x[7]
-  h[4] <- -4*x[1]^2 - x[2]^2 + 3*x[1]*x[2] -2*x[3]^2 - 5*x[6]	+11*x[7]
-  return(h)
+fn.hs100 <- function(x) {(x[1] - 10) ^ 2 + 5 * (x[2] - 12) ^ 2 + x[3] ^ 4 +
+                         3 * (x[4] - 11) ^ 2 + 10 * x[5] ^ 6 + 7 * x[6] ^ 2 +
+                         x[7] ^ 4 - 4 * x[6] * x[7] - 10 * x[6] - 8 * x[7]}
+
+hin.hs100 <- function(x) {c(
+2 * x[1] ^ 2 + 3 * x[2] ^ 4 + x[3] + 4 * x[4] ^ 2 + 5 * x[5] - 127,
+7 * x[1] + 3 * x[2] + 10 * x[3] ^ 2 + x[4] - x[5] - 282,
+23 * x[1] + x[2] ^ 2 + 6 * x[6] ^ 2 - 8 * x[7] - 196,
+4 * x[1] ^ 2 + x[2] ^ 2 - 3 * x[1] * x[2] + 2 * x[3] ^ 2 + 5 * x[6] -
+ 11 * x[7])
 }
 
 S <- cobyla(x0.hs100, fn.hs100, hin = hin.hs100,
-      nl.info = TRUE, control = list(xtol_rel = 1e-8, maxeval = 2000))
-## Optimal value of objective function:  680.630057374431
+      nl.info = TRUE, control = list(xtol_rel = 1e-8, maxeval = 2000),
+      deprecatedBehavior = FALSE)
+
+##  The optimum value of the objective function should be 680.6300573
+##  A suitable parameter vector is roughly
+##  (2.330, 1.9514, -0.4775, 4.3657, -0.6245, 1.0381, 1.5942)
+
+S
 
 }
 \references{
