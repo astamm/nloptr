@@ -10,10 +10,11 @@
 # CHANGELOG
 #
 # 2023-02-09: Direct Jacobian now converges to proper value so removing
-#       confusing commentary in example. Also Cleanup and tweaks for safety
-#       and efficiency (Avraham Adler)
+#   confusing commentary in example. Also Cleanup and tweaks for safety and
+#   efficiency (Avraham Adler)
+# 2024-06-04: Switched desired direction of the hin/hinjac inequalities, leaving
+#       the old behavior as the default for now (Avraham Adler).
 #
-
 
 #' Sequential Quadratic Programming (SQP)
 #'
@@ -31,15 +32,21 @@
 #' not specified.
 #' @param lower,upper lower and upper bound constraints.
 #' @param hin function defining the inequality constraints, that is
-#' \code{hin>=0} for all components.
+#' \code{hin <= 0} for all components. This is new behavior in line with the
+#' rest of the \code{nloptr} arguments. To use the old behavior, please set
+#' \code{deprecatedBehavior} to \code{TRUE}.
 #' @param hinjac Jacobian of function \code{hin}; will be calculated
 #' numerically if not specified.
-#' @param heq function defining the equality constraints, that is \code{heq==0}
+#' @param heq function defining the equality constraints, that is \code{heq = 0}
 #' for all components.
 #' @param heqjac Jacobian of function \code{heq}; will be calculated
 #' numerically if not specified.
 #' @param nl.info logical; shall the original NLopt info been shown.
 #' @param control list of options, see \code{nl.opts} for help.
+#' @param deprecatedBehavior logical; if \code{TRUE} (default for now), the old
+#' behavior of the Jacobian function is used, where the equality is \eqn{\ge 0}
+#' instead of \eqn{\le 0}. This will be reversed in a future release and
+#' eventually removed.
 #' @param ... additional arguments passed to the function.
 #'
 #' @return List with components:
@@ -75,17 +82,19 @@
 #' }
 #' hin.hs100 <- function(x) {
 #'   h <- numeric(4)
-#'   h[1] <- 127 - 2*x[1]^2 - 3*x[2]^4 - x[3] - 4*x[4]^2 - 5*x[5]
-#'   h[2] <- 282 - 7*x[1] - 3*x[2] - 10*x[3]^2 - x[4] + x[5]
-#'   h[3] <- 196 - 23*x[1] - x[2]^2 - 6*x[6]^2 + 8*x[7]
-#'   h[4] <- -4*x[1]^2 - x[2]^2 + 3*x[1]*x[2] -2*x[3]^2 - 5*x[6]	+11*x[7]
+#'   h[1] <- -127 + 2 * x[1] ^ 2 + 3 * x[2] ^ 4 + x[3] + 4 * x[4] ^ 2 + 5 * x[5]
+#'   h[2] <- -282 + 7 * x[1] + 3 * x[2] + 10 * x[3] ^ 2 + x[4] - x[5]
+#'   h[3] <- -196 + 23 * x[1] + x[2] ^ 2 + 6 * x[6] ^ 2 - 8 * x[7]
+#'   h[4] <- 4 * x[1] ^ 2 + x[2] ^ 2 - 3 * x[1] * x[2] + 2 * x[3] ^ 2 +
+#'           5 * x[6] - 11 * x[7]
 #'   return(h)
 #' }
 #'
 #' S <- slsqp(x0.hs100, fn = fn.hs100,   # no gradients and jacobians provided
 #'      hin = hin.hs100,
 #'      nl.info = TRUE,
-#'      control = list(xtol_rel = 1e-8, check_derivatives = TRUE))
+#'      control = list(xtol_rel = 1e-8, check_derivatives = TRUE),
+#'      deprecatedBehavior = FALSE)
 #' S
 #' ## Optimal value of objective function:  680.630057375943
 #' ## Optimal value of controls: 2.3305 1.951372 -0.4775407 4.365726
@@ -94,7 +103,7 @@
 #'
 slsqp <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL, hin = NULL,
                   hinjac = NULL, heq = NULL, heqjac = NULL, nl.info = FALSE,
-                  control = list(), ...) {
+                  control = list(), deprecatedBehavior = TRUE, ...) {
 
   opts <- nl.opts(control)
   opts["algorithm"] <- "NLOPT_LD_SLSQP"
@@ -110,19 +119,24 @@ slsqp <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL, hin = NULL,
   }
 
   if (!is.null(hin)) {
-    if (getOption("nloptr.show.inequality.warning")) {
-      message("For consistency with the rest of the package the ",
-              "inequality sign may be switched from >= to <= in a ",
-              "future nloptr version.")
+    if (deprecatedBehavior) {
+      message("The old behavior for hin >= 0 has been deprecated. Please ",
+              "restate the inequality to be <=0. The ability to use the old ",
+              "behavior will be removed in a future release.")
+      .hin <- match.fun(hin)
+      hin <- function(x) -.hin(x)      # change  hin >= 0  to  hin <= 0 !
     }
 
-    .hin <- match.fun(hin)
-    hin <- function(x) -.hin(x)      # change  hin >= 0  to  hin <= 0 !
     if (is.null(hinjac)) {
       hinjac <- function(x) nl.jacobian(x, hin)
     } else {
-      .hinjac <- match.fun(hinjac)
-      hinjac <- function(x) -.hinjac(x)
+      if (deprecatedBehavior) {
+        message("The old behavior for hin >= 0 has been deprecated. Please ",
+                "restate the inequality to be <=0. The ability to use the old",
+                "behavior will be removed in a future release.")
+        .hinjac <- match.fun(hinjac)
+        hinjac <- function(x) -.hinjac(x)
+      }
     }
   }
 

@@ -15,9 +15,9 @@ library(nloptr)
 
 tol <- sqrt(.Machine$double.eps)
 
-ineqMess <- paste("For consistency with the rest of the package the inequality",
-                  "sign may be switched from >= to <= in a future nloptr",
-                  "version.")
+depMess <- paste("The old behavior for hin >= 0 has been deprecated. Please",
+                 "restate the inequality to be <=0. The ability to use the old",
+                 "behavior will be removed in a future release.")
 
 ## Functions for SLSQP
 x0.hs100 <- c(1, 2, 0, 4, 0, 1, 1)
@@ -61,10 +61,6 @@ hin2.hs100 <- function(x) -hin.hs100(x)                 # Needed for nloptr call
 hinjac2.hs100 <- function(x) -hinjac.hs100(x)           # Needed for nloptr call
 hinjac2b.hs100 <- function(x) nl.jacobian(x, hin2.hs100)# Needed for nloptr call
 
-# Test messages
-expect_message(slsqp(x0.hs100, fn = fn.hs100, hin = hin.hs100), ineqMess)
-
-
 # Test printout if nl.info passed. The word "Call:" should be in output if
 # passed and not if not passed.
 expect_stdout(slsqp(x0.hs100, fn = fn.hs100, nl.info = TRUE),
@@ -93,19 +89,20 @@ expect_identical(slsqpTest$message, slsqpControl$message)
 slsqpTest <- suppressMessages(slsqp(x0.hs100, fn = fn.hs100, gr = gr.hs100,
                                     hin = hin.hs100, hinjac = hinjac.hs100))
 
-slsqpControl <- nloptr(x0 = x0.hs100,
-                       eval_f = fn.hs100,
-                       eval_grad_f = gr.hs100,
-                       eval_g_ineq = hin2.hs100,
-                       eval_jac_g_ineq = hinjac2.hs100,
-                       opts = list(algorithm = "NLOPT_LD_SLSQP",
-                                   xtol_rel = 1e-6, maxeval = 1000L))
+# Going to be reused below in new behavior test.
+slsqpControlhinjac <- nloptr(x0 = x0.hs100,
+                             eval_f = fn.hs100,
+                             eval_grad_f = gr.hs100,
+                             eval_g_ineq = hin2.hs100,
+                             eval_jac_g_ineq = hinjac2.hs100,
+                             opts = list(algorithm = "NLOPT_LD_SLSQP",
+                                         xtol_rel = 1e-6, maxeval = 1000L))
 
-expect_identical(slsqpTest$par, slsqpControl$solution)
-expect_identical(slsqpTest$value, slsqpControl$objective)
-expect_identical(slsqpTest$iter, slsqpControl$iterations)
-expect_identical(slsqpTest$convergence, slsqpControl$status)
-expect_identical(slsqpTest$message, slsqpControl$message)
+expect_identical(slsqpTest$par, slsqpControlhinjac$solution)
+expect_identical(slsqpTest$value, slsqpControlhinjac$objective)
+expect_identical(slsqpTest$iter, slsqpControlhinjac$iterations)
+expect_identical(slsqpTest$convergence, slsqpControlhinjac$status)
+expect_identical(slsqpTest$message, slsqpControlhinjac$message)
 
 # Not passing equality Jacobian
 slsqpTest <- suppressMessages(slsqp(x0.hs100, fn = fn.hs100, heq = hin.hs100))
@@ -141,3 +138,21 @@ expect_identical(slsqpTest$value, slsqpControl$objective)
 expect_identical(slsqpTest$iter, slsqpControl$iterations)
 expect_identical(slsqpTest$convergence, slsqpControl$status)
 expect_identical(slsqpTest$message, slsqpControl$message)
+
+# Test deprecated behavor message; remove when old behavior made defucnt.
+expect_message(slsqp(x0.hs100, fn = fn.hs100, hin = hin.hs100), depMess)
+
+# Test new behavior. Adjust tests above when old behavior made defucnt.
+hinx <- function(x) -hin.hs100(x)
+hinjacx <- function(x) -hinjac.hs100(x)
+expect_silent(slsqp(x0.hs100, fn = fn.hs100, hin = hinx, hinjac = hinjacx,
+                    deprecatedBehavior = FALSE))
+
+slsqpTest <- slsqp(x0.hs100, fn = fn.hs100, hin = hinx, hinjac = hinjacx,
+                   deprecatedBehavior = FALSE)
+
+expect_identical(slsqpTest$par, slsqpControlhinjac$solution)
+expect_identical(slsqpTest$value, slsqpControlhinjac$objective)
+expect_identical(slsqpTest$iter, slsqpControlhinjac$iterations)
+expect_identical(slsqpTest$convergence, slsqpControlhinjac$status)
+expect_identical(slsqpTest$message, slsqpControlhinjac$message)
