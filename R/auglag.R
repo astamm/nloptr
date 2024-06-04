@@ -7,10 +7,14 @@
 #
 # Wrapper to solve optimization problem using Augmented Lagrangian.
 #
-# Changelog:
-#   2017-09-26: Fixed bug, BOBYQA is allowed as local solver
-#         (thanks to Leo Belzile).
-#   2023-02-08: Tweaks for efficiency and readability (Avraham Adler)
+# CHANGELOG
+#
+# 2017-09-26: Fixed bug, BOBYQA is allowed as local solver
+#   (thanks to Leo Belzile).
+# 2023-02-08: Tweaks for efficiency and readability (Avraham Adler)
+# 2024-06-04: Switched desired direction of the hin/hinjac inequalities, leaving
+#       the old behavior as the default for now (Avraham Adler).
+#
 
 #' Augmented Lagrangian Algorithm
 #'
@@ -54,6 +58,10 @@
 #' the local solver?; not possible at the moment.
 #' @param nl.info logical; shall the original NLopt info been shown.
 #' @param control list of options, see \code{nl.opts} for help.
+#' @param deprecatedBehavior logical; if \code{TRUE} (default for now), the old
+#' behavior of the Jacobian function is used, where the equality is \eqn{\ge 0}
+#' instead of \eqn{\le 0}. This will be reversed in a future release and
+#' eventually removed.
 #' @param ... additional arguments passed to the function.
 #'
 #' @return List with components:
@@ -89,50 +97,65 @@
 #' @examples
 #'
 #' x0 <- c(1, 1)
-#' fn <- function(x) (x[1]-2)^2 + (x[2]-1)^2
-#' hin <- function(x) -0.25*x[1]^2 - x[2]^2 + 1  # hin >= 0
-#' heq <- function(x) x[1] - 2*x[2] + 1      # heq == 0
+#' fn <- function(x) (x[1] - 2) ^ 2 + (x[2] - 1) ^ 2
+#' hin <- function(x) 0.25 * x[1]^2 + x[2] ^ 2 - 1  # hin <= 0
+#' heq <- function(x) x[1] - 2 * x[2] + 1           # heq = 0
 #' gr <- function(x) nl.grad(x, fn)
 #' hinjac <- function(x) nl.jacobian(x, hin)
 #' heqjac <- function(x) nl.jacobian(x, heq)
 #'
-#' auglag(x0, fn, gr = NULL, hin = hin, heq = heq) # with COBYLA
+#' # with COBYLA
+#' auglag(x0, fn, gr = NULL, hin = hin, heq = heq, deprecatedBehavior = FALSE)
+#'
 #' # $par:   0.8228761 0.9114382
 #' # $value:   1.393464
 #' # $iter:  1001
 #'
-#' auglag(x0, fn, gr = NULL, hin = hin, heq = heq, localsolver = "SLSQP")
+#' auglag(x0, fn, gr = NULL, hin = hin, heq = heq, localsolver = "SLSQP",
+#'        deprecatedBehavior = FALSE)
+#'
 #' # $par:   0.8228757 0.9114378
 #' # $value:   1.393465
-#' # $iter   173
+#' # $iter   184
 #'
 #' ##  Example from the alabama::auglag help page
-#' fn <- function(x) (x[1] + 3*x[2] + x[3])^2 + 4 * (x[1] - x[2])^2
-#' heq <- function(x) x[1] + x[2] + x[3] - 1
-#' hin <- function(x) c(6*x[2] + 4*x[3] - x[1]^3 - 3, x[1], x[2], x[3])
+#' ##  Parameters should be roughly (0, 0, 1) with an objective value of 1.
 #'
-#' auglag(runif(3), fn, hin = hin, heq = heq, localsolver="lbfgs")
-#' # $par:   2.380000e-09 1.086082e-14 1.000000e+00
+#' fn <- function(x) (x[1] + 3 * x[2] + x[3]) ^ 2 + 4 * (x[1] - x[2]) ^ 2
+#' heq <- function(x) x[1] + x[2] + x[3] - 1
+#' # hin restated from alabama example to be <= 0.
+#' hin <- function(x) c(-6 * x[2] - 4 * x[3] + x[1] ^ 3 + 3, -x[1], -x[2], -x[3])
+#'
+#' set.seed(12)
+#' auglag(runif(3), fn, hin = hin, heq = heq, localsolver= "lbfgs",
+#'        deprecatedBehavior = FALSE)
+#'
+#' # $par:   4.861756e-08 4.732373e-08 9.999999e-01
 #' # $value:   1
-#' # $iter:  289
+#' # $iter:  145
 #'
 #' ##  Powell problem from the Rsolnp::solnp help page
-#' x0 <- c(-2, 2, 2, -1, -1)
-#' fn1  <- function(x) exp(x[1]*x[2]*x[3]*x[4]*x[5])
-#' eqn1 <-function(x)
-#' 	c(x[1]*x[1]+x[2]*x[2]+x[3]*x[3]+x[4]*x[4]+x[5]*x[5],
-#' 	  x[2]*x[3]-5*x[4]*x[5],
-#' 	  x[1]*x[1]*x[1]+x[2]*x[2]*x[2])
+#' ##  Parameters should be roughly (-1.7171, 1.5957, 1.8272, -0.7636, -0.7636)
+#' ##  with an objective value of 0.0539498478.
 #'
-#' auglag(x0, fn1, heq = eqn1, localsolver = "mma")
-#' # $par: -3.988458e-10 -1.654201e-08 -3.752028e-10  8.904445e-10  8.926336e-10
-#' # $value:   1
-#' # $iter:  1001
+#' x0 <- c(-2, 2, 2, -1, -1)
+#' fn1  <- function(x) exp(x[1] * x[2] * x[3] * x[4] * x[5])
+#' eqn1 <-function(x)
+#' 	c(x[1] * x[1] + x[2] * x[2] + x[3] * x[3] + x[4] * x[4] + x[5] * x[5] - 10,
+#' 	  x[2] * x[3] - 5 * x[4] * x[5],
+#' 	  x[1] * x[1] * x[1] + x[2] * x[2] * x[2] + 1)
+#'
+#' auglag(x0, fn1, heq = eqn1, localsolver = "mma", deprecatedBehavior = FALSE)
+#'
+#' # $par: -1.7173645  1.5959655  1.8268352 -0.7636185 -0.7636185
+#' # $value:   0.05394987
+#' # $iter:  916
 #'
 auglag <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL, hin = NULL,
                    hinjac = NULL, heq = NULL, heqjac = NULL,
                    localsolver = "COBYLA", localtol = 1e-6, ineq2local = FALSE,
-                   nl.info = FALSE, control = list(), ...) {
+                   nl.info = FALSE, control = list(), deprecatedBehavior = TRUE,
+                   ...) {
   if (ineq2local) {
     # gsolver <- "NLOPT_LN_AUGLAG_EQ"
     stop("Inequalities to local solver: feature not yet implemented.")
@@ -167,23 +190,25 @@ auglag <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL, hin = NULL,
 
   # Inequality constraints
   if (!is.null(hin)) {
-    if (getOption("nloptr.show.inequality.warning")) {
-      message("For consistency with the rest of the package the ",
-              "inequality sign may be switched from >= to <= in a ",
-              "future nloptr version.")
+    if (deprecatedBehavior) {
+      message("The old behavior for hin >= 0 has been deprecated. Please ",
+              "restate the inequality to be <=0. The ability to use the old ",
+              "behavior will be removed in a future release.")
+      .hin <- match.fun(hin)
+      hin <- function(x) -.hin(x)      # change  hin >= 0  to  hin <= 0 !
     }
-
-    .hin <- match.fun(hin)
-    hin <- function(x) -.hin(x)   # change  hin >= 0  to  hin <= 0 !
   }
   if (!dfree) {
     if (is.null(hinjac)) {
       hinjac <- function(x) nl.jacobian(x, hin)
-    } else {
+    } else if (deprecatedBehavior) {
+      message("The old behavior for hin >= 0 has been deprecated. Please ",
+              "restate the inequality to be <=0. The ability to use the old",
+              "behavior will be removed in a future release.")
       .hinjac <- match.fun(hinjac)
       hinjac <- function(x) -.hinjac(x)
+      }
     }
-  }
 
   # Equality constraints
   if (!is.null(heq)) {
