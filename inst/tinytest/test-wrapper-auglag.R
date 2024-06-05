@@ -179,8 +179,8 @@ expect_identical(augTest$message, augControl$message)
 expect_message(auglag(x0, fn, hin = hin2), depMess)
 
 # Test old behavior still works
-augTest <- suppressMessages(auglag(x0, fn, hin = hin2, heq = heq,
-                                   localsolver = "MMA"))
+augTest <- suppressMessages(auglag(x0, fn, hin = hin2, hinjac = hinjac2,
+                                   heq = heq, localsolver = "MMA"))
 
 expect_identical(augTest$par, augControl$solution)
 expect_identical(augTest$value, augControl$objective)
