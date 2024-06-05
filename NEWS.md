@@ -1,14 +1,26 @@
-# nloptr 2.0.4
+# nloptr 2.1.0
+This release deprecates the default behavior of the inequality equations in any
+wrapper function which uses them. Currently, they are calibrated to be >= 0.
+This version allows for the equations to be consistent with the main `nloptr`
+function, which requires <= 0. In a future release, the default behavior will
+switch to assuming the calibration is <= 0, and eventually, the >= 0 behavior
+will be removed. It also includes a large number of safety and efficiency
+changes, and an expansion of the unit tests to 100% coverage for all files but
+one. The major changes include:
 
-* Updated roxygen version;
-* Updated maintainer email;
+* Reversed the direction of the inequality equations `hin` and `hinjac` in the
+wrapper functions which use them, bringing them into compliance with the main
+`nloptr` call. This addresses
+[Issue #148](https://github.com/astamm/nloptr/issues/148).
+* Cleaned the Hock-Schittkowski problem no. 100 and Hartmann 6-dimensional
+examples. This also addresses
+[Issue #152](https://github.com/astamm/nloptr/issues/152).
+* Updated roxygen version.
+* Updated maintainer email.
 * Deal with NA returns from detectCords (contributed by @jeroen in PR #150);
-* Setup rhub v2 checks;
-* Update cmake installation instructions on Mac with brew (#146);
-* Allow use of equality constraints with COBYLA (#135);
-
-# nloptr 2.0.3.9100
-
+* Setup rhub v2 checks.
+* Update cmake installation instructions on Mac with brew (#146).
+* Allow use of equality constraints with COBYLA (#135).
 * Replaced the unit testing framework of `testthat` with `tinytest` (See 
 [Issue #136](https://github.com/astamm/nloptr/issues/136)).
 * Brought coverage of `is.nloptr` to 100%. The only file not completely covered
@@ -17,18 +29,6 @@ trapped by tests in R before the call gets to C.
 * Linted package for code correctness and consistency.
 * Updated vignette, DESCRIPTION, and NEWS.
 * Updated package website to use bootstrap 5.
-
-# nloptr 2.0.3.9000
-
-This is a patch version update which should make the code safer, more efficient,
-and easier to follow. Please see commit logs for
-[#128](https://github.com/astamm/nloptr/pull/128),
-[#129](https://github.com/astamm/nloptr/pull/129),
-[#131](https://github.com/astamm/nloptr/pull/131), 
-[#132](https://github.com/astamm/nloptr/pull/132),
-and [#133](https://github.com/astamm/nloptr/pull/133) for the full
-description of the changes which include:
-
 * Expanded unit tests: coverage now over 97% with no file below 90%
 * Removed forcing `C++11`
 * Added safety checks to C code
@@ -37,6 +37,8 @@ description of the changes which include:
 * Updated documentation and messages for accuracy and mathematical formatting
 * Updated Github actions
 * Some bugfixes (e.g. in `isres` or the warning in `nl.grad`.)
+
+Please see the commit logs for more detailed descriptions of the changes.
 
 # nloptr 2.0.3
 
