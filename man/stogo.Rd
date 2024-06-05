@@ -32,7 +32,7 @@ stogo(
 
 \item{randomized}{logical; shall a randomizing variant be used?}
 
-\item{nl.info}{logical; shall the original NLopt info been shown.}
+\item{nl.info}{logical; shall the original \acronym{NLopt} info be shown.}
 
 \item{...}{additional arguments passed to the function.}
 }
@@ -43,34 +43,32 @@ List with components:
 \item{iter}{number of (outer) iterations, see \code{maxeval}.}
 \item{convergence}{integer code indicating successful completion (> 0)
 or a possible error number (< 0).}
-\item{message}{character string produced by NLopt and giving additional
-information.}
+\item{message}{character string produced by \acronym{NLopt} and giving
+additional information.}
 }
 \description{
-StoGO is a global optimization algorithm that works by systematically
-dividing the search space into smaller hyper-rectangles.
-}
-\details{
-StoGO is a global optimization algorithm that works by systematically
-dividing the search space (which must be bound-constrained) into smaller
-hyper-rectangles via a branch-and-bound technique, and searching them by a
-gradient-based local-search algorithm (a BFGS variant), optionally including
-some randomness.
+\acronym{StoGO} is a global optimization algorithm that works by
+systematically dividing the search space---which must be
+bound-constrained---into smaller hyper-rectangles via a branch-and-bound
+technique, and searching them using a gradient-based local-search algorithm
+(a \acronym{BFGS} variant), optionally including some randomness.
 }
 \note{
-Only bound-constrained problems are supported by this algorithm.
+Only bounds-constrained problems are supported by this algorithm.
 }
 \examples{
 
-### Rosenbrock Banana objective function
-fn <- function(x)
-  return( 100 * (x[2] - x[1] * x[1])^2 + (1 - x[1])^2 )
+## Rosenbrock Banana objective function
 
-x0 <- c( -1.2, 1 )
-lb <- c( -3, -3 )
-ub <- c(  3,  3 )
+rbf <- function(x) {(1 - x[1]) ^ 2 + 100 * (x[2] - x[1] ^ 2) ^ 2}
 
-stogo(x0 = x0, fn = fn, lower = lb, upper = ub)
+x0 <- c(-1.2, 1)
+lb <- c(-3, -3)
+ub <- c(3,  3)
+
+## The function as written above has a minimum of 0 at (1, 1)
+
+stogo(x0 = x0, fn = rbf, lower = lb, upper = ub)
 
 }
 \references{
