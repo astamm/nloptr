@@ -13,7 +13,8 @@
 #   (thanks to Leo Belzile).
 # 2023-02-08: Tweaks for efficiency and readability (Avraham Adler)
 # 2024-06-04: Switched desired direction of the hin/hinjac inequalities, leaving
-#       the old behavior as the default for now (Avraham Adler).
+#   the old behavior as the default for now. Also corrected Powell example.
+#   (Avraham Adler)
 #
 
 #' Augmented Lagrangian Algorithm

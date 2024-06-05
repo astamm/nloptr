@@ -12,9 +12,10 @@ one. The major changes include:
 wrapper functions which use them, bringing them into compliance with the main
 `nloptr` call. This addresses
 [Issue #148](https://github.com/astamm/nloptr/issues/148).
-* Cleaned the Hock-Schittkowski problem no. 100 and Hartmann 6-dimensional
-examples. This also addresses
-[Issue #152](https://github.com/astamm/nloptr/issues/152).
+* Cleaned the Hock-Schittkowski problem no. 100, Hartmann 6-dimensional, and
+Powell exponential examples. This addresses
+[Issue #152](https://github.com/astamm/nloptr/issues/152) and
+[Issue #156](https://github.com/astamm/nloptr/issues/156).
 * Updated roxygen version.
 * Updated maintainer email.
 * Deal with NA returns from detectCords (contributed by @jeroen in PR #150);
