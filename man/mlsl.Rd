@@ -25,7 +25,7 @@ mlsl(
 \item{gr}{gradient of function \code{fn}; will be calculated numerically if
 not specified.}
 
-\item{lower, }{upper lower and upper bound constraints.}
+\item{lower, upper}{lower and upper bound constraints.}
 
 \item{local.method}{only \code{BFGS} for the moment.}
 

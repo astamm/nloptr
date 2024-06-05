@@ -41,7 +41,7 @@
 #' @param fn objective function that is to be minimized.
 #' @param gr gradient of function \code{fn}; will be calculated numerically if
 #' not specified.
-#' @param lower, upper lower and upper bound constraints.
+#' @param lower,upper lower and upper bound constraints.
 #' @param local.method only \code{BFGS} for the moment.
 #' @param low.discrepancy logical; shall a low discrepancy variation be used.
 #' @param nl.info logical; shall the original \acronym{NLopt} info be shown.
