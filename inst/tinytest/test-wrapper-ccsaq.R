@@ -127,10 +127,10 @@ expect_identical(ccsaqTest$convergence, ccsaqControlC$status)
 expect_identical(ccsaqTest$message, ccsaqControlC$message)
 
 # Test deprecated behavior message
-expect_message(ccsaq(x0.hs100, fn.hs100, hin = hin2.hs100), depMess)
+expect_warning(ccsaq(x0.hs100, fn.hs100, hin = hin2.hs100), depMess)
 
 # Test deprecated behavior
-ccsaqTest <- suppressMessages(ccsaq(x0.hs100, fn.hs100, gr = gr.hs100,
+ccsaqTest <- suppressWarnings(ccsaq(x0.hs100, fn.hs100, gr = gr.hs100,
                                     hin = hin2.hs100, hinjac = hinjac2.hs100,
                                     control = ctl))
 

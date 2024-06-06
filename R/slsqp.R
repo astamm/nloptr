@@ -123,7 +123,7 @@ slsqp <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL, hin = NULL,
 
   if (!is.null(hin)) {
     if (deprecatedBehavior) {
-      message("The old behavior for hin >= 0 has been deprecated. Please ",
+      warning("The old behavior for hin >= 0 has been deprecated. Please ",
               "restate the inequality to be <=0. The ability to use the old ",
               "behavior will be removed in a future release.")
       .hin <- match.fun(hin)
@@ -133,7 +133,7 @@ slsqp <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL, hin = NULL,
     if (is.null(hinjac)) {
       hinjac <- function(x) nl.jacobian(x, hin)
     } else if (deprecatedBehavior) {
-      message("The old behavior for hinjac >= 0 has been deprecated. Please ",
+      warning("The old behavior for hinjac >= 0 has been deprecated. Please ",
               "restate the inequality to be <=0. The ability to use the old ",
               "behavior will be removed in a future release.")
       .hinjac <- match.fun(hinjac)

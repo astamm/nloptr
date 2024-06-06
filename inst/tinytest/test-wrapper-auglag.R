@@ -20,8 +20,8 @@ depMess <- paste("The old behavior for hin >= 0 has been deprecated. Please",
 # Taken from example
 x0 <- c(1, 1)
 fn <- function(x) (x[1L] - 2) ^ 2 + (x[2L] - 1) ^ 2
-hin <- function(x) 0.25 * x[1L] ^ 2 + x[2L] ^ 2 - 1    # hin <= 0
-heq <- function(x) x[1L] - 2 * x[2L] + 1                # heq == 0
+hin <- function(x) 0.25 * x[1L] ^ 2 + x[2L] ^ 2 - 1     # hin <= 0
+heq <- function(x) x[1L] - 2 * x[2L] + 1                # heq = 0
 gr <- function(x) nl.grad(x, fn)
 hinjac <- function(x) nl.jacobian(x, hin)
 heqjac <- function(x) nl.jacobian(x, heq)
@@ -176,10 +176,10 @@ expect_identical(augTest$convergence, augControl$status)
 expect_identical(augTest$message, augControl$message)
 
 # Test deprecated message
-expect_message(auglag(x0, fn, hin = hin2), depMess)
+expect_warning(auglag(x0, fn, hin = hin2), depMess)
 
 # Test old behavior still works
-augTest <- suppressMessages(auglag(x0, fn, hin = hin2, hinjac = hinjac2,
+augTest <- suppressWarnings(auglag(x0, fn, hin = hin2, hinjac = hinjac2,
                                    heq = heq, localsolver = "MMA"))
 
 expect_identical(augTest$par, augControl$solution)

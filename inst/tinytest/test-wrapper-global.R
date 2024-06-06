@@ -186,11 +186,11 @@ expect_identical(stogoTest$convergence, stogoControl$status)
 expect_identical(stogoTest$message, stogoControl$message)
 
 # Test deprecated message
-expect_message(isres(x0, rbf, lower = lb, upper = ub, hin = hin2,
+expect_warning(isres(x0, rbf, lower = lb, upper = ub, hin = hin2,
                      maxeval = 2e4L), depMess)
 
 # Test deprecated behavior
-isresTest <- suppressMessages(isres(x0, rbf, lb, ub, hin = hin2,
+isresTest <- suppressWarnings(isres(x0, rbf, lb, ub, hin = hin2,
                                     maxeval = 2e4L))
 
 expect_equal(isresTest$par, isresControl$solution, tolerance = 1e-4)

@@ -197,7 +197,7 @@ isres <- function(x0, fn, lower, upper, hin = NULL, heq = NULL, maxeval = 10000,
 
   if (!is.null(hin)) {
     if (deprecatedBehavior) {
-      message("The old behavior for hin >= 0 has been deprecated. Please ",
+      warning("The old behavior for hin >= 0 has been deprecated. Please ",
               "restate the inequality to be <=0. The ability to use the old ",
               "behavior will be removed in a future release.")
       .hin <- match.fun(hin)

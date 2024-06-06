@@ -69,10 +69,10 @@ expect_identical(cobylaTest$convergence, cobylaControl$status)
 expect_identical(cobylaTest$message, cobylaControl$message)
 
 # Test deprecated message
-expect_message(cobyla(x0.hs100, fn.hs100, hin = hin2.hs100), depMess)
+expect_warning(cobyla(x0.hs100, fn.hs100, hin = hin2.hs100), depMess)
 
 # Test deprecated behavior
-cobylaTest <- suppressMessages(cobyla(x0.hs100, fn.hs100, hin = hin2.hs100,
+cobylaTest <- suppressWarnings(cobyla(x0.hs100, fn.hs100, hin = hin2.hs100,
                                       control = ctl))
 
 expect_identical(cobylaTest$par, cobylaControl$solution)

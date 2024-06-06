@@ -104,10 +104,10 @@ expect_identical(mmaTest$convergence, mmaControl$status)
 expect_identical(mmaTest$message, mmaControl$message)
 
 # Test deprecated message
-expect_message(mma(x0.hs100, fn.hs100, hin = hin.hs100), depMess)
+expect_warning(mma(x0.hs100, fn.hs100, hin = hin.hs100), depMess)
 
 # Test deprecated behavior
-mmaTest <- suppressMessages(mma(x0.hs100, fn.hs100, gr = gr.hs100,
+mmaTest <- suppressWarnings(mma(x0.hs100, fn.hs100, gr = gr.hs100,
                                 hin = hin2.hs100, hinjac = hinjac2.hs100,
                                 control = ctl))
 
