@@ -32,7 +32,7 @@ crs2lm(
 
 \item{xtol_rel}{stopping criterion for relative change reached.}
 
-\item{nl.info}{logical; shall the original NLopt info been shown.}
+\item{nl.info}{logical; shall the original \acronym{NLopt} info be shown.}
 
 \item{...}{additional arguments passed to the function.}
 }
@@ -43,60 +43,63 @@ List with components:
 \item{iter}{number of (outer) iterations, see \code{maxeval}.}
 \item{convergence}{integer code indicating successful completion (> 0)
 or a possible error number (< 0).}
-\item{message}{character string produced by NLopt and giving additional
-information.}
+\item{message}{character string produced by \acronym{NLopt} and giving
+additional information.}
 }
 \description{
-The Controlled Random Search (CRS) algorithm (and in particular, the CRS2
-variant) with the `local mutation' modification.
+The Controlled Random Search (\acronym{CRS}) algorithm (and in particular,
+the \acronym{CRS2} variant) with the `local mutation' modification.
 }
 \details{
-The CRS algorithms are sometimes compared to genetic algorithms, in that
-they start with a random population of points, and randomly evolve these
+The \acronym{CRS} algorithms are sometimes compared to genetic algorithms, in
+that they start with a random population of points, and randomly evolve these
 points by heuristic rules. In this case, the evolution somewhat resembles a
 randomized Nelder-Mead algorithm.
 
-The published results for CRS seem to be largely empirical.
+The published results for \acronym{CRS} seem to be largely empirical.
 }
 \note{
-The initial population size for CRS defaults to \code{10x(n+1)} in
-\code{n} dimensions, but this can be changed; the initial population must be
-at least \code{n+1}.
+The initial population size for CRS defaults to \eqn{10x(n+1)} in
+\eqn{n} dimensions, but this can be changed. The initial population must be
+at least \eqn{n+1}.
 }
 \examples{
 
-### Minimize the Hartmann6 function
-hartmann6 <- function(x) {
-  n <- length(x)
-  a <- c(1.0, 1.2, 3.0, 3.2)
-  A <- matrix(c(10.0,  0.05, 3.0, 17.0,
-         3.0, 10.0,  3.5,  8.0,
-          17.0, 17.0,  1.7,  0.05,
-         3.5,  0.1, 10.0, 10.0,
-         1.7,  8.0, 17.0,  0.1,
-         8.0, 14.0,  8.0, 14.0), nrow=4, ncol=6)
-  B  <- matrix(c(.1312,.2329,.2348,.4047,
-         .1696,.4135,.1451,.8828,
-         .5569,.8307,.3522,.8732,
-         .0124,.3736,.2883,.5743,
-         .8283,.1004,.3047,.1091,
-         .5886,.9991,.6650,.0381), nrow=4, ncol=6)
-  fun <- 0.0
+## Minimize the Hartmann 6-Dimensional function
+## See https://www.sfu.ca/~ssurjano/hart6.html
+
+a <- c(1.0, 1.2, 3.0, 3.2)
+A <- matrix(c(10,  0.05, 3, 17,
+              3, 10, 3.5, 8,
+              17, 17, 1.7, 0.05,
+              3.5, 0.1, 10, 10,
+              1.7, 8, 17, 0.1,
+              8, 14, 8, 14), nrow = 4)
+
+B  <- matrix(c(.1312, .2329, .2348, .4047,
+               .1696, .4135, .1451, .8828,
+               .5569, .8307, .3522, .8732,
+               .0124, .3736, .2883, .5743,
+               .8283, .1004, .3047, .1091,
+               .5886, .9991, .6650, .0381), nrow = 4)
+
+hartmann6 <- function(x, a, A, B) {
+  fun <- 0
   for (i in 1:4) {
-    fun <- fun - a[i] * exp(-sum(A[i,]*(x-B[i,])^2))
+    fun <- fun - a[i] * exp(-sum(A[i, ] * (x - B[i, ]) ^ 2))
   }
-  return(fun)
+
+  fun
 }
 
+## The function has a global minimum of -3.32237 at
+## (0.20169, 0.150011, 0.476874, 0.275332, 0.311652, 0.6573)
+
 S <- crs2lm(x0 = rep(0, 6), hartmann6, lower = rep(0, 6), upper = rep(1, 6),
-      nl.info = TRUE, xtol_rel=1e-8, maxeval = 10000)
-## Number of Iterations....: 5106
-## Termination conditions:  maxeval: 10000	xtol_rel: 1e-08
-## Number of inequality constraints:  0
-## Number of equality constraints:  0
-## Optimal value of objective function:  -3.32236801141551
-## Optimal value of controls: 0.2016895 0.1500107 0.476874 0.2753324
-##                            0.3116516 0.6573005
+            ranseed = 10L, nl.info = TRUE, xtol_rel=1e-8, maxeval = 10000,
+            a = a, A = A, B = B)
+
+S
 
 }
 \references{

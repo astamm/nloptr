@@ -6,7 +6,10 @@
 # Wrapper to solve optimization problem using CCSAQ.
 #
 # CHANGELOG:
-#   2023-02-11: Tweaks for efficiency and readability (Avraham Adler)
+# 2023-02-11: Tweaks for efficiency and readability (Avraham Adler)
+# 2024-06-04: Switched desired direction of the hin/hinjac inequalities, leaving
+#       the old behavior as the default for now. Also cleaned up the HS100
+#       example (Avraham Adler).
 #
 
 #' Conservative Convex Separable Approximation with Affine Approximation plus
@@ -28,6 +31,10 @@
 #' numerically if not specified.
 #' @param nl.info logical; shall the original NLopt info been shown.
 #' @param control list of options, see \code{nl.opts} for help.
+#' @param deprecatedBehavior logical; if \code{TRUE} (default for now), the old
+#' behavior of the Jacobian function is used, where the equality is \eqn{\ge 0}
+#' instead of \eqn{\le 0}. This will be reversed in a future release and
+#' eventually removed.
 #' @param ... additional arguments passed to the function.
 #'
 #' @return List with components:
@@ -54,48 +61,58 @@
 #' @examples
 #'
 #' ##  Solve the Hock-Schittkowski problem no. 100 with analytic gradients
+#' ##  See https://apmonitor.com/wiki/uploads/Apps/hs100.apm
+#'
 #' x0.hs100 <- c(1, 2, 0, 4, 0, 1, 1)
-#' fn.hs100 <- function(x) {
-#'   (x[1] - 10) ^ 2 + 5 * (x[2] - 12) ^ 2 + x[3] ^ 4 + 3 * (x[4] - 11) ^ 2 +
-#'    10 * x[5] ^ 6 + 7 * x[6] ^ 2 + x[7] ^ 4 - 4 * x[6] * x[7] -
-#'    10 * x[6] - 8 * x[7]
+#' fn.hs100 <- function(x) {(x[1] - 10) ^ 2 + 5 * (x[2] - 12) ^ 2 + x[3] ^ 4 +
+#'                          3 * (x[4] - 11) ^ 2 + 10 * x[5] ^ 6 + 7 * x[6] ^ 2 +
+#'                          x[7] ^ 4 - 4 * x[6] * x[7] - 10 * x[6] - 8 * x[7]}
+#'
+#' hin.hs100 <- function(x) {c(
+#' 2 * x[1] ^ 2 + 3 * x[2] ^ 4 + x[3] + 4 * x[4] ^ 2 + 5 * x[5] - 127,
+#' 7 * x[1] + 3 * x[2] + 10 * x[3] ^ 2 + x[4] - x[5] - 282,
+#' 23 * x[1] + x[2] ^ 2 + 6 * x[6] ^ 2 - 8 * x[7] - 196,
+#' 4 * x[1] ^ 2 + x[2] ^ 2 - 3 * x[1] * x[2] + 2 * x[3] ^ 2 + 5 * x[6] -
+#'  11 * x[7])
 #' }
-#' hin.hs100 <- function(x) {
-#'   h <- numeric(4)
-#'   h[1] <- 127 - 2 * x[1] ^ 2 - 3 * x[2] ^ 4 - x[3] - 4 * x[4] ^ 2 - 5 * x[5]
-#'   h[2] <- 282 - 7 * x[1] - 3 * x[2] - 10 * x[3] ^ 2 - x[4] + x[5]
-#'   h[3] <- 196 - 23 * x[1] - x[2] ^ 2 - 6 * x[6] ^ 2 + 8 * x[7]
-#'   h[4] <- -4 * x[1] ^ 2 - x[2] ^ 2 + 3 * x[1] * x[2] -2 * x[3] ^ 2 -
-#'        5 * x[6] + 11 * x[7]
-#'   return(h)
-#' }
+#'
 #' gr.hs100 <- function(x) {
-#'  c( 2 * x[1] -  20,
+#'  c( 2 * x[1] - 20,
 #'    10 * x[2] - 120,
 #'     4 * x[3] ^ 3,
 #'     6 * x[4] - 66,
 #'    60 * x[5] ^ 5,
 #'    14 * x[6] - 4 * x[7] - 10,
-#'     4 * x[7] ^ 3 - 4 * x[6] -  8)
-#' }
-#' hinjac.hs100 <- function(x) {
-#'   matrix(c(4 * x[1], 12 * x[2] ^ 3, 1, 8 * x[4], 5, 0, 0, 7, 3, 20 * x[3],
-#'        1, -1, 0, 0, 23, 2 * x[2], 0, 0, 0, 12 * x[6], -8,
-#'        8 * x[1] - 3 * x[2], 2 * x[2] - 3 * x[1], 4 * x[3],
-#'        0, 0, 5, -11), 4, 7, byrow = TRUE)
+#'     4 * x[7] ^ 3 - 4 * x[6] - 8)
 #' }
 #'
-#' # incorrect result with exact jacobian
+#' hinjac.hs100 <- function(x) {
+#'   matrix(c(4 * x[1], 12 * x[2] ^ 3, 1, 8 * x[4], 5, 0, 0,
+#'            7, 3, 20 * x[3], 1, -1, 0, 0,
+#'            23, 2 * x[2], 0, 0, 0, 12 * x[6], -8,
+#'            8 * x[1] - 3 * x[2], 2 * x[2] - 3 * x[1], 4 * x[3], 0, 0, 5, -11),
+#'            nrow = 4, byrow = TRUE)
+#' }
+#'
+#' ##  The optimum value of the objective function should be 680.6300573
+#' ##  A suitable parameter vector is roughly
+#' ##  (2.330, 1.9514, -0.4775, 4.3657, -0.6245, 1.0381, 1.5942)
+#'
+#' # Results with exact Jacobian
 #' S <- ccsaq(x0.hs100, fn.hs100, gr = gr.hs100,
 #'       hin = hin.hs100, hinjac = hinjac.hs100,
-#'       nl.info = TRUE, control = list(xtol_rel = 1e-8))
+#'       nl.info = TRUE, control = list(xtol_rel = 1e-8),
+#'       deprecatedBehavior = FALSE)
 #'
-#' \donttest{
+#' # Results without Jacobian
 #' S <- ccsaq(x0.hs100, fn.hs100, hin = hin.hs100,
-#'       nl.info = TRUE, control = list(xtol_rel = 1e-8))
-#' }
+#'       nl.info = TRUE, control = list(xtol_rel = 1e-8),
+#'       deprecatedBehavior = FALSE)
+#'
+
 ccsaq <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL, hin = NULL,
-                  hinjac = NULL, nl.info = FALSE, control = list(), ...) {
+                  hinjac = NULL, nl.info = FALSE, control = list(),
+                  deprecatedBehavior = TRUE, ...) {
 
   opts <- nl.opts(control)
   opts["algorithm"] <- "NLOPT_LD_CCSAQ"
@@ -111,19 +128,21 @@ ccsaq <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL, hin = NULL,
   }
 
   if (!is.null(hin)) {
-    if (getOption("nloptr.show.inequality.warning")) {
-      message("For consistency with the rest of the package the ",
-              "inequality sign may be switched from >= to <= in a ",
-              "future nloptr version.")
+    if (deprecatedBehavior) {
+      warning("The old behavior for hin >= 0 has been deprecated. Please ",
+              "restate the inequality to be <=0. The ability to use the old ",
+              "behavior will be removed in a future release.")
+      .hin <- match.fun(hin)
+      hin <- function(x) -.hin(x)      # change  hin >= 0  to  hin <= 0 !
     }
-
-    .hin <- match.fun(hin)
-    hin <- function(x) -.hin(x)       # change  hin >= 0  to  hin <= 0 !
     if (is.null(hinjac)) {
       hinjac <- function(x) nl.jacobian(x, hin)
-    } else {
-      .hinjac <- match.fun(hinjac)
-      hinjac <- function(x) -.hinjac(x)
+    } else if (deprecatedBehavior) {
+      warning("The old behavior for hinjac >= 0 has been deprecated. Please ",
+              "restate the inequality to be <=0. The ability to use the old ",
+              "behavior will be removed in a future release.")
+        .hinjac <- match.fun(hinjac)
+        hinjac <- function(x) -.hinjac(x)
     }
   }
 

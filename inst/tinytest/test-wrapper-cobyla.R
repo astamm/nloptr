@@ -7,62 +7,58 @@
 #
 # Test wrapper calls to cobyla, bobyqa, and newuoa algorithms
 #
-# Changelog:
-#   2023-08-23: Change _output to _stdout
+# CHANGELOG
+#
+# 2023-08-23: Change _output to _stdout
+# 2024-06-04: Switched desired direction of the hin/hinjac inequalities, leaving
+#       the old behavior as the default for now. Also cleaned up the HS100
+#       example (Avraham Adler).
 #
 
 library(nloptr)
 
-ineqMess <- paste("For consistency with the rest of the package the inequality",
-                  "sign may be switched from >= to <= in a future nloptr",
-                  "version.")
+depMess <- paste("The old behavior for hin >= 0 has been deprecated. Please",
+                 "restate the inequality to be <=0. The ability to use the old",
+                 "behavior will be removed in a future release.")
 
 ## Functions for COBYLA, BOBYQA, and NEWUOA
 x0.hs100 <- c(1, 2, 0, 4, 0, 1, 1)
-fn.hs100 <- function(x) {
-  (x[1L] - 10) ^ 2 + 5 * (x[2L] - 12) ^ 2 + x[3L] ^ 4 + 3 * (x[4L] - 11) ^ 2 +
-    10 * x[5L] ^ 6 + 7 * x[6L] ^ 2 + x[7L] ^ 4 - 4 * x[6L] * x[7L] -
-    10 * x[6L] - 8 * x[7L]
+fn.hs100 <- function(x) {(x[1] - 10) ^ 2 + 5 * (x[2] - 12) ^ 2 + x[3] ^ 4 +
+    3 * (x[4] - 11) ^ 2 + 10 * x[5] ^ 6 + 7 * x[6] ^ 2 +
+    x[7] ^ 4 - 4 * x[6] * x[7] - 10 * x[6] - 8 * x[7]}
+
+hin.hs100 <- function(x) {c(
+  2 * x[1] ^ 2 + 3 * x[2] ^ 4 + x[3] + 4 * x[4] ^ 2 + 5 * x[5] - 127,
+  7 * x[1] + 3 * x[2] + 10 * x[3] ^ 2 + x[4] - x[5] - 282,
+  23 * x[1] + x[2] ^ 2 + 6 * x[6] ^ 2 - 8 * x[7] - 196,
+  4 * x[1] ^ 2 + x[2] ^ 2 - 3 * x[1] * x[2] + 2 * x[3] ^ 2 + 5 * x[6] -
+    11 * x[7])
 }
 
-hin.hs100 <- function(x) {
-  h <- double(4L)
-  h[1L] <- 127 - 2 * x[1L] ^ 2 - 3 * x[2L] ^ 4 - x[3L] - 4 * x[4L] ^ 2 - 5 *
-    x[5L]
-  h[2L] <- 282 - 7 * x[1L] - 3 * x[2L] - 10 * x[3L] ^ 2 - x[4L] + x[5L]
-  h[3L] <- 196 - 23 * x[1L] - x[2L] ^ 2 - 6 * x[6L] ^ 2 + 8 * x[7L]
-  h[4L] <- -4 * x[1L] ^ 2 - x[2L] ^ 2 + 3 * x[1L] * x[2L] - 2 * x[3L] ^ 2 -
-    5 * x[6L] + 11 * x[7L]
-  return(h)
-}
+hin2.hs100 <- function(x) -hin.hs100(x)           # Needed to test old behavior
 
-hin2.hs100 <- function(x) -hin.hs100(x) # Needed for nloptr call
-
-fr <- function(x) {100 * (x[2L] - x[1L] ^ 2) ^ 2 + (1 - x[1L]) ^ 2}
+rbf <- function(x) {(1 - x[1]) ^ 2 + 100 * (x[2] - x[1] ^ 2) ^ 2}
 
 ctl <- list(xtol_rel = 1e-8)
 
-# Test messages
-expect_message(cobyla(x0.hs100, fn.hs100, hin = hin.hs100), ineqMess)
-
 # Test printout if nl.info passed. The word "Call:" should be in output if
 # passed and not if not passed.
-expect_stdout(cobyla(x0.hs100, fn.hs100, nl.info = TRUE), "Call:", fixed = TRUE)
+expect_stdout(cobyla(x0.hs100, fn.hs100, nl.info = TRUE,
+                     deprecatedBehavior = FALSE), "Call:", fixed = TRUE)
 expect_stdout(bobyqa(x0.hs100, fn.hs100, nl.info = TRUE), "Call:", fixed = TRUE)
 expect_stdout(newuoa(x0.hs100, fn.hs100, nl.info = TRUE), "Call:", fixed = TRUE)
 
-expect_silent(cobyla(x0.hs100, fn.hs100))
+expect_silent(cobyla(x0.hs100, fn.hs100, deprecatedBehavior = FALSE))
 expect_silent(bobyqa(x0.hs100, fn.hs100))
 expect_silent(newuoa(x0.hs100, fn.hs100))
 
 # Test COBYLA algorithm
-cobylaTest <- suppressMessages(
-  cobyla(x0.hs100, fn.hs100, hin = hin.hs100, control = ctl)
-)
+cobylaTest <- cobyla(x0.hs100, fn.hs100, hin = hin.hs100, control = ctl,
+                     deprecatedBehavior = FALSE)
 
 cobylaControl <- nloptr(x0 = x0.hs100,
                         eval_f = fn.hs100,
-                        eval_g_ineq = hin2.hs100,
+                        eval_g_ineq = hin.hs100,
                         opts = list(algorithm = "NLOPT_LN_COBYLA",
                                     xtol_rel = 1e-8, maxeval = 1000L))
 
@@ -72,10 +68,23 @@ expect_identical(cobylaTest$iter, cobylaControl$iterations)
 expect_identical(cobylaTest$convergence, cobylaControl$status)
 expect_identical(cobylaTest$message, cobylaControl$message)
 
-# Test BOBYQA algorithm
-bobyqaTest <- bobyqa(c(0, 0), fr, lower = c(0, 0), upper = c(0.5, 0.5))
+# Test deprecated message
+expect_warning(cobyla(x0.hs100, fn.hs100, hin = hin2.hs100), depMess)
 
-bobyqaControl <- nloptr(x0 = c(0, 0), eval_f = fr, lb = c(0, 0),
+# Test deprecated behavior
+cobylaTest <- suppressWarnings(cobyla(x0.hs100, fn.hs100, hin = hin2.hs100,
+                                      control = ctl))
+
+expect_identical(cobylaTest$par, cobylaControl$solution)
+expect_identical(cobylaTest$value, cobylaControl$objective)
+expect_identical(cobylaTest$iter, cobylaControl$iterations)
+expect_identical(cobylaTest$convergence, cobylaControl$status)
+expect_identical(cobylaTest$message, cobylaControl$message)
+
+# Test BOBYQA algorithm
+bobyqaTest <- bobyqa(c(0, 0), rbf, lower = c(0, 0), upper = c(0.5, 0.5))
+
+bobyqaControl <- nloptr(x0 = c(0, 0), eval_f = rbf, lb = c(0, 0),
                         ub = c(0.5, 0.5),
                         opts = list(algorithm = "NLOPT_LN_BOBYQA",
                                     xtol_rel = 1e-6, maxeval = 1000L))
@@ -87,9 +96,9 @@ expect_identical(bobyqaTest$convergence, bobyqaControl$status)
 expect_identical(bobyqaTest$message, bobyqaControl$message)
 
 # Test NEWUOA algorithm
-newuoaTest <- newuoa(c(1, 2), fr)
+newuoaTest <- newuoa(c(1, 2), rbf)
 
-newuoaControl <- nloptr(x0 = c(1, 2), eval_f = fr,
+newuoaControl <- nloptr(x0 = c(1, 2), eval_f = rbf,
                         opts = list(algorithm = "NLOPT_LN_NEWUOA",
                                     xtol_rel = 1e-6, maxeval = 1000L))
 
