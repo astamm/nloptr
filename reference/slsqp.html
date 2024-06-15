@@ -14,7 +14,7 @@ equality and inequality constraints."><meta property="og:image" content="https:/
     
     <a class="navbar-brand me-2" href="../index.html">nloptr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,6 +72,7 @@ equality and inequality constraints.</p>
 <span>  heqjac <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  nl.info <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  deprecatedBehavior <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -97,7 +98,9 @@ not specified.</p></dd>
 
 <dt>hin</dt>
 <dd><p>function defining the inequality constraints, that is
-<code>hin&gt;=0</code> for all components.</p></dd>
+<code>hin &lt;= 0</code> for all components. This is new behavior in line with the
+rest of the <code>nloptr</code> arguments. To use the old behavior, please set
+<code>deprecatedBehavior</code> to <code>TRUE</code>.</p></dd>
 
 
 <dt>hinjac</dt>
@@ -106,7 +109,7 @@ numerically if not specified.</p></dd>
 
 
 <dt>heq</dt>
-<dd><p>function defining the equality constraints, that is <code>heq==0</code>
+<dd><p>function defining the equality constraints, that is <code>heq = 0</code>
 for all components.</p></dd>
 
 
@@ -121,6 +124,13 @@ numerically if not specified.</p></dd>
 
 <dt>control</dt>
 <dd><p>list of options, see <code>nl.opts</code> for help.</p></dd>
+
+
+<dt>deprecatedBehavior</dt>
+<dd><p>logical; if <code>TRUE</code> (default for now), the old
+behavior of the Jacobian function is used, where the equality is \(\ge 0\)
+instead of \(\le 0\). This will be reversed in a future release and
+eventually removed.</p></dd>
 
 
 <dt>...</dt>
@@ -180,26 +190,27 @@ Flugsysteme, Oberpfaffenhofen, July 1988.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">##  Solve the Hock-Schittkowski problem no. 100</span></span></span>
+<span class="r-in"><span><span class="co">##  Solve the Hock-Schittkowski problem no. 100 with analytic gradients</span></span></span>
+<span class="r-in"><span><span class="co">##  See https://apmonitor.com/wiki/uploads/Apps/hs100.apm</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">x0.hs100</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">0</span>, <span class="fl">4</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">fn.hs100</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">-</span><span class="fl">10</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="fl">5</span><span class="op">*</span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">-</span><span class="fl">12</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">^</span><span class="fl">4</span> <span class="op">+</span> <span class="fl">3</span><span class="op">*</span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span><span class="op">-</span><span class="fl">11</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="fl">10</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">5</span><span class="op">]</span><span class="op">^</span><span class="fl">6</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>          <span class="fl">7</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">6</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span><span class="op">^</span><span class="fl">4</span> <span class="op">-</span> <span class="fl">4</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">6</span><span class="op">]</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span> <span class="op">-</span> <span class="fl">10</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">6</span><span class="op">]</span> <span class="op">-</span> <span class="fl">8</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span><span class="va">hin.hs100</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="va">h</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="va">h</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">127</span> <span class="op">-</span> <span class="fl">2</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="fl">3</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">^</span><span class="fl">4</span> <span class="op">-</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">-</span> <span class="fl">4</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="fl">5</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">5</span><span class="op">]</span></span></span>
-<span class="r-in"><span>  <span class="va">h</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">282</span> <span class="op">-</span> <span class="fl">7</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="fl">3</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="fl">10</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="va">x</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">5</span><span class="op">]</span></span></span>
-<span class="r-in"><span>  <span class="va">h</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">196</span> <span class="op">-</span> <span class="fl">23</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="fl">6</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">6</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="fl">8</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span></span></span>
-<span class="r-in"><span>  <span class="va">h</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="fl">4</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="fl">3</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span><span class="fl">2</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">^</span><span class="fl">2</span> <span class="op">-</span> <span class="fl">5</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">6</span><span class="op">]</span>  <span class="op">+</span><span class="fl">11</span><span class="op">*</span><span class="va">x</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span></span></span>
-<span class="r-in"><span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">h</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fn.hs100</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="fl">10</span><span class="op">)</span> <span class="op">^</span> <span class="fl">2</span> <span class="op">+</span> <span class="fl">5</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="fl">12</span><span class="op">)</span> <span class="op">^</span> <span class="fl">2</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">^</span> <span class="fl">4</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>                         <span class="fl">3</span> <span class="op">*</span> <span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">-</span> <span class="fl">11</span><span class="op">)</span> <span class="op">^</span> <span class="fl">2</span> <span class="op">+</span> <span class="fl">10</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">5</span><span class="op">]</span> <span class="op">^</span> <span class="fl">6</span> <span class="op">+</span> <span class="fl">7</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">6</span><span class="op">]</span> <span class="op">^</span> <span class="fl">2</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>                         <span class="va">x</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span> <span class="op">^</span> <span class="fl">4</span> <span class="op">-</span> <span class="fl">4</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">6</span><span class="op">]</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span> <span class="op">-</span> <span class="fl">10</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">6</span><span class="op">]</span> <span class="op">-</span> <span class="fl">8</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">hin.hs100</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="fl">2</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">^</span> <span class="fl">2</span> <span class="op">+</span> <span class="fl">3</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">^</span> <span class="fl">4</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">+</span> <span class="fl">4</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">^</span> <span class="fl">2</span> <span class="op">+</span> <span class="fl">5</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">5</span><span class="op">]</span> <span class="op">-</span> <span class="fl">127</span>,</span></span>
+<span class="r-in"><span><span class="fl">7</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="fl">3</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">+</span> <span class="fl">10</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">^</span> <span class="fl">2</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">-</span> <span class="va">x</span><span class="op">[</span><span class="fl">5</span><span class="op">]</span> <span class="op">-</span> <span class="fl">282</span>,</span></span>
+<span class="r-in"><span><span class="fl">23</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">^</span> <span class="fl">2</span> <span class="op">+</span> <span class="fl">6</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">6</span><span class="op">]</span> <span class="op">^</span> <span class="fl">2</span> <span class="op">-</span> <span class="fl">8</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span> <span class="op">-</span> <span class="fl">196</span>,</span></span>
+<span class="r-in"><span><span class="fl">4</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">^</span> <span class="fl">2</span> <span class="op">+</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">^</span> <span class="fl">2</span> <span class="op">-</span> <span class="fl">3</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">+</span> <span class="fl">2</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">^</span> <span class="fl">2</span> <span class="op">+</span> <span class="fl">5</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">6</span><span class="op">]</span> <span class="op">-</span></span></span>
+<span class="r-in"><span> <span class="fl">11</span> <span class="op">*</span> <span class="va">x</span><span class="op">[</span><span class="fl">7</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">S</span> <span class="op">&lt;-</span> <span class="fu">slsqp</span><span class="op">(</span><span class="va">x0.hs100</span>, fn <span class="op">=</span> <span class="va">fn.hs100</span>,   <span class="co"># no gradients and jacobians provided</span></span></span>
 <span class="r-in"><span>     hin <span class="op">=</span> <span class="va">hin.hs100</span>,</span></span>
 <span class="r-in"><span>     nl.info <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span>     control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>xtol_rel <span class="op">=</span> <span class="fl">1e-8</span>, check_derivatives <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> For consistency with the rest of the package the inequality sign may be switched from &gt;= to &lt;= in a future nloptr version.</span>
+<span class="r-in"><span>     control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>xtol_rel <span class="op">=</span> <span class="fl">1e-8</span>, check_derivatives <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>     deprecatedBehavior <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Checking gradients of objective function.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Derivative checker results: 0 error(s) detected.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
@@ -220,17 +231,17 @@ Flugsysteme, Oberpfaffenhofen, July 1988.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   eval_jac_g_ineq[4, 1] =  2.0e+00 ~  2.0e+00   [1.311518e-11]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   eval_jac_g_ineq[1, 2] =  9.6e+01 ~  9.6e+01   [1.985688e-08]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   eval_jac_g_ineq[2, 2] =  3.0e+00 ~  3.0e+00   [2.191188e-10]</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   eval_jac_g_ineq[3, 2] =  4.0e+00 ~  4.0e+00   [2.355338e-11]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   eval_jac_g_ineq[3, 2] =  4.0e+00 ~  4.0e+00   [5.631432e-10]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   eval_jac_g_ineq[4, 2] =  1.0e+00 ~  1.0e+00   [4.978373e-11]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   eval_jac_g_ineq[1, 3] =  1.0e+00 ~  1.0e+00   [5.631432e-10]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   eval_jac_g_ineq[2, 3] =  0.0e+00 ~  0.0e+00   [0.000000e+00]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   eval_jac_g_ineq[3, 3] =  0.0e+00 ~  0.0e+00   [0.000000e+00]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   eval_jac_g_ineq[4, 3] =  0.0e+00 ~  0.0e+00   [0.000000e+00]</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   eval_jac_g_ineq[1, 4] =  3.2e+01 ~  3.2e+01   [7.445362e-09]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   eval_jac_g_ineq[1, 4] =  3.2e+01 ~  3.2e+01   [7.463696e-09]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   eval_jac_g_ineq[2, 4] =  1.0e+00 ~  1.0e+00   [2.909929e-09]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   eval_jac_g_ineq[3, 4] =  0.0e+00 ~  0.0e+00   [0.000000e+00]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   eval_jac_g_ineq[4, 4] =  0.0e+00 ~  0.0e+00   [0.000000e+00]</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   eval_jac_g_ineq[1, 5] =  5.0e+00 ~  5.0e+00   [2.355325e-11]</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   eval_jac_g_ineq[1, 5] =  5.0e+00 ~  5.0e+00   [9.378596e-11]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   eval_jac_g_ineq[2, 5] = -1.0e+00 ~ -1.0e+00   [2.909929e-09]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   eval_jac_g_ineq[3, 5] =  0.0e+00 ~  0.0e+00   [0.000000e+00]</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   eval_jac_g_ineq[4, 5] =  0.0e+00 ~  0.0e+00   [0.000000e+00]</span>
@@ -255,23 +266,28 @@ Flugsysteme, Oberpfaffenhofen, July 1988.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NLopt solver status: 4 ( NLOPT_XTOL_REACHED: Optimization stopped because </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> xtol_rel or xtol_abs (above) was reached. )</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Number of Iterations....: 41 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of Iterations....: 60 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Termination conditions:  stopval: -Inf	xtol_rel: 1e-08	maxeval: 1000	ftol_rel: 0	ftol_abs: 0 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of inequality constraints:  4 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of equality constraints:    0 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Optimal value of objective function:  680.630057375943 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Optimal value of controls: 2.3305 1.951372 -0.4775407 4.365726 -0.6244871 1.038131 1.594227</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Optimal value of objective function:  680.630057364075 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Optimal value of controls: 2.330497 1.951371 -0.4775421 4.36573 -0.6244872 1.038139 1.594228</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">##  The optimum value of the objective function should be 680.6300573</span></span></span>
+<span class="r-in"><span><span class="co">##  A suitable parameter vector is roughly</span></span></span>
+<span class="r-in"><span><span class="co">##  (2.330, 1.9514, -0.4775, 4.3657, -0.6245, 1.0381, 1.5942)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">S</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $par</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.3304999  1.9513724 -0.4775407  4.3657259 -0.6244871  1.0381315  1.5942274</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  2.3304967  1.9513713 -0.4775421  4.3657298 -0.6244872  1.0381386  1.5942275</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $value</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 680.6301</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $iter</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 60</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $convergence</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
@@ -279,10 +295,6 @@ Flugsysteme, Oberpfaffenhofen, July 1988.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $message</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "NLOPT_XTOL_REACHED: Optimization stopped because xtol_rel or xtol_abs (above) was reached."</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span><span class="co">## Optimal value of objective function:  680.630057375943</span></span></span>
-<span class="r-in"><span><span class="co">## Optimal value of controls: 2.3305 1.951372 -0.4775407 4.365726</span></span></span>
-<span class="r-in"><span><span class="co">##              -0.6244871 1.038131 1.594227</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
