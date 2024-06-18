@@ -109,7 +109,7 @@ cobyla <- function(x0, fn, lower = NULL, upper = NULL, hin = NULL,
               "restate the inequality to be <=0. The ability to use the old ",
               "behavior will be removed in a future release.")
       .hin <- match.fun(hin)
-      hin <- function(x) -.hin(x)      # change  hin >= 0  to  hin <= 0 !
+      hin <- function(x) -.hin(x, ...)      # change  hin >= 0  to  hin <= 0 !
     }
   }
 
