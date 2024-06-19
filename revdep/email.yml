@@ -1,6 +1,7 @@
-release_date: 2021-12-20
+my_version: 2.0.3
+release_date: 2024-06-15
 rel_release_date: 2 weeks
 my_news_url: https://github.com/astamm/nloptr/blob/master/NEWS.md
-release_version: 2.0.0
-release_details: The biggest change is that we now rely on CMake for building
-  systematically the latest version (2.7.1) of the NLopt library.
+release_version: 2.1.0
+release_details: The biggest change is that we now rely on tinytest instead of
+  testthat for unit testing.

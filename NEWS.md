@@ -11,33 +11,34 @@ one. The major changes include:
 * Reversed the direction of the inequality equations `hin` and `hinjac` in the
 wrapper functions which use them, bringing them into compliance with the main
 `nloptr` call. This addresses
-[Issue #148](https://github.com/astamm/nloptr/issues/148).
+[Issue #148](https://github.com/astamm/nloptr/issues/148);
 * Cleaned the Hock-Schittkowski problem no. 100, Hartmann 6-dimensional, and
 Powell exponential examples. This addresses
 [Issue #152](https://github.com/astamm/nloptr/issues/152) and
-[Issue #156](https://github.com/astamm/nloptr/issues/156).
-* Updated roxygen version.
-* Updated maintainer email.
-* Deal with NA returns from detectCords (contributed by @jeroen in PR #150);
-* Setup rhub v2 checks.
-* Update cmake installation instructions on Mac with brew (#146).
-* Allow use of equality constraints with COBYLA (#135).
+[Issue #156](https://github.com/astamm/nloptr/issues/156);
+* Updated roxygen version;
+* Updated maintainer email;
+* Deal with NA returns from `parallel::detectCores()` (contributed by @jeroen in 
+PR #150);
+* Setup rhub v2 checks;
+* Update cmake installation instructions on Mac with brew (#146);
+* Allow use of equality constraints with COBYLA (#135);
 * Replaced the unit testing framework of `testthat` with `tinytest` (See 
-[Issue #136](https://github.com/astamm/nloptr/issues/136)).
+[Issue #136](https://github.com/astamm/nloptr/issues/136));
 * Brought coverage of `is.nloptr` to 100%. The only file not completely covered
 by unit tests is `nloptr.c`. The uncovered calls are error messages which get
-trapped by tests in R before the call gets to C.
-* Linted package for code correctness and consistency.
-* Updated vignette, DESCRIPTION, and NEWS.
-* Updated package website to use bootstrap 5.
-* Expanded unit tests: coverage now over 97% with no file below 90%
-* Removed forcing `C++11`
-* Added safety checks to C code
-* Added many safety and efficiency enhancements to R code
-* Most R code style made self-consistent
+trapped by tests in R before the call gets to C;
+* Linted package for code correctness and consistency;
+* Updated vignette, DESCRIPTION, and NEWS;
+* Updated package website to use bootstrap 5;
+* Expanded unit tests: coverage now over 97% with no file below 90%;
+* Removed forcing `C++11`;
+* Added safety checks to C code;
+* Added many safety and efficiency enhancements to R code;
+* Most R code style made self-consistent;
 * Updated documentation and messages for accuracy and mathematical formatting
-* Updated Github actions
-* Some bugfixes (e.g. in `isres` or the warning in `nl.grad`.)
+* Updated Github actions;
+* Some bugfixes (e.g. in `isres` or the warning in `nl.grad`).
 
 Please see the commit logs for more detailed descriptions of the changes.
 
