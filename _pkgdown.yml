@@ -1,3 +1,8 @@
 url: https://astamm.github.io/nloptr/
 template:
   bootstrap: 5
+
+news:
+  releases:
+  - text: "nloptr 2.1.0"
+    href: https://astamm.github.io/posts/2024-06-19-nloptr-210/
