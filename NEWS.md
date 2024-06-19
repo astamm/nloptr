@@ -1,3 +1,5 @@
+# nloptr (development version)
+
 # nloptr 2.1.0
 This release deprecates the default behavior of the inequality equations in any
 wrapper function which uses them. Currently, they are calibrated to be >= 0.
