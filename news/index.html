@@ -24,8 +24,14 @@
 <li class="nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
-<li class="active nav-item">
-  <a class="nav-link" href="../news/index.html">Changelog</a>
+<li class="active nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-news">News</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-news">
+    <h6 class="dropdown-header" data-toc-skip>Releases</h6>
+    <a class="external-link dropdown-item" href="https://astamm.github.io/posts/2024-06-19-nloptr-210/">nloptr 2.1.0</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="../news/index.html">Changelog</a>
+  </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
@@ -51,7 +57,7 @@
 <h2 class="pkg-version" data-toc-text="development version" id="nloptr-development-version">nloptr (development version)<a class="anchor" aria-label="anchor" href="#nloptr-development-version"></a></h2>
 </div>
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="2.1.0" id="nloptr-210">nloptr 2.1.0<a class="anchor" aria-label="anchor" href="#nloptr-210"></a></h2>
+<h2 class="pkg-version" data-toc-text="2.1.0" id="nloptr-210">nloptr 2.1.0<a class="anchor" aria-label="anchor" href="#nloptr-210"></a></h2><p class="text-muted">CRAN release: 2024-06-19</p>
 <p>This release deprecates the default behavior of the inequality equations in any wrapper function which uses them. Currently, they are calibrated to be &gt;= 0. This version allows for the equations to be consistent with the main <code>nloptr</code> function, which requires &lt;= 0. In a future release, the default behavior will switch to assuming the calibration is &lt;= 0, and eventually, the &gt;= 0 behavior will be removed. It also includes a large number of safety and efficiency changes, and an expansion of the unit tests to 100% coverage for all files but one. The major changes include:</p>
 <ul><li>Reversed the direction of the inequality equations <code>hin</code> and <code>hinjac</code> in the wrapper functions which use them, bringing them into compliance with the main <code>nloptr</code> call. This addresses <a href="https://github.com/astamm/nloptr/issues/148" class="external-link">Issue </a><a href="https://github.com/astamm/nloptr/issues/148" class="external-link">#148</a>;</li>
 <li>Cleaned the Hock-Schittkowski problem no. 100, Hartmann 6-dimensional, and Powell exponential examples. This addresses <a href="https://github.com/astamm/nloptr/issues/152" class="external-link">Issue </a><a href="https://github.com/astamm/nloptr/issues/152" class="external-link">#152</a> and <a href="https://github.com/astamm/nloptr/issues/156" class="external-link">Issue </a><a href="https://github.com/astamm/nloptr/issues/156" class="external-link">#156</a>;</li>
