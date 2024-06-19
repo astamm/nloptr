@@ -50,28 +50,27 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.1.0" id="nloptr-210">nloptr 2.1.0<a class="anchor" aria-label="anchor" href="#nloptr-210"></a></h2>
 <p>This release deprecates the default behavior of the inequality equations in any wrapper function which uses them. Currently, they are calibrated to be &gt;= 0. This version allows for the equations to be consistent with the main <code>nloptr</code> function, which requires &lt;= 0. In a future release, the default behavior will switch to assuming the calibration is &lt;= 0, and eventually, the &gt;= 0 behavior will be removed. It also includes a large number of safety and efficiency changes, and an expansion of the unit tests to 100% coverage for all files but one. The major changes include:</p>
-<ul><li>Reversed the direction of the inequality equations <code>hin</code> and <code>hinjac</code> in the wrapper functions which use them, bringing them into compliance with the main <code>nloptr</code> call. This addresses <a href="https://github.com/astamm/nloptr/issues/148" class="external-link">Issue </a><a href="https://github.com/astamm/nloptr/issues/148" class="external-link">#148</a>.</li>
-<li>Cleaned the Hock-Schittkowski problem no. 100, Hartmann 6-dimensional, and Powell exponential examples. This addresses <a href="https://github.com/astamm/nloptr/issues/152" class="external-link">Issue </a><a href="https://github.com/astamm/nloptr/issues/152" class="external-link">#152</a> and <a href="https://github.com/astamm/nloptr/issues/156" class="external-link">Issue </a><a href="https://github.com/astamm/nloptr/issues/156" class="external-link">#156</a>.</li>
-<li>Updated roxygen version.</li>
-<li>Updated maintainer email.</li>
-<li>Deal with NA returns from detectCords (contributed by <a href="https://github.com/jeroen" class="external-link">@jeroen</a> in PR <a href="https://github.com/astamm/nloptr/issues/150" class="external-link">#150</a>);</li>
-<li>Setup rhub v2 checks.</li>
-<li>Update cmake installation instructions on Mac with brew (<a href="https://github.com/astamm/nloptr/issues/146" class="external-link">#146</a>).</li>
-<li>Allow use of equality constraints with COBYLA (<a href="https://github.com/astamm/nloptr/issues/135" class="external-link">#135</a>).</li>
-<li>Replaced the unit testing framework of <code>testthat</code> with <code>tinytest</code> (See <a href="https://github.com/astamm/nloptr/issues/136" class="external-link">Issue </a><a href="https://github.com/astamm/nloptr/issues/136" class="external-link">#136</a>).</li>
-<li>Brought coverage of <code>is.nloptr</code> to 100%. The only file not completely covered by unit tests is <code>nloptr.c</code>. The uncovered calls are error messages which get trapped by tests in R before the call gets to C.</li>
-<li>Linted package for code correctness and consistency.</li>
-<li>Updated vignette, DESCRIPTION, and NEWS.</li>
-<li>Updated package website to use bootstrap 5.</li>
-<li>Expanded unit tests: coverage now over 97% with no file below 90%</li>
-<li>Removed forcing <code>C++11</code>
-</li>
-<li>Added safety checks to C code</li>
-<li>Added many safety and efficiency enhancements to R code</li>
-<li>Most R code style made self-consistent</li>
+<ul><li>Reversed the direction of the inequality equations <code>hin</code> and <code>hinjac</code> in the wrapper functions which use them, bringing them into compliance with the main <code>nloptr</code> call. This addresses <a href="https://github.com/astamm/nloptr/issues/148" class="external-link">Issue </a><a href="https://github.com/astamm/nloptr/issues/148" class="external-link">#148</a>;</li>
+<li>Cleaned the Hock-Schittkowski problem no. 100, Hartmann 6-dimensional, and Powell exponential examples. This addresses <a href="https://github.com/astamm/nloptr/issues/152" class="external-link">Issue </a><a href="https://github.com/astamm/nloptr/issues/152" class="external-link">#152</a> and <a href="https://github.com/astamm/nloptr/issues/156" class="external-link">Issue </a><a href="https://github.com/astamm/nloptr/issues/156" class="external-link">#156</a>;</li>
+<li>Updated roxygen version;</li>
+<li>Updated maintainer email;</li>
+<li>Deal with NA returns from <code><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">parallel::detectCores()</a></code> (contributed by <a href="https://github.com/jeroen" class="external-link">@jeroen</a> in PR <a href="https://github.com/astamm/nloptr/issues/150" class="external-link">#150</a>);</li>
+<li>Setup rhub v2 checks;</li>
+<li>Update cmake installation instructions on Mac with brew (<a href="https://github.com/astamm/nloptr/issues/146" class="external-link">#146</a>);</li>
+<li>Allow use of equality constraints with COBYLA (<a href="https://github.com/astamm/nloptr/issues/135" class="external-link">#135</a>);</li>
+<li>Replaced the unit testing framework of <code>testthat</code> with <code>tinytest</code> (See <a href="https://github.com/astamm/nloptr/issues/136" class="external-link">Issue </a><a href="https://github.com/astamm/nloptr/issues/136" class="external-link">#136</a>);</li>
+<li>Brought coverage of <code>is.nloptr</code> to 100%. The only file not completely covered by unit tests is <code>nloptr.c</code>. The uncovered calls are error messages which get trapped by tests in R before the call gets to C;</li>
+<li>Linted package for code correctness and consistency;</li>
+<li>Updated vignette, DESCRIPTION, and NEWS;</li>
+<li>Updated package website to use bootstrap 5;</li>
+<li>Expanded unit tests: coverage now over 97% with no file below 90%;</li>
+<li>Removed forcing <code>C++11</code>;</li>
+<li>Added safety checks to C code;</li>
+<li>Added many safety and efficiency enhancements to R code;</li>
+<li>Most R code style made self-consistent;</li>
 <li>Updated documentation and messages for accuracy and mathematical formatting</li>
-<li>Updated Github actions</li>
-<li>Some bugfixes (e.g. in <code>isres</code> or the warning in <code>nl.grad</code>.)</li>
+<li>Updated Github actions;</li>
+<li>Some bugfixes (e.g. in <code>isres</code> or the warning in <code>nl.grad</code>).</li>
 </ul><p>Please see the commit logs for more detailed descriptions of the changes.</p>
 </div>
     <div class="section level2">
