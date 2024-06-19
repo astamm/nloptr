@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">nloptr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,6 +47,9 @@
       <small>Source: <a href="https://github.com/astamm/nloptr/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="development version" id="nloptr-development-version">nloptr (development version)<a class="anchor" aria-label="anchor" href="#nloptr-development-version"></a></h2>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.1.0" id="nloptr-210">nloptr 2.1.0<a class="anchor" aria-label="anchor" href="#nloptr-210"></a></h2>
 <p>This release deprecates the default behavior of the inequality equations in any wrapper function which uses them. Currently, they are calibrated to be &gt;= 0. This version allows for the equations to be consistent with the main <code>nloptr</code> function, which requires &lt;= 0. In a future release, the default behavior will switch to assuming the calibration is &lt;= 0, and eventually, the &gt;= 0 behavior will be removed. It also includes a large number of safety and efficiency changes, and an expansion of the unit tests to 100% coverage for all files but one. The major changes include:</p>
