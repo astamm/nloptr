@@ -1,4 +1,9 @@
-# nloptr (development version)
+# nloptr 2.1.1
+
+This is a patch release to work around a bug in the CRAN checks. Specifically,
+one of the unit tests for the `isres()` algorithm was failing on some CRAN
+builds because convergence is stochastic with slightly different results even
+with the same fixed seed prior to calling the function.
 
 # nloptr 2.1.0
 This release deprecates the default behavior of the inequality equations in any

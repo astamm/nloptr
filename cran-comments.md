@@ -1,5 +1,5 @@
 ## Test environments
-* local macOS R installation, R 4.4.0
+* local macOS R installation, R 4.4.1
 * continuous integration via GH actions:
   * macOS latest release
   * windows latest release
@@ -19,20 +19,12 @@
    ghcr.io/r-hub/containers/clang-asan:latest
 
 ## R CMD check results
-There was no ERROR and no WARNINGs.
-
-There was 1 NOTE:
-
-    * New maintainer:
-        Aymeric Stamm <aymeric.stamm@cnrs.fr>
-      Old maintainer(s):
-        Aymeric Stamm <aymeric.stamm@math.cnrs.fr>
-
-This is a change of email address. The maintainer is the same person.
+There was no ERROR, no WARNING and no NOTE.
 
 ## Downstream dependencies
 
-We checked 145 reverse dependencies (136 from CRAN + 9 from Bioconductor), comparing R CMD check results across CRAN and dev versions of this package.
+We checked 145 reverse dependencies (136 from CRAN + 9 from Bioconductor),
+comparing R CMD check results across CRAN and dev versions of this package.
 
  * We saw 0 new problems
  * We failed to check 3 packages
