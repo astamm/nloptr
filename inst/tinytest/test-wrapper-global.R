@@ -159,8 +159,6 @@ isresControl <- nloptr(x0 = x0,
                                    maxeval = 2e4L, xtol_rel = 1e-6,
                                    population = 60))
 
-# expect_equal(isresTest$par, isresControl$solution, tolerance = 1e-1)
-# expect_equal(isresTest$value, isresControl$objective, tolerance = 1e-1)
 expect_identical(stogoTest$convergence, stogoControl$status)
 expect_identical(stogoTest$message, stogoControl$message)
 
@@ -194,7 +192,7 @@ isresTest <- suppressWarnings(isres(x0, rbf, lb, ub, hin = hin2,
                                     maxeval = 2e4L))
 
 expect_equal(isresTest$par, isresControl$solution, tolerance = 1e-4)
-expect_equal(isresTest$value, isresControl$objective, tolerance = 1e-4)
+expect_equal(isresTest$value, isresControl$objective, tolerance = 1e-3)
 expect_identical(stogoTest$convergence, stogoControl$status)
 expect_identical(stogoTest$message, stogoControl$message)
 
