@@ -34,11 +34,8 @@ hin <- function(x) 0.25 * x[1L] ^ 2 + x[2L] ^ 2 - 1    # hin <= 0
 heq <- function(x) x[1L] + x[2L] - 1                   # heq = 0
 hinjac <- function(x) c(0.5 * x[1L], 2 * x[2L])
 heqjac <- function(x) c(1, 1)
-# hinjac <- function(x) nl.jacobian(x, hin)
-# heqjac <- function(x) nl.jacobian(x, heq)
 hin2 <- function(x) -hin(x)                       # Needed to test old behavior
 hinjac2 <- function(x) -hinjac(x)
-# hinjac2 <- function(x) nl.jacobian(x, hin2)     # Needed to test old behavior
 
 x0 <- c(-1.2, 1)
 lb <- c(-3, -3)
