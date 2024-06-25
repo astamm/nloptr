@@ -198,8 +198,8 @@ isresTest <- suppressWarnings(isres(x0, rbf, lb, ub, hin = hin2,
 
 expect_equal(isresTest$par, isresControl$solution, tolerance = 1e-4)
 expect_equal(isresTest$value, isresControl$objective, tolerance = 1e-3)
-expect_identical(stogoTest$convergence, stogoControl$status)
-expect_identical(stogoTest$message, stogoControl$message)
+expect_identical(isresTest$convergence, isresControl$status)
+expect_identical(isresTest$message, isresControl$message)
 
 ## CRS2LM
 # Test printout if nl.info passed. The word "Call:" should be in output if
