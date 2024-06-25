@@ -1,3 +1,8 @@
+# nloptr 2.1.1.9000
+This is a patch (pre) release. It includes
+
+* Correcting some of the unit tests in `test-global-wrapper`.
+
 # nloptr 2.1.1
 
 This is a patch release to work around a bug in the CRAN checks. Specifically,
