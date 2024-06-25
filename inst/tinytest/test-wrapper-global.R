@@ -142,8 +142,8 @@ isresControl <- nloptr(x0 = x0,
 
 expect_equal(isresTest$par, isresControl$solution, tolerance = 1e-4)
 expect_equal(isresTest$value, isresControl$objective, tolerance = 1e-4)
-expect_identical(stogoTest$convergence, stogoControl$status)
-expect_identical(stogoTest$message, stogoControl$message)
+expect_identical(isresTest$convergence, isresControl$status)
+expect_identical(isresTest$message, isresControl$message)
 
 # Passing heq
 # Need a ridiculously loose tolerance on ISRES now.
