@@ -9,10 +9,15 @@
 # algorithms have issues, this test suite may not be completed.
 #
 # Changelog:
-#   2023-08-23: Change _output to _stdout
+#   2023-08-23: Change _output to _stdout. (Avraham Adler)
+#   2023-06-24: Reduce tolerance of ISRES tests to pass CRAN. (Aymeric Stamm)
+#   2023-06-25: Use analytic gradients and Jacobians for hin/heq. Correct some
+#               of the ISRES tests which were pulling on Stogo results.
+#               (Avraham Adler)
 #
 
 library(nloptr)
+tol <- 1e-3 # Stochastic algorithms require a weaker tolerance
 
 depMess <- paste("The old behavior for hin >= 0 has been deprecated. Please",
                  "restate the inequality to be <=0. The ability to use the old",
@@ -23,6 +28,7 @@ rbf <- function(x) {(1 - x[1]) ^ 2 + 100 * (x[2] - x[1] ^ 2) ^ 2}
 ## Analytic gradient
 gr <- function(x) {c(-2 * (1 - x[1]) - 400 * x[1] * (x[2] - x[1] ^ 2),
                      200 * (x[2] - x[1] ^ 2))}
+gr.diff <- function(x) nl.grad(x, rbf)
 
 hin <- function(x) 0.25 * x[1L] ^ 2 + x[2L] ^ 2 - 1    # hin <= 0
 heq <- function(x) x[1L] + x[2L] - 1                   # heq = 0
@@ -51,7 +57,7 @@ stogoTest <- stogo(x0, rbf, lower = lb, upper = ub)
 
 stogoControl <- nloptr(x0 = x0,
                        eval_f = rbf,
-                       eval_grad_f = function(x) nl.grad(x, rbf),
+                       eval_grad_f = gr.diff,
                        lb = lb,
                        ub = ub,
                        opts = list(algorithm = "NLOPT_GD_STOGO",
@@ -118,8 +124,8 @@ isresControl <- nloptr(x0 = x0,
                                    maxeval = 2e4L, xtol_rel = 1e-6,
                                    population = 60))
 
-expect_equal(isresTest$par, isresControl$solution, tolerance = 1e-4)
-expect_equal(isresTest$value, isresControl$objective, tolerance = 1e-4)
+expect_equal(isresTest$par, isresControl$solution, tolerance = tol)
+expect_equal(isresTest$value, isresControl$objective, tolerance = tol)
 expect_identical(isresTest$convergence, isresControl$status)
 expect_identical(isresTest$message, isresControl$message)
 
@@ -158,8 +164,8 @@ expect_silent(isres(x0, rbf, lb, ub, hin = hin, maxeval = 2e4L,
 isresTest <- isres(x0, rbf, lb, ub, hin = hin, maxeval = 2e4L,
                    deprecatedBehavior = FALSE)
 
-expect_equal(isresTest$par, isresControl$solution, tolerance = 1e-4)
-expect_equal(isresTest$value, isresControl$objective, tolerance = 1e-4)
+expect_equal(isresTest$par, isresControl$solution, tolerance = tol)
+expect_equal(isresTest$value, isresControl$objective, tolerance = tol)
 expect_identical(isresTest$convergence, isresControl$status)
 expect_identical(isresTest$message, isresControl$message)
 
@@ -171,8 +177,8 @@ expect_warning(isres(x0, rbf, lower = lb, upper = ub, hin = hin2,
 isresTest <- suppressWarnings(isres(x0, rbf, lb, ub, hin = hin2,
                                     maxeval = 2e4L))
 
-expect_equal(isresTest$par, isresControl$solution, tolerance = 1e-4)
-expect_equal(isresTest$value, isresControl$objective, tolerance = 1e-3)
+expect_equal(isresTest$par, isresControl$solution, tolerance = tol)
+expect_equal(isresTest$value, isresControl$objective, tolerance = tol)
 expect_identical(isresTest$convergence, isresControl$status)
 expect_identical(isresTest$message, isresControl$message)
 
