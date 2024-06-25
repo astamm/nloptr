@@ -32,32 +32,7 @@ heqjac <- function(x) c(1, 1)
 # heqjac <- function(x) nl.jacobian(x, heq)
 hin2 <- function(x) -hin(x)                       # Needed to test old behavior
 hinjac2 <- function(x) -hinjac(x)
-# hinjac2 <- function(x) nl.jacobian(x, hin2)       # Needed to test old behavior
-
-# Take these outside the function since they are unchanging; just pass them!
-a <- c(1.0, 1.2, 3.0, 3.2)
-A <- matrix(c(10,  0.05, 3, 17,
-              3, 10, 3.5, 8,
-              17, 17, 1.7, 0.05,
-              3.5, 0.1, 10, 10,
-              1.7, 8, 17, 0.1,
-              8, 14, 8, 14), nrow = 4)
-
-B  <- matrix(c(.1312, .2329, .2348, .4047,
-               .1696, .4135, .1451, .8828,
-               .5569, .8307, .3522, .8732,
-               .0124, .3736, .2883, .5743,
-               .8283, .1004, .3047, .1091,
-               .5886, .9991, .6650, .0381), nrow = 4)
-
-hartmann6 <- function(x, a, A, B) {
-  fun <- 0
-  for (i in 1:4) {
-    fun <- fun - a[i] * exp(-sum(A[i, ] * (x - B[i, ]) ^ 2))
-  }
-
-  fun
-}
+# hinjac2 <- function(x) nl.jacobian(x, hin2)     # Needed to test old behavior
 
 x0 <- c(-1.2, 1)
 lb <- c(-3, -3)
@@ -202,6 +177,31 @@ expect_identical(isresTest$convergence, isresControl$status)
 expect_identical(isresTest$message, isresControl$message)
 
 ## CRS2LM
+# Take these outside the function since they are unchanging; just pass them!
+a <- c(1.0, 1.2, 3.0, 3.2)
+A <- matrix(c(10,  0.05, 3, 17,
+              3, 10, 3.5, 8,
+              17, 17, 1.7, 0.05,
+              3.5, 0.1, 10, 10,
+              1.7, 8, 17, 0.1,
+              8, 14, 8, 14), nrow = 4)
+
+B  <- matrix(c(.1312, .2329, .2348, .4047,
+               .1696, .4135, .1451, .8828,
+               .5569, .8307, .3522, .8732,
+               .0124, .3736, .2883, .5743,
+               .8283, .1004, .3047, .1091,
+               .5886, .9991, .6650, .0381), nrow = 4)
+
+hartmann6 <- function(x, a, A, B) {
+  fun <- 0
+  for (i in 1:4) {
+    fun <- fun - a[i] * exp(-sum(A[i, ] * (x - B[i, ]) ^ 2))
+  }
+
+  fun
+}
+
 # Test printout if nl.info passed. The word "Call:" should be in output if
 # passed and not if not passed.
 x0 <- lb <- rep(0, 6L)
