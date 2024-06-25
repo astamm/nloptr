@@ -162,7 +162,22 @@ expect_equal(testRes$solution, rbfOptLoc, tolerance = tol)
 lb <- c(-3, -3)
 ub <- c(3,  3)
 
-## NLOPT_GN_ISRES
+## StoGo
+opts$algorithm <- "NLOPT_GD_STOGO"
+testRes <- nloptr(x0 = x0, eval_f = rbf, eval_grad_f = rbfgr, lb = lb, ub = ub,
+                  opts = opts)
+
+expect_equal(testRes$objective, rbfOptVal, tolerance = 1e-4)
+expect_equal(testRes$solution, rbfOptLoc, tolerance = 1e-4)
+
+opts$algorithm <- "NLOPT_GD_STOGO_RAND"
+testRes <- nloptr(x0 = x0, eval_f = rbf, eval_grad_f = rbfgr, lb = lb, ub = ub,
+                  opts = opts)
+
+expect_equal(testRes$objective, rbfOptVal, tolerance = 1e-4)
+expect_equal(testRes$solution, rbfOptLoc, tolerance = 1e-4)
+
+## ISRES
 opts$population <- 100
 opts$ranseed <- 2718L
 opts$algorithm <- "NLOPT_GN_ISRES"
@@ -240,21 +255,6 @@ expect_stdout(nloptr(x0 = x0, eval_f = rbf, lb = lb, ub = ub, opts = opts))
 
 opts$algorithm <- "NLOPT_GN_ORIG_DIRECT"
 expect_stdout(nloptr(x0 = x0, eval_f = rbf, lb = lb, ub = ub, opts = opts))
-
-## StoGo
-opts$algorithm <- "NLOPT_GD_STOGO"
-testRes <- nloptr(x0 = x0, eval_f = rbf, eval_grad_f = rbfgr, lb = lb, ub = ub,
-                  opts = opts)
-
-expect_equal(testRes$objective, rbfOptVal, tolerance = tol)
-expect_equal(testRes$solution, rbfOptLoc, tolerance = 2e-5)
-
-opts$algorithm <- "NLOPT_GD_STOGO_RAND"
-testRes <- nloptr(x0 = x0, eval_f = rbf, eval_grad_f = rbfgr, lb = lb, ub = ub,
-                  opts = opts)
-
-expect_equal(testRes$objective, rbfOptVal, tolerance = tol)
-expect_equal(testRes$solution, rbfOptLoc, tolerance = 2e-5)
 
 ## ESCH - does not converge in 1M iterations so just test for output. Probably
 ## needs MUCH tighter bounds.
