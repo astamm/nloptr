@@ -25,11 +25,14 @@ gr <- function(x) {c(-2 * (1 - x[1]) - 400 * x[1] * (x[2] - x[1] ^ 2),
                      200 * (x[2] - x[1] ^ 2))}
 
 hin <- function(x) 0.25 * x[1L] ^ 2 + x[2L] ^ 2 - 1    # hin <= 0
-heq <- function(x) x[1L] - 2 * x[2L] + 1               # heq = 0
-hinjac <- function(x) nl.jacobian(x, hin)
-heqjac <- function(x) nl.jacobian(x, heq)
+heq <- function(x) x[1L] + x[2L] - 1                   # heq = 0
+hinjac <- function(x) c(0.5 * x[1L], 2 * x[2L])
+heqjac <- function(x) c(1, 1)
+# hinjac <- function(x) nl.jacobian(x, hin)
+# heqjac <- function(x) nl.jacobian(x, heq)
 hin2 <- function(x) -hin(x)                       # Needed to test old behavior
-hinjac2 <- function(x) nl.jacobian(x, hin2)       # Needed to test old behavior
+hinjac2 <- function(x) -hinjac(x)
+# hinjac2 <- function(x) nl.jacobian(x, hin2)       # Needed to test old behavior
 
 # Take these outside the function since they are unchanging; just pass them!
 a <- c(1.0, 1.2, 3.0, 3.2)
@@ -146,9 +149,11 @@ expect_identical(isresTest$convergence, isresControl$status)
 expect_identical(isresTest$message, isresControl$message)
 
 # Passing heq
-# Need a ridiculously loose tolerance on ISRES now.
-# (AA: 2023-02-06)
-isresTest <- isres(x0, rbf, lb, ub, heq = heq, maxeval = 2e4L)
+# Cannot check for value equivalence since the stochastic nature of the problem
+# creates different solutions to this "improper" test even using the same seed
+# and calls! So dropping maxeval to 1e4 for speed.
+# (AA: 2024-06-25)
+isresTest <- isres(x0, rbf, lb, ub, heq = heq, maxeval = 1e4L)
 
 isresControl <- nloptr(x0 = x0,
                        eval_f = rbf,
@@ -156,11 +161,11 @@ isresControl <- nloptr(x0 = x0,
                        lb = lb,
                        ub = ub,
                        opts = list(algorithm = "NLOPT_GN_ISRES",
-                                   maxeval = 2e4L, xtol_rel = 1e-6,
+                                   maxeval = 1e4L, xtol_rel = 1e-6,
                                    population = 60))
 
-expect_identical(stogoTest$convergence, stogoControl$status)
-expect_identical(stogoTest$message, stogoControl$message)
+expect_identical(isresTest$convergence, isresControl$status)
+expect_identical(isresTest$message, isresControl$message)
 
 # Passing hin
 isresControl <- nloptr(x0 = x0,
