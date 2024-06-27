@@ -1,3 +1,5 @@
+# nloptr (development version)
+
 # nloptr 2.1.1
 
 This is a patch release to work around a bug in the CRAN checks. Specifically,
