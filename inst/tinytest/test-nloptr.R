@@ -8,7 +8,9 @@
 # Test code in nloptr.R and nloptr.c which is not tested elsewhere.
 #
 # Changelog:
-#   2023-08-23: Converted snapshots to testing portions of outputs and messages.
+#   2023-08-23: Converted snapshots to testing portions of outputs and messages
+#               (Avraham Adler).
+#   2024-07-01: Update "snapshots" for more accurate algorithm (Avraham Adler).
 #
 # It is possible for NLOPT to go slightly beyond maxtime or maxeval, especially
 # for the global algorithms, which is why the stopping criterion has a
@@ -16,7 +18,7 @@
 # https://nlopt.readthedocs.io/en/latest/NLopt_Reference/#stopping-criteria
 
 library(nloptr)
-options(digits=7)
+options(digits = 7)
 
 tol <- sqrt(.Machine$double.eps)
 
@@ -188,9 +190,10 @@ expect_identical(testRun$message, minus2mess)
 
 ## case NLOPT_FAILURE
 fnl <- function(x) {
-  list("objective" = (x[1] - 1) ^ 2 + (x[2] - 1) ^ 2,
-       "gradient" = c(4 * (x[1] - 1), 3 - (x[2] - 1)))
+  list(objective = (x[1] - 1) ^ 2 + (x[2] - 1) ^ 2,
+       gradient = c(4 * (x[1] - 1), 3 - (x[2] - 1)))
 }
+
 x0 <- c(3, 3)
 testRun <- nloptr(x0, fnl,
                   opts = list(algorithm = "NLOPT_LD_LBFGS", xtol_rel = 1e-8))
@@ -232,8 +235,8 @@ expect_message(
                        print_level = 3, check_derivatives = TRUE)),
     type = "output"
   ),
-  "eval_jac_g_ineq[1, 1] = -4.0e+00 ~ -4.0e+00   [7.450581e-09]", fixed = TRUE
-)
+  "eval_jac_g_ineq[1, 1] = -4.0e+00 ~ -4.000000e+00   [2.575717e-14]",
+  fixed = TRUE)
 
 ## UNIVARIATE FUNCTION
 x0 <- 5
@@ -265,7 +268,7 @@ expect_message(
                        print_level = 3, check_derivatives = TRUE)),
     type = "output"
   ),
-  "eval_jac_g_ineq[1] = -1e+01 ~ -1e+01   [9.536743e-09]", fixed = TRUE
+  "eval_jac_g_eq[1] = 1e+01 ~ 1e+01   [1.258371e-12]", fixed = TRUE
 )
 
 # Test NLOPT_ROUNDOFF_LIMITED
