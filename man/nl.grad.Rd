@@ -5,7 +5,7 @@
 \alias{nl.jacobian}
 \title{Numerical Gradients and Jacobians}
 \usage{
-nl.grad(x0, fn, heps = .Machine$double.eps^(1/3), ...)
+nl.grad(x0, fn, heps = .Machine$double.eps^0.2, ...)
 }
 \arguments{
 \item{x0}{point as a vector where the gradient is to be calculated.}
