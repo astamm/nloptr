@@ -30,9 +30,13 @@
  * through a grant (RES-589-28-0001) to the ESRC Centre for Microdata
  * Methods and Practice (CeMMAP) is gratefully acknowledged.
  *
- * 13/01/2011: added print_level option
- * 24/07/2011: added checks on return value when setting equality constraints etc.
- * 05/11/2013: Moved declaration of ineq_constr_data and eq_constr_data outside if-statement to solve segfault on Ubuntu.
+ * 2011-01-13: added print_level option
+ * 2011-07-24: added checks on return value when setting equality constraints
+ *  etc.
+ * 2013-11-05: Moved declaration of ineq_constr_data and eq_constr_data outside
+ *  if-statement to solve segfault on Ubuntu.
+ * 2024-07-01: Update old include which is no longer maintained and other minor
+ *  code tweaks (Avraham Adler).
  */
 
  // TODO: add minimize/maximize option (objective = "maximize")
@@ -42,11 +46,9 @@
 #include <nlopt.h>
 
 #include <R.h>
-#include <Rdefines.h>
-// Rdefines.h is somewhat more higher level then Rinternal.h, and is preferred if the code might be shared with S at any stage.
+#include <Rinternals.h>  // Rdefines.h is no longer maintained.
 
-// #include <string>
-
+#define AS_INTEGER(x)	Rf_coerceVector(x, INTSXP)
 
 /*
  * Extracts element with name 'str' from R object 'list'
