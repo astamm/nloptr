@@ -1,7 +1,10 @@
 # nloptr 2.1.1.9000
 This is a patch (pre) release. It includes
 
+* Standardize all numerical gradient and Jacobian functions to use a more
+accurate five-point estimate and update affected functions and tests.
 * Correcting some of the unit tests in `test-global-wrapper`.
+* Update and expand other unit tests.
 
 # nloptr 2.1.1
 
