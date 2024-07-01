@@ -56,7 +56,7 @@
 #'   ## [3,]  0  0
 #'   ## [4,]  0  0
 #'
-nl.grad <- function(x0, fn, heps = .Machine$double.eps ^ (1 / 3), ...) {
+nl.grad <- function(x0, fn, heps = .Machine$double.eps ^ 0.2, ...) {
 
   if (!is.numeric(x0)) stop("Argument 'x0' must be a numeric value.")
 
@@ -69,7 +69,7 @@ nl.grad <- function(x0, fn, heps = .Machine$double.eps ^ (1 / 3), ...) {
   hh <- gr <- rep(0, n)
   for (i in seq_len(n)) {
     hh[i] <- heps
-    gr[i] <- (fn(x0 + hh) - fn(x0 - hh)) / (2 * heps)
+    gr[i] <- grad.5pc(x0, fn, hh, heps)
     hh[i] <- 0
   }
 
@@ -77,7 +77,7 @@ nl.grad <- function(x0, fn, heps = .Machine$double.eps ^ (1 / 3), ...) {
 }
 
 #' @export
-nl.jacobian <- function(x0, fn, heps = .Machine$double.eps ^ (1 / 3), ...) {
+nl.jacobian <- function(x0, fn, heps = .Machine$double.eps ^ 0.2, ...) {
 
   n <- length(x0)
   if (!is.numeric(x0) || n == 0)
@@ -90,9 +90,18 @@ nl.jacobian <- function(x0, fn, heps = .Machine$double.eps ^ (1 / 3), ...) {
   hh <- rep(0, n)
   for (i in seq_len(n)) {
     hh[i] <- heps
-    jacob[, i] <- (fn(x0 + hh) - fn(x0 - hh)) / (2 * heps)
+    jacob[, i] <- grad.5pc(x0, fn, hh, heps)
     hh[i] <- 0
   }
 
   jacob
+}
+
+grad.3pc <- function(x0, fn, hh, heps, ...) {
+  (fn(x0 + hh) - fn(x0 - hh)) / (2 * heps)
+}
+
+grad.5pc <- function(x0, fn, hh, heps, ...) {
+  (fn(x0 - 2 * hh) - 8 * (fn(x0 - hh) - fn(x0 + hh)) - fn(x0 + 2 * hh)) /
+    (12 * heps)
 }
