@@ -5,7 +5,7 @@
 # Author: Jelmer Ypma
 # Date:   24 July 2011
 #
-# Compare analytic derivatives wih finite difference approximations.
+# Compare analytic derivatives with finite difference approximations.
 #
 # Input:
 #    .x : compare at this point
@@ -27,8 +27,10 @@
 #   2013-10-27: Added relative_error and flag_derivative_warning to output list.
 #   2014-05-05: Replaced cat by message, so messages can now be suppressed by
 #         suppressMessages.
-#   2023-02-09: Cleanup and tweaks for safety and efficiency (AA)
-
+#   2023-02-09: Cleanup and tweaks for safety and efficiency (Avraham Adler).
+#   2024-07-01: Converted to use nl.grad to have package be consistent in its
+#         numerical differentiation routines (Avraham Adler).
+#
 
 #' Check analytic gradients of a function using finite difference
 #' approximations
@@ -97,9 +99,14 @@ check.derivatives <- function(.x,
                               check_derivatives_print = "all",
                               func_grad_name = "grad_f",
                               ...) {
+
   analytic_grad <- func_grad(.x, ...)
 
-  finite_diff_grad <- finite.diff(func, .x, ...)
+  finite_diff_grad <- if (length(func(.x, ...)) > 1L) {
+    nl.jacobian(.x, func, ...)
+  } else {
+    nl.grad(.x, func, ...)
+  }
 
   relative_error <- ifelse(finite_diff_grad == 0,
                            analytic_grad,
@@ -147,7 +154,6 @@ check.derivatives <- function(.x,
             "\n\n")
   } else if (check_derivatives_print == "errors") {
     if (sum(flag_derivative_warning) > 0) {
-
       message("\n",
               paste0(ifelse(flag_derivative_warning[flag_derivative_warning],
                             "*", " "),
@@ -163,10 +169,9 @@ check.derivatives <- function(.x,
                      "]", collapse = "\n"),
               "\n\n")
     }
-  } else if (check_derivatives_print == "none") {}
+  }
 
-  list("analytic"        = analytic_grad,
-       "finite_difference"     = finite_diff_grad,
-       "relative_error"      = relative_error,
-       "flag_derivative_warning" = flag_derivative_warning)
+  list(analytic = analytic_grad, finite_difference = finite_diff_grad,
+       relative_error = relative_error,
+       flag_derivative_warning = flag_derivative_warning)
 }
