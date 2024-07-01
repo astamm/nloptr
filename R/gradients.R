@@ -15,8 +15,9 @@
 #       around 25% faster than partial vectorization creating a heps using
 #       diag and pulling vectors off row-by-row in nl.grad & nl.jacobian.
 #       (Avraham Adler)
+# 2024-07-01: Convert to more accurate five-point central estimate and use the
+#       same function in both nl.grad and nl.jacobian to prevent discrepancy.
 #
-
 
 #' Numerical Gradients and Jacobians
 #'
@@ -69,7 +70,7 @@ nl.grad <- function(x0, fn, heps = .Machine$double.eps ^ 0.2, ...) {
   hh <- gr <- rep(0, n)
   for (i in seq_len(n)) {
     hh[i] <- heps
-    gr[i] <- grad.5pc(x0, fn, hh, heps)
+    gr[i] <- grad.5pc(x0, fn, hh, heps, ...)
     hh[i] <- 0
   }
 
@@ -90,18 +91,18 @@ nl.jacobian <- function(x0, fn, heps = .Machine$double.eps ^ 0.2, ...) {
   hh <- rep(0, n)
   for (i in seq_len(n)) {
     hh[i] <- heps
-    jacob[, i] <- grad.5pc(x0, fn, hh, heps)
+    jacob[, i] <- grad.5pc(x0, fn, hh, heps, ...)
     hh[i] <- 0
   }
 
   jacob
 }
 
-grad.3pc <- function(x0, fn, hh, heps, ...) {
-  (fn(x0 + hh) - fn(x0 - hh)) / (2 * heps)
-}
+# Five point centered estimate (5pc) also known as five-point stencil and has
+# the same effect as one implementation of Richardson extrapolation on the
+# three-point centered estimate.
 
 grad.5pc <- function(x0, fn, hh, heps, ...) {
-  (fn(x0 - 2 * hh) - 8 * (fn(x0 - hh) - fn(x0 + hh)) - fn(x0 + 2 * hh)) /
+  (fn(x0 - 2 * hh) - 8 * fn(x0 - hh) + 8 * fn(x0 + hh) - fn(x0 + 2 * hh)) /
     (12 * heps)
 }
