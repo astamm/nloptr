@@ -64,95 +64,286 @@ SEXP getListElement (SEXP list, char *str) {
   return elmt;
 }
 
+// Convert the algorithm lookup from a nested if-else chain to a lookup table
+// and switch statement. See https://stackoverflow.com/a/49215742/2726543
+
+typedef struct algpair {
+  char *key;
+  int value;
+} ALGPAIR;
+
+// algtable must be in sorted order for bsearch to work properly.
+
+ALGPAIR algtable[] = {
+  {"NLOPT_GD_MLSL", 1},
+  {"NLOPT_GD_MLSL_LDS", 2},
+  {"NLOPT_GD_STOGO", 3},
+  {"NLOPT_GD_STOGO_RAND", 4},
+  {"NLOPT_GN_CRS2_LM", 5},
+  {"NLOPT_GN_DIRECT", 6},
+  {"NLOPT_GN_DIRECT_L", 7},
+  {"NLOPT_GN_DIRECT_L_NOSCAL", 8},
+  {"NLOPT_GN_DIRECT_L_RAND", 9},
+  {"NLOPT_GN_DIRECT_L_RAND_NOSCAL", 10},
+  {"NLOPT_GN_DIRECT_NOSCAL", 11},
+  {"NLOPT_GN_ESCH", 12},
+  {"NLOPT_GN_ISRES", 13},
+  {"NLOPT_GN_MLSL", 14},
+  {"NLOPT_GN_MLSL_LDS", 15},
+  {"NLOPT_GN_ORIG_DIRECT", 16},
+  {"NLOPT_GN_ORIG_DIRECT_L", 17},
+  {"NLOPT_LD_AUGLAG", 18},
+  {"NLOPT_LD_AUGLAG_EQ", 19},
+  {"NLOPT_LD_CCSAQ", 20},
+  {"NLOPT_LD_LBFGS", 21},
+  {"NLOPT_LD_LBFGS_NOCEDAL", 22},
+  {"NLOPT_LD_MMA", 23},
+  {"NLOPT_LD_SLSQP", 24},
+  {"NLOPT_LD_TNEWTON", 25},
+  {"NLOPT_LD_TNEWTON_PRECOND", 26},
+  {"NLOPT_LD_TNEWTON_PRECOND_RESTART", 27},
+  {"NLOPT_LD_TNEWTON_RESTART", 28},
+  {"NLOPT_LD_VAR1", 29},
+  {"NLOPT_LD_VAR2", 30},
+  {"NLOPT_LN_AUGLAG", 31},
+  {"NLOPT_LN_AUGLAG_EQ", 32},
+  {"NLOPT_LN_BOBYQA", 33},
+  {"NLOPT_LN_COBYLA", 34},
+  {"NLOPT_LN_NELDERMEAD", 35},
+  {"NLOPT_LN_NEWUOA", 36},
+  {"NLOPT_LN_NEWUOA_BOUND", 37},
+  {"NLOPT_LN_PRAXIS", 38},
+  {"NLOPT_LN_SBPLX", 39},
+};
+
+static int compAlg(const void *va, const void *vb) {
+  const ALGPAIR *a = va, *b = vb;
+  return strcmp(a->key, b->key);
+}
+
+int getVal(const char *key) {
+  ALGPAIR *pair = bsearch(&key, algtable, sizeof algtable / sizeof algtable[0],
+                          sizeof algtable[0], compAlg);
+  return pair ? pair->value : -1;
+}
+
 // convert string to nlopt_algorithm
 nlopt_algorithm getAlgorithmCode(const char *algorithm_str) {
 
   nlopt_algorithm algorithm;
 
-  if (strcmp(algorithm_str, "NLOPT_GN_DIRECT") == 0) {
-    algorithm = NLOPT_GN_DIRECT;
-  } else if (strcmp(algorithm_str, "NLOPT_GN_DIRECT_L") == 0) {
-    algorithm = NLOPT_GN_DIRECT_L;
-  } else if (strcmp(algorithm_str, "NLOPT_GN_DIRECT_L_RAND") == 0) {
-    algorithm = NLOPT_GN_DIRECT_L_RAND;
-  } else if (strcmp(algorithm_str, "NLOPT_GN_DIRECT_NOSCAL") == 0) {
-    algorithm = NLOPT_GN_DIRECT_NOSCAL;
-  } else if (strcmp(algorithm_str, "NLOPT_GN_DIRECT_L_NOSCAL") == 0) {
-    algorithm = NLOPT_GN_DIRECT_L_NOSCAL;
-  } else if (strcmp(algorithm_str, "NLOPT_GN_DIRECT_L_RAND_NOSCAL") == 0) {
-    algorithm = NLOPT_GN_DIRECT_L_RAND_NOSCAL;
-  } else if (strcmp(algorithm_str, "NLOPT_GN_ORIG_DIRECT") == 0) {
-    algorithm = NLOPT_GN_ORIG_DIRECT;
-  } else if (strcmp(algorithm_str, "NLOPT_GN_ORIG_DIRECT_L") == 0) {
-    algorithm = NLOPT_GN_ORIG_DIRECT_L;
-  } else if (strcmp(algorithm_str, "NLOPT_GD_STOGO") == 0) {
-    algorithm = NLOPT_GD_STOGO;
-  } else if (strcmp(algorithm_str, "NLOPT_GD_STOGO_RAND") == 0) {
-    algorithm = NLOPT_GD_STOGO_RAND;
-  } else if (strcmp(algorithm_str, "NLOPT_LD_SLSQP") == 0) {
-    algorithm = NLOPT_LD_SLSQP;
-  } else if (strcmp(algorithm_str, "NLOPT_LD_LBFGS_NOCEDAL") == 0) {
-    algorithm = NLOPT_LD_LBFGS_NOCEDAL;
-  } else if (strcmp(algorithm_str, "NLOPT_LD_LBFGS") == 0) {
-    algorithm = NLOPT_LD_LBFGS;
-  } else if (strcmp(algorithm_str, "NLOPT_LN_PRAXIS") == 0) {
-    algorithm = NLOPT_LN_PRAXIS;
-  } else if (strcmp(algorithm_str, "NLOPT_LD_VAR1") == 0) {
-    algorithm = NLOPT_LD_VAR1;
-  } else if (strcmp(algorithm_str, "NLOPT_LD_VAR2") == 0) {
-    algorithm = NLOPT_LD_VAR2;
-  } else if (strcmp(algorithm_str, "NLOPT_LD_TNEWTON") == 0) {
-    algorithm = NLOPT_LD_TNEWTON;
-  } else if (strcmp(algorithm_str, "NLOPT_LD_TNEWTON_RESTART") == 0) {
-    algorithm = NLOPT_LD_TNEWTON_RESTART;
-  } else if (strcmp(algorithm_str, "NLOPT_LD_TNEWTON_PRECOND") == 0) {
-    algorithm = NLOPT_LD_TNEWTON_PRECOND;
-  } else if (strcmp(algorithm_str, "NLOPT_LD_TNEWTON_PRECOND_RESTART") == 0) {
-    algorithm = NLOPT_LD_TNEWTON_PRECOND_RESTART;
-  } else if (strcmp(algorithm_str, "NLOPT_GN_CRS2_LM") == 0) {
-    algorithm = NLOPT_GN_CRS2_LM;
-  } else if (strcmp(algorithm_str, "NLOPT_GN_MLSL") == 0) {
-    algorithm = NLOPT_GN_MLSL;
-  } else if (strcmp(algorithm_str, "NLOPT_GD_MLSL") == 0) {
+  switch(getVal(algorithm_str)) {
+  case 1:
     algorithm = NLOPT_GD_MLSL;
-  } else if (strcmp(algorithm_str, "NLOPT_GN_MLSL_LDS") == 0) {
-    algorithm = NLOPT_GN_MLSL_LDS;
-  } else if (strcmp(algorithm_str, "NLOPT_GD_MLSL_LDS") == 0) {
+    break;
+  case 2:
     algorithm = NLOPT_GD_MLSL_LDS;
-  } else if (strcmp(algorithm_str, "NLOPT_LD_MMA") == 0) {
-    algorithm = NLOPT_LD_MMA;
-  } else if (strcmp(algorithm_str, "NLOPT_LD_CCSAQ") == 0) {
-    algorithm = NLOPT_LD_CCSAQ;
-  } else if (strcmp(algorithm_str, "NLOPT_LN_COBYLA") == 0) {
-    algorithm = NLOPT_LN_COBYLA;
-  } else if (strcmp(algorithm_str, "NLOPT_LN_NEWUOA") == 0) {
-    algorithm = NLOPT_LN_NEWUOA;
-  } else if (strcmp(algorithm_str, "NLOPT_LN_NEWUOA_BOUND") == 0) {
-    algorithm = NLOPT_LN_NEWUOA_BOUND;
-  } else if (strcmp(algorithm_str, "NLOPT_LN_NELDERMEAD") == 0) {
-    algorithm = NLOPT_LN_NELDERMEAD;
-  } else if (strcmp(algorithm_str, "NLOPT_LN_SBPLX") == 0) {
-    algorithm = NLOPT_LN_SBPLX;
-  } else if (strcmp(algorithm_str, "NLOPT_LN_AUGLAG") == 0) {
-    algorithm = NLOPT_LN_AUGLAG;
-  } else if (strcmp(algorithm_str, "NLOPT_LD_AUGLAG") == 0) {
-    algorithm = NLOPT_LD_AUGLAG;
-  } else if (strcmp(algorithm_str, "NLOPT_LN_AUGLAG_EQ") == 0) {
-    algorithm = NLOPT_LN_AUGLAG_EQ;
-  } else if (strcmp(algorithm_str, "NLOPT_LD_AUGLAG_EQ") == 0) {
-    algorithm = NLOPT_LD_AUGLAG_EQ;
-  } else if (strcmp(algorithm_str, "NLOPT_LN_BOBYQA") == 0) {
-    algorithm = NLOPT_LN_BOBYQA;
-  } else if (strcmp(algorithm_str, "NLOPT_GN_ISRES") == 0) {
-    algorithm = NLOPT_GN_ISRES;
-  } else if (strcmp(algorithm_str, "NLOPT_GN_ESCH") == 0) {
+    break;
+  case 3:
+    algorithm = NLOPT_GD_STOGO;
+    break;
+  case 4:
+    algorithm = NLOPT_GD_STOGO_RAND;
+    break;
+  case 5:
+    algorithm = NLOPT_GN_CRS2_LM;
+    break;
+  case 6:
+    algorithm = NLOPT_GN_DIRECT;
+    break;
+  case 7:
+    algorithm = NLOPT_GN_DIRECT_L;
+    break;
+  case 8:
+    algorithm = NLOPT_GN_DIRECT_L_NOSCAL;
+    break;
+  case 9:
+    algorithm = NLOPT_GN_DIRECT_L_RAND;
+    break;
+  case 10:
+    algorithm = NLOPT_GN_DIRECT_L_RAND_NOSCAL;
+    break;
+  case 11:
+    algorithm = NLOPT_GN_DIRECT_NOSCAL;
+    break;
+  case 12:
     algorithm = NLOPT_GN_ESCH;
-  } else {
+    break;
+  case 13:
+    algorithm = NLOPT_GN_ISRES;
+    break;
+  case 14:
+    algorithm = NLOPT_GN_MLSL;
+    break;
+  case 15:
+    algorithm = NLOPT_GN_MLSL_LDS;
+    break;
+  case 16:
+    algorithm = NLOPT_GN_ORIG_DIRECT;
+    break;
+  case 17:
+    algorithm = NLOPT_GN_ORIG_DIRECT_L;
+    break;
+  case 18:
+    algorithm = NLOPT_LD_AUGLAG;
+    break;
+  case 19:
+    algorithm = NLOPT_LD_AUGLAG_EQ;
+    break;
+  case 20:
+    algorithm = NLOPT_LD_CCSAQ;
+    break;
+  case 21:
+    algorithm = NLOPT_LD_LBFGS;
+    break;
+  case 22:
+    algorithm = NLOPT_LD_LBFGS_NOCEDAL;
+    break;
+  case 23:
+    algorithm = NLOPT_LD_MMA;
+    break;
+  case 24:
+    algorithm = NLOPT_LD_SLSQP;
+    break;
+  case 25:
+    algorithm = NLOPT_LD_TNEWTON;
+    break;
+  case 26:
+    algorithm = NLOPT_LD_TNEWTON_PRECOND;
+    break;
+  case 27:
+    algorithm = NLOPT_LD_TNEWTON_PRECOND_RESTART;
+    break;
+  case 28:
+    algorithm = NLOPT_LD_TNEWTON_RESTART;
+    break;
+  case 29:
+    algorithm = NLOPT_LD_VAR1;
+    break;
+  case 30:
+    algorithm = NLOPT_LD_VAR2;
+    break;
+  case 31:
+    algorithm = NLOPT_LN_AUGLAG;
+    break;
+  case 32:
+    algorithm = NLOPT_LN_AUGLAG_EQ;
+    break;
+  case 33:
+    algorithm = NLOPT_LN_BOBYQA;
+    break;
+  case 34:
+    algorithm = NLOPT_LN_COBYLA;
+    break;
+  case 35:
+    algorithm = NLOPT_LN_NELDERMEAD;
+    break;
+  case 36:
+    algorithm = NLOPT_LN_NEWUOA;
+    break;
+  case 37:
+    algorithm = NLOPT_LN_NEWUOA_BOUND;
+    break;
+  case 38:
+    algorithm = NLOPT_LN_PRAXIS;
+    break;
+  case 39:
+    algorithm = NLOPT_LN_SBPLX;
+    break;
+  // # nocov start (guarded against by is.nloptr 81–85)
+  default:
     // unknown algorithm code
     Rprintf("Error: unknown algorithm %s.\n", algorithm_str);
     // Not an algorithm, so this should result in a runtime error.
     algorithm = NLOPT_NUM_ALGORITHMS;
+  // # nocov end
   }
+
+  // Leave old code in commented for now in case of catastrophic failure.
+  // if (strcmp(algorithm_str, "NLOPT_GN_DIRECT") == 0) {
+  //   algorithm = NLOPT_GN_DIRECT;
+  // } else if (strcmp(algorithm_str, "NLOPT_GN_DIRECT_L") == 0) {
+  //   algorithm = NLOPT_GN_DIRECT_L;
+  // } else if (strcmp(algorithm_str, "NLOPT_GN_DIRECT_L_RAND") == 0) {
+  //   algorithm = NLOPT_GN_DIRECT_L_RAND;
+  // } else if (strcmp(algorithm_str, "NLOPT_GN_DIRECT_NOSCAL") == 0) {
+  //   algorithm = NLOPT_GN_DIRECT_NOSCAL;
+  // } else if (strcmp(algorithm_str, "NLOPT_GN_DIRECT_L_NOSCAL") == 0) {
+  //   algorithm = NLOPT_GN_DIRECT_L_NOSCAL;
+  // } else if (strcmp(algorithm_str, "NLOPT_GN_DIRECT_L_RAND_NOSCAL") == 0) {
+  //   algorithm = NLOPT_GN_DIRECT_L_RAND_NOSCAL;
+  // } else if (strcmp(algorithm_str, "NLOPT_GN_ORIG_DIRECT") == 0) {
+  //   algorithm = NLOPT_GN_ORIG_DIRECT;
+  // } else if (strcmp(algorithm_str, "NLOPT_GN_ORIG_DIRECT_L") == 0) {
+  //   algorithm = NLOPT_GN_ORIG_DIRECT_L;
+  // } else if (strcmp(algorithm_str, "NLOPT_GD_STOGO") == 0) {
+  //   algorithm = NLOPT_GD_STOGO;
+  // } else if (strcmp(algorithm_str, "NLOPT_GD_STOGO_RAND") == 0) {
+  //   algorithm = NLOPT_GD_STOGO_RAND;
+  // } else if (strcmp(algorithm_str, "NLOPT_LD_SLSQP") == 0) {
+  //   algorithm = NLOPT_LD_SLSQP;
+  // } else if (strcmp(algorithm_str, "NLOPT_LD_LBFGS_NOCEDAL") == 0) {
+  //   algorithm = NLOPT_LD_LBFGS_NOCEDAL;
+  // } else if (strcmp(algorithm_str, "NLOPT_LD_LBFGS") == 0) {
+  //   algorithm = NLOPT_LD_LBFGS;
+  // } else if (strcmp(algorithm_str, "NLOPT_LN_PRAXIS") == 0) {
+  //   algorithm = NLOPT_LN_PRAXIS;
+  // } else if (strcmp(algorithm_str, "NLOPT_LD_VAR1") == 0) {
+  //   algorithm = NLOPT_LD_VAR1;
+  // } else if (strcmp(algorithm_str, "NLOPT_LD_VAR2") == 0) {
+  //   algorithm = NLOPT_LD_VAR2;
+  // } else if (strcmp(algorithm_str, "NLOPT_LD_TNEWTON") == 0) {
+  //   algorithm = NLOPT_LD_TNEWTON;
+  // } else if (strcmp(algorithm_str, "NLOPT_LD_TNEWTON_RESTART") == 0) {
+  //   algorithm = NLOPT_LD_TNEWTON_RESTART;
+  // } else if (strcmp(algorithm_str, "NLOPT_LD_TNEWTON_PRECOND") == 0) {
+  //   algorithm = NLOPT_LD_TNEWTON_PRECOND;
+  // } else if (strcmp(algorithm_str, "NLOPT_LD_TNEWTON_PRECOND_RESTART") == 0) {
+  //   algorithm = NLOPT_LD_TNEWTON_PRECOND_RESTART;
+  // } else if (strcmp(algorithm_str, "NLOPT_GN_CRS2_LM") == 0) {
+  //   algorithm = NLOPT_GN_CRS2_LM;
+  // } else if (strcmp(algorithm_str, "NLOPT_GN_MLSL") == 0) {
+  //   algorithm = NLOPT_GN_MLSL;
+  // } else if (strcmp(algorithm_str, "NLOPT_GD_MLSL") == 0) {
+  //   algorithm = NLOPT_GD_MLSL;
+  // } else if (strcmp(algorithm_str, "NLOPT_GN_MLSL_LDS") == 0) {
+  //   algorithm = NLOPT_GN_MLSL_LDS;
+  // } else if (strcmp(algorithm_str, "NLOPT_GD_MLSL_LDS") == 0) {
+  //   algorithm = NLOPT_GD_MLSL_LDS;
+  // } else if (strcmp(algorithm_str, "NLOPT_LD_MMA") == 0) {
+  //   algorithm = NLOPT_LD_MMA;
+  // } else if (strcmp(algorithm_str, "NLOPT_LD_CCSAQ") == 0) {
+  //   algorithm = NLOPT_LD_CCSAQ;
+  // } else if (strcmp(algorithm_str, "NLOPT_LN_COBYLA") == 0) {
+  //   algorithm = NLOPT_LN_COBYLA;
+  // } else if (strcmp(algorithm_str, "NLOPT_LN_NEWUOA") == 0) {
+  //   algorithm = NLOPT_LN_NEWUOA;
+  // } else if (strcmp(algorithm_str, "NLOPT_LN_NEWUOA_BOUND") == 0) {
+  //   algorithm = NLOPT_LN_NEWUOA_BOUND;
+  // } else if (strcmp(algorithm_str, "NLOPT_LN_NELDERMEAD") == 0) {
+  //   algorithm = NLOPT_LN_NELDERMEAD;
+  // } else if (strcmp(algorithm_str, "NLOPT_LN_SBPLX") == 0) {
+  //   algorithm = NLOPT_LN_SBPLX;
+  // } else if (strcmp(algorithm_str, "NLOPT_LN_AUGLAG") == 0) {
+  //   algorithm = NLOPT_LN_AUGLAG;
+  // } else if (strcmp(algorithm_str, "NLOPT_LD_AUGLAG") == 0) {
+  //   algorithm = NLOPT_LD_AUGLAG;
+  // } else if (strcmp(algorithm_str, "NLOPT_LN_AUGLAG_EQ") == 0) {
+  //   algorithm = NLOPT_LN_AUGLAG_EQ;
+  // } else if (strcmp(algorithm_str, "NLOPT_LD_AUGLAG_EQ") == 0) {
+  //   algorithm = NLOPT_LD_AUGLAG_EQ;
+  // } else if (strcmp(algorithm_str, "NLOPT_LN_BOBYQA") == 0) {
+  //   algorithm = NLOPT_LN_BOBYQA;
+  // } else if (strcmp(algorithm_str, "NLOPT_GN_ISRES") == 0) {
+  //   algorithm = NLOPT_GN_ISRES;
+  // } else if (strcmp(algorithm_str, "NLOPT_GN_ESCH") == 0) {
+  //   algorithm = NLOPT_GN_ESCH;
+  // } else {
+    // // unknown algorithm code
+    // Rprintf("Error: unknown algorithm %s.\n", algorithm_str);
+    // // Not an algorithm, so this should result in a runtime error.
+    // algorithm = NLOPT_NUM_ALGORITHMS;
+  // }
 
   return algorithm;
 }
