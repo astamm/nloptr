@@ -318,7 +318,7 @@ typedef struct {
  */
 void func_constraints_ineq(unsigned m, double* constraints, unsigned n, const double* x, double* grad, void* data) {
 
-    // return the value (and the jacobian) of the constraints
+    // return the value (and the Jacobian) of the constraints
 
     // Check for user interruption from R
     R_CheckUserInterrupt();
@@ -385,7 +385,7 @@ void func_constraints_ineq(unsigned m, double* constraints, unsigned n, const do
 
         /*
            * recode the return value from SEXP to double*, by looping over variables and constraints
-         * We get a matrix from R with the jacobian of the constraints
+         * We get a matrix from R with the Jacobian of the constraints
          *  / dc_1/dx_1   dc_1/dx_2  ...  dc_1/dx_n \
          * |  dc_2/dx_1   dc_2/dx_2  ...  dc_2/dx_n  |
          * |     ...         ...             ...     |
@@ -430,7 +430,7 @@ typedef struct {
  */
 void func_constraints_eq(unsigned m, double* constraints, unsigned n, const double* x, double* grad, void* data) {
 
-    // return the value (and the jacobian) of the constraints
+    // return the value (and the Jacobian) of the constraints
 
     // Check for user interruption from R
     R_CheckUserInterrupt();
@@ -497,7 +497,7 @@ void func_constraints_eq(unsigned m, double* constraints, unsigned n, const doub
 
         /*
          * recode the return value from SEXP to double*, by looping over variables and constraints
-         * We get a matrix from R with the jacobian of the constraints
+         * We get a matrix from R with the Jacobian of the constraints
          *  / dc_1/dx_1   dc_1/dx_2  ...  dc_1/dx_n \
          * |  dc_2/dx_1   dc_2/dx_2  ...  dc_2/dx_n  |
          * |     ...         ...             ...     |
