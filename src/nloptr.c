@@ -247,8 +247,9 @@ double func_objective(unsigned n, const double *x, double *grad, void *data)
     // This vector will contain the elements of x,
     // x is the argument to the R function R_eval_f
     SEXP rargs = allocVector(REALSXP, n);
+    double *prargs = REAL(rargs);
     for (i = 0; i < n; i++) {
-        REAL(rargs)[i] = x[i];
+      prargs[i] = x[i];
     }
 
     // evaluate R function R_eval_f with the control x as an argument
@@ -285,8 +286,9 @@ double func_objective(unsigned n, const double *x, double *grad, void *data)
         PROTECT(R_gradient = getListElement(result, "gradient"));
 
         // recode the return value from SEXP to double
+        double *pRgrad = REAL(R_gradient);
         for (i = 0; i < n; i++) {
-            grad[i] = REAL(R_gradient)[i];
+            grad[i] = pRgrad[i];
         }
 
         UNPROTECT(1);
@@ -332,8 +334,9 @@ void func_constraints_ineq(unsigned m, double* constraints, unsigned n, const do
     // This vector will contain the elements of x,
     // x is the argument to the R function R_eval_f
     SEXP rargs_x = allocVector(REALSXP, n);
+    double *prargsx = REAL(rargs_x);
     for (i = 0; i < n; i++) {
-        REAL(rargs_x)[i] = x[i];
+      prargsx[i] = x[i];
     }
 
     // evaluate R function R_eval_g with the control x as an argument
@@ -346,8 +349,9 @@ void func_constraints_ineq(unsigned m, double* constraints, unsigned n, const do
 
         // constraint values are the only element of result
         // recode the return value from SEXP to double*, by looping over constraints
+        double *presult = REAL(result);
         for (i = 0; i < m; i++) {
-            constraints[i] = REAL(result)[i];
+            constraints[i] = presult[i];
         }
     }
     else {
@@ -356,8 +360,9 @@ void func_constraints_ineq(unsigned m, double* constraints, unsigned n, const do
         PROTECT(R_constraints = getListElement(result, "constraints"));
 
         // recode the return value from SEXP to double*, by looping over constraints
+        double *pRconst = REAL(R_constraints);
         for (i = 0; i < m; i++) {
-            constraints[i] = REAL(R_constraints)[i];
+            constraints[i] = pRconst[i];
         }
 
         UNPROTECT(1);
@@ -395,10 +400,11 @@ void func_constraints_ineq(unsigned m, double* constraints, unsigned n, const do
          * which we have to convert to a row-wise format for NLopt.
          */
 
+        double *pRgrad = REAL(R_gradient);
         for (i = 0; i < m; i++) {
           int ni = i * n;
           for (j = 0; j < n; j++) {
-            grad[ni + j] = REAL(R_gradient)[j * m + i];
+            grad[ni + j] = pRgrad[j * m + i];
           }
         }
 
@@ -444,8 +450,9 @@ void func_constraints_eq(unsigned m, double* constraints, unsigned n, const doub
     // This vector will contain the elements of x,
     // x is the argument to the R function R_eval_f
     SEXP rargs_x = allocVector(REALSXP, n);
+    double *prargsx = REAL(rargs_x);
     for (i = 0; i < n; i++) {
-        REAL(rargs_x)[i] = x[i];
+      prargsx[i] = x[i];
     }
 
     // evaluate R function R_eval_g with the control x as an argument
@@ -458,8 +465,9 @@ void func_constraints_eq(unsigned m, double* constraints, unsigned n, const doub
 
         // constraint values are the only element of result
         // recode the return value from SEXP to double*, by looping over constraints
+        double *presult = REAL(result);
         for (i = 0; i < m; i++) {
-            constraints[i] = REAL(result)[i];
+            constraints[i] = presult[i];
         }
     }
     else {
@@ -468,8 +476,9 @@ void func_constraints_eq(unsigned m, double* constraints, unsigned n, const doub
         PROTECT(R_constraints = getListElement(result, "constraints"));
 
         // recode the return value from SEXP to double*, by looping over constraints
+        double *pRconst = REAL(R_constraints);
         for (i = 0; i < m; i++) {
-            constraints[i] = REAL(R_constraints)[i];
+            constraints[i] = pRconst[i];
         }
 
         UNPROTECT(1);
@@ -507,10 +516,11 @@ void func_constraints_eq(unsigned m, double* constraints, unsigned n, const doub
          * which we have to convert to a row-wise format for NLopt.
          */
 
+        double *pRgrad = REAL(R_gradient);
         for (i = 0; i < m; i++) {
           int ni = i * n;
           for (j = 0; j < n; j++) {
-            grad[ni + j] = REAL(R_gradient)[j * m + i];
+            grad[ni + j] = pRgrad[j * m + i];
           }
         }
 
@@ -592,7 +602,7 @@ nlopt_opt getOptions(SEXP R_options, int num_controls, int *flag_encountered_err
     PROTECT(R_opts_xtol_abs = getListElement(R_options, "xtol_abs"));
     double xtol_abs[num_controls];
     int i;
-    for (i = 0; i<num_controls; i++) {
+    for (i = 0; i < num_controls; i++) {
         xtol_abs[i] = REAL(R_opts_xtol_abs)[0];
     }
     res = nlopt_set_xtol_abs(opts, xtol_abs);
@@ -770,9 +780,11 @@ SEXP NLoptR_Optimize(SEXP args)
     // set the upper and lower bounds of the controls
     double lb[num_controls];
     double ub[num_controls];
+    double *pRlb = REAL(R_lower_bounds);
+    double *pRub = REAL(R_upper_bounds);
     for (i = 0; i < num_controls; i++) {
-        lb[i] = REAL(R_lower_bounds)[i];                // lower bound
-        ub[i] = REAL(R_upper_bounds)[i];                // upper bound
+        lb[i] = pRlb[i];                // lower bound
+        ub[i] = pRub[i];                // upper bound
     }
     UNPROTECT(2);
 
@@ -834,8 +846,9 @@ SEXP NLoptR_Optimize(SEXP args)
         double tol_constraints_ineq[num_constraints_ineq];
         SEXP R_tol_constraints_ineq;
         PROTECT(R_tol_constraints_ineq = getListElement(R_options, "tol_constraints_ineq"));
+        double *pRtolineqc = REAL(R_tol_constraints_ineq);
         for (i = 0; i < num_constraints_ineq; i++) {
-            tol_constraints_ineq[i] = REAL(R_tol_constraints_ineq)[i];
+            tol_constraints_ineq[i] = pRtolineqc[i];
         }
         UNPROTECT(1);
 
@@ -864,8 +877,9 @@ SEXP NLoptR_Optimize(SEXP args)
         double tol_constraints_eq[num_constraints_eq];
         SEXP R_tol_constraints_eq;
         PROTECT(R_tol_constraints_eq = getListElement(R_options, "tol_constraints_eq"));
+        double *pRtoleqc = REAL(R_tol_constraints_eq);
         for (i = 0; i<num_constraints_eq; i++) {
-            tol_constraints_eq[i] = REAL(R_tol_constraints_eq)[i];
+            tol_constraints_eq[i] = pRtoleqc[i];
         }
         UNPROTECT(1);
 
@@ -945,8 +959,9 @@ SEXP NLoptR_Optimize(SEXP args)
     // convert the value of the controls to an R object
     SEXP R_solution;
     PROTECT(R_solution = allocVector(REALSXP, num_controls));
+    double *pRsol = REAL(R_solution);
     for (i = 0; i < num_controls; i++) {
-        REAL(R_solution)[i] = x0[i];
+      pRsol[i] = x0[i];
     }
 
     // convert the major version number to an R object
