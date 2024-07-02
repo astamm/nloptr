@@ -51,7 +51,7 @@
 // Extracts element with name 'str' from R object 'list' & returns that element.
 SEXP getListElement (SEXP list, char *str) {
   SEXP elmt = R_NilValue, names = getAttrib(list, R_NamesSymbol);
-  for (int i = 0; i < length(list); i++) {
+  for (size_t i = 0; i < length(list); i++) {
     if(strcmp(CHAR(STRING_ELT(names, i)), str) == 0) {
       elmt = VECTOR_ELT(list, i);
       break;
@@ -360,9 +360,6 @@ double func_objective(unsigned n, const double *x, double *grad, void *data) {
   // Check for user interruption from R.
   R_CheckUserInterrupt();
 
-  // Declare counter.
-  unsigned i;
-
   func_objective_data *d = (func_objective_data *) data;
 
   // Increase number of function evaluations.
@@ -379,7 +376,7 @@ double func_objective(unsigned n, const double *x, double *grad, void *data) {
       Rprintf("\tx = %f\n", x[0]);
     } else {
       Rprintf("\tx = (%f", x[0]);
-      for (i = 1; i < n; i++) {
+      for (size_t i = 1; i < n; i++) {
         Rprintf(", %f", x[i]);
       }
       Rprintf(")\n");
@@ -390,7 +387,7 @@ double func_objective(unsigned n, const double *x, double *grad, void *data) {
   // elements of x, where x is the argument to the R function R_eval_f.
   SEXP rargs = allocVector(REALSXP, n);
   double *prargs = REAL(rargs);
-  for (i = 0; i < n; i++) {
+  for (size_t i = 0; i < n; i++) {
     prargs[i] = x[i];
   }
 
@@ -426,7 +423,7 @@ double func_objective(unsigned n, const double *x, double *grad, void *data) {
 
     // Recode the return value from SEXP to double.
     double *pRgrad = REAL(R_gradient);
-    for (i = 0; i < n; i++) {
+    for (size_t i = 0; i < n; i++) {
       grad[i] = pRgrad[i];
     }
 
@@ -462,16 +459,13 @@ void func_constraints_ineq(unsigned m, double* constraints, unsigned n, const do
   // Check for user interruption from R.
   R_CheckUserInterrupt();
 
-  // Declare counters.
-  unsigned i, j;
-
   func_constraints_ineq_data *d = (func_constraints_ineq_data *) data;
 
   // Allocate memory for a vector of reals. This vector will contain the
   // elements of x, where x is the argument to the R function R_eval_f.
   SEXP rargs_x = allocVector(REALSXP, n);
   double *prargsx = REAL(rargs_x);
-  for (i = 0; i < n; i++) {
+  for (size_t i = 0; i < n; i++) {
     prargsx[i] = x[i];
   }
 
@@ -485,7 +479,7 @@ void func_constraints_ineq(unsigned m, double* constraints, unsigned n, const do
     // Constraint values are the only element of result. so recode the return
     // value from SEXP to double*, by looping over constraints.
     double *presult = REAL(result);
-    for (i = 0; i < m; i++) {
+    for (size_t i = 0; i < m; i++) {
       constraints[i] = presult[i];
     }
   } else {
@@ -494,20 +488,20 @@ void func_constraints_ineq(unsigned m, double* constraints, unsigned n, const do
 
     // Recode the return value from SEXP to double by looping over constraints.
     double *pRconst = REAL(R_constraints);
-    for (i = 0; i < m; i++) {
+    for (size_t i = 0; i < m; i++) {
       constraints[i] = pRconst[i];
     }
 
     UNPROTECT(1);
   }
 
-  // Print inequality constraints.
+  // Prsize_t inequality constraints.
   if (d->print_level >= 2) {
     if (m == 1) {
       Rprintf("\tg(x) = %f\n", constraints[0]);
     } else {
       Rprintf("\tg(x) = (%f", constraints[0]);
-      for (i = 1; i < m; i++) {
+      for (size_t i = 1; i < m; i++) {
         Rprintf(", %f", constraints[i]);
       }
       Rprintf(")\n");
@@ -532,9 +526,9 @@ void func_constraints_ineq(unsigned m, double* constraints, unsigned n, const do
      */
 
     double *pRgrad = REAL(R_gradient);
-    for (i = 0; i < m; i++) {
-      int ni = i * n;
-      for (j = 0; j < n; j++) {
+    for (size_t i = 0; i < m; i++) {
+      size_t ni = i * n;
+      for (size_t j = 0; j < n; j++) {
         grad[ni + j] = pRgrad[j * m + i];
       }
     }
@@ -544,8 +538,6 @@ void func_constraints_ineq(unsigned m, double* constraints, unsigned n, const do
 
   UNPROTECT(2);
 }
-
-
 
 // Define structure that contains data to pass to the constraint function.
 typedef struct {
@@ -570,16 +562,13 @@ void func_constraints_eq(unsigned m, double* constraints, unsigned n, const doub
   // Check for user interruption from R.
   R_CheckUserInterrupt();
 
-  // Declare counters.
-  unsigned i, j;
-
   func_constraints_eq_data *d = (func_constraints_eq_data *) data;
 
   // Allocate memory for a vector of reals. This vector will contain the
   // elements of x, where x is the argument to the R function R_eval_f.
   SEXP rargs_x = allocVector(REALSXP, n);
   double *prargsx = REAL(rargs_x);
-  for (i = 0; i < n; i++) {
+  for (size_t i = 0; i < n; i++) {
     prargsx[i] = x[i];
   }
 
@@ -593,7 +582,7 @@ void func_constraints_eq(unsigned m, double* constraints, unsigned n, const doub
     // Constraint values are the only element of result, so recode the return
     // value from SEXP to double*, by looping over constraints.
     double *presult = REAL(result);
-    for (i = 0; i < m; i++) {
+    for (size_t i = 0; i < m; i++) {
       constraints[i] = presult[i];
     }
   } else {
@@ -602,7 +591,7 @@ void func_constraints_eq(unsigned m, double* constraints, unsigned n, const doub
 
     // Recode the return value from SEXP to double by looping over constraints.
     double *pRconst = REAL(R_constraints);
-    for (i = 0; i < m; i++) {
+    for (size_t i = 0; i < m; i++) {
       constraints[i] = pRconst[i];
     }
 
@@ -615,7 +604,7 @@ void func_constraints_eq(unsigned m, double* constraints, unsigned n, const doub
       Rprintf("\th(x) = %f\n", constraints[0]);
     } else {
       Rprintf("\th(x) = (%f", constraints[0]);
-      for (i=1; i<m; i++) {
+      for (size_t i = 1; i < m; i++) {
         Rprintf(", %f", constraints[i]);
       }
 
@@ -641,9 +630,9 @@ void func_constraints_eq(unsigned m, double* constraints, unsigned n, const doub
      */
 
     double *pRgrad = REAL(R_gradient);
-    for (i = 0; i < m; i++) {
-      int ni = i * n;
-      for (j = 0; j < n; j++) {
+    for (size_t i = 0; i < m; i++) {
+      size_t ni = i * n;
+      for (size_t j = 0; j < n; j++) {
         grad[ni + j] = pRgrad[j * m + i];
       }
     }
@@ -719,7 +708,7 @@ nlopt_opt getOptions(SEXP R_options, int num_controls, int *flag_encountered_err
 
   SEXP R_opts_xtol_abs = PROTECT(getListElement(R_options, "xtol_abs"));
   double xtol_abs[num_controls];
-  for (int i = 0; i < num_controls; i++) {
+  for (size_t i = 0; i < num_controls; i++) {
     xtol_abs[i] = asReal(R_opts_xtol_abs);
   }
   res = nlopt_set_xtol_abs(opts, xtol_abs);
@@ -837,8 +826,6 @@ SEXP convertStatusToMessage(nlopt_result status) {
 // Constrained minimization: main package function.
 
 SEXP NLoptR_Optimize(SEXP args) {
-  // Declare counter.
-  unsigned i;
 
   // Declare nlopt_result to capture error codes from setting options.
   nlopt_result res;
@@ -853,7 +840,7 @@ SEXP NLoptR_Optimize(SEXP args) {
   // Set initial values of the controls.
   double x0[num_controls];
   double *pRinit = REAL(R_init_values);
-  for (i = 0; i < num_controls; i++) {
+  for (size_t i = 0; i < num_controls; i++) {
     x0[i] = pRinit[i];
   }
   UNPROTECT(1);
@@ -889,7 +876,7 @@ SEXP NLoptR_Optimize(SEXP args) {
   double ub[num_controls];
   double *pRlb = REAL(R_lower_bounds);
   double *pRub = REAL(R_upper_bounds);
-  for (i = 0; i < num_controls; i++) {
+  for (size_t i = 0; i < num_controls; i++) {
     lb[i] = pRlb[i];                // lower bound
     ub[i] = pRub[i];                // upper bound
   }
@@ -947,7 +934,7 @@ SEXP NLoptR_Optimize(SEXP args) {
     double tol_constraints_ineq[num_constraints_ineq];
     SEXP R_tol_constraints_ineq = PROTECT(getListElement(R_options, "tol_constraints_ineq"));
     double *pRtolineqc = REAL(R_tol_constraints_ineq);
-    for (i = 0; i < num_constraints_ineq; i++) {
+    for (size_t i = 0; i < num_constraints_ineq; i++) {
       tol_constraints_ineq[i] = pRtolineqc[i];
     }
     UNPROTECT(1);
@@ -974,7 +961,7 @@ SEXP NLoptR_Optimize(SEXP args) {
     double tol_constraints_eq[num_constraints_eq];
     SEXP R_tol_constraints_eq = PROTECT(getListElement(R_options, "tol_constraints_eq"));
     double *pRtoleqc = REAL(R_tol_constraints_eq);
-    for (i = 0; i<num_constraints_eq; i++) {
+    for (size_t i = 0; i<num_constraints_eq; i++) {
       tol_constraints_eq[i] = pRtoleqc[i];
     }
     UNPROTECT(1);
@@ -1049,7 +1036,7 @@ SEXP NLoptR_Optimize(SEXP args) {
   // Convert the value of the controls to an R object.
   SEXP R_solution = PROTECT(allocVector(REALSXP, num_controls));
   double *pRsol = REAL(R_solution);
-  for (i = 0; i < num_controls; i++) {
+  for (size_t i = 0; i < num_controls; i++) {
     pRsol[i] = x0[i];
   }
 
