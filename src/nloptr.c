@@ -349,7 +349,7 @@ nlopt_algorithm getAlgorithmCode(const char *algorithm_str) {
 typedef struct {
   SEXP R_eval_f;
   SEXP R_environment;
-  int  num_iterations;
+  size_t num_iterations;
   unsigned int print_level;
 } func_objective_data;
 
@@ -367,7 +367,7 @@ double func_objective(unsigned n, const double *x, double *grad, void *data) {
 
   // Print status.
   if (d->print_level >= 1) {
-    Rprintf("iteration: %d\n", d->num_iterations);
+    Rprintf("iteration: %zu\n", d->num_iterations);
   }
 
   // Print values of x.
