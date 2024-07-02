@@ -344,7 +344,6 @@ nlopt_algorithm getAlgorithmCode(const char *algorithm_str) {
   return algorithm;
 }
 
-
 // Define structure that contains data to pass to the objective function
 typedef struct {
   SEXP R_eval_f;
@@ -392,9 +391,8 @@ double func_objective(unsigned n, const double *x, double *grad, void *data) {
   }
 
   // Evaluate R function R_eval_f with the control x as an argument.
-  SEXP Rcall, result;
-  PROTECT(Rcall = lang2(d->R_eval_f, rargs));
-  PROTECT(result = eval(Rcall, d->R_environment));
+  SEXP Rcall = PROTECT(lang2(d->R_eval_f, rargs));
+  SEXP result = PROTECT(eval(Rcall, d->R_environment));
 
   // Recode the return value from SEXP to double.
   double obj_value;
@@ -470,9 +468,8 @@ void func_constraints_ineq(unsigned m, double* constraints, unsigned n, const do
   }
 
   // Evaluate R function R_eval_g with the control x as an argument.
-  SEXP Rcall, result;
-  PROTECT(Rcall = lang2(d->R_eval_g, rargs_x));
-  PROTECT(result = eval(Rcall, d->R_environment));
+  SEXP Rcall = PROTECT(lang2(d->R_eval_g, rargs_x));
+  SEXP result = PROTECT(eval(Rcall, d->R_environment));
 
   // Get the value of the constraint from the result.
   if (isNumeric(result)) {
@@ -573,9 +570,8 @@ void func_constraints_eq(unsigned m, double* constraints, unsigned n, const doub
   }
 
   // Evaluate R function R_eval_g with the control x as an argument.
-  SEXP Rcall, result;
-  PROTECT(Rcall = lang2(d->R_eval_g, rargs_x));
-  PROTECT(result = eval(Rcall, d->R_environment));
+  SEXP Rcall = PROTECT(lang2(d->R_eval_g, rargs_x));
+  SEXP result = PROTECT(eval(Rcall, d->R_environment));
 
   // Get the value of the constraint from the result.
   if (isNumeric(result)) {
@@ -867,9 +863,8 @@ SEXP NLoptR_Optimize(SEXP args) {
   UNPROTECT(1);
 
   // Get lower and upper bounds.
-  SEXP R_lower_bounds, R_upper_bounds;
-  PROTECT(R_lower_bounds = getListElement(args, "lower_bounds"));
-  PROTECT(R_upper_bounds = getListElement(args, "upper_bounds"));
+  SEXP R_lower_bounds = PROTECT(getListElement(args, "lower_bounds"));
+  SEXP R_upper_bounds = PROTECT(getListElement(args, "upper_bounds"));
 
   // Set the upper and lower bounds of the controls.
   double lb[num_controls];
@@ -905,11 +900,10 @@ SEXP NLoptR_Optimize(SEXP args) {
   UNPROTECT(1);
 
   // Get evaluation functions and environment.
-  SEXP R_eval_f, R_eval_g_ineq, R_eval_g_eq, R_environment;
-  PROTECT(R_eval_f      = getListElement(args, "eval_f"));            // objective
-  PROTECT(R_eval_g_ineq = getListElement(args, "eval_g_ineq"));       // inequality constraints
-  PROTECT(R_eval_g_eq   = getListElement(args, "eval_g_eq"));         // equality constraints
-  PROTECT(R_environment = getListElement(args, "nloptr_environment"));
+  SEXP R_eval_f =      PROTECT(getListElement(args, "eval_f"));            // objective
+  SEXP R_eval_g_ineq = PROTECT(getListElement(args, "eval_g_ineq"));       // inequality constraints
+  SEXP R_eval_g_eq  =  PROTECT(getListElement(args, "eval_g_eq"));         // equality constraints
+  SEXP R_environment = PROTECT(getListElement(args, "nloptr_environment"));
 
   // Define data to pass to objective function.
   func_objective_data objfunc_data;
