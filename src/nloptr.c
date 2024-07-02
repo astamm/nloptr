@@ -261,7 +261,7 @@ double func_objective(unsigned n, const double *x, double *grad, void *data)
     double obj_value;
     if (isNumeric(result)) {
         // objective value is only element of result
-        obj_value = REAL(result)[0];
+        obj_value = asReal(result);
     }
     else {
         // objective value should be parsed from the list of return values
@@ -269,7 +269,7 @@ double func_objective(unsigned n, const double *x, double *grad, void *data)
         PROTECT(R_obj_value = getListElement(result, "objective"));
 
         // recode the return value from SEXP to double
-        obj_value = REAL(R_obj_value)[0];
+        obj_value = asReal(R_obj_value);
 
         UNPROTECT(1);
     }
@@ -564,7 +564,7 @@ nlopt_opt getOptions(SEXP R_options, int num_controls, int *flag_encountered_err
     // get other options
     SEXP R_opts_stopval;        // stop when f(x) <= stopval for minimizing or >= stopval for maximizing
     PROTECT(R_opts_stopval = getListElement(R_options, "stopval"));
-    double stopval = REAL(R_opts_stopval)[0];
+    double stopval = asReal(R_opts_stopval);
     res = nlopt_set_stopval(opts, stopval);
     if (res == NLOPT_INVALID_ARGS) {
         *flag_encountered_error = 1;
@@ -573,7 +573,7 @@ nlopt_opt getOptions(SEXP R_options, int num_controls, int *flag_encountered_err
 
     SEXP R_opts_ftol_rel;
     PROTECT(R_opts_ftol_rel = getListElement(R_options, "ftol_rel"));
-    double ftol_rel = REAL(R_opts_ftol_rel)[0];
+    double ftol_rel = asReal(R_opts_ftol_rel);
     res = nlopt_set_ftol_rel(opts, ftol_rel);
     if (res == NLOPT_INVALID_ARGS) {
         *flag_encountered_error = 1;
@@ -582,7 +582,7 @@ nlopt_opt getOptions(SEXP R_options, int num_controls, int *flag_encountered_err
 
     SEXP R_opts_ftol_abs;
     PROTECT(R_opts_ftol_abs = getListElement(R_options, "ftol_abs"));
-    double ftol_abs = REAL(R_opts_ftol_abs)[0];
+    double ftol_abs = asReal(R_opts_ftol_abs);
     res = nlopt_set_ftol_abs(opts, ftol_abs);
     if (res == NLOPT_INVALID_ARGS) {
         *flag_encountered_error = 1;
@@ -591,7 +591,7 @@ nlopt_opt getOptions(SEXP R_options, int num_controls, int *flag_encountered_err
 
     SEXP R_opts_xtol_rel;
     PROTECT(R_opts_xtol_rel = getListElement(R_options, "xtol_rel"));
-    double xtol_rel = REAL(R_opts_xtol_rel)[0];
+    double xtol_rel = asReal(R_opts_xtol_rel);
     res = nlopt_set_xtol_rel(opts, xtol_rel);
     if (res == NLOPT_INVALID_ARGS) {
         *flag_encountered_error = 1;
@@ -603,7 +603,7 @@ nlopt_opt getOptions(SEXP R_options, int num_controls, int *flag_encountered_err
     double xtol_abs[num_controls];
     int i;
     for (i = 0; i < num_controls; i++) {
-        xtol_abs[i] = REAL(R_opts_xtol_abs)[0];
+        xtol_abs[i] = asReal(R_opts_xtol_abs);
     }
     res = nlopt_set_xtol_abs(opts, xtol_abs);
     if (res == NLOPT_INVALID_ARGS) {
@@ -613,7 +613,7 @@ nlopt_opt getOptions(SEXP R_options, int num_controls, int *flag_encountered_err
 
     SEXP R_opts_maxeval;
     PROTECT(R_opts_maxeval = AS_INTEGER(getListElement(R_options, "maxeval")));
-    int maxeval = INTEGER(R_opts_maxeval)[0];
+    int maxeval = asInteger(R_opts_maxeval);
     res = nlopt_set_maxeval(opts, maxeval);
     if (res == NLOPT_INVALID_ARGS) {
         *flag_encountered_error = 1;
@@ -622,7 +622,7 @@ nlopt_opt getOptions(SEXP R_options, int num_controls, int *flag_encountered_err
 
     SEXP R_opts_maxtime;
     PROTECT(R_opts_maxtime = getListElement(R_options, "maxtime"));
-    double maxtime = REAL(R_opts_maxtime)[0];
+    double maxtime = asReal(R_opts_maxtime);
     res = nlopt_set_maxtime(opts, maxtime);
     if (res == NLOPT_INVALID_ARGS) {
         *flag_encountered_error = 1;
@@ -631,7 +631,7 @@ nlopt_opt getOptions(SEXP R_options, int num_controls, int *flag_encountered_err
 
     SEXP R_opts_population;
     PROTECT(R_opts_population = AS_INTEGER(getListElement(R_options, "population")));
-    unsigned int population = INTEGER(R_opts_population)[0];
+    unsigned int population = asInteger(R_opts_population);
     res = nlopt_set_population(opts, population);
     if (res == NLOPT_INVALID_ARGS) {
         *flag_encountered_error = 1;
@@ -640,7 +640,7 @@ nlopt_opt getOptions(SEXP R_options, int num_controls, int *flag_encountered_err
 
     SEXP R_opts_vector_storage;
     PROTECT(R_opts_vector_storage = AS_INTEGER(getListElement(R_options, "vector_storage")));
-    unsigned int vector_storage = INTEGER(R_opts_vector_storage)[0];
+    unsigned int vector_storage = asInteger(R_opts_vector_storage);
     res = nlopt_set_vector_storage(opts, vector_storage);
     if (res == NLOPT_INVALID_ARGS) {
       *flag_encountered_error = 1;
@@ -649,7 +649,7 @@ nlopt_opt getOptions(SEXP R_options, int num_controls, int *flag_encountered_err
 
     SEXP R_opts_ranseed;
     PROTECT(R_opts_ranseed = AS_INTEGER(getListElement(R_options, "ranseed")));
-    unsigned long ranseed = INTEGER(R_opts_ranseed)[0];
+    unsigned long ranseed = asInteger(R_opts_ranseed);
     // set random seed if ranseed > 0.
     // by default a random seed is generated from system time.
     if (ranseed > 0) {
@@ -769,7 +769,7 @@ SEXP NLoptR_Optimize(SEXP args)
     // get print_level from options
     SEXP R_opts_print_level;
     PROTECT(R_opts_print_level = AS_INTEGER(getListElement(R_options, "print_level")));
-    int print_level = INTEGER(R_opts_print_level)[0];
+    int print_level = asInteger(R_opts_print_level);
     UNPROTECT(1);
 
     // get lower and upper bounds
@@ -803,13 +803,13 @@ SEXP NLoptR_Optimize(SEXP args)
     // get number of inequality constraints
     SEXP R_num_constraints_ineq;
     PROTECT(R_num_constraints_ineq = AS_INTEGER(getListElement(args, "num_constraints_ineq")));
-    unsigned num_constraints_ineq = INTEGER(R_num_constraints_ineq)[0];
+    unsigned num_constraints_ineq = asInteger(R_num_constraints_ineq);
     UNPROTECT(1);
 
     // get number of equality constraints
     SEXP R_num_constraints_eq;
     PROTECT(R_num_constraints_eq = AS_INTEGER(getListElement(args, "num_constraints_eq")));
-    unsigned num_constraints_eq = INTEGER(R_num_constraints_eq)[0];
+    unsigned num_constraints_eq = asInteger(R_num_constraints_eq);
     UNPROTECT(1);
 
     // get evaluation functions and environment
