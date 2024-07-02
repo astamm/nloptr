@@ -44,9 +44,7 @@
 // nlopt_result nlopt_set_max_objective(nlopt_opt opt, nlopt_func f, void* f_data);
 
 #include <nlopt.h>
-
-#include <R.h>
-#include <Rinternals.h>  // Rdefines.h is no longer maintained.
+#include "nloptr.h"
 
 #define AS_INTEGER(x)	Rf_coerceVector(x, INTSXP)
 
