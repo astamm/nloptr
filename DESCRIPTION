@@ -46,3 +46,5 @@ Suggests: knitr, rmarkdown, covr, tinytest
 VignetteBuilder: knitr
 URL: https://github.com/astamm/nloptr, https://astamm.github.io/nloptr/
 BugReports: https://github.com/astamm/nloptr/issues
+NeedsCompilation: yes
+UseLTO: yes
