@@ -396,9 +396,10 @@ void func_constraints_ineq(unsigned m, double* constraints, unsigned n, const do
          */
 
         for (i = 0; i < m; i++) {
-            for (j = 0; j < n; j++) {
-                grad[i * n + j] = REAL(R_gradient)[j * m + i];
-            }
+          int ni = i * n;
+          for (j = 0; j < n; j++) {
+            grad[ni + j] = REAL(R_gradient)[j * m + i];
+          }
         }
 
         UNPROTECT(1);
@@ -507,9 +508,10 @@ void func_constraints_eq(unsigned m, double* constraints, unsigned n, const doub
          */
 
         for (i = 0; i < m; i++) {
-            for (j = 0; j < n; j++) {
-                grad[i * n + j] = REAL(R_gradient)[j * m + i];
-            }
+          int ni = i * n;
+          for (j = 0; j < n; j++) {
+            grad[ni + j] = REAL(R_gradient)[j * m + i];
+          }
         }
 
         UNPROTECT(1);
