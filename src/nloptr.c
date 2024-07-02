@@ -47,6 +47,7 @@
 #include "nloptr.h"
 
 #define AS_INTEGER(x)	Rf_coerceVector(x, INTSXP)
+#define AS_REAL(x) Rf_coerceVector(x, REALSXP)
 
 // Extracts element with name 'str' from R object 'list' & returns that element.
 SEXP getListElement (SEXP list, char *str) {
@@ -745,8 +746,8 @@ nlopt_opt getOptions(SEXP R_options, int num_controls, int *flag_encountered_err
     Rprintf("Error: nlopt_set_vector_storage returned NLOPT_INVALID_ARGS.\n");
   }
 
-  SEXP R_opts_ranseed = PROTECT(AS_INTEGER(getListElement(R_options, "ranseed")));
-  unsigned long ranseed = asInteger(R_opts_ranseed);
+  SEXP R_opts_ranseed = PROTECT(AS_REAL(getListElement(R_options, "ranseed")));
+  unsigned long ranseed = REAL(R_opts_ranseed)[0];
   // Set random seed if ranseed > 0. By default a random seed is generated from
   // system time.
   if (ranseed > 0) {

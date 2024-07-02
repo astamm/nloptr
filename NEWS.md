@@ -4,6 +4,9 @@ This is a patch (pre) release. It includes
 * Correcting some of the unit tests in `test-global-wrapper`.
 * Update the code in `nloptr.c` for compatibility with the `R` API, efficiency,
 and formatting.
+* Bugfix: `ranseed` expects an unsigned long but was passed as an integer, thus
+reducing the range of random seeds. It is now passed as a double and converted
+to a long.
 
 # nloptr 2.1.1
 
