@@ -246,7 +246,7 @@ double func_objective(unsigned n, const double *x, double *grad, void *data)
     // Allocate memory for a vector of reals.
     // This vector will contain the elements of x,
     // x is the argument to the R function R_eval_f
-    SEXP rargs = allocVector(REALSXP,n);
+    SEXP rargs = allocVector(REALSXP, n);
     for (i = 0; i < n; i++) {
         REAL(rargs)[i] = x[i];
     }
@@ -925,7 +925,7 @@ SEXP NLoptR_Optimize(SEXP args)
 
     // convert status to an R object
     SEXP R_status;
-    PROTECT(R_status = allocVector(INTSXP,1));
+    PROTECT(R_status = allocVector(INTSXP, 1));
     INTEGER(R_status)[0] = (int) status;
 
     // convert message to an R object
@@ -934,34 +934,34 @@ SEXP NLoptR_Optimize(SEXP args)
 
     // convert number of iterations to an R object
     SEXP R_num_iterations;
-    PROTECT(R_num_iterations = allocVector(INTSXP,1));
+    PROTECT(R_num_iterations = allocVector(INTSXP, 1));
     INTEGER(R_num_iterations)[0] = objfunc_data.num_iterations;
 
     // convert value of objective function to an R object
     SEXP R_objective;
-    PROTECT(R_objective = allocVector(REALSXP,1));
+    PROTECT(R_objective = allocVector(REALSXP, 1));
     REAL(R_objective)[0] = obj_value;
 
     // convert the value of the controls to an R object
     SEXP R_solution;
-    PROTECT(R_solution = allocVector(REALSXP,num_controls));
+    PROTECT(R_solution = allocVector(REALSXP, num_controls));
     for (i = 0; i < num_controls; i++) {
         REAL(R_solution)[i] = x0[i];
     }
 
     // convert the major version number to an R object
     SEXP R_version_major;
-    PROTECT(R_version_major = allocVector(INTSXP,1));
+    PROTECT(R_version_major = allocVector(INTSXP, 1));
     INTEGER(R_version_major)[0] = major;
 
     // convert the minor version number to an R object
     SEXP R_version_minor;
-    PROTECT(R_version_minor = allocVector(INTSXP,1));
+    PROTECT(R_version_minor = allocVector(INTSXP, 1));
     INTEGER(R_version_minor)[0] = minor;
 
     // convert the bugfix version number to an R object
     SEXP R_version_bugfix;
-    PROTECT(R_version_bugfix = allocVector(INTSXP,1));
+    PROTECT(R_version_bugfix = allocVector(INTSXP, 1));
     INTEGER(R_version_bugfix)[0] = bugfix;
 
     // add elements to the list
