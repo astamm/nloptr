@@ -1,11 +1,16 @@
-# nloptr 2.1.1.9000
-This is a patch (pre) release. It includes
+# nloptr 2.2.0.9000
+This is a minor (pre) release. It includes
 
-* Standardize all numerical gradient and Jacobian functions to use a more
-accurate five-point estimate and update affected functions and tests.
+* Adding a more accurate numerical differentiation routine that uses five points
+instead of three.
+  * Allows the user to choose which version to use in `nl.grad`, `nl.jacobian`,
+  and manually instantiated calls to `check.derivatives`. If the
+  `check_derivatives` option in an `nloptr` call is set to `TRUE`, the five
+  point algorithm is used.
+  * Updating functions and tests for the algorithmic change and user choice.
 * Correcting some of the unit tests in `test-global-wrapper`.
-* Update and expand other unit tests.
-* Remove `nloptr.show.inequality.warning` option given release 2.1.0.
+* Updating and expanding other unit tests.
+* Removing the `nloptr.show.inequality.warning` option given release 2.1.0.
 
 # nloptr 2.1.1
 
