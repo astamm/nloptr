@@ -5,6 +5,7 @@ This is a patch (pre) release. It includes
 accurate five-point estimate and update affected functions and tests.
 * Correcting some of the unit tests in `test-global-wrapper`.
 * Update and expand other unit tests.
+* Remove `nloptr.show.inequality.warning` option given release 2.1.0.
 
 # nloptr 2.1.1
 
