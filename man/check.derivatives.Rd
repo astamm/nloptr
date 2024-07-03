@@ -12,33 +12,38 @@ check.derivatives(
   check_derivatives_tol = 1e-04,
   check_derivatives_print = "all",
   func_grad_name = "grad_f",
+  points = 3L,
   ...
 )
 }
 \arguments{
-\item{.x}{point at which the comparison is done.}
+\item{.x}{Point at which the comparison is done.}
 
-\item{func}{function to be evaluated.}
+\item{func}{Function to be evaluated.}
 
-\item{func_grad}{function calculating the analytic gradients.}
+\item{func_grad}{Function calculating the analytic gradients.}
 
-\item{check_derivatives_tol}{option determining when differences between the
+\item{check_derivatives_tol}{Option determining when differences between the
 analytic gradient and its finite difference approximation are flagged as an
 error.}
 
-\item{check_derivatives_print}{option related to the amount of output. 'all'
-means that all comparisons are shown, 'errors' only shows comparisons that
-are flagged as an error, and 'none' shows the number of errors only.}
+\item{check_derivatives_print}{Option related to the amount of output.
+\code{all} means that all comparisons are shown, \code{errors} only shows
+comparisons that are flagged as an error, and \code{none} shows the number
+of errors only.}
 
-\item{func_grad_name}{option to change the name of the gradient function
+\item{func_grad_name}{Option to change the name of the gradient function.
 that shows up in the output.}
 
-\item{...}{further arguments passed to the functions func and func_grad.}
+\item{points}{Either a 3 or 5 point numerical estimate.}
+
+\item{\dots}{Further arguments passed to the functions \code{func} or
+\code{func_grad}.}
 }
 \value{
 The return value contains a list with the analytic gradient, its
-finite difference approximation, the relative errors, and vector comparing
-the relative errors to the tolerance.
+finite difference approximation, the relative errors, and a vector
+comparing the relative errors to the tolerance.
 }
 \description{
 This function compares the analytic gradients of a function with a finite
@@ -62,6 +67,10 @@ f_grad <- function(x, a)  2 * (x - a) + c(0, 0.1, rep(0, 8))
 check.derivatives(.x = 1:10, func = f, func_grad = f_grad,
           check_derivatives_print = 'errors', a = runif(10))
 
+check.derivatives(.x = 1:10, func = f, func_grad = f_grad,
+          check_derivatives_print = 'errors',
+          points = 5, a = runif(10))
+
 # example with incorrect gradient of vector-valued function
 g <- function(x, a) c(sum(x - a), sum((x - a) ^ 2))
 
@@ -75,10 +84,11 @@ check.derivatives(.x = 1:10, func = g, func_grad = g_grad,
 
 }
 \seealso{
-\code{\link[nloptr:nloptr]{nloptr}}
+\code{\link[nloptr:nloptr]{nloptr}},
+\code{\link[nloptr:nl.grad]{nl.grad}}
 }
 \author{
-Jelmer Ypma
+Jelmer Ypma, Avraham Adler \email{Avraham.Adler@gmail.com}
 }
 \keyword{interface}
 \keyword{optimize}

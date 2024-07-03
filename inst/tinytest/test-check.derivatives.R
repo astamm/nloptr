@@ -8,8 +8,8 @@
 # Test code in "check.derivatives" function that is not tested elsewhere.
 #
 # Changelog:
-#   2024-07-01: With removal of finite.diff, combine tests here and in old
-#               "test-derivative-checker.R". Update "snapshots" for more
+#   2024-07-03: With removal of finite.diff, combine tests here and in old
+#               "test-derivative-checker.R". Update "snapshots" for use of more
 #               accurate algorithm (Avraham Adler).
 
 library(nloptr)
@@ -23,7 +23,7 @@ f <- function(x, a) sum((x - a) ^ 2)
 # Define gradient function without errors.
 f_grad <- function(x, a)  2 * (x - a)
 
-# Generated a using:
+# Generated 'a' using:
 # > set.seed(3141)
 # > a <- runif(10)
 # > dump("a", file = "")
@@ -36,21 +36,25 @@ a <- c(0.75499595934525132, 0.9649918619543314, 0.041430773446336389,
 expect_warning(suppressMessages(check.derivatives(.x = 1:10, func = f,
                                                   func_grad = f_grad,
                                                   check_derivatives_print = "z",
+                                                  points = 5L,
                                                   a = runif(10L))),
                "for check_derivatives_print is unknown; use 'all'",
                fixed = TRUE)
 
 expect_message(check.derivatives(.x = 1:10, func = f, func_grad = f_grad,
-                                 check_derivatives_print = "all", a = 1:10),
+                                 check_derivatives_print = "all", points = 5L,
+                                 a = 1:10),
                "] = 0e+00 ~ -3.700520e-17   [", fixed = TRUE)
 
 expect_message(check.derivatives(.x = 1:10, func = f, func_grad = f_grad,
-                                 check_derivatives_print = "all", a = 1:10),
+                                 check_derivatives_print = "all", points = 5L,
+                                 a = 1:10),
                "Derivative checker results: 3 error(s) detected.",
                fixed = TRUE)
 
 expect_message(check.derivatives(.x = 1:10, func = f, func_grad = f_grad,
-                                 check_derivatives_print = "errors", a = 1:10),
+                                 check_derivatives_print = "errors",
+                                 points = 5L, a = 1:10),
                "] = 0e+00 ~ -3.700520e-17   [1e+00]", fixed = TRUE)
 
 res <- suppressMessages(
@@ -74,6 +78,7 @@ res <- suppressMessages(
     func = f,
     func_grad = f_grad,
     check_derivatives_print = "none",
+    points = 5L,
     a = a
   )
 )
@@ -96,6 +101,7 @@ res <- suppressMessages(
     func = g,
     func_grad = g_grad,
     check_derivatives_print = "none",
+    points = 5L,
     a = a
   )
 )
