@@ -23,12 +23,17 @@ expect_error(nl.grad("C", fn1),
 expect_error(nl.grad(2, fn2),
              "Function 'f' must be a scalar function (return a single value).",
              fixed = TRUE)
+expect_error(nl.grad(2, fn1, points = 4),
+             "Argument 'points' must be either 3 or 5.", fixed = TRUE)
 
 expect_error(nl.jacobian("C", fn1),
              "Argument 'x' must be a non-empty numeric vector.", fixed = TRUE)
 
 expect_error(nl.jacobian(NULL, fn1),
              "Argument 'x' must be a non-empty numeric vector.", fixed = TRUE)
+
+expect_error(nl.jacobian(2, fn2, points = 1),
+             "Argument 'points' must be either 3 or 5.", fixed = TRUE)
 
 # Test accuracy of multivariate gradient of scalar function
 x0 <- c(-2, 2, 2, -1, -1)

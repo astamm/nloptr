@@ -5,27 +5,31 @@
 \alias{nl.jacobian}
 \title{Numerical Gradients and Jacobians}
 \usage{
-nl.grad(x0, fn, heps = .Machine$double.eps^0.2, ...)
+nl.grad(x0, fn, heps = NULL, points = 3, ...)
 }
 \arguments{
-\item{x0}{point as a vector where the gradient is to be calculated.}
+\item{x0}{Point as a vector where the gradient is to be calculated.}
 
-\item{fn}{scalar function of one or several variables.}
+\item{fn}{Scalar function of one or several variables.}
 
-\item{heps}{step size to be used.}
+\item{heps}{Step size to be used. Defaults to \code{NULL} and is selected
+based on the number of points used in the estimation algorithm.}
 
-\item{\dots}{additional arguments passed to the function.}
+\item{points}{Either a 3 or 5 point numerical estimate.}
+
+\item{\dots}{Additional arguments passed to the function.}
 }
 \value{
-\code{grad} returns the gradient as a vector; \code{jacobian}
-returns the Jacobian as a matrix of usual dimensions.
+\code{grad} returns the gradient as a vector;
+\code{jacobian} returns the Jacobian as a matrix of the usual dimensions.
 }
 \description{
 Provides numerical gradients and Jacobians.
 }
 \details{
-Both functions apply the ``central difference formula'' with step size as
-recommended in the literature.
+Both functions apply a \dQuote{central difference formula} with the step size
+selected as recommended in the literature depending on whether a three or
+five point estimate is used.
 }
 \examples{
 
@@ -37,7 +41,7 @@ recommended in the literature.
 
   fn2 <- function(x) c(sin(x), cos(x))
   x <- (0:1) * 2 * pi
-  nl.jacobian(x, fn2)
+  nl.jacobian(x, fn2, points = 5)
   ##    [,1] [,2]
   ## [1,]  1  0
   ## [2,]  0  1
@@ -45,6 +49,10 @@ recommended in the literature.
   ## [4,]  0  0
 
 }
+\references{
+Sauer, Timothy (2012) \emph{Numerical Analysis} (2nd ed.).
+Addison-Wesley Publishing Company. ISBN 978-0321783677
+}
 \author{
-Hans W. Borchers
+Hans W. Borchers, Avraham Adler \email{Avraham.Adler@gmail.com}
 }
