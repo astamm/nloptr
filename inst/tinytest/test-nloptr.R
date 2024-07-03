@@ -10,7 +10,7 @@
 # Changelog:
 #   2023-08-23: Converted snapshots to testing portions of outputs and messages
 #               (Avraham Adler).
-#   2024-07-01: Update "snapshots" for more accurate algorithm (Avraham Adler).
+#   2024-07-03: Update "snapshots" for more accurate algorithm (Avraham Adler).
 #
 # It is possible for NLOPT to go slightly beyond maxtime or maxeval, especially
 # for the global algorithms, which is why the stopping criterion has a
@@ -235,7 +235,7 @@ expect_message(
                        print_level = 3, check_derivatives = TRUE)),
     type = "output"
   ),
-  "eval_jac_g_ineq[1, 1] = -4.0e+00 ~ -4.000000e+00   [2.575717e-14]",
+  "eval_jac_g_ineq[1, 1] = -4.0e+00 ~ -4.0e+00   [3.830269e-14]",
   fixed = TRUE)
 
 ## UNIVARIATE FUNCTION
@@ -268,7 +268,7 @@ expect_message(
                        print_level = 3, check_derivatives = TRUE)),
     type = "output"
   ),
-  "eval_jac_g_eq[1] = 1e+01 ~ 1e+01   [1.258371e-12]", fixed = TRUE
+  "eval_jac_g_eq[1] = 1e+01 ~ 1e+01   [1.098321e-12]", fixed = TRUE
 )
 
 # Test NLOPT_ROUNDOFF_LIMITED

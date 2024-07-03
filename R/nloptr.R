@@ -47,6 +47,8 @@
 #   2023-02-08: Removed unneeded or inefficient calls, updated code
 #         stylistically, updated help by using LaTeX and code
 #         decorations. (AA)
+#   2024-07-03: Adjusted for change to nl.grad. Defaulting to five-point
+#         estimate for derviative checking.
 #
 
 #' R interface to NLopt
@@ -496,7 +498,8 @@ nloptr <- function(x0,
         func_grad = function(x) {eval_f_wrapper(x)$gradient},
         check_derivatives_tol = opts$check_derivatives_tol,
         check_derivatives_print = opts$check_derivatives_print,
-        func_grad_name = "eval_grad_f"
+        func_grad_name = "eval_grad_f",
+        points = 5
       )
 
       if (num_constraints_ineq > 0) {
@@ -508,7 +511,8 @@ nloptr <- function(x0,
           func_grad = function(x) {eval_g_ineq_wrapper(x)$jacobian},
           check_derivatives_tol = opts$check_derivatives_tol,
           check_derivatives_print = opts$check_derivatives_print,
-          func_grad_name = "eval_jac_g_ineq"
+          func_grad_name = "eval_jac_g_ineq",
+          points = 5
         )
       }
 
@@ -521,7 +525,8 @@ nloptr <- function(x0,
           func_grad = function(x) {eval_g_eq_wrapper(x)$jacobian},
           check_derivatives_tol = opts$check_derivatives_tol,
           check_derivatives_print = opts$check_derivatives_print,
-          func_grad_name = "eval_jac_g_eq"
+          func_grad_name = "eval_jac_g_eq",
+          points = 5
         )
       }
     }
