@@ -35,7 +35,7 @@
  *  etc.
  * 2013-11-05: Moved declaration of ineq_constr_data and eq_constr_data outside
  *  if-statement to solve segfault on Ubuntu.
- * 2024-07-02: Updated old included which is are longer maintained and other
+ * 2024-07-02: Updated old include which is no longer maintained and other
  *  minor code tweaks and efficiency enhancements (Avraham Adler).
  */
 
