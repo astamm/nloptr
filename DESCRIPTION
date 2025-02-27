@@ -39,7 +39,6 @@ Description:
 License: LGPL (>= 3)
 SystemRequirements: cmake (>= 3.2.0) which is used only on Linux or macOS 
     systems when no system build of nlopt (>= 2.7.0) can be found.
-Biarch: true
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
@@ -47,3 +46,5 @@ Suggests: knitr, rmarkdown, covr, tinytest
 VignetteBuilder: knitr
 URL: https://github.com/astamm/nloptr, https://astamm.github.io/nloptr/
 BugReports: https://github.com/astamm/nloptr/issues
+NeedsCompilation: yes
+UseLTO: yes
