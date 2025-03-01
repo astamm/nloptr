@@ -3320,7 +3320,7 @@ printf "%s\n" "no" >&6; }
 fi
 
 
-    if test x"${have_cmake}" == x"no"; then
+    if test x"${have_cmake}" = x"no"; then
        . src/scripts/cmake_config.sh
        if test -z "${CMAKE_BIN}"; then
           ## also error to end configure here
@@ -3332,8 +3332,8 @@ fi
     { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: using NLopt via local cmake build on ${machine} " >&5
 printf "%s\n" "using NLopt via local cmake build on ${machine} " >&6; }
     tools/cmake_call.sh
-    ## cmake_call.sh installs into nlopt/lib, headers are copied
-    nlopt_include=""
+    ## cmake_call.sh installs into nlopt/include, nlopt/lib
+    nlopt_include="-Inlopt/include"
     nlopt_libs="nlopt/lib/libnlopt.a"
 fi
 

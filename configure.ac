@@ -61,7 +61,7 @@ fi
 ## So do we need to build
 if test x"${need_to_build}" != x"no"; then
     AC_PATH_PROG(have_cmake, cmake, no)
-    if test x"${have_cmake}" == x"no"; then
+    if test x"${have_cmake}" = x"no"; then
        . src/scripts/cmake_config.sh
        if test -z "${CMAKE_BIN}"; then
           ## also error to end configure here
@@ -72,8 +72,8 @@ if test x"${need_to_build}" != x"no"; then
     machine=`"${R_HOME}/bin/Rscript" -e 'cat(Sys.info()[["machine"]])'`
     AC_MSG_RESULT([using NLopt via local cmake build on ${machine} ])
     tools/cmake_call.sh
-    ## cmake_call.sh installs into nlopt/lib, headers are copied
-    nlopt_include=""
+    ## cmake_call.sh installs into nlopt/include, nlopt/lib
+    nlopt_include="-Inlopt/include"
     nlopt_libs="nlopt/lib/libnlopt.a"
 fi
 

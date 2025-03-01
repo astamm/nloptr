@@ -17,3 +17,4 @@ TODO
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^inst/include/nlopt\.
