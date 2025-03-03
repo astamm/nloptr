@@ -38,7 +38,7 @@ Description:
     'R >= 4.2.0'.
 License: LGPL (>= 3)
 SystemRequirements: cmake (>= 3.2.0) which is used only on Linux or macOS 
-    systems when no system build of nlopt (>= 2.7.0) can be found, nlopt.
+    systems when no system build of nlopt (>= 2.7.0) can be found.
 Biarch: true
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
