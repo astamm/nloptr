@@ -7,3 +7,5 @@
 .onUnLoad <- function(libpath) {
   library.dynam.unload("nloptr", libpath)
 } #nocov end
+
+have.nlopt.ld.lbfgs.nocedal <- FALSE

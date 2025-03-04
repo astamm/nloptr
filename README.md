@@ -5,10 +5,9 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/astamm/nloptr/workflows/R-CMD-check/badge.svg)](https://github.com/astamm/nloptr/actions)
-[![test-coverage](https://github.com/astamm/nloptr/workflows/test-coverage/badge.svg)](https://github.com/astamm/nloptr/actions)
+[![R-CMD-check](https://github.com/astamm/nloptr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/astamm/nloptr/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
-coverage](https://codecov.io/gh/astamm/nloptr/branch/master/graph/badge.svg)](https://app.codecov.io/gh/astamm/nloptr?branch=master)
+coverage](https://codecov.io/gh/astamm/nloptr/graph/badge.svg)](https://app.codecov.io/gh/astamm/nloptr)
 [![pkgdown](https://github.com/astamm/nloptr/workflows/pkgdown/badge.svg)](https://github.com/astamm/nloptr/actions)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/nloptr)](https://CRAN.R-project.org/package=nloptr)
