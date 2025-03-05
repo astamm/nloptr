@@ -1,3 +1,5 @@
+#! /bin/sh
+
 #### CMAKE CONFIGURATION ####
 
 if test -z "$CMAKE_BIN"; then

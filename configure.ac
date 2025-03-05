@@ -47,8 +47,8 @@ if test x"${have_pkg_config}" != x"no"; then
             AC_MSG_RESULT([>= 2.7.0])
             nlopt_include=$(pkg-config --cflags nlopt)
             nlopt_libs=$(pkg-config --libs nlopt)
-            AC_SUBST([NLOPT_INCLUDE], "${nlopt_include}")
-            AC_SUBST([NLOPT_LIBS],    "${nlopt_libs}")
+            ## copy headers to inst/include for reverse LinkingTo dependencies
+            headers_location=$(pkg-config --variable=includedir nlopt)
             need_to_build="no"
         else
             AC_MSG_RESULT([insufficient: NLopt 2.7.0 or later is preferred.])
@@ -62,7 +62,7 @@ fi
 if test x"${need_to_build}" != x"no"; then
     AC_PATH_PROG(have_cmake, cmake, no)
     if test x"${have_cmake}" = x"no"; then
-       . src/scripts/cmake_config.sh
+       . tools/cmake_config.sh
        if test -z "${CMAKE_BIN}"; then
           ## also error to end configure here
           AC_MSG_ERROR([Could not find 'cmake'.])
@@ -70,12 +70,18 @@ if test x"${need_to_build}" != x"no"; then
     fi
     ## 'uname -m' on M1 give x86_64 which is ... not helping
     machine=`"${R_HOME}/bin/Rscript" -e 'cat(Sys.info()[["machine"]])'`
-    AC_MSG_RESULT([using NLopt via local cmake build on ${machine} ])
-    tools/cmake_call.sh
+    AC_MSG_RESULT([using NLopt via local cmake build on ${machine}])
+    tools/cmake_call.sh ${CMAKE_BIN}
     ## cmake_call.sh installs into nlopt/include, nlopt/lib
     nlopt_include="-Inlopt/include"
     nlopt_libs="nlopt/lib/libnlopt.a"
+    ## copy headers to inst/include for reverse LinkingTo dependencies
+    headers_location="src/nlopt/include"
 fi
+
+## does the actual copy of the headers into inst/include
+AC_MSG_RESULT([Copying headers found in ${headers_location} into inst/include])
+cp ${headers_location}/* inst/include/
 
 ## Now use all the values
 AC_SUBST([NLOPT_CPPFLAGS],["$nlopt_include"])
