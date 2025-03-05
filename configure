@@ -609,7 +609,7 @@ ac_subst_vars='LTLIBOBJS
 LIBOBJS
 NLOPT_LIBS
 NLOPT_CPPFLAGS
-have_cmake
+CMAKE_BIN
 have_pkg_config
 CXXCPP
 OBJEXT
@@ -3311,13 +3311,13 @@ if test x"${need_to_build}" != x"no"; then
 set dummy cmake; ac_word=$2
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 printf %s "checking for $ac_word... " >&6; }
-if test ${ac_cv_path_have_cmake+y}
+if test ${ac_cv_path_CMAKE_BIN+y}
 then :
   printf %s "(cached) " >&6
 else case e in #(
-  e) case $have_cmake in
+  e) case $CMAKE_BIN in
   [\\/]* | ?:[\\/]*)
-  ac_cv_path_have_cmake="$have_cmake" # Let the user override the test with a path.
+  ac_cv_path_CMAKE_BIN="$CMAKE_BIN" # Let the user override the test with a path.
   ;;
   *)
   as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
@@ -3331,7 +3331,7 @@ do
   esac
     for ac_exec_ext in '' $ac_executable_extensions; do
   if as_fn_executable_p "$as_dir$ac_word$ac_exec_ext"; then
-    ac_cv_path_have_cmake="$as_dir$ac_word$ac_exec_ext"
+    ac_cv_path_CMAKE_BIN="$as_dir$ac_word$ac_exec_ext"
     printf "%s\n" "$as_me:${as_lineno-$LINENO}: found $as_dir$ac_word$ac_exec_ext" >&5
     break 2
   fi
@@ -3339,33 +3339,35 @@ done
   done
 IFS=$as_save_IFS
 
-  test -z "$ac_cv_path_have_cmake" && ac_cv_path_have_cmake="no"
+  test -z "$ac_cv_path_CMAKE_BIN" && ac_cv_path_CMAKE_BIN="no"
   ;;
 esac ;;
 esac
 fi
-have_cmake=$ac_cv_path_have_cmake
-if test -n "$have_cmake"; then
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $have_cmake" >&5
-printf "%s\n" "$have_cmake" >&6; }
+CMAKE_BIN=$ac_cv_path_CMAKE_BIN
+if test -n "$CMAKE_BIN"; then
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $CMAKE_BIN" >&5
+printf "%s\n" "$CMAKE_BIN" >&6; }
 else
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 fi
 
 
-    if test x"${have_cmake}" = x"no"; then
+    if test x"${CMAKE_BIN}" = x"no"; then
        . tools/cmake_config.sh
        if test -z "${CMAKE_BIN}"; then
           ## also error to end configure here
           as_fn_error $? "Could not find 'cmake'." "$LINENO" 5
        fi
     fi
+    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: using cmake via $CMAKE_BIN" >&5
+printf "%s\n" "using cmake via $CMAKE_BIN" >&6; }
     ## 'uname -m' on M1 give x86_64 which is ... not helping
     machine=`"${R_HOME}/bin/Rscript" -e 'cat(Sys.info()["machine"])'`
     { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: using NLopt via local cmake build on ${machine}" >&5
 printf "%s\n" "using NLopt via local cmake build on ${machine}" >&6; }
-    tools/cmake_call.sh ${CMAKE_BIN}
+    tools/cmake_call.sh "$CMAKE_BIN"
     ## cmake_call.sh installs into nlopt/include, nlopt/lib
     nlopt_include="-Inlopt/include"
     nlopt_libs="nlopt/lib/libnlopt.a"

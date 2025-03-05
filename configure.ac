@@ -60,18 +60,19 @@ fi
 
 ## So do we need to build
 if test x"${need_to_build}" != x"no"; then
-    AC_PATH_PROG(have_cmake, cmake, no)
-    if test x"${have_cmake}" = x"no"; then
+    AC_PATH_PROG(CMAKE_BIN, cmake, no)
+    if test x"${CMAKE_BIN}" = x"no"; then
        . tools/cmake_config.sh
        if test -z "${CMAKE_BIN}"; then
           ## also error to end configure here
           AC_MSG_ERROR([Could not find 'cmake'.])
        fi
     fi
+    AC_MSG_RESULT([using cmake via $CMAKE_BIN])
     ## 'uname -m' on M1 give x86_64 which is ... not helping
     machine=`"${R_HOME}/bin/Rscript" -e 'cat(Sys.info()[["machine"]])'`
     AC_MSG_RESULT([using NLopt via local cmake build on ${machine}])
-    tools/cmake_call.sh ${CMAKE_BIN}
+    tools/cmake_call.sh "$CMAKE_BIN"
     ## cmake_call.sh installs into nlopt/include, nlopt/lib
     nlopt_include="-Inlopt/include"
     nlopt_libs="nlopt/lib/libnlopt.a"
