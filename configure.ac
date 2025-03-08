@@ -82,7 +82,7 @@ fi
 
 ## does the actual copy of the headers into inst/include
 AC_MSG_RESULT([Copying headers found in ${headers_location} into inst/include])
-cp ${headers_location}/* inst/include/
+cp ${headers_location}/nlopt.* inst/include/
 
 ## Now use all the values
 AC_SUBST([NLOPT_CPPFLAGS],["$nlopt_include"])

@@ -3378,7 +3378,7 @@ fi
 ## does the actual copy of the headers into inst/include
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: Copying headers found in ${headers_location} into inst/include" >&5
 printf "%s\n" "Copying headers found in ${headers_location} into inst/include" >&6; }
-cp ${headers_location}/* inst/include/
+cp ${headers_location}/nlopt.* inst/include/
 
 ## Now use all the values
 NLOPT_CPPFLAGS="$nlopt_include"
