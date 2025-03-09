@@ -36,11 +36,10 @@ information on how to cite NLopt and the algorithms you use.
 
 ### Windows
 
-On Windows, either the latest version `2.7.1` of
-[NLopt](https://nlopt.readthedocs.io/en/latest/) from
-[rwinlib](https://github.com/rwinlib/nlopt) (windows-release) or the
-`v2.7.1` build from the `rtools42` toolchain (windows2022-devel) is
-used. So there is nothing else to be done.
+On Windows, for old versions of R, the *nlopt* `v2.7.1` from
+[rwinlib](https://github.com/rwinlib/nlopt) is used. For newer versions
+of R, the *nlopt* version from the corresponding `RTools` toolchain is
+used.
 
 ### Linux and macOS
 
@@ -59,7 +58,7 @@ version `>= 2.7.0`).
 
 ### Installing [CMake](https://cmake.org) (macOS and Linux only)
 
-Minimal version requirement for `cmake` is `3.2.0`.
+Minimal version requirement for `cmake` is `3.15.0`.
 
 You can install [CMake](https://cmake.org) by following [CMake
 installation instructions](https://cmake.org/resources/). The important
@@ -87,19 +86,25 @@ for [**nloptr**](https://astamm.github.io/nloptr/) to use.
 You can install [**nloptr**](https://astamm.github.io/nloptr/) from CRAN
 using:
 
-    install.packages("nloptr")
+``` r
+install.packages("nloptr")
+```
 
 Alternatively, you can install the development version from GitHub:
 
-    # install.packages("remotes")
-    remotes::install_github("astamm/nloptr")
+``` r
+# install.packages("remotes")
+remotes::install_github("astamm/nloptr")
+```
 
 ## Acknowledgments
 
-I would like to express my sincere gratitude to [Dirk
-Eddelbuettel](https://github.com/eddelbuettel), [Jeroen
-Ooms](https://github.com/jeroen), [Tomas
-Kalibera](https://github.com/kalibera), Uwe Ligges and [Jelmer
+I would like to express my sincere gratitude to [Avraham
+Adler](https://github.com/aadler), [Dirk
+Eddelbuettel](https://github.com/eddelbuettel), [Mikael
+Jagan](https://github.com/jaganmn), [Tomas
+Kalibera](https://github.com/kalibera), [Jeroen
+Ooms](https://github.com/jeroen) and [Jelmer
 Ypma](https://github.com/jyypma) for their contributions and the very
 instructive discussions about the pros and cons of various build
 strategies in R packages.

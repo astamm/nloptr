@@ -18,3 +18,5 @@ src/*.dll
 windows
 .lintr
 docs
+
+/.quarto/
