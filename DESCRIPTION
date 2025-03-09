@@ -1,7 +1,7 @@
 Package: nloptr
 Type: Package
 Title: R Interface to NLopt
-Version: 2.1.1.9000
+Version: 2.2.0
 Authors@R: c(person("Jelmer", "Ypma", role = "aut",
                     email = "uctpjyy@ucl.ac.uk"),
              person(c("Steven", "G."), "Johnson", role = "aut",
@@ -23,7 +23,9 @@ Authors@R: c(person("Jelmer", "Ypma", role = "aut",
                     comment = c(ORCID = "0000-0002-3039-0703")),
              person("Xiongtao", "Dai", role = "ctb"),
              person("Jeroen", "Ooms", role = "ctb",
-                    email = "jeroen@berkeley.edu"))
+                    email = "jeroen@berkeley.edu"),
+             person("Tomas", "Kalibera", role = "ctb"),
+             person("Mikael", "Jagan", role = "ctb"))
 Description: 
     Solve optimization problems using an R interface to NLopt. NLopt is a 
     free/open-source library for nonlinear optimization, providing a common
@@ -39,7 +41,6 @@ Description:
 License: LGPL (>= 3)
 SystemRequirements: cmake (>= 3.2.0) which is used only on Linux or macOS 
     systems when no system build of nlopt (>= 2.7.0) can be found.
-Biarch: true
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
@@ -47,3 +48,5 @@ Suggests: knitr, rmarkdown, covr, tinytest
 VignetteBuilder: knitr
 URL: https://github.com/astamm/nloptr, https://astamm.github.io/nloptr/
 BugReports: https://github.com/astamm/nloptr/issues
+NeedsCompilation: yes
+UseLTO: yes

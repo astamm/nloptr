@@ -10,6 +10,11 @@ This release fixes a breaking bug which affects **nloptr** and its reverse depen
 * Update artifact action to `v4` (#174, @eddelbuettel).
 * Correcting some of the unit tests in `test-banana` (#167, @aadler).
 * Correcting some of the unit tests in `test-global-wrapper` (#166, @aadler).
+* Update the code in `nloptr.c` for compatibility with the `R` API, efficiency,
+and formatting (#169, @aadler).
+* Bugfix: `ranseed` expects an unsigned long but was passed as an integer, thus
+reducing the range of random seeds. It is now passed as a double and converted
+to a long (#169, @aadler).
 
 # nloptr 2.1.1
 

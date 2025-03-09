@@ -192,8 +192,8 @@ if (nloptr:::have.nlopt.ld.lbfgs.nocedal) {
 
 ## case NLOPT_FAILURE
 fnl <- function(x) {
-  list("objective" = (x[1] - 1) ^ 2 + (x[2] - 1) ^ 2,
-       "gradient" = c(4 * (x[1] - 1), 3 - (x[2] - 1)))
+  list(objective = (x[1] - 1) ^ 2 + (x[2] - 1) ^ 2,
+       gradient = c(4 * (x[1] - 1), 3 - (x[2] - 1)))
 }
 x0 <- c(3, 3)
 testRun <- nloptr(x0, fnl,

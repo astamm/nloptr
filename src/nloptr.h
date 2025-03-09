@@ -2,7 +2,7 @@
 #define __NLOPTR_H__
 
 #include <R.h>
-#include <Rdefines.h>
+#include <Rinternals.h>  // Rdefines.h is no longer maintained.
 
 SEXP NLoptR_Optimize(SEXP args);
 
