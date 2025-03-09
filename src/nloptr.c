@@ -194,7 +194,9 @@ nlopt_algorithm getAlgorithmCode(const char *algorithm_str) {
     algorithm = NLOPT_LD_LBFGS;
     break;
   case 22:
+#ifdef HAVE_NLOPT_LD_LBFGS_NOCEDAL
     algorithm = NLOPT_LD_LBFGS_NOCEDAL;
+#endif
     break;
   case 23:
     algorithm = NLOPT_LD_MMA;
