@@ -1,7 +1,15 @@
-# nloptr 2.1.1.9000
-This is a patch (pre) release. It includes
+# nloptr 2.2.0
 
-* Correcting some of the unit tests in `test-global-wrapper`.
+This release fixes a breaking bug which affects **nloptr** and its reverse dependencies and brings some minor tweaks and corrections along the way:
+
+* Minimal patch for build against nlopt 2.9.x (#176, @jaganmn): specifically, the issuses were that (i) nlopt versions 2.9.x had one less algorithm in the enum list, namely `NLOPT_LD_LBFGS_NOCEDAL` was removed in these versions and put back in 2.10 and (ii) we were using `inst/include` in which we copied nlopt headers conditionally to build the package (e.g. listing it in `PKG_CPPFLAGS`) resulting in possible version conflicts.
+* Fix the 2 failed tests by adding one more termination criterion.
+* Update GHA workflows to latest versions.
+* Fix reverse `LinkingTo` dependencies by (i) unconditionally copying headers to `inst/include` and (ii) fixing `cmake` path search (#179, @astamm).
+* Fix for newly broken **kergp** package due to wrong usage of `if` statement inside `paste()` which works differently than when used inside `c()` (#180, @astamm).
+* Update artifact action to `v4` (#174, @eddelbuettel).
+* Correcting some of the unit tests in `test-banana` (#167, @aadler).
+* Correcting some of the unit tests in `test-global-wrapper` (#166, @aadler).
 
 # nloptr 2.1.1
 
