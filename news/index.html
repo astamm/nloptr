@@ -39,9 +39,16 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="2.1.1.9000" id="nloptr-2119000">nloptr 2.1.1.9000<a class="anchor" aria-label="anchor" href="#nloptr-2119000"></a></h2>
-<p>This is a patch (pre) release. It includes</p>
-<ul><li>Correcting some of the unit tests in <code>test-global-wrapper</code>.</li>
+<h2 class="pkg-version" data-toc-text="2.2.0" id="nloptr-220">nloptr 2.2.0<a class="anchor" aria-label="anchor" href="#nloptr-220"></a></h2>
+<p>This release fixes a breaking bug which affects <strong>nloptr</strong> and its reverse dependencies and brings some minor tweaks and corrections along the way:</p>
+<ul><li>Minimal patch for build against nlopt 2.9.x (<a href="https://github.com/astamm/nloptr/issues/176" class="external-link">#176</a>, <a href="https://github.com/jaganmn" class="external-link">@jaganmn</a>): specifically, the issuses were that (i) nlopt versions 2.9.x had one less algorithm in the enum list, namely <code>NLOPT_LD_LBFGS_NOCEDAL</code> was removed in these versions and put back in 2.10 and (ii) we were using <code>inst/include</code> in which we copied nlopt headers conditionally to build the package (e.g. listing it in <code>PKG_CPPFLAGS</code>) resulting in possible version conflicts.</li>
+<li>Fix the 2 failed tests by adding one more termination criterion.</li>
+<li>Update GHA workflows to latest versions.</li>
+<li>Fix reverse <code>LinkingTo</code> dependencies by (i) unconditionally copying headers to <code>inst/include</code> and (ii) fixing <code>cmake</code> path search (<a href="https://github.com/astamm/nloptr/issues/179" class="external-link">#179</a>, <a href="https://github.com/astamm" class="external-link">@astamm</a>).</li>
+<li>Fix for newly broken <strong>kergp</strong> package due to wrong usage of <code>if</code> statement inside <code><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste()</a></code> which works differently than when used inside <code><a href="https://rdrr.io/r/base/c.html" class="external-link">c()</a></code> (<a href="https://github.com/astamm/nloptr/issues/180" class="external-link">#180</a>, <a href="https://github.com/astamm" class="external-link">@astamm</a>).</li>
+<li>Update artifact action to <code>v4</code> (<a href="https://github.com/astamm/nloptr/issues/174" class="external-link">#174</a>, <a href="https://github.com/eddelbuettel" class="external-link">@eddelbuettel</a>).</li>
+<li>Correcting some of the unit tests in <code>test-banana</code> (<a href="https://github.com/astamm/nloptr/issues/167" class="external-link">#167</a>, <a href="https://github.com/aadler" class="external-link">@aadler</a>).</li>
+<li>Correcting some of the unit tests in <code>test-global-wrapper</code> (<a href="https://github.com/astamm/nloptr/issues/166" class="external-link">#166</a>, <a href="https://github.com/aadler" class="external-link">@aadler</a>).</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.1.1" id="nloptr-211">nloptr 2.1.1<a class="anchor" aria-label="anchor" href="#nloptr-211"></a></h2><p class="text-muted">CRAN release: 2024-06-25</p>

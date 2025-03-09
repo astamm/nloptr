@@ -74,7 +74,7 @@
 <div class="section level3">
 <h3 id="windows">Windows<a class="anchor" aria-label="anchor" href="#windows"></a>
 </h3>
-<p>On Windows, either the latest version <code>2.7.1</code> of <a href="https://nlopt.readthedocs.io/en/latest/" class="external-link">NLopt</a> from <a href="https://github.com/rwinlib/nlopt" class="external-link">rwinlib</a> (windows-release) or the <code>v2.7.1</code> build from the <code>rtools42</code> toolchain (windows2022-devel) is used. So there is nothing else to be done.</p>
+<p>On Windows, for old versions of R, the <em>nlopt</em> <code>v2.7.1</code> from <a href="https://github.com/rwinlib/nlopt" class="external-link">rwinlib</a> is used. For newer versions of R, the <em>nlopt</em> version from the corresponding <code>RTools</code> toolchain is used.</p>
 </div>
 <div class="section level3">
 <h3 id="linux-and-macos">Linux and macOS<a class="anchor" aria-label="anchor" href="#linux-and-macos"></a>
@@ -88,7 +88,7 @@
 <div class="section level3">
 <h3 id="installing-cmake-macos-and-linux-only">Installing <a href="https://cmake.org" class="external-link">CMake</a> (macOS and Linux only)<a class="anchor" aria-label="anchor" href="#installing-cmake-macos-and-linux-only"></a>
 </h3>
-<p>Minimal version requirement for <code>cmake</code> is <code>3.2.0</code>.</p>
+<p>Minimal version requirement for <code>cmake</code> is <code>3.15.0</code>.</p>
 <p>You can install <a href="https://cmake.org" class="external-link">CMake</a> by following <a href="https://cmake.org/resources/" class="external-link">CMake installation instructions</a>. The important thing is that you add the <a href="https://cmake.org" class="external-link">CMake</a> binary to your <code>PATH</code>:</p>
 <ul>
 <li>On macOS, you can install <a href="https://cmake.org" class="external-link">CMake</a> and then run it. In the menu bar, there is an item <em>How to Install For Command Line Use</em> which you can click on to have proper instructions on how to update your <code>PATH</code>. Note that the location of the <a href="https://cmake.org" class="external-link">CMake</a> binary is always <code>/Applications/CMake.app/Contents/bin/cmake</code>. Hence, <a href="https://astamm.github.io/nloptr/"><strong>nloptr</strong></a> knows where to find it even if you do not update your <code>PATH</code>.</li>
@@ -101,16 +101,18 @@
 <a class="anchor" aria-label="anchor" href="#installing-nloptr"></a>
 </h3>
 <p>You can install <a href="https://astamm.github.io/nloptr/"><strong>nloptr</strong></a> from CRAN using:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"nloptr"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"nloptr"</span><span class="op">)</span></span></code></pre></div>
 <p>Alternatively, you can install the development version from GitHub:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># install.packages("remotes")</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"astamm/nloptr"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"astamm/nloptr"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="acknowledgments">Acknowledgments<a class="anchor" aria-label="anchor" href="#acknowledgments"></a>
 </h2>
-<p>I would like to express my sincere gratitude to <a href="https://github.com/eddelbuettel" class="external-link">Dirk Eddelbuettel</a>, <a href="https://github.com/jeroen" class="external-link">Jeroen Ooms</a>, <a href="https://github.com/kalibera" class="external-link">Tomas Kalibera</a>, Uwe Ligges and <a href="https://github.com/jyypma" class="external-link">Jelmer Ypma</a> for their contributions and the very instructive discussions about the pros and cons of various build strategies in R packages.</p>
+<p>I would like to express my sincere gratitude to <a href="https://github.com/aadler" class="external-link">Avraham Adler</a>, <a href="https://github.com/eddelbuettel" class="external-link">Dirk Eddelbuettel</a>, <a href="https://github.com/jaganmn" class="external-link">Mikael Jagan</a>, <a href="https://github.com/kalibera" class="external-link">Tomas Kalibera</a>, <a href="https://github.com/jeroen" class="external-link">Jeroen Ooms</a> and <a href="https://github.com/jyypma" class="external-link">Jelmer Ypma</a> for their contributions and the very instructive discussions about the pros and cons of various build strategies in R packages.</p>
 </div>
 <div class="section level2">
 <h2 id="reference">Reference<a class="anchor" aria-label="anchor" href="#reference"></a>
