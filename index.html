@@ -23,7 +23,7 @@
 
     <a class="navbar-brand me-2" href="index.html">nloptr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.1.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,7 +74,7 @@
 <div class="section level3">
 <h3 id="windows">Windows<a class="anchor" aria-label="anchor" href="#windows"></a>
 </h3>
-<p>On Windows, for old versions of R, the <em>nlopt</em> <code>v2.7.1</code> from <a href="https://github.com/rwinlib/nlopt" class="external-link">rwinlib</a> is used. For newer versions of R, the <em>nlopt</em> version from the corresponding <code>RTools</code> toolchain is used.</p>
+<p>On Windows, for old versions of R (<code>R &lt;= 4.1.x</code>), the <em>nlopt</em> <code>v2.7.1</code> from <a href="https://github.com/rwinlib/nlopt" class="external-link">rwinlib</a> is used. For newer versions of R (<code>R &gt;= 4.2.0</code>), the <em>nlopt</em> version from the corresponding <code>RTools</code> toolchain is used.</p>
 </div>
 <div class="section level3">
 <h3 id="linux-and-macos">Linux and macOS<a class="anchor" aria-label="anchor" href="#linux-and-macos"></a>
@@ -82,13 +82,13 @@
 <p>On Unix-like platforms, we use <code>pkg-config</code> to find a suitable system build of <a href="https://nlopt.readthedocs.io/en/latest/" class="external-link">NLopt</a> (i.e. with version <code>&gt;= 2.7.0</code>).</p>
 <ul>
 <li>If it is found it is used.</li>
-<li>Otherwise, <a href="https://nlopt.readthedocs.io/en/latest/" class="external-link">NLopt</a> 2.7.1 is built from included sources using <a href="https://cmake.org" class="external-link">CMake</a>. In this case, a binary of <a href="https://cmake.org" class="external-link">CMake</a> stored in environment variable <code>CMAKE_BIN</code> is searched on the <code>PATH</code> and, alternatively, on a macOS-specific location. If that variable cannot be set, install will abort suggesting ways of installing <a href="https://cmake.org" class="external-link">CMake</a>. The minimal version requirement on <code>cmake</code> is <code>&gt;= 3.15.0</code>.</li>
+<li>Otherwise, <a href="https://nlopt.readthedocs.io/en/latest/" class="external-link">NLopt</a> 2.7.1 is built from included sources using <a href="https://cmake.org" class="external-link">CMake</a>. In this case, a binary of <a href="https://cmake.org" class="external-link">CMake</a> stored in environment variable <code>CMAKE_BIN</code> is searched on the <code>PATH</code> and, alternatively, on a macOS-specific location. If that variable cannot be set, install will abort suggesting ways of installing <a href="https://cmake.org" class="external-link">CMake</a>. The minimal version requirement on <code>cmake</code> is <code>&gt;= 3.2.0</code>.</li>
 </ul>
 </div>
 <div class="section level3">
 <h3 id="installing-cmake-macos-and-linux-only">Installing <a href="https://cmake.org" class="external-link">CMake</a> (macOS and Linux only)<a class="anchor" aria-label="anchor" href="#installing-cmake-macos-and-linux-only"></a>
 </h3>
-<p>Minimal version requirement for <code>cmake</code> is <code>3.15.0</code>.</p>
+<p>Minimal version requirement for <code>cmake</code> is <code>3.2.0</code>.</p>
 <p>You can install <a href="https://cmake.org" class="external-link">CMake</a> by following <a href="https://cmake.org/resources/" class="external-link">CMake installation instructions</a>. The important thing is that you add the <a href="https://cmake.org" class="external-link">CMake</a> binary to your <code>PATH</code>:</p>
 <ul>
 <li>On macOS, you can install <a href="https://cmake.org" class="external-link">CMake</a> and then run it. In the menu bar, there is an item <em>How to Install For Command Line Use</em> which you can click on to have proper instructions on how to update your <code>PATH</code>. Note that the location of the <a href="https://cmake.org" class="external-link">CMake</a> binary is always <code>/Applications/CMake.app/Contents/bin/cmake</code>. Hence, <a href="https://astamm.github.io/nloptr/"><strong>nloptr</strong></a> knows where to find it even if you do not update your <code>PATH</code>.</li>
