@@ -47,7 +47,7 @@ jobs:
 
       - name: Install nlopt
         run: |
-          curl -O https://github.com/stevengj/nlopt/archive/refs/tags/${{ matrix.config.nlopt }}.tar.gz
+          curl -OLs https://github.com/stevengj/nlopt/archive/refs/tags/${{ matrix.config.nlopt }}.tar.gz
           tar xzvf ${{ matrix.config.nlopt }}.tar.gz
           cd nlopt-${{ matrix.config.nlopt }}
           cmake . && make && sudo make install
