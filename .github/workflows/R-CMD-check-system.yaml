@@ -53,6 +53,8 @@ jobs:
           chmod 0755 nlopt-${{ matrix.config.nlopt }}
           cd nlopt-${{ matrix.config.nlopt }}
           cmake . && make && sudo make install
+          cd ..
+          rm -fr nlopt-${{ matrix.config.nlopt }} v${{ matrix.config.nlopt }}.tar.gz
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
