@@ -3,7 +3,7 @@ pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   nloptr: nloptr.html
-last_built: 2025-03-12T08:40Z
+last_built: 2025-03-12T09:57Z
 urls:
   reference: https://astamm.github.io/nloptr/reference
   article: https://astamm.github.io/nloptr/articles
