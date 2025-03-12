@@ -352,7 +352,7 @@ typedef struct {
   SEXP R_eval_f;
   SEXP R_environment;
   size_t num_iterations;
-  unsigned int print_level;
+  int print_level;
 } func_objective_data;
 
 // Define function that calls user-defined objective function in R
@@ -441,7 +441,7 @@ double func_objective(unsigned n, const double *x, double *grad, void *data) {
 typedef struct {
     SEXP R_eval_g;
     SEXP R_environment;
-    unsigned int print_level;
+    int print_level;
 } func_constraints_ineq_data;
 
 /*
@@ -543,7 +543,7 @@ void func_constraints_ineq(unsigned m, double* constraints, unsigned n, const do
 typedef struct {
     SEXP R_eval_g;
     SEXP R_environment;
-    unsigned int print_level;
+    int print_level;
 } func_constraints_eq_data;
 
 /*

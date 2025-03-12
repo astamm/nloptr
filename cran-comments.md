@@ -1,3 +1,11 @@
+## Resubmission
+
+We now cast `print_level` in `nloptr.c` as `int` instead of `unsigned int`
+as some packages like **pgcs** use negative print levels. This fixes newly
+broken **pgsc** package. See PR[#185](https://github.com/astamm/nloptr/pull/185)
+and related issues [#184](https://github.com/astamm/nloptr/issues/184) and
+[#2](https://github.com/philipbarrett/pgsc/issues/2).
+
 ## Test environments
 * local macOS R installation, R 4.4.3
 * continuous integration via GH actions:
