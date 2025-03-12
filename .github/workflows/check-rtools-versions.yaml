@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [main, master, devel]
 
-name: with-rtools43
+name: check-rtools-versions
 
 jobs:
   R-CMD-check:
@@ -16,14 +16,19 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: windows-2022,   r: 'devel'}
+          - {os: windows-2022, r: '4.5'}
+          - {os: windows-2022, r: '4.4'}
+          - {os: windows-2022, r: '4.3'}
+          - {os: windows-2022, r: '4.2'}
+          - {os: windows-2022, r: '4.1'}
+          - {os: windows-2022, r: '4.0'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: r-lib/actions/setup-pandoc@v2
 
@@ -32,7 +37,6 @@ jobs:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
-          rtools-version: '43'
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
