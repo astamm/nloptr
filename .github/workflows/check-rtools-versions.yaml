@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: windows-2022, r: '4.5'}
+          - {os: windows-2022, r: 'devel'}
           - {os: windows-2022, r: '4.4'}
           - {os: windows-2022, r: '4.3'}
           - {os: windows-2022, r: '4.2'}
