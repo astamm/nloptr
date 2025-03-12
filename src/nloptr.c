@@ -126,7 +126,7 @@ int getVal(char *key) {
 }
 
 // Convert passed string to an nlopt_algorithm item.
-nlopt_algorithm getAlgorithmCode(const char *algorithm_str) {
+nlopt_algorithm getAlgorithmCode(char *algorithm_str) {
 
   nlopt_algorithm algorithm;
 
