@@ -1,10 +1,17 @@
-# nloptr (development version)
+# nloptr 2.2.1
+
+* Fix clang-UBSAN memory leak issue (#189, @astamm).
+* Add link to blog post about nloptr v2.2.0.
+* More CI to build against all versions of nlopt >=2.7.0.
+* Use `NLOPT_LD_LBFGS` in place of `NLOPT_LD_LBFGS_NOCEDAL` when the latter is
+not available (in nlopt v2.9.x).
+* Add checks for `x0` and `eval_f` in `nloptr` (#191, @astamm).
 
 # nloptr 2.2.0
 
 This release fixes a breaking bug which affects **nloptr** and its reverse dependencies and brings some minor tweaks and corrections along the way:
 
-* Minimal patch for build against nlopt 2.9.x (#176, @jaganmn): specifically, the issuses were that (i) nlopt versions 2.9.x had one less algorithm in the enum list, namely `NLOPT_LD_LBFGS_NOCEDAL` was removed in these versions and put back in 2.10 and (ii) we were using `inst/include` in which we copied nlopt headers conditionally to build the package (e.g. listing it in `PKG_CPPFLAGS`) resulting in possible version conflicts.
+* Minimal patch for build against nlopt `2.9.x` (#176, @jaganmn): specifically, the issuses were that (i) nlopt versions 2.9.x had one less algorithm in the enum list, namely `NLOPT_LD_LBFGS_NOCEDAL` was removed in these versions and put back in 2.10 and (ii) we were using `inst/include` in which we copied nlopt headers conditionally to build the package (e.g. listing it in `PKG_CPPFLAGS`) resulting in possible version conflicts.
 * Fix the 2 failed tests by adding one more termination criterion.
 * Update GHA workflows to latest versions.
 * Fix reverse `LinkingTo` dependencies by (i) unconditionally copying headers to `inst/include` and (ii) fixing `cmake` path search (#179, @astamm).
