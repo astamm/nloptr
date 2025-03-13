@@ -17,11 +17,11 @@ jobs:
       matrix:
         config:
           - {os: windows-2022, r: 'devel'}
-          - {os: windows-2022, r: '4.4'}
-          - {os: windows-2022, r: '4.3'}
-          - {os: windows-2022, r: '4.2'}
-          - {os: windows-2022, r: '4.1'}
-          - {os: windows-2022, r: '4.0'}
+          - {os: windows-2022, r: '4.4.0'}
+          - {os: windows-2022, r: '4.3.0'}
+          - {os: windows-2022, r: '4.2.0'}
+          - {os: windows-2022, r: '4.1.0'}
+          - {os: windows-2022, r: '4.0.0'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
