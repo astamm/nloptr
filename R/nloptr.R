@@ -323,9 +323,9 @@ nloptr <- function(x0,
                    ...) {
 
   # check arguments
-  if (!is.numeric(x0)) stop("x0 must be numeric\n")
-  if (length(x0) == 0) stop("x0 must have length > 0\n")
-  if (!is.function(eval_f)) stop("eval_f must be a function\n")
+  if (!is.numeric(x0)) warning("x0 must be numeric\n")
+  if (length(x0) == 0) warning("x0 must have length > 0\n")
+  if (!is.function(eval_f)) warning("eval_f must be a function\n")
 
   # internal function to check the arguments of the functions
   .checkfunargs <- function(fun, arglist, funname) {
