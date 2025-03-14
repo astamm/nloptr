@@ -48,7 +48,7 @@ build of [NLopt](https://nlopt.readthedocs.io/en/latest/) (i.e. with
 version `>= 2.7.0`).
 
 - If it is found it is used.
-- Otherwise, [NLopt](https://nlopt.readthedocs.io/en/latest/) 2.7.1 is
+- Otherwise, [NLopt](https://nlopt.readthedocs.io/en/latest/) 2.10.0 is
   built from included sources using [CMake](https://cmake.org). In this
   case, a binary of [CMake](https://cmake.org) stored in environment
   variable `CMAKE_BIN` is searched on the `PATH` and, alternatively, on
