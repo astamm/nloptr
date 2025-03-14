@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: windows-latest, r: 'devel', rtools: '45'}
+          - {os: windows-latest, r: 'devel'}
           - {os: windows-latest, r: 'next' , rtools: '45'}
           - {os: windows-latest, r: '4.4'  , rtools: '44'}
           - {os: windows-latest, r: '4.3'  , rtools: '43'}
