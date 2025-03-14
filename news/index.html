@@ -40,12 +40,17 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="nloptr-development-version">nloptr (development version)<a class="anchor" aria-label="anchor" href="#nloptr-development-version"></a></h2>
-</div>
+<h2 class="pkg-version" data-toc-text="2.2.1" id="nloptr-221">nloptr 2.2.1<a class="anchor" aria-label="anchor" href="#nloptr-221"></a></h2>
+<ul><li>Fix clang-UBSAN memory leak issue (<a href="https://github.com/astamm/nloptr/issues/189" class="external-link">#189</a>, <a href="https://github.com/astamm" class="external-link">@astamm</a>).</li>
+<li>Add link to blog post about nloptr v2.2.0.</li>
+<li>More CI to build against all versions of nlopt &gt;=2.7.0.</li>
+<li>Use <code>NLOPT_LD_LBFGS</code> in place of <code>NLOPT_LD_LBFGS_NOCEDAL</code> when the latter is not available (in nlopt v2.9.x).</li>
+<li>Add checks for <code>x0</code> and <code>eval_f</code> in <code>nloptr</code> (<a href="https://github.com/astamm/nloptr/issues/191" class="external-link">#191</a>, <a href="https://github.com/astamm" class="external-link">@astamm</a>).</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="2.2.0" id="nloptr-220">nloptr 2.2.0<a class="anchor" aria-label="anchor" href="#nloptr-220"></a></h2><p class="text-muted">CRAN release: 2025-03-12</p>
 <p>This release fixes a breaking bug which affects <strong>nloptr</strong> and its reverse dependencies and brings some minor tweaks and corrections along the way:</p>
-<ul><li>Minimal patch for build against nlopt 2.9.x (<a href="https://github.com/astamm/nloptr/issues/176" class="external-link">#176</a>, <a href="https://github.com/jaganmn" class="external-link">@jaganmn</a>): specifically, the issuses were that (i) nlopt versions 2.9.x had one less algorithm in the enum list, namely <code>NLOPT_LD_LBFGS_NOCEDAL</code> was removed in these versions and put back in 2.10 and (ii) we were using <code>inst/include</code> in which we copied nlopt headers conditionally to build the package (e.g. listing it in <code>PKG_CPPFLAGS</code>) resulting in possible version conflicts.</li>
+<ul><li>Minimal patch for build against nlopt <code>2.9.x</code> (<a href="https://github.com/astamm/nloptr/issues/176" class="external-link">#176</a>, <a href="https://github.com/jaganmn" class="external-link">@jaganmn</a>): specifically, the issuses were that (i) nlopt versions 2.9.x had one less algorithm in the enum list, namely <code>NLOPT_LD_LBFGS_NOCEDAL</code> was removed in these versions and put back in 2.10 and (ii) we were using <code>inst/include</code> in which we copied nlopt headers conditionally to build the package (e.g. listing it in <code>PKG_CPPFLAGS</code>) resulting in possible version conflicts.</li>
 <li>Fix the 2 failed tests by adding one more termination criterion.</li>
 <li>Update GHA workflows to latest versions.</li>
 <li>Fix reverse <code>LinkingTo</code> dependencies by (i) unconditionally copying headers to <code>inst/include</code> and (ii) fixing <code>cmake</code> path search (<a href="https://github.com/astamm/nloptr/issues/179" class="external-link">#179</a>, <a href="https://github.com/astamm" class="external-link">@astamm</a>).</li>
