@@ -3378,7 +3378,84 @@ fi
 ## does the actual copy of the headers into inst/include
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: Copying headers found in ${headers_location} into inst/include" >&5
 printf "%s\n" "Copying headers found in ${headers_location} into inst/include" >&6; }
-cp ${headers_location}/nlopt.* inst/include/
+# nlopt.h
+NLOPT_H=${headers_location}/nlopt.h
+as_ac_File=`printf "%s\n" "ac_cv_file_"${NLOPT_H}"" | sed "$as_sed_sh"`
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for \"${NLOPT_H}\"" >&5
+printf %s "checking for \"${NLOPT_H}\"... " >&6; }
+if eval test \${$as_ac_File+y}
+then :
+  printf %s "(cached) " >&6
+else case e in #(
+  e) test "$cross_compiling" = yes &&
+  as_fn_error $? "cannot check for file existence when cross compiling" "$LINENO" 5
+if test -r ""${NLOPT_H}""; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi ;;
+esac
+fi
+eval ac_res=\$$as_ac_File
+	       { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
+printf "%s\n" "$ac_res" >&6; }
+if eval test \"x\$"$as_ac_File"\" = x"yes"
+then :
+  cp "${NLOPT_H}" inst/include/nloptAPI.h
+fi
+
+# nlopt.hpp
+NLOPT_HPP=${headers_location}/nlopt.hpp
+as_ac_File=`printf "%s\n" "ac_cv_file_"${NLOPT_HPP}"" | sed "$as_sed_sh"`
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for \"${NLOPT_HPP}\"" >&5
+printf %s "checking for \"${NLOPT_HPP}\"... " >&6; }
+if eval test \${$as_ac_File+y}
+then :
+  printf %s "(cached) " >&6
+else case e in #(
+  e) test "$cross_compiling" = yes &&
+  as_fn_error $? "cannot check for file existence when cross compiling" "$LINENO" 5
+if test -r ""${NLOPT_HPP}""; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi ;;
+esac
+fi
+eval ac_res=\$$as_ac_File
+	       { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
+printf "%s\n" "$ac_res" >&6; }
+if eval test \"x\$"$as_ac_File"\" = x"yes"
+then :
+  cp "${NLOPT_HPP}" inst/include/nloptAPI.hpp
+fi
+
+# nlopt.f
+NLOPT_F=${headers_location}/nlopt.f
+as_ac_File=`printf "%s\n" "ac_cv_file_"${NLOPT_F}"" | sed "$as_sed_sh"`
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for \"${NLOPT_F}\"" >&5
+printf %s "checking for \"${NLOPT_F}\"... " >&6; }
+if eval test \${$as_ac_File+y}
+then :
+  printf %s "(cached) " >&6
+else case e in #(
+  e) test "$cross_compiling" = yes &&
+  as_fn_error $? "cannot check for file existence when cross compiling" "$LINENO" 5
+if test -r ""${NLOPT_F}""; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi ;;
+esac
+fi
+eval ac_res=\$$as_ac_File
+	       { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
+printf "%s\n" "$ac_res" >&6; }
+if eval test \"x\$"$as_ac_File"\" = x"yes"
+then :
+  cp "${NLOPT_F}" inst/include/nloptAPI.f
+fi
+
 
 ## Now use all the values
 NLOPT_CPPFLAGS="$nlopt_include"

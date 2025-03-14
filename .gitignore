@@ -1,7 +1,7 @@
 .Rproj.user
-inst/include/nlopt.f
-inst/include/nlopt.h
-inst/include/nlopt.hpp
+inst/include/nlopt*.f
+inst/include/nlopt*.h
+inst/include/nlopt*.hpp
 src/nlopt
 .Rhistory
 .Rdata
