@@ -16,12 +16,13 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: windows-2022, r: 'devel'}
-          - {os: windows-2022, r: '4.4.0'}
-          - {os: windows-2022, r: '4.3.0'}
-          - {os: windows-2022, r: '4.2.0'}
-          - {os: windows-2022, r: '4.1.0'}
-          - {os: windows-2022, r: '4.0.0'}
+          - {os: windows-2022, r: 'devel', rtools: '45'}
+          - {os: windows-2022, r: 'next' , rtools: '45'}
+          - {os: windows-2022, r: '4.4'  , rtools: '44'}
+          - {os: windows-2022, r: '4.3'  , rtools: '43'}
+          - {os: windows-2022, r: '4.2'  , rtools: '42'}
+          - {os: windows-2022, r: '4.1'  , rtools: '41'}
+          - {os: windows-2022, r: '4.0'  , rtools: '40'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -37,6 +38,7 @@ jobs:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
+          rtools-version: ${{ matrix.config.rtools }}
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
