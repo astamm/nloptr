@@ -1,5 +1,6 @@
 # nloptr 2.2.1
 
+* Updates included nlopt sources to v2.10.0 (#194, @astamm).
 * Fix clang-UBSAN memory leak issue (#189, @astamm).
 * Add link to blog post about nloptr v2.2.0.
 * More CI to build against all versions of nlopt >=2.7.0.
