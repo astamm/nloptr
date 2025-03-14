@@ -21,7 +21,7 @@ jobs:
           - {os: windows-2022, r: '4.4'  , rtools: '44'}
           - {os: windows-2022, r: '4.3'  , rtools: '43'}
           - {os: windows-2022, r: '4.2'  , rtools: '42'}
-          - {os: windows-2022, r: '4.1'  , rtools: '41'}
+          - {os: windows-2022, r: '4.1'  , rtools: '40'}
           - {os: windows-2022, r: '4.0'  , rtools: '40'}
 
     env:
