@@ -1,11 +1,11 @@
 # nloptr 2.2.1
 
-* Updates included nlopt sources to v2.10.0 (#194, @astamm).
+* Updates included nlopt sources to `v2.10.0` (#194, @astamm).
 * Fix clang-UBSAN memory leak issue (#189, @astamm).
-* Add link to blog post about nloptr v2.2.0.
-* More CI to build against all versions of nlopt >=2.7.0.
+* Add link to blog post about nloptr `v2.2.0`.
+* More CI to build against all versions of `nlopt>=2.7.0`.
 * Use `NLOPT_LD_LBFGS` in place of `NLOPT_LD_LBFGS_NOCEDAL` when the latter is
-not available (in nlopt v2.9.x).
+not available (in nlopt `v2.9.x`).
 * Add checks for `x0` and `eval_f` in `nloptr` (#191, @astamm).
 
 # nloptr 2.2.0

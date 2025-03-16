@@ -34,14 +34,9 @@ There was no ERROR, no WARNING and no NOTE.
 
 We checked 160 reverse dependencies (151 from CRAN + 9 from Bioconductor), comparing R CMD check results across CRAN and dev versions of this package.
 
- * We saw 1 new problem (**smooth**): 
- 
-    - we filed an issue [here](https://github.com/astamm/nloptr/issues/182) to
-    keep track of it, 
-    - we investigated the issue and found it comes from **smooth**,
-    - we informed the author of **smooth** by filing an issue in his repo
-    [here](https://github.com/config-i1/smooth/issues/242),
-    - he replied back and we are working on a solution.
+ * We saw 4 new problems: **PLNmodels**, **missSBM**, **rkriging** and
+ **garma**. All package maintainers have been informed and will soon submit a
+ release to CRAN with a fix.
  
  * We failed to check 3 packages
 

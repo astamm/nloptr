@@ -6,7 +6,7 @@
 * GitHub: https://github.com/ChaoranHu/smam
 * Source code: https://github.com/cran/smam
 * Date/Publication: 2024-01-10 21:30:02 UTC
-* Number of recursive dependencies: 64
+* Number of recursive dependencies: 47
 
 Run `revdepcheck::revdep_details(, "smam")` for more info
 
@@ -56,7 +56,7 @@ ERROR: configuration failed for package ‘smam’
 * GitHub: NA
 * Source code: https://github.com/cran/spaMM
 * Date/Publication: 2024-06-09 22:20:02 UTC
-* Number of recursive dependencies: 103
+* Number of recursive dependencies: 88
 
 Run `revdepcheck::revdep_details(, "spaMM")` for more info
 
@@ -72,8 +72,7 @@ Run `revdepcheck::revdep_details(, "spaMM")` for more info
 
 *   checking package dependencies ... NOTE
     ```
-    Packages which this enhances but not available for checking:
-      'multcomp', 'RLRsim', 'lmerTest'
+    Package which this enhances but not available for checking: ‘RLRsim’
     ```
 
 ## Installation
@@ -85,19 +84,19 @@ Run `revdepcheck::revdep_details(, "spaMM")` for more info
 ** package ‘spaMM’ successfully unpacked and MD5 sums checked
 ** using staged installation
 ** libs
-using C++ compiler: ‘Apple clang version 15.0.0 (clang-1500.3.9.4)’
-using SDK: ‘MacOSX14.4.sdk’
+using C++ compiler: ‘Apple clang version 16.0.0 (clang-1600.0.26.6)’
+using SDK: ‘MacOSX15.2.sdk’
 clang++ -arch arm64 -std=gnu++17 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I'/Users/stamm-a/Softs/nloptr/revdep/library.noindex/spaMM/Rcpp/include' -I'/Users/stamm-a/Softs/nloptr/revdep/library.noindex/spaMM/RcppEigen/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2   -c COMPoisson.cpp -o COMPoisson.o
 clang++ -arch arm64 -std=gnu++17 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I'/Users/stamm-a/Softs/nloptr/revdep/library.noindex/spaMM/Rcpp/include' -I'/Users/stamm-a/Softs/nloptr/revdep/library.noindex/spaMM/RcppEigen/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2   -c PLS.cpp -o PLS.o
 In file included from PLS.cpp:1:
 In file included from ./spaMM_linear.h:4:
 ...
-      ^
+      |       ^
 5 warnings generated.
 clang++ -arch arm64 -std=gnu++17 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I'/Users/stamm-a/Softs/nloptr/revdep/library.noindex/spaMM/Rcpp/include' -I'/Users/stamm-a/Softs/nloptr/revdep/library.noindex/spaMM/RcppEigen/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2   -c newBessel.cpp -o newBessel.o
 newBessel.cpp:2:10: fatal error: 'gsl/gsl_sf_bessel.h' file not found
-#include <gsl/gsl_sf_bessel.h>
-         ^~~~~~~~~~~~~~~~~~~~~
+    2 | #include <gsl/gsl_sf_bessel.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~
 1 error generated.
 make: *** [newBessel.o] Error 1
 ERROR: compilation failed for package ‘spaMM’
@@ -112,19 +111,19 @@ ERROR: compilation failed for package ‘spaMM’
 ** package ‘spaMM’ successfully unpacked and MD5 sums checked
 ** using staged installation
 ** libs
-using C++ compiler: ‘Apple clang version 15.0.0 (clang-1500.3.9.4)’
-using SDK: ‘MacOSX14.4.sdk’
+using C++ compiler: ‘Apple clang version 16.0.0 (clang-1600.0.26.6)’
+using SDK: ‘MacOSX15.2.sdk’
 clang++ -arch arm64 -std=gnu++17 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I'/Users/stamm-a/Softs/nloptr/revdep/library.noindex/spaMM/Rcpp/include' -I'/Users/stamm-a/Softs/nloptr/revdep/library.noindex/spaMM/RcppEigen/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2   -c COMPoisson.cpp -o COMPoisson.o
 clang++ -arch arm64 -std=gnu++17 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I'/Users/stamm-a/Softs/nloptr/revdep/library.noindex/spaMM/Rcpp/include' -I'/Users/stamm-a/Softs/nloptr/revdep/library.noindex/spaMM/RcppEigen/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2   -c PLS.cpp -o PLS.o
 In file included from PLS.cpp:1:
 In file included from ./spaMM_linear.h:4:
 ...
-      ^
+      |       ^
 5 warnings generated.
 clang++ -arch arm64 -std=gnu++17 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG  -I'/Users/stamm-a/Softs/nloptr/revdep/library.noindex/spaMM/Rcpp/include' -I'/Users/stamm-a/Softs/nloptr/revdep/library.noindex/spaMM/RcppEigen/include' -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2   -c newBessel.cpp -o newBessel.o
 newBessel.cpp:2:10: fatal error: 'gsl/gsl_sf_bessel.h' file not found
-#include <gsl/gsl_sf_bessel.h>
-         ^~~~~~~~~~~~~~~~~~~~~
+    2 | #include <gsl/gsl_sf_bessel.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~
 1 error generated.
 make: *** [newBessel.o] Error 1
 ERROR: compilation failed for package ‘spaMM’
@@ -140,7 +139,7 @@ ERROR: compilation failed for package ‘spaMM’
 * GitHub: https://github.com/prioritizr/surveyvoi
 * Source code: https://github.com/cran/surveyvoi
 * Date/Publication: 2024-02-16 23:10:06 UTC
-* Number of recursive dependencies: 117
+* Number of recursive dependencies: 116
 
 Run `revdepcheck::revdep_details(, "surveyvoi")` for more info
 
@@ -168,7 +167,7 @@ Run `revdepcheck::revdep_details(, "surveyvoi")` for more info
 ** package ‘surveyvoi’ successfully unpacked and MD5 sums checked
 ** using staged installation
 checking if R found... yes
-configure: R version: 4.4.0
+configure: R version: 4.4.3
 checking for pkg-config... no
 configure: Package PKG_CPPFLAGS: -I/opt/R/arm64/include  
 configure: Package PKG_LIBS:      -lgmpxx -lgmp -lmpfr -lgmp
@@ -195,7 +194,7 @@ ERROR: configuration failed for package ‘surveyvoi’
 ** package ‘surveyvoi’ successfully unpacked and MD5 sums checked
 ** using staged installation
 checking if R found... yes
-configure: R version: 4.4.0
+configure: R version: 4.4.3
 checking for pkg-config... no
 configure: Package PKG_CPPFLAGS: -I/opt/R/arm64/include  
 configure: Package PKG_LIBS:      -lgmpxx -lgmp -lmpfr -lgmp
