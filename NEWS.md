@@ -1,3 +1,5 @@
+# nloptr (development version)
+
 # nloptr 2.2.1
 
 * Updates included nlopt sources to `v2.10.0` (#194, @astamm).
