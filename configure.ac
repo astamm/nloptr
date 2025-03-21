@@ -81,16 +81,17 @@ if test x"${need_to_build}" != x"no"; then
 fi
 
 ## does the actual copy of the headers into inst/include
-AC_MSG_RESULT([Copying headers found in ${headers_location} into inst/include])
+AC_MSG_RESULT([Copying headers found in ${headers_location} into inst/include/nloptr])
+mkdir -p inst/include/nloptr
 # nlopt.h
 NLOPT_H=${headers_location}/nlopt.h
-AC_CHECK_FILE("${NLOPT_H}", [cp "${NLOPT_H}" inst/include/nloptAPI.h])
+AC_CHECK_FILE("${NLOPT_H}", [cp "${NLOPT_H}" inst/include/nloptr/nlopt.h])
 # nlopt.hpp
 NLOPT_HPP=${headers_location}/nlopt.hpp
-AC_CHECK_FILE("${NLOPT_HPP}", [cp "${NLOPT_HPP}" inst/include/nloptAPI.hpp])
+AC_CHECK_FILE("${NLOPT_HPP}", [cp "${NLOPT_HPP}" inst/include/nloptr/nlopt.hpp])
 # nlopt.f
 NLOPT_F=${headers_location}/nlopt.f
-AC_CHECK_FILE("${NLOPT_F}", [cp "${NLOPT_F}" inst/include/nloptAPI.f])
+AC_CHECK_FILE("${NLOPT_F}", [cp "${NLOPT_F}" inst/include/nloptr/nlopt.f])
 
 ## Now use all the values
 AC_SUBST([NLOPT_CPPFLAGS],["$nlopt_include"])

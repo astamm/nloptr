@@ -3376,8 +3376,9 @@ printf "%s\n" "using NLopt via local cmake build on ${machine}" >&6; }
 fi
 
 ## does the actual copy of the headers into inst/include
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: Copying headers found in ${headers_location} into inst/include" >&5
-printf "%s\n" "Copying headers found in ${headers_location} into inst/include" >&6; }
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: Copying headers found in ${headers_location} into inst/include/nloptr" >&5
+printf "%s\n" "Copying headers found in ${headers_location} into inst/include/nloptr" >&6; }
+mkdir -p inst/include/nloptr
 # nlopt.h
 NLOPT_H=${headers_location}/nlopt.h
 as_ac_File=`printf "%s\n" "ac_cv_file_"${NLOPT_H}"" | sed "$as_sed_sh"`
@@ -3401,7 +3402,7 @@ eval ac_res=\$$as_ac_File
 printf "%s\n" "$ac_res" >&6; }
 if eval test \"x\$"$as_ac_File"\" = x"yes"
 then :
-  cp "${NLOPT_H}" inst/include/nloptAPI.h
+  cp "${NLOPT_H}" inst/include/nloptr/nlopt.h
 fi
 
 # nlopt.hpp
@@ -3427,7 +3428,7 @@ eval ac_res=\$$as_ac_File
 printf "%s\n" "$ac_res" >&6; }
 if eval test \"x\$"$as_ac_File"\" = x"yes"
 then :
-  cp "${NLOPT_HPP}" inst/include/nloptAPI.hpp
+  cp "${NLOPT_HPP}" inst/include/nloptr/nlopt.hpp
 fi
 
 # nlopt.f
@@ -3453,7 +3454,7 @@ eval ac_res=\$$as_ac_File
 printf "%s\n" "$ac_res" >&6; }
 if eval test \"x\$"$as_ac_File"\" = x"yes"
 then :
-  cp "${NLOPT_F}" inst/include/nloptAPI.f
+  cp "${NLOPT_F}" inst/include/nloptr/nlopt.f
 fi
 
 
