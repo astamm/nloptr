@@ -23,6 +23,15 @@ tol <- sqrt(.Machine$double.eps)
 ########################## Tests for nloptr.R ##################################
 
 ctlNM <- list(algorithm = "NLOPT_LN_NELDERMEAD", xtol_rel = 1e-8,
+              check_derivatives = FALSE)
+
+# check x0
+expect_error(nloptr("3", function(x) x, opts = ctlNM),
+             "x0 must be numeric", fixed = TRUE)
+expect_error(nloptr(numeric(), function(x) x, opts = ctlNM),
+             "x0 must have length > 0", fixed = TRUE)
+
+ctlNM <- list(algorithm = "NLOPT_LN_NELDERMEAD", xtol_rel = 1e-8,
               check_derivatives = TRUE)
 ctlSQP <- list(algorithm = "NLOPT_LD_SLSQP", xtol_rel = 1e-8,
                check_derivatives = TRUE)
