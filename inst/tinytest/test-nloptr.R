@@ -51,6 +51,12 @@ expect_error(nloptr(3, fn, b = "X", c = "Y", d = "Q"),
 expect_warning(nloptr(3, fn, b = 3, c = 4, opts = ctlNM),
                "Skipping derivative checker because algorithm", fixed = TRUE)
 
+fn <- function(x, ...) x^2
+gr <- function(x, ...) 2*x
+expect_equal(nloptr(3, fn, gr,
+       opts = list(algorithm = "NLOPT_LD_LBFGS",
+                   xtol_rel = 1e-4))$status, 1L)
+
 ########################## Tests for nloptr.c ##################################
 ctl <- list(xtol_rel = 1e-8, maxeval = 1000L)
 fn <- function(x) x ^ 2 - 4 * x + 4
