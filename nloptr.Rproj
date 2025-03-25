@@ -18,6 +18,7 @@ StripTrailingWhitespace: Yes
 LineEndingConversion: Posix
 
 BuildType: Package
+PackageUseDevtools: Yes
 PackageInstallArgs: --no-multiarch --with-keep.source --clean  --preclean
 PackageBuildArgs: --md5 --compact-vignettes
 PackageBuildBinaryArgs: --clean  --preclean
