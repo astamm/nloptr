@@ -188,23 +188,6 @@ expect_equal(testRun$objective, optVal, tolerance = 1e-2)
 expect_true(testRun$iterations <= ctl$maxeval + 5)
 expect_true(testRun$status > 0)
 
-if (nloptr:::have.nlopt.ld.lbfgs.nocedal) {
-  ## NLOPT_LD_LBFGS_NOCEDAL
-  # NLOPT_LD_LBFGS_NOCEDAL as this algorithm has not been included as of NLOPT
-  # 2.7.1 per https://github.com/stevengj/nlopt/issues/40 so the expected outcome
-  # is NLOPT_INVALID_ARGS. Perhaps we should ring-fence it for now?
-  # (AA: 2023-02-08)
-  alg <- list(algorithm = "NLOPT_LD_LBFGS_NOCEDAL")
-  testRun <- nloptr(c(1, 1), fn, gr, lb = lb, ub = ub, opts = c(alg, ctl))
-
-  minus2mess <- paste("NLOPT_INVALID_ARGS: Invalid arguments (e.g. lower bounds",
-                      "are bigger than upper bounds, an unknown algorithm was",
-                      "specified, etcetera).")
-
-  expect_identical(testRun$status, -2L)
-  expect_identical(testRun$message, minus2mess)
-}
-
 ## case NLOPT_FAILURE
 fnl <- function(x) {
   list(objective = (x[1] - 1) ^ 2 + (x[2] - 1) ^ 2,

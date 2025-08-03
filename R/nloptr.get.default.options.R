@@ -66,7 +66,6 @@ nloptr.get.default.options <- function() {
                          "NLOPT_GD_STOGO",
                          "NLOPT_GD_STOGO_RAND",
                          "NLOPT_LD_SLSQP",
-                         if (have.nlopt.ld.lbfgs.nocedal) "NLOPT_LD_LBFGS_NOCEDAL",
                          "NLOPT_LD_LBFGS",
                          "NLOPT_LN_PRAXIS",
                          "NLOPT_LD_VAR1",
