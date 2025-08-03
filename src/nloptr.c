@@ -708,12 +708,51 @@ nlopt_opt getOptions(SEXP R_options, int num_controls, int *flag_encountered_err
     Rprintf("Error: nlopt_set_xtol_rel returned NLOPT_INVALID_ARGS.\n");
   }
 
-  SEXP R_opts_xtol_abs = PROTECT(getListElement(R_options, "xtol_abs"));
-  double xtol_abs[num_controls];
-  for (size_t i = 0; i < num_controls; i++) {
-    xtol_abs[i] = asReal(R_opts_xtol_abs);
+  SEXP R_opts_x_weights = PROTECT(getListElement(R_options, "x_weights"));
+  unsigned int num_x_weights = length(R_opts_x_weights);
+  // if R_opts_x_weights is of length 1, then use the same weight for all controls
+  if (num_controls == 1)
+  {
+    res = nlopt_set_x_weights1(opts, asReal(R_opts_x_weights));
   }
-  res = nlopt_set_xtol_abs(opts, xtol_abs);
+  else
+  {
+    if (num_x_weights != num_controls) 
+    {
+      *flag_encountered_error = 1;
+      Rprintf("Error: x_weights must have either length 1 or length equal to the number of controls.\n");
+    }
+    double x_weights[num_controls];
+    for (size_t i = 0; i < num_controls; i++) {
+      x_weights[i] = REAL(R_opts_x_weights)[i];
+    }
+    res = nlopt_set_x_weights(opts, x_weights);
+  }
+  if (res == NLOPT_INVALID_ARGS) {
+    *flag_encountered_error = 1;
+    Rprintf("Error: nlopt_set_x_weights returned NLOPT_INVALID_ARGS.\n");
+  }
+
+  SEXP R_opts_xtol_abs = PROTECT(getListElement(R_options, "xtol_abs"));
+  unsigned int num_xtol_abs = length(R_opts_xtol_abs);
+  // if R_opts_xtol_abs is of length 1, then use the same tolerance for all controls
+  if (num_xtol_abs == 1)
+  {
+    res = nlopt_set_xtol_abs1(opts, asReal(R_opts_xtol_abs));
+  }
+  else
+  {
+    if (num_xtol_abs != num_controls)
+    {
+      *flag_encountered_error = 1;
+      Rprintf("Error: xtol_abs must have either length 1 or length equal to the number of controls.\n");
+    }
+    double xtol_abs[num_xtol_abs];
+    for (size_t i = 0; i < num_xtol_abs; i++) {
+      xtol_abs[i] = REAL(R_opts_xtol_abs)[i];
+    }
+    res = nlopt_set_xtol_abs(opts, xtol_abs);
+  }
   if (res == NLOPT_INVALID_ARGS) {
     *flag_encountered_error = 1;
     Rprintf("Error: nlopt_set_xtol_abs returned NLOPT_INVALID_ARGS.\n");
@@ -759,7 +798,7 @@ nlopt_opt getOptions(SEXP R_options, int num_controls, int *flag_encountered_err
     nlopt_srand(ranseed);
   }
 
-  UNPROTECT(12);
+  UNPROTECT(13);
 
   return opts;
 }
@@ -837,7 +876,7 @@ SEXP NLoptR_Optimize(SEXP args) {
   SEXP R_init_values = PROTECT(getListElement(args, "x0"));
 
   // Number of control variables.
-  unsigned num_controls = length(R_init_values);
+  unsigned int num_controls = length(R_init_values);
 
   // Set initial values of the controls.
   double x0[num_controls];
