@@ -1,17 +1,20 @@
 # Copyright (C) 2014 Hans W. Borchers. All Rights Reserved.
-# This code is published under the L-GPL.
+# SPDX-License-Identifier: LGPL-3.0-or-later
 #
 # File:   tnewton.R
 # Author: Hans W. Borchers
 # Date:   27 January 2014
 #
 # Wrapper to solve optimization problem using Preconditioned Truncated Newton.
-
+#
+# CHANGELOG
+#   2023-02-08: Cleanup and tweaks for safety and efficiency (Avraham Adler)
+#
 
 
 #' Preconditioned Truncated Newton
 #'
-#' Truncated Newton methods, also calledNewton-iterative methods, solve an
+#' Truncated Newton methods, also called Newton-iterative methods, solve an
 #' approximating Newton system using a conjugate-gradient approach and are
 #' related to limited-memory BFGS.
 #'
@@ -35,9 +38,9 @@
 #'   \item{value}{the function value corresponding to \code{par}.}
 #'   \item{iter}{number of (outer) iterations, see \code{maxeval}.}
 #'   \item{convergence}{integer code indicating successful completion (> 1)
-#'     or a possible error number (< 0).}
+#'   or a possible error number (< 0).}
 #'   \item{message}{character string produced by NLopt and giving additional
-#'     information.}
+#'   information.}
 #'
 #' @export tnewton
 #'
@@ -54,52 +57,51 @@
 #' @examples
 #'
 #' flb <- function(x) {
-#'     p <- length(x)
-#'     sum(c(1, rep(4, p-1)) * (x - c(1, x[-p])^2)^2)
+#'   p <- length(x)
+#'   sum(c(1, rep(4, p - 1)) * (x - c(1, x[-p]) ^ 2) ^ 2)
 #' }
 #' # 25-dimensional box constrained: par[24] is *not* at boundary
-#' S <- tnewton(rep(3, 25), flb, lower=rep(2, 25), upper=rep(4, 25),
-#'                 nl.info = TRUE, control = list(xtol_rel=1e-8))
+#' S <- tnewton(rep(3, 25L), flb, lower = rep(2, 25L), upper = rep(4, 25L),
+#'        nl.info = TRUE, control = list(xtol_rel = 1e-8))
 #' ## Optimal value of objective function:  368.105912874334
 #' ## Optimal value of controls: 2  ...  2  2.109093  4
 #'
-tnewton <-
-function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
-            precond = TRUE, restart = TRUE,
-            nl.info = FALSE, control = list(), ...)
-{
-    opts <- nl.opts(control)
-    if (precond) {
-        if (restart)
-            opts["algorithm"] <- "NLOPT_LD_TNEWTON_PRECOND_RESTART"
-        else
-            opts["algorithm"] <- "NLOPT_LD_TNEWTON_PRECOND"
-    } else {
-        if (restart)
-            opts["algorithm"] <- "NLOPT_LD_TNEWTON_RESTART"
-        else
-            opts["algorithm"] <- "NLOPT_LD_TNEWTON"
-    }
+tnewton <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
+                    precond = TRUE, restart = TRUE, nl.info = FALSE,
+                    control = list(), ...) {
 
-    fun <- match.fun(fn)
-    fn  <- function(x) fun(x, ...)
+  opts <- nl.opts(control)
+  if (precond) {
+    if (restart)
+      opts["algorithm"] <- "NLOPT_LD_TNEWTON_PRECOND_RESTART"
+    else
+      opts["algorithm"] <- "NLOPT_LD_TNEWTON_PRECOND"
+  } else {
+    if (restart)
+      opts["algorithm"] <- "NLOPT_LD_TNEWTON_RESTART"
+    else
+      opts["algorithm"] <- "NLOPT_LD_TNEWTON"
+  }
 
-    if (is.null(gr)) {
-        gr <- function(x) nl.grad(x, fn)
-    } else {
-        .gr <- match.fun(gr)
-        gr <- function(x) .gr(x, ...)
-    }
+  fun <- match.fun(fn)
+  fn  <- function(x) fun(x, ...)
 
-    S0 <- nloptr(x0,
-                eval_f = fn,
-                eval_grad_f = gr,
-                lb = lower,
-                ub = upper,
-                opts = opts)
+  if (is.null(gr)) {
+    gr <- function(x) nl.grad(x, fn)
+  } else {
+    .gr <- match.fun(gr)
+    gr <- function(x) .gr(x, ...)
+  }
 
-    if (nl.info) print(S0)
-    S1 <- list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-                convergence = S0$status, message = S0$message)
-    return(S1)
+  S0 <- nloptr(x0,
+               eval_f = fn,
+               eval_grad_f = gr,
+               lb = lower,
+               ub = upper,
+               opts = opts)
+
+  if (nl.info) print(S0)
+
+  list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+       convergence = S0$status, message = S0$message)
 }

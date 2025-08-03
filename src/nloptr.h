@@ -2,9 +2,8 @@
 #define __NLOPTR_H__
 
 #include <R.h>
-#include <Rdefines.h>
+#include <Rinternals.h>  // Rdefines.h is no longer maintained.
 
-extern SEXP run_testthat_tests(SEXP);
 SEXP NLoptR_Optimize(SEXP args);
 
 #endif /*__NLOPTR_H__*/

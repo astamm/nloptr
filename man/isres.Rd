@@ -15,6 +15,7 @@ isres(
   pop.size = 20 * (length(x0) + 1),
   xtol_rel = 1e-06,
   nl.info = FALSE,
+  deprecatedBehavior = TRUE,
   ...
 )
 }
@@ -26,9 +27,9 @@ isres(
 \item{lower, upper}{lower and upper bound constraints.}
 
 \item{hin}{function defining the inequality constraints, that is
-\code{hin>=0} for all components.}
+\code{hin <= 0} for all components.}
 
-\item{heq}{function defining the equality constraints, that is \code{heq==0}
+\item{heq}{function defining the equality constraints, that is \code{heq = 0}
 for all components.}
 
 \item{maxeval}{maximum number of function evaluations.}
@@ -37,7 +38,12 @@ for all components.}
 
 \item{xtol_rel}{stopping criterion for relative change reached.}
 
-\item{nl.info}{logical; shall the original NLopt info been shown.}
+\item{nl.info}{logical; shall the original \acronym{NLopt} info be shown.}
+
+\item{deprecatedBehavior}{logical; if \code{TRUE} (default for now), the old
+behavior of the Jacobian function is used, where the equality is \eqn{\ge 0}
+instead of \eqn{\le 0}. This will be reversed in a future release and
+eventually removed.}
 
 \item{...}{additional arguments passed to the function.}
 }
@@ -52,37 +58,50 @@ or a possible error number (< 0).}
 information.}
 }
 \description{
-The Improved Stochastic Ranking Evolution Strategy (ISRES) algorithm for
-nonlinearly constrained global optimization (or at least semi-global:
-although it has heuristics to escape local optima.
+The Improved Stochastic Ranking Evolution Strategy (\acronym{ISRES}) is an
+algorithm for nonlinearly constrained global optimization, or at least
+semi-global, although it has heuristics to escape local optima.
 }
 \details{
-The evolution strategy is based on a combination of a mutation rule (with a
-log-normal step-size update and exponential smoothing) and differential
-variation (a Nelder-Mead-like update rule). The fitness ranking is simply
+The evolution strategy is based on a combination of a mutation rule---with a
+log-normal step-size update and exponential smoothing---and differential
+variation---a Nelder-Mead-like update rule). The fitness ranking is simply
 via the objective function for problems without nonlinear constraints, but
 when nonlinear constraints are included the stochastic ranking proposed by
 Runarsson and Yao is employed.
 
 This method supports arbitrary nonlinear inequality and equality constraints
-in addition to the bound constraints.
+in addition to the bounds constraints.
 }
 \note{
-The initial population size for CRS defaults to \code{20x(n+1)} in
-\code{n} dimensions, but this can be changed; the initial population must be
-at least \code{n+1}.
+The initial population size for CRS defaults to \eqn{20x(n+1)} in
+\eqn{n} dimensions, but this can be changed. The initial population must be
+at least \eqn{n+1}.
 }
 \examples{
 
-### Rosenbrock Banana objective function
-fn <- function(x)
-    return( 100 * (x[2] - x[1] * x[1])^2 + (1 - x[1])^2 )
+## Rosenbrock Banana objective function
 
-x0 <- c( -1.2, 1 )
-lb <- c( -3, -3 )
-ub <- c(  3,  3 )
+rbf <- function(x) {(1 - x[1]) ^ 2 + 100 * (x[2] - x[1] ^ 2) ^ 2}
 
-isres(x0 = x0, fn = fn, lower = lb, upper = ub)
+x0 <- c(-1.2, 1)
+lb <- c(-3, -3)
+ub <- c(3,  3)
+
+## The function as written above has a minimum of 0 at (1, 1)
+
+isres(x0 = x0, fn = rbf, lower = lb, upper = ub)
+
+## Now subject to the inequality that x[1] + x[2] <= 1.5
+
+hin <- function(x) {x[1] + x[2] - 1.5}
+
+S <- isres(x0 = x0, fn = rbf, hin = hin, lower = lb, upper = ub,
+           maxeval = 2e5L, deprecatedBehavior = FALSE)
+
+S
+
+sum(S$par)
 
 }
 \references{

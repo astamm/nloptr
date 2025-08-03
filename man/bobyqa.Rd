@@ -21,7 +21,7 @@ bobyqa(
 
 \item{lower, upper}{lower and upper bound constraints.}
 
-\item{nl.info}{logical; shall the original NLopt info been shown.}
+\item{nl.info}{logical; shall the original \acronym{NLopt} info be shown.}
 
 \item{control}{list of options, see \code{nl.opts} for help.}
 
@@ -34,28 +34,42 @@ List with components:
 \item{iter}{number of (outer) iterations, see \code{maxeval}.}
 \item{convergence}{integer code indicating successful completion (> 0)
 or a possible error number (< 0).}
-\item{message}{character string produced by NLopt and giving additional
-information.}
+\item{message}{character string produced by \acronym{NLopt} and giving
+additional information.}
 }
 \description{
-BOBYQA performs derivative-free bound-constrained optimization using an
-iteratively constructed quadratic approximation for the objective function.
+\acronym{BOBYQA} performs derivative-free bound-constrained optimization
+using an iteratively constructed quadratic approximation for the objective
+function.
 }
 \details{
-This is an algorithm derived from the BOBYQA Fortran subroutine of Powell,
-converted to C and modified for the NLOPT stopping criteria.
+This is an algorithm derived from the \acronym{BOBYQA} Fortran subroutine of
+Powell, converted to C and modified for the \acronym{NLopt} stopping
+criteria.
 }
 \note{
-Because BOBYQA constructs a quadratic approximation of the objective,
-it may perform poorly for objective functions that are not
+Because \acronym{BOBYQA} constructs a quadratic approximation of the
+objective, it may perform poorly for objective functions that are not
 twice-differentiable.
 }
 \examples{
 
-fr <- function(x) {   ## Rosenbrock Banana function
-    100 * (x[2] - x[1]^2)^2 + (1 - x[1])^2
-}
-(S <- bobyqa(c(0, 0, 0), fr, lower = c(0, 0, 0), upper = c(0.5, 0.5, 0.5)))
+## Rosenbrock Banana function
+
+rbf <- function(x) {(1 - x[1]) ^ 2 + 100 * (x[2] - x[1] ^ 2) ^ 2}
+
+## The function as written above has a minimum of 0 at (1, 1)
+
+S <- bobyqa(c(0, 0), rbf)
+
+
+S
+
+## Rosenbrock Banana function with both parameters constrained to [0, 0.5]
+
+S <- bobyqa(c(0, 0), rbf, lower = c(0, 0), upper = c(0.5, 0.5))
+
+S
 
 }
 \references{

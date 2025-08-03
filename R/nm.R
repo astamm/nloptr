@@ -1,12 +1,15 @@
 # Copyright (C) 2014 Hans W. Borchers. All Rights Reserved.
-# This code is published under the L-GPL.
+# SPDX-License-Identifier: LGPL-3.0-or-later
 #
 # File:   nm.R
 # Author: Hans W. Borchers
 # Date:   27 January 2014
 #
 # Wrapper to solve optimization problem using Nelder-Mead and Subplex.
-
+#
+# CHANGELOG
+# 2023-02-09: Cleanup and tweaks for safety and efficiency (Avraham Adler)
+#
 
 
 #' Nelder-Mead Simplex
@@ -29,9 +32,9 @@
 #'   \item{value}{the function value corresponding to \code{par}.}
 #'   \item{iter}{number of (outer) iterations, see \code{maxeval}.}
 #'   \item{convergence}{integer code indicating successful completion (> 0)
-#'     or a possible error number (< 0).}
+#'   or a possible error number (< 0).}
 #'   \item{message}{character string produced by NLopt and giving additional
-#'     information.}
+#'   information.}
 #'
 #' @export neldermead
 #'
@@ -52,22 +55,22 @@
 #'
 #' # Fletcher and Powell's helic valley
 #' fphv <- function(x)
-#'     100*(x[3] - 10*atan2(x[2], x[1])/(2*pi))^2 +
-#'         (sqrt(x[1]^2 + x[2]^2) - 1)^2 +x[3]^2
+#'   100*(x[3] - 10*atan2(x[2], x[1])/(2*pi))^2 +
+#'     (sqrt(x[1]^2 + x[2]^2) - 1)^2 +x[3]^2
 #' x0 <- c(-1, 0, 0)
-#' neldermead(x0, fphv)    #  1 0 0
+#' neldermead(x0, fphv)  #  1 0 0
 #'
 #' # Powell's Singular Function (PSF)
 #' psf <- function(x)  (x[1] + 10*x[2])^2 + 5*(x[3] - x[4])^2 +
-#'                     (x[2] - 2*x[3])^4 + 10*(x[1] - x[4])^4
+#'           (x[2] - 2*x[3])^4 + 10*(x[1] - x[4])^4
 #' x0 <- c(3, -1, 0, 1)
-#' neldermead(x0, psf)     #  0 0 0 0, needs maximum number of function calls
+#' neldermead(x0, psf)   #  0 0 0 0, needs maximum number of function calls
 #'
 #' \dontrun{
 #' # Bounded version of Nelder-Mead
 #' rosenbrock <- function(x) { ## Rosenbrock Banana function
-#'     100 * (x[2] - x[1]^2)^2 + (1 - x[1])^2 + 
-#'     100 * (x[3] - x[2]^2)^2 + (1 - x[2])^2
+#'   100 * (x[2] - x[1]^2)^2 + (1 - x[1])^2 +
+#'   100 * (x[3] - x[2]^2)^2 + (1 - x[2])^2
 #' }
 #' lower <- c(-Inf, 0,   0)
 #' upper <- c( Inf, 0.5, 1)
@@ -76,26 +79,22 @@
 #' # $xmin = c(0.7085595, 0.5000000, 0.2500000)
 #' # $fmin = 0.3353605}
 #'
-neldermead <-
-function(x0, fn, lower = NULL, upper = NULL,
-                 nl.info = FALSE, control = list(), ...)
-{
-    opts <- nl.opts(control)
-    opts["algorithm"] <- "NLOPT_LN_NELDERMEAD"
+neldermead <- function(x0, fn, lower = NULL, upper = NULL, nl.info = FALSE,
+                       control = list(), ...) {
 
-    fun <- match.fun(fn)
-    fn <- function(x) fun(x, ...)
+  opts <- nl.opts(control)
+  opts["algorithm"] <- "NLOPT_LN_NELDERMEAD"
 
-    S0 <- nloptr(x0, fn, lb = lower, ub = upper,
-                opts = opts)
+  fun <- match.fun(fn)
+  fn <- function(x) fun(x, ...)
 
-    if (nl.info) print(S0)
-    S1 <- list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-                convergence = S0$status, message = S0$message)
-    return(S1)
+  S0 <- nloptr(x0, fn, lb = lower, ub = upper, opts = opts)
+
+  if (nl.info) print(S0)
+
+  list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+       convergence = S0$status, message = S0$message)
 }
-
-
 
 
 #' Subplex Algorithm
@@ -104,11 +103,11 @@ function(x0, fn, lower = NULL, upper = NULL,
 #' subspaces.
 #'
 #' SUBPLEX is claimed to be much more efficient and robust than the original
-#' Nelder-Mead, while retaining the latter's facility with discontinuous
+#' Nelder-Mead while retaining the latter's facility with discontinuous
 #' objectives.
 #'
-#' This implementation has explicit support for bound constraints (via the
-#' method in the Box paper as described on the \code{neldermead} help page).
+#' This implementation has explicit support for bound constraints via the
+#' method in the Box paper as described on the \code{neldermead} help page.
 #'
 #' @param x0 starting point for searching the optimum.
 #' @param fn objective function that is to be minimized.
@@ -122,9 +121,9 @@ function(x0, fn, lower = NULL, upper = NULL,
 #'   \item{value}{the function value corresponding to \code{par}.}
 #'   \item{iter}{number of (outer) iterations, see \code{maxeval}.}
 #'   \item{convergence}{integer code indicating successful completion (> 0)
-#'     or a possible error number (< 0).}
+#'   or a possible error number (< 0).}
 #'   \item{message}{character string produced by NLopt and giving additional
-#'     information.}
+#'   information.}
 #'
 #' @export sbplx
 #'
@@ -141,32 +140,30 @@ function(x0, fn, lower = NULL, upper = NULL,
 #'
 #' # Fletcher and Powell's helic valley
 #' fphv <- function(x)
-#'     100*(x[3] - 10*atan2(x[2], x[1])/(2*pi))^2 +
-#'         (sqrt(x[1]^2 + x[2]^2) - 1)^2 +x[3]^2
+#'   100*(x[3] - 10*atan2(x[2], x[1])/(2*pi))^2 +
+#'     (sqrt(x[1]^2 + x[2]^2) - 1)^2 +x[3]^2
 #' x0 <- c(-1, 0, 0)
-#' sbplx(x0, fphv)    #  1 0 0
+#' sbplx(x0, fphv)  #  1 0 0
 #'
 #' # Powell's Singular Function (PSF)
 #' psf <- function(x)  (x[1] + 10*x[2])^2 + 5*(x[3] - x[4])^2 +
-#'                     (x[2] - 2*x[3])^4 + 10*(x[1] - x[4])^4
+#'           (x[2] - 2*x[3])^4 + 10*(x[1] - x[4])^4
 #' x0 <- c(3, -1, 0, 1)
-#' sbplx(x0, psf, control = list(maxeval = Inf, ftol_rel = 1e-6))  #  0 0 0 0 (?)
+#' sbplx(x0, psf, control = list(maxeval = Inf, ftol_rel = 1e-6)) #  0 0 0 0 (?)
 #'
-sbplx <-
-function(x0, fn, lower = NULL, upper = NULL,
-                 nl.info = FALSE, control = list(), ...)
-{
-    opts <- nl.opts(control)
-    opts["algorithm"] <- "NLOPT_LN_SBPLX"
+sbplx <- function(x0, fn, lower = NULL, upper = NULL, nl.info = FALSE,
+                  control = list(), ...) {
 
-    fun <- match.fun(fn)
-    fn <- function(x) fun(x, ...)
+  opts <- nl.opts(control)
+  opts["algorithm"] <- "NLOPT_LN_SBPLX"
 
-    S0 <- nloptr(x0, fn, lb = lower, ub = upper,
-                opts = opts)
+  fun <- match.fun(fn)
+  fn <- function(x) fun(x, ...)
 
-    if (nl.info) print(S0)
-    S1 <- list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-                convergence = S0$status, message = S0$message)
-    return(S1)
+  S0 <- nloptr(x0, fn, lb = lower, ub = upper, opts = opts)
+
+  if (nl.info) print(S0)
+
+  list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+       convergence = S0$status, message = S0$message)
 }

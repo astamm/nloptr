@@ -21,8 +21,15 @@
  *
  * This file registers C functions to be used from R.
  *
- * 03/10/2017: Included registering of C functions to be used by external R packages.
- * 01/10/2017: Initial version.
+ * CHANGELOG:
+ * 2017-10-01: Initial version.
+ * 2017-10-03: Included registering of C functions to be used by external R
+ *             packages.
+ * 2023-02-07: Use "modern" method for invoking native routine registration
+ *             (Avraham Adler).
+ * 2023-08-24: Delete files solely needed for testthat (Avraham Adler).
+ * 2024-07-02: Updated old include which is no longer maintained and other
+ *             minor code tweaks and efficiency enhancements (Avraham Adler).
  */
 
 #include <R.h>
@@ -34,7 +41,6 @@
 #include <nlopt.h>
 
 static const R_CallMethodDef CallEntries[] = {
-  {"run_testthat_tests", (DL_FUNC) &run_testthat_tests, 1},
   {"NLoptR_Optimize",    (DL_FUNC) &NLoptR_Optimize,    1},
   {NULL, NULL, 0}
 };
@@ -107,4 +113,5 @@ void R_init_nloptr(DllInfo *info) {
     // Register routines to improve lookup from R using .Call interface.
     R_registerRoutines(info, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(info, FALSE);
+    R_forceSymbols(info, TRUE);
 }

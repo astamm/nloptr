@@ -1,11 +1,14 @@
 # Copyright (C) 2014 Hans W. Borchers. All Rights Reserved.
-# This code is published under the L-GPL.
+# SPDX-License-Identifier: LGPL-3.0-or-later
 #
 # File:   direct.R
 # Author: Hans W. Borchers
 # Date:   27 January 2014
 #
 # Wrapper to solve optimization problem using Direct.
+#
+# CHANGELOG
+#   2023-02-10: Tweaks for efficiency and readability (Avraham Adler)
 
 #' DIviding RECTangles Algorithm for Global Optimization
 #'
@@ -46,9 +49,9 @@
 #'   \item{value}{the function value corresponding to \code{par}.}
 #'   \item{iter}{number of (outer) iterations, see \code{maxeval}.}
 #'   \item{convergence}{integer code indicating successful completion (> 0)
-#'     or a possible error number (< 0).}
+#'   or a possible error number (< 0).}
 #'   \item{message}{character string produced by NLopt and giving additional
-#'     information.}
+#'   information.}
 #'
 #' @export direct
 #'
@@ -60,7 +63,7 @@
 #' algorithm.
 #'
 #' @references D. R. Jones, C. D. Perttunen, and B. E. Stuckmann,
-#' ``Lipschitzian optimization without the lipschitz constant,'' J.
+#' ``Lipschitzian optimization without the Lipschitz constant,'' J.
 #' Optimization Theory and Applications, vol. 79, p. 157 (1993).
 #'
 #' J. M. Gablonsky and C. T. Kelley, ``A locally-biased form of the DIRECT
@@ -70,97 +73,92 @@
 #'
 #' ### Minimize the Hartmann6 function
 #' hartmann6 <- function(x) {
-#'     n <- length(x)
-#'     a <- c(1.0, 1.2, 3.0, 3.2)
-#'     A <- matrix(c(10.0,  0.05, 3.0, 17.0,
-#'                    3.0, 10.0,  3.5,  8.0,
-#'                   17.0, 17.0,  1.7,  0.05,
-#'                    3.5,  0.1, 10.0, 10.0,
-#'                    1.7,  8.0, 17.0,  0.1,
-#'                    8.0, 14.0,  8.0, 14.0), nrow=4, ncol=6)
-#'     B  <- matrix(c(.1312,.2329,.2348,.4047,
-#'                    .1696,.4135,.1451,.8828,
-#'                    .5569,.8307,.3522,.8732,
-#'                    .0124,.3736,.2883,.5743,
-#'                    .8283,.1004,.3047,.1091,
-#'                    .5886,.9991,.6650,.0381), nrow=4, ncol=6)
-#'     fun <- 0.0
-#'     for (i in 1:4) {
-#'         fun <- fun - a[i] * exp(-sum(A[i,]*(x-B[i,])^2))
-#'     }
-#'     return(fun)
+#'   a <- c(1.0, 1.2, 3.0, 3.2)
+#'   A <- matrix(c(10.0,  0.05, 3.0, 17.0,
+#'          3.0, 10.0,  3.5,  8.0,
+#'           17.0, 17.0,  1.7,  0.05,
+#'          3.5,  0.1, 10.0, 10.0,
+#'          1.7,  8.0, 17.0,  0.1,
+#'          8.0, 14.0,  8.0, 14.0), nrow=4, ncol=6)
+#'   B  <- matrix(c(.1312,.2329,.2348,.4047,
+#'          .1696,.4135,.1451,.8828,
+#'          .5569,.8307,.3522,.8732,
+#'          .0124,.3736,.2883,.5743,
+#'          .8283,.1004,.3047,.1091,
+#'          .5886,.9991,.6650,.0381), nrow=4, ncol=6)
+#'   fun <- 0
+#'   for (i in 1:4) {
+#'     fun <- fun - a[i] * exp(-sum(A[i,] * (x - B[i,]) ^ 2))
+#'   }
+#'   fun
 #' }
-#' S <- directL(hartmann6, rep(0,6), rep(1,6),
-#'              nl.info = TRUE, control=list(xtol_rel=1e-8, maxeval=1000))
-#' ## Number of Iterations....: 500
+#' S <- directL(hartmann6, rep(0, 6), rep(1, 6),
+#'        nl.info = TRUE, control = list(xtol_rel = 1e-8, maxeval = 1000))
+#' ## Number of Iterations....: 1000
 #' ## Termination conditions:  stopval: -Inf
-#' ##     xtol_rel: 1e-08,  maxeval: 500,  ftol_rel: 0,  ftol_abs: 0
+#' ##   xtol_rel: 1e-08,  maxeval: 1000,  ftol_rel: 0,  ftol_abs: 0
 #' ## Number of inequality constraints:  0
-#' ## Number of equality constraints:    0
+#' ## Number of equality constraints:  0
 #' ## Current value of objective function:  -3.32236800687327
 #' ## Current value of controls:
-#' ##     0.2016884 0.1500025 0.4768667 0.2753391 0.311648 0.6572931
+#' ##   0.2016884 0.1500025 0.4768667 0.2753391 0.311648 0.6572931
 #'
-direct <-
-    function(fn, lower, upper, scaled = TRUE, original = FALSE,
-             nl.info = FALSE, control = list(), ...)
-    {
-        opts <- nl.opts(control)
-        if (scaled) {
-            opts["algorithm"] <- "NLOPT_GN_DIRECT"
-        } else {
-            opts["algorithm"] <- "NLOPT_GN_DIRECT_NOSCAL"
-        }
-        if (original)
-            opts["algorithm"] <- "NLOPT_GN_ORIG_DIRECT"
+direct <- function(fn, lower, upper, scaled = TRUE, original = FALSE,
+                   nl.info = FALSE, control = list(), ...) {
+  opts <- nl.opts(control)
+  if (scaled) {
+    opts["algorithm"] <- "NLOPT_GN_DIRECT"
+  } else {
+    opts["algorithm"] <- "NLOPT_GN_DIRECT_NOSCAL"
+  }
 
-        fun <- match.fun(fn)
-        fn  <- function(x) fun(x, ...)
+  if (original) opts["algorithm"] <- "NLOPT_GN_ORIG_DIRECT"
 
-        x0 <- (lower + upper) / 2
+  fun <- match.fun(fn)
+  fn  <- function(x) fun(x, ...)
 
-        S0 <- nloptr(x0,
-                     eval_f = fn,
-                     lb = lower,
-                     ub = upper,
-                     opts = opts)
+  x0 <- (lower + upper) / 2
 
-        if (nl.info) print(S0)
-        S1 <- list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-                   convergence = S0$status, message = S0$message)
-        return(S1)
-    }
+  S0 <- nloptr(x0,
+               eval_f = fn,
+               lb = lower,
+               ub = upper,
+               opts = opts)
 
+  if (nl.info) print(S0)
+
+  list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+       convergence = S0$status, message = S0$message)
+}
 
 #' @export directL
 #' @rdname direct
-directL <-
-function(fn, lower, upper, randomized = FALSE, original = FALSE,
-            nl.info = FALSE, control = list(), ...)
-{
-    opts <- nl.opts(control)
-    if (randomized) {
-        opts["algorithm"] <- "NLOPT_GN_DIRECT_L_RAND"
-    } else {
-        opts["algorithm"] <- "NLOPT_GN_DIRECT_L"
-    }
-    if (original)
-        opts["algorithm"] <- "NLOPT_GN_ORIG_DIRECT_L"
+directL <- function(fn, lower, upper, randomized = FALSE, original = FALSE,
+                    nl.info = FALSE, control = list(), ...) {
 
+  opts <- nl.opts(control)
+  if (randomized) {
+    opts["algorithm"] <- "NLOPT_GN_DIRECT_L_RAND"
+  } else {
+    opts["algorithm"] <- "NLOPT_GN_DIRECT_L"
+  }
 
-    fun <- match.fun(fn)
-    fn  <- function(x) fun(x, ...)
+  if (original)
+    opts["algorithm"] <- "NLOPT_GN_ORIG_DIRECT_L"
 
-    x0 <- (lower + upper) / 2
+  fun <- match.fun(fn)
+  fn  <- function(x) fun(x, ...)
 
-    S0 <- nloptr(x0,
-                eval_f = fn,
-                lb = lower,
-                ub = upper,
-                opts = opts)
+  x0 <- (lower + upper) / 2
 
-    if (nl.info) print(S0)
-    S1 <- list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-                convergence = S0$status, message = S0$message)
-    return(S1)
+  S0 <- nloptr(x0,
+               eval_f = fn,
+               lb = lower,
+               ub = upper,
+               opts = opts)
+
+  if (nl.info) print(S0)
+
+  list(par = S0$solution, value = S0$objective, iter = S0$iterations,
+       convergence = S0$status, message = S0$message)
 }

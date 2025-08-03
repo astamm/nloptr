@@ -1,13 +1,12 @@
 #! /bin/sh
 
+CMAKE_BIN=$1
+
 : ${R_HOME=$(R RHOME)}
 RSCRIPT_BIN=${R_HOME}/bin/Rscript
-NCORES=`${RSCRIPT_BIN} -e "cat(min(2, parallel::detectCores(logical = FALSE)))"`
+NCORES=`${RSCRIPT_BIN} -e "cat(min(2, parallel::detectCores(logical = FALSE), na.rm=TRUE))"`
 
 cd src
-
-#### CMAKE CONFIGURATION ####
-. ./scripts/cmake_config.sh
 
 # Compile NLOpt from source
 sh ./scripts/nlopt_download.sh ${RSCRIPT_BIN}
@@ -39,7 +38,9 @@ ${CMAKE_BIN} \
 make -j${NCORES}
 make install
 cd ..
-mv nlopt/lib* nlopt/lib
+lib_folder=`ls -d nlopt/lib*`
+echo "Moving ${lib_folder} to nlopt/lib"
+mv ${lib_folder} nlopt/lib
 
 # Cleanup
 sh ./scripts/nlopt_cleanup.sh

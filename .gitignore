@@ -14,4 +14,9 @@ inst/doc
 config.log
 config.status
 src/Makevars
+src/*.dll
 windows
+.lintr
+docs
+
+/.quarto/

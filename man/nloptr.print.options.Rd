@@ -8,8 +8,8 @@ nloptr.print.options(opts.show = NULL, opts.user = NULL)
 }
 \arguments{
 \item{opts.show}{list or vector with names of options. A description will be
-shown for the options in this list. By default, a description of all options
-is shown.}
+shown for the options in this list. By default, a description of all
+options is shown.}
 
 \item{opts.user}{object containing user supplied options. This argument is
 optional. It is used when \code{nloptr.print.options} is called from
@@ -25,11 +25,11 @@ a minimization problem using \code{nloptr}.
 library('nloptr')
 nloptr.print.options()
 
-nloptr.print.options( opts.show = c("algorithm", "check_derivatives") )
+nloptr.print.options(opts.show = c("algorithm", "check_derivatives"))
 
 opts <- list("algorithm"="NLOPT_LD_LBFGS",
-             "xtol_rel"=1.0e-8)
-nloptr.print.options( opts.user = opts )
+       "xtol_rel"=1.0e-8)
+nloptr.print.options(opts.user = opts)
 
 }
 \seealso{

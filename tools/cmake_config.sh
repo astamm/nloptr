@@ -1,4 +1,8 @@
+#! /bin/sh
+
 #### CMAKE CONFIGURATION ####
+
+CMAKE_BIN=""
 
 if test -z "$CMAKE_BIN"; then
   # Look for a cmake3 binary in the current path
@@ -24,7 +28,7 @@ if test -z "$CMAKE_BIN"; then
   echo " - sudo yum install cmake          (Fedora/CentOS; inside a terminal)"
   echo " - sudo apt install cmake          (Debian/Ubuntu; inside a terminal)."
   echo " - sudo pacman -S cmake            (Arch Linux; inside a terminal)."
-  echo " - sudo brew install cmake         (MacOS; inside a terminal with Homebrew)"
+  echo " - brew install --cask cmake       (MacOS; inside a terminal with Homebrew)"
   echo " - sudo port install cmake         (MacOS; inside a terminal with MacPorts)"
   echo ""
   echo "Alternatively install CMake from: <https://cmake.org/>"

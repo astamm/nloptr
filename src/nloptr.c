@@ -30,279 +30,417 @@
  * through a grant (RES-589-28-0001) to the ESRC Centre for Microdata
  * Methods and Practice (CeMMAP) is gratefully acknowledged.
  *
- * 13/01/2011: added print_level option
- * 24/07/2011: added checks on return value when setting equality constraints etc.
- * 05/11/2013: Moved declaration of ineq_constr_data and eq_constr_data outside if-statement to solve segfault on Ubuntu.
+ * 2011-01-13: added print_level option
+ * 2011-07-24: added checks on return value when setting equality constraints
+ *  etc.
+ * 2013-11-05: Moved declaration of ineq_constr_data and eq_constr_data outside
+ *  if-statement to solve segfault on Ubuntu.
+ * 2024-07-02: Updated old include which is no longer maintained and other
+ *  minor code tweaks and efficiency enhancements (Avraham Adler).
  */
 
- // TODO: add minimize/maximize option (objective = "maximize")
- // nlopt_result nlopt_set_min_objective(nlopt_opt opt, nlopt_func f, void* f_data);
+// TODO: add minimize/maximize option (objective = "maximize")
+// nlopt_result nlopt_set_min_objective(nlopt_opt opt, nlopt_func f, void* f_data);
 // nlopt_result nlopt_set_max_objective(nlopt_opt opt, nlopt_func f, void* f_data);
 
 #include <nlopt.h>
+#include "nloptr.h"
 
-#include <R.h>
-#include <Rdefines.h>
-// Rdefines.h is somewhat more higher level then Rinternal.h, and is preferred if the code might be shared with S at any stage.
+#define AS_INTEGER(x)	Rf_coerceVector(x, INTSXP)
+#define AS_REAL(x) Rf_coerceVector(x, REALSXP)
 
-// #include <string>
-
-
-/*
- * Extracts element with name 'str' from R object 'list'
- * and returns that element.
- */
-SEXP
-getListElement (SEXP list, char *str)
-{
-    SEXP elmt = R_NilValue, names = getAttrib(list, R_NamesSymbol);
-    int i;
-
-    for (i = 0; i < length(list); i++) {
-        if(strcmp(CHAR(STRING_ELT(names, i)), str) == 0) {
-            elmt = VECTOR_ELT(list, i);
-            break;
-        }
+// Extracts element with name 'str' from R object 'list' & returns that element.
+SEXP getListElement (SEXP list, char *str) {
+  SEXP elmt = R_NilValue, names = getAttrib(list, R_NamesSymbol);
+  for (size_t i = 0; i < length(list); i++) {
+    if(strcmp(CHAR(STRING_ELT(names, i)), str) == 0) {
+      elmt = VECTOR_ELT(list, i);
+      break;
     }
-    return elmt;
+  }
+
+  return elmt;
 }
 
-// convert string to nlopt_alogirthm
-nlopt_algorithm getAlgorithmCode( const char *algorithm_str ) {
+// Convert the algorithm lookup from a nested if-else chain to a lookup table
+// and switch statement. See https://stackoverflow.com/a/49215742/2726543
 
-    nlopt_algorithm algorithm;
+typedef struct algpair {
+  char *key;
+  int value;
+} ALGPAIR;
 
-    if ( strcmp( algorithm_str, "NLOPT_GN_DIRECT" ) == 0 ) {
-        algorithm = NLOPT_GN_DIRECT;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_GN_DIRECT_L" ) == 0 ) {
-        algorithm = NLOPT_GN_DIRECT_L;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_GN_DIRECT_L_RAND" ) == 0 ) {
-        algorithm = NLOPT_GN_DIRECT_L_RAND;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_GN_DIRECT_NOSCAL" ) == 0 ) {
-        algorithm = NLOPT_GN_DIRECT_NOSCAL;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_GN_DIRECT_L_NOSCAL" ) == 0 ) {
-        algorithm = NLOPT_GN_DIRECT_L_NOSCAL;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_GN_DIRECT_L_RAND_NOSCAL" ) == 0 ) {
-        algorithm = NLOPT_GN_DIRECT_L_RAND_NOSCAL;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_GN_ORIG_DIRECT" ) == 0 ) {
-        algorithm = NLOPT_GN_ORIG_DIRECT;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_GN_ORIG_DIRECT_L" ) == 0 ) {
-        algorithm = NLOPT_GN_ORIG_DIRECT_L;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_GD_STOGO" ) == 0 ) {
-        algorithm = NLOPT_GD_STOGO;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_GD_STOGO_RAND" ) == 0 ) {
-        algorithm = NLOPT_GD_STOGO_RAND;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_LD_SLSQP" ) == 0 ) {
-        algorithm = NLOPT_LD_SLSQP;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_LD_LBFGS_NOCEDAL" ) == 0 ) {
-        algorithm = NLOPT_LD_LBFGS_NOCEDAL;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_LD_LBFGS" ) == 0 ) {
-        algorithm = NLOPT_LD_LBFGS;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_LN_PRAXIS" ) == 0 ) {
-        algorithm = NLOPT_LN_PRAXIS;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_LD_VAR1" ) == 0 ) {
-        algorithm = NLOPT_LD_VAR1;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_LD_VAR2" ) == 0 ) {
-        algorithm = NLOPT_LD_VAR2;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_LD_TNEWTON" ) == 0 ) {
-        algorithm = NLOPT_LD_TNEWTON;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_LD_TNEWTON_RESTART" ) == 0 ) {
-        algorithm = NLOPT_LD_TNEWTON_RESTART;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_LD_TNEWTON_PRECOND" ) == 0 ) {
-        algorithm = NLOPT_LD_TNEWTON_PRECOND;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_LD_TNEWTON_PRECOND_RESTART" ) == 0 ) {
-        algorithm = NLOPT_LD_TNEWTON_PRECOND_RESTART;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_GN_CRS2_LM" ) == 0 ) {
-        algorithm = NLOPT_GN_CRS2_LM;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_GN_MLSL" ) == 0 ) {
-        algorithm = NLOPT_GN_MLSL;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_GD_MLSL" ) == 0 ) {
-        algorithm = NLOPT_GD_MLSL;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_GN_MLSL_LDS" ) == 0 ) {
-        algorithm = NLOPT_GN_MLSL_LDS;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_GD_MLSL_LDS" ) == 0 ) {
-        algorithm = NLOPT_GD_MLSL_LDS;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_LD_MMA" ) == 0 ) {
-        algorithm = NLOPT_LD_MMA;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_LD_CCSAQ" ) == 0 ) {
-        algorithm = NLOPT_LD_CCSAQ;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_LN_COBYLA" ) == 0 ) {
-        algorithm = NLOPT_LN_COBYLA;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_LN_NEWUOA" ) == 0 ) {
-        algorithm = NLOPT_LN_NEWUOA;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_LN_NEWUOA_BOUND" ) == 0 ) {
-        algorithm = NLOPT_LN_NEWUOA_BOUND;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_LN_NELDERMEAD" ) == 0 ) {
-        algorithm = NLOPT_LN_NELDERMEAD;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_LN_SBPLX" ) == 0 ) {
-        algorithm = NLOPT_LN_SBPLX;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_LN_AUGLAG" ) == 0 ) {
-        algorithm = NLOPT_LN_AUGLAG;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_LD_AUGLAG" ) == 0 ) {
-        algorithm = NLOPT_LD_AUGLAG;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_LN_AUGLAG_EQ" ) == 0 ) {
-        algorithm = NLOPT_LN_AUGLAG_EQ;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_LD_AUGLAG_EQ" ) == 0 ) {
-        algorithm = NLOPT_LD_AUGLAG_EQ;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_LN_BOBYQA" ) == 0 ) {
-        algorithm = NLOPT_LN_BOBYQA;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_GN_ISRES" ) == 0 ) {
-        algorithm = NLOPT_GN_ISRES;
-    }
-    else if ( strcmp( algorithm_str, "NLOPT_GN_ESCH" ) == 0 ) {
-        algorithm = NLOPT_GN_ESCH;
-    }
-    else {
-        // unknown algorithm code
-        Rprintf("Error: unknown algorithm %s.\n", algorithm_str);
-        algorithm = NLOPT_NUM_ALGORITHMS;       // Not an algorithm, so this should result in a runtime error.
-    }
+// The algtable table must be in sorted order for bsearch to work properly.
+ALGPAIR algtable[] = {
+  {"NLOPT_GD_MLSL", 1},
+  {"NLOPT_GD_MLSL_LDS", 2},
+  {"NLOPT_GD_STOGO", 3},
+  {"NLOPT_GD_STOGO_RAND", 4},
+  {"NLOPT_GN_CRS2_LM", 5},
+  {"NLOPT_GN_DIRECT", 6},
+  {"NLOPT_GN_DIRECT_L", 7},
+  {"NLOPT_GN_DIRECT_L_NOSCAL", 8},
+  {"NLOPT_GN_DIRECT_L_RAND", 9},
+  {"NLOPT_GN_DIRECT_L_RAND_NOSCAL", 10},
+  {"NLOPT_GN_DIRECT_NOSCAL", 11},
+  {"NLOPT_GN_ESCH", 12},
+  {"NLOPT_GN_ISRES", 13},
+  {"NLOPT_GN_MLSL", 14},
+  {"NLOPT_GN_MLSL_LDS", 15},
+  {"NLOPT_GN_ORIG_DIRECT", 16},
+  {"NLOPT_GN_ORIG_DIRECT_L", 17},
+  {"NLOPT_LD_AUGLAG", 18},
+  {"NLOPT_LD_AUGLAG_EQ", 19},
+  {"NLOPT_LD_CCSAQ", 20},
+  {"NLOPT_LD_LBFGS", 21},
+  {"NLOPT_LD_LBFGS_NOCEDAL", 22},
+  {"NLOPT_LD_MMA", 23},
+  {"NLOPT_LD_SLSQP", 24},
+  {"NLOPT_LD_TNEWTON", 25},
+  {"NLOPT_LD_TNEWTON_PRECOND", 26},
+  {"NLOPT_LD_TNEWTON_PRECOND_RESTART", 27},
+  {"NLOPT_LD_TNEWTON_RESTART", 28},
+  {"NLOPT_LD_VAR1", 29},
+  {"NLOPT_LD_VAR2", 30},
+  {"NLOPT_LN_AUGLAG", 31},
+  {"NLOPT_LN_AUGLAG_EQ", 32},
+  {"NLOPT_LN_BOBYQA", 33},
+  {"NLOPT_LN_COBYLA", 34},
+  {"NLOPT_LN_NELDERMEAD", 35},
+  {"NLOPT_LN_NEWUOA", 36},
+  {"NLOPT_LN_NEWUOA_BOUND", 37},
+  {"NLOPT_LN_PRAXIS", 38},
+  {"NLOPT_LN_SBPLX", 39},
+};
 
-    return algorithm;
+static int compAlg(const void *va, const void *vb) {
+  const ALGPAIR *a = va, *b = vb;
+  return strcmp(a->key, b->key);
 }
 
+int getVal(char *key) {
+  ALGPAIR key_pair[1] = {{key}};
+  ALGPAIR *pair = bsearch(key_pair, algtable, sizeof algtable / sizeof algtable[0],
+                          sizeof algtable[0], compAlg);
+  return pair ? pair->value : -1;
+}
 
-/*
- * Define structure that contains data to pass to the objective function
- */
+// Convert passed string to an nlopt_algorithm item.
+nlopt_algorithm getAlgorithmCode(const char *algorithm_str) {
+
+  nlopt_algorithm algorithm;
+
+  switch(getVal((char*)algorithm_str)) {
+  case 1:
+    algorithm = NLOPT_GD_MLSL;
+    break;
+  case 2:
+    algorithm = NLOPT_GD_MLSL_LDS;
+    break;
+  case 3:
+    algorithm = NLOPT_GD_STOGO;
+    break;
+  case 4:
+    algorithm = NLOPT_GD_STOGO_RAND;
+    break;
+  case 5:
+    algorithm = NLOPT_GN_CRS2_LM;
+    break;
+  case 6:
+    algorithm = NLOPT_GN_DIRECT;
+    break;
+  case 7:
+    algorithm = NLOPT_GN_DIRECT_L;
+    break;
+  case 8:
+    algorithm = NLOPT_GN_DIRECT_L_NOSCAL;
+    break;
+  case 9:
+    algorithm = NLOPT_GN_DIRECT_L_RAND;
+    break;
+  case 10:
+    algorithm = NLOPT_GN_DIRECT_L_RAND_NOSCAL;
+    break;
+  case 11:
+    algorithm = NLOPT_GN_DIRECT_NOSCAL;
+    break;
+  case 12:
+    algorithm = NLOPT_GN_ESCH;
+    break;
+  case 13:
+    algorithm = NLOPT_GN_ISRES;
+    break;
+  case 14:
+    algorithm = NLOPT_GN_MLSL;
+    break;
+  case 15:
+    algorithm = NLOPT_GN_MLSL_LDS;
+    break;
+  case 16:
+    algorithm = NLOPT_GN_ORIG_DIRECT;
+    break;
+  case 17:
+    algorithm = NLOPT_GN_ORIG_DIRECT_L;
+    break;
+  case 18:
+    algorithm = NLOPT_LD_AUGLAG;
+    break;
+  case 19:
+    algorithm = NLOPT_LD_AUGLAG_EQ;
+    break;
+  case 20:
+    algorithm = NLOPT_LD_CCSAQ;
+    break;
+  case 21:
+    algorithm = NLOPT_LD_LBFGS;
+    break;
+  case 22:                                   // #nocov start
+#ifdef HAVE_NLOPT_LD_LBFGS_NOCEDAL
+    algorithm = NLOPT_LD_LBFGS_NOCEDAL;
+#else
+    algorithm = NLOPT_LD_LBFGS;
+#endif
+    break;                                  // #nocov end
+  case 23:
+    algorithm = NLOPT_LD_MMA;
+    break;
+  case 24:
+    algorithm = NLOPT_LD_SLSQP;
+    break;
+  case 25:
+    algorithm = NLOPT_LD_TNEWTON;
+    break;
+  case 26:
+    algorithm = NLOPT_LD_TNEWTON_PRECOND;
+    break;
+  case 27:
+    algorithm = NLOPT_LD_TNEWTON_PRECOND_RESTART;
+    break;
+  case 28:
+    algorithm = NLOPT_LD_TNEWTON_RESTART;
+    break;
+  case 29:
+    algorithm = NLOPT_LD_VAR1;
+    break;
+  case 30:
+    algorithm = NLOPT_LD_VAR2;
+    break;
+  case 31:
+    algorithm = NLOPT_LN_AUGLAG;
+    break;
+  case 32:
+    algorithm = NLOPT_LN_AUGLAG_EQ;
+    break;
+  case 33:
+    algorithm = NLOPT_LN_BOBYQA;
+    break;
+  case 34:
+    algorithm = NLOPT_LN_COBYLA;
+    break;
+  case 35:
+    algorithm = NLOPT_LN_NELDERMEAD;
+    break;
+  case 36:
+    algorithm = NLOPT_LN_NEWUOA;
+    break;
+  case 37:
+    algorithm = NLOPT_LN_NEWUOA_BOUND;
+    break;
+  case 38:
+    algorithm = NLOPT_LN_PRAXIS;
+    break;
+  case 39:
+    algorithm = NLOPT_LN_SBPLX;
+    break;
+  // # nocov start (Guarded against by is.nloptr lines 81–85.)
+  default:
+    // unknown algorithm code
+    Rprintf("Error: unknown algorithm %s.\n", algorithm_str);
+    // Not an algorithm, so this should result in a runtime error.
+    algorithm = NLOPT_NUM_ALGORITHMS;
+  // # nocov end
+  }
+
+  // Leave old code in commented for now in case of catastrophic failure.
+  // if (strcmp(algorithm_str, "NLOPT_GN_DIRECT") == 0) {
+  //   algorithm = NLOPT_GN_DIRECT;
+  // } else if (strcmp(algorithm_str, "NLOPT_GN_DIRECT_L") == 0) {
+  //   algorithm = NLOPT_GN_DIRECT_L;
+  // } else if (strcmp(algorithm_str, "NLOPT_GN_DIRECT_L_RAND") == 0) {
+  //   algorithm = NLOPT_GN_DIRECT_L_RAND;
+  // } else if (strcmp(algorithm_str, "NLOPT_GN_DIRECT_NOSCAL") == 0) {
+  //   algorithm = NLOPT_GN_DIRECT_NOSCAL;
+  // } else if (strcmp(algorithm_str, "NLOPT_GN_DIRECT_L_NOSCAL") == 0) {
+  //   algorithm = NLOPT_GN_DIRECT_L_NOSCAL;
+  // } else if (strcmp(algorithm_str, "NLOPT_GN_DIRECT_L_RAND_NOSCAL") == 0) {
+  //   algorithm = NLOPT_GN_DIRECT_L_RAND_NOSCAL;
+  // } else if (strcmp(algorithm_str, "NLOPT_GN_ORIG_DIRECT") == 0) {
+  //   algorithm = NLOPT_GN_ORIG_DIRECT;
+  // } else if (strcmp(algorithm_str, "NLOPT_GN_ORIG_DIRECT_L") == 0) {
+  //   algorithm = NLOPT_GN_ORIG_DIRECT_L;
+  // } else if (strcmp(algorithm_str, "NLOPT_GD_STOGO") == 0) {
+  //   algorithm = NLOPT_GD_STOGO;
+  // } else if (strcmp(algorithm_str, "NLOPT_GD_STOGO_RAND") == 0) {
+  //   algorithm = NLOPT_GD_STOGO_RAND;
+  // } else if (strcmp(algorithm_str, "NLOPT_LD_SLSQP") == 0) {
+  //   algorithm = NLOPT_LD_SLSQP;
+  // } else if (strcmp(algorithm_str, "NLOPT_LD_LBFGS_NOCEDAL") == 0) {
+  //   algorithm = NLOPT_LD_LBFGS_NOCEDAL;
+  // } else if (strcmp(algorithm_str, "NLOPT_LD_LBFGS") == 0) {
+  //   algorithm = NLOPT_LD_LBFGS;
+  // } else if (strcmp(algorithm_str, "NLOPT_LN_PRAXIS") == 0) {
+  //   algorithm = NLOPT_LN_PRAXIS;
+  // } else if (strcmp(algorithm_str, "NLOPT_LD_VAR1") == 0) {
+  //   algorithm = NLOPT_LD_VAR1;
+  // } else if (strcmp(algorithm_str, "NLOPT_LD_VAR2") == 0) {
+  //   algorithm = NLOPT_LD_VAR2;
+  // } else if (strcmp(algorithm_str, "NLOPT_LD_TNEWTON") == 0) {
+  //   algorithm = NLOPT_LD_TNEWTON;
+  // } else if (strcmp(algorithm_str, "NLOPT_LD_TNEWTON_RESTART") == 0) {
+  //   algorithm = NLOPT_LD_TNEWTON_RESTART;
+  // } else if (strcmp(algorithm_str, "NLOPT_LD_TNEWTON_PRECOND") == 0) {
+  //   algorithm = NLOPT_LD_TNEWTON_PRECOND;
+  // } else if (strcmp(algorithm_str, "NLOPT_LD_TNEWTON_PRECOND_RESTART") == 0) {
+  //   algorithm = NLOPT_LD_TNEWTON_PRECOND_RESTART;
+  // } else if (strcmp(algorithm_str, "NLOPT_GN_CRS2_LM") == 0) {
+  //   algorithm = NLOPT_GN_CRS2_LM;
+  // } else if (strcmp(algorithm_str, "NLOPT_GN_MLSL") == 0) {
+  //   algorithm = NLOPT_GN_MLSL;
+  // } else if (strcmp(algorithm_str, "NLOPT_GD_MLSL") == 0) {
+  //   algorithm = NLOPT_GD_MLSL;
+  // } else if (strcmp(algorithm_str, "NLOPT_GN_MLSL_LDS") == 0) {
+  //   algorithm = NLOPT_GN_MLSL_LDS;
+  // } else if (strcmp(algorithm_str, "NLOPT_GD_MLSL_LDS") == 0) {
+  //   algorithm = NLOPT_GD_MLSL_LDS;
+  // } else if (strcmp(algorithm_str, "NLOPT_LD_MMA") == 0) {
+  //   algorithm = NLOPT_LD_MMA;
+  // } else if (strcmp(algorithm_str, "NLOPT_LD_CCSAQ") == 0) {
+  //   algorithm = NLOPT_LD_CCSAQ;
+  // } else if (strcmp(algorithm_str, "NLOPT_LN_COBYLA") == 0) {
+  //   algorithm = NLOPT_LN_COBYLA;
+  // } else if (strcmp(algorithm_str, "NLOPT_LN_NEWUOA") == 0) {
+  //   algorithm = NLOPT_LN_NEWUOA;
+  // } else if (strcmp(algorithm_str, "NLOPT_LN_NEWUOA_BOUND") == 0) {
+  //   algorithm = NLOPT_LN_NEWUOA_BOUND;
+  // } else if (strcmp(algorithm_str, "NLOPT_LN_NELDERMEAD") == 0) {
+  //   algorithm = NLOPT_LN_NELDERMEAD;
+  // } else if (strcmp(algorithm_str, "NLOPT_LN_SBPLX") == 0) {
+  //   algorithm = NLOPT_LN_SBPLX;
+  // } else if (strcmp(algorithm_str, "NLOPT_LN_AUGLAG") == 0) {
+  //   algorithm = NLOPT_LN_AUGLAG;
+  // } else if (strcmp(algorithm_str, "NLOPT_LD_AUGLAG") == 0) {
+  //   algorithm = NLOPT_LD_AUGLAG;
+  // } else if (strcmp(algorithm_str, "NLOPT_LN_AUGLAG_EQ") == 0) {
+  //   algorithm = NLOPT_LN_AUGLAG_EQ;
+  // } else if (strcmp(algorithm_str, "NLOPT_LD_AUGLAG_EQ") == 0) {
+  //   algorithm = NLOPT_LD_AUGLAG_EQ;
+  // } else if (strcmp(algorithm_str, "NLOPT_LN_BOBYQA") == 0) {
+  //   algorithm = NLOPT_LN_BOBYQA;
+  // } else if (strcmp(algorithm_str, "NLOPT_GN_ISRES") == 0) {
+  //   algorithm = NLOPT_GN_ISRES;
+  // } else if (strcmp(algorithm_str, "NLOPT_GN_ESCH") == 0) {
+  //   algorithm = NLOPT_GN_ESCH;
+  // } else {
+    // // unknown algorithm code
+    // Rprintf("Error: unknown algorithm %s.\n", algorithm_str);
+    // // Not an algorithm, so this should result in a runtime error.
+    // algorithm = NLOPT_NUM_ALGORITHMS;
+  // }
+
+  return algorithm;
+}
+
+// Define structure that contains data to pass to the objective function
 typedef struct {
-    SEXP R_eval_f;
-    SEXP R_environment;
-    int  num_iterations;
-    int  print_level;
+  SEXP R_eval_f;
+  SEXP R_environment;
+  size_t num_iterations;
+  int print_level;
 } func_objective_data;
 
-/*
- * Define function that calls user-defined objective function in R
- */
-double func_objective(unsigned n, const double *x, double *grad, void *data)
-{
-    // return the value (and the gradient) of the objective function
+// Define function that calls user-defined objective function in R
+double func_objective(unsigned n, const double *x, double *grad, void *data) {
+  // Return the value, and the gradient if necessary, of the objective function.
 
-    // Check for user interruption from R
-    R_CheckUserInterrupt();
+  // Check for user interruption from R.
+  R_CheckUserInterrupt();
 
-    // declare counter
-    unsigned i;
+  func_objective_data *d = (func_objective_data *) data;
 
-    func_objective_data *d = (func_objective_data *) data;
+  // Increase number of function evaluations.
+  d->num_iterations++;
 
-    // increase number of function evaluations
-    d->num_iterations++;
+  // Print status.
+  if (d->print_level >= 1) {
+    Rprintf("iteration: %zu\n", d->num_iterations);
+  }
 
-    // print status
-    if ( d->print_level >= 1 ) {
-        Rprintf( "iteration: %d\n", d->num_iterations );
+  // Print values of x.
+  if (d->print_level >= 3) {
+    if (n == 1) {
+      Rprintf("\tx = %f\n", x[0]);
+    } else {
+      Rprintf("\tx = (%f", x[0]);
+      for (size_t i = 1; i < n; i++) {
+        Rprintf(", %f", x[i]);
+      }
+      Rprintf(")\n");
+    }
+  }
+
+  // Allocate memory for a vector of reals. This vector will contain the
+  // elements of x, where x is the argument to the R function R_eval_f.
+  SEXP rargs = allocVector(REALSXP, n);
+  double *prargs = REAL(rargs);
+  for (size_t i = 0; i < n; i++) {
+    prargs[i] = x[i];
+  }
+
+  // Evaluate R function R_eval_f with the control x as an argument.
+  SEXP Rcall = PROTECT(lang2(d->R_eval_f, rargs));
+  SEXP result = PROTECT(eval(Rcall, d->R_environment));
+
+  // Recode the return value from SEXP to double.
+  double obj_value;
+  if (isNumeric(result)) {
+    // Objective value is the only element of "result".
+    obj_value = asReal(result);
+  } else {
+    // Objective value needs to be extracted from the list of return values.
+    SEXP R_obj_value = PROTECT(getListElement(result, "objective"));
+
+    // Recode the return value from SEXP to double.
+    obj_value = asReal(R_obj_value);
+
+    UNPROTECT(1);
+  }
+
+  // Print objective value.
+  if (d->print_level >= 1) {
+    Rprintf("\tf(x) = %f\n", obj_value);
+  }
+
+  // Handle gradient.
+  if (grad) {
+    // result needs to be a list in this case
+    SEXP R_gradient = PROTECT(getListElement(result, "gradient"));
+
+    // Recode the return value from SEXP to double.
+    double *pRgrad = REAL(R_gradient);
+    for (size_t i = 0; i < n; i++) {
+      grad[i] = pRgrad[i];
     }
 
-    // print values of x
-    if ( d->print_level >= 3 ) {
-        if ( n == 1 ) {
-            Rprintf( "\tx = %f\n", x[ 0 ] );
-        }
-        else {
-            Rprintf( "\tx = ( %f", x[ 0 ] );
-            for (i=1;i<n;i++) {
-                Rprintf( ", %f", x[ i ] );
-            }
-            Rprintf( " )\n" );
-        }
-    }
+    UNPROTECT(1);
+  }
 
-    // Allocate memory for a vector of reals.
-    // This vector will contain the elements of x,
-    // x is the argument to the R function R_eval_f
-    SEXP rargs = allocVector(REALSXP,n);
-    for (i=0;i<n;i++) {
-        REAL(rargs)[i] = x[i];
-    }
+  UNPROTECT(2);
 
-    // evaluate R function R_eval_f with the control x as an argument
-    SEXP Rcall,result;
-    PROTECT(Rcall = lang2(d->R_eval_f,rargs));
-    PROTECT(result = eval(Rcall,d->R_environment));
-
-    // recode the return value from SEXP to double
-    double obj_value;
-    if ( isNumeric( result ) ) {
-        // objective value is only element of result
-        obj_value = REAL(result)[0];
-    }
-    else {
-        // objective value should be parsed from the list of return values
-        SEXP R_obj_value;
-        PROTECT( R_obj_value = getListElement( result, "objective" ) );
-
-        // recode the return value from SEXP to double
-        obj_value = REAL( R_obj_value )[0];
-
-        UNPROTECT( 1 );
-    }
-
-    // print objective value
-    if ( d->print_level >= 1 ) {
-        Rprintf( "\tf(x) = %f\n", obj_value );
-    }
-
-    // gradient
-    if (grad) {
-        // result needs to be a list in this case
-        SEXP R_gradient;
-        PROTECT( R_gradient = getListElement( result, "gradient" ) );
-
-        // recode the return value from SEXP to double
-        for (i=0;i<n;i++) {
-            grad[i] = REAL( R_gradient )[i];
-        }
-
-        UNPROTECT( 1 );
-    }
-
-    UNPROTECT( 2 );
-
-    return obj_value;
+  return obj_value;
 }
 
-/*
- * Define structure that contains data to pass to the constraint function
- */
+
+// Define structure that contains data to pass to the constraint function.
 typedef struct {
     SEXP R_eval_g;
     SEXP R_environment;
@@ -320,100 +458,91 @@ typedef struct {
  * data        : additional data that we need to evaluate the function (e.g. the R function)
  */
 void func_constraints_ineq(unsigned m, double* constraints, unsigned n, const double* x, double* grad, void* data) {
+  // Return the value (and the Jacobian) of the constraints.
 
-    // return the value (and the jacobian) of the constraints
+  // Check for user interruption from R.
+  R_CheckUserInterrupt();
 
-    // Check for user interruption from R
-    R_CheckUserInterrupt();
+  func_constraints_ineq_data *d = (func_constraints_ineq_data *) data;
 
-    // declare counter
-    unsigned i,j;
+  // Allocate memory for a vector of reals. This vector will contain the
+  // elements of x, where x is the argument to the R function R_eval_f.
+  SEXP rargs_x = allocVector(REALSXP, n);
+  double *prargsx = REAL(rargs_x);
+  for (size_t i = 0; i < n; i++) {
+    prargsx[i] = x[i];
+  }
 
-    func_constraints_ineq_data *d = (func_constraints_ineq_data *) data;
+  // Evaluate R function R_eval_g with the control x as an argument.
+  SEXP Rcall = PROTECT(lang2(d->R_eval_g, rargs_x));
+  SEXP result = PROTECT(eval(Rcall, d->R_environment));
 
-    // Allocate memory for a vector of reals.
-    // This vector will contain the elements of x,
-    // x is the argument to the R function R_eval_f
-    SEXP rargs_x = allocVector( REALSXP, n );
-    for (i=0;i<n;i++) {
-        REAL( rargs_x )[i] = x[i];
+  // Get the value of the constraint from the result.
+  if (isNumeric(result)) {
+    // Constraint values are the only element of result. so recode the return
+    // value from SEXP to double*, by looping over constraints.
+    double *presult = REAL(result);
+    for (size_t i = 0; i < m; i++) {
+      constraints[i] = presult[i];
+    }
+  } else {
+    // Constraint value should be extracted from the list of return values.
+    SEXP R_constraints = PROTECT(getListElement(result, "constraints"));
+
+    // Recode the return value from SEXP to double by looping over constraints.
+    double *pRconst = REAL(R_constraints);
+    for (size_t i = 0; i < m; i++) {
+      constraints[i] = pRconst[i];
     }
 
-    // evaluate R function R_eval_g with the control x as an argument
-    SEXP Rcall, result;
-    PROTECT( Rcall = lang2( d->R_eval_g, rargs_x ) );
-    PROTECT( result = eval( Rcall, d->R_environment ) );
+    UNPROTECT(1);
+  }
 
-    // get the value of the constraint from the result
-    if ( isNumeric( result ) ) {
-
-        // constraint values are the only element of result
-        // recode the return value from SEXP to double*, by looping over constraints
-        for (i=0;i<m;i++) {
-            constraints[ i ] = REAL( result )[ i ];
-        }
+  // Prsize_t inequality constraints.
+  if (d->print_level >= 2) {
+    if (m == 1) {
+      Rprintf("\tg(x) = %f\n", constraints[0]);
+    } else {
+      Rprintf("\tg(x) = (%f", constraints[0]);
+      for (size_t i = 1; i < m; i++) {
+        Rprintf(", %f", constraints[i]);
+      }
+      Rprintf(")\n");
     }
-    else {
-        // constraint value should be parsed from the list of return values
-        SEXP R_constraints;
-        PROTECT( R_constraints = getListElement( result, "constraints" ) );
+  }
 
-        // recode the return value from SEXP to double*, by looping over constraints
-        for (i=0;i<m;i++) {
-            constraints[ i ] = REAL( R_constraints )[ i ];
-        }
+  // Get the value of the gradient if needed.
+  if (grad) {
+    // Result needs to be a list in this case.
+    SEXP R_gradient = PROTECT(getListElement(result, "jacobian"));
 
-        UNPROTECT( 1 );
-    }
+    /*
+     * recode the return value from SEXP to double*, by looping over variables and constraints
+     * We get a matrix from R with the Jacobian of the constraints
+     *  / dc_1/dx_1   dc_1/dx_2  ...  dc_1/dx_n \
+     * |  dc_2/dx_1   dc_2/dx_2  ...  dc_2/dx_n  |
+     * |     ...         ...             ...     |
+     *  \ dc_m/dx_1   dc_m/dx_2  ...  dc_m/dx_n /
+     * Matrices are stored column-wise, so basically we get a vector
+     * [dc_1/dx_1, dc_2/dx_1, ..., dc_m/dx_1, dc_1/dx_2, dc_2/dx_2, ..., dc_m/dx_2, ..., dc_1/dx_n, dc_2/dx_n, ..., dc_m/dx_n]
+     * which we have to convert to a row-wise format for NLopt.
+     */
 
-    // print inequality constraints
-    if ( d->print_level >= 2 ) {
-        if ( m == 1 ) {
-            Rprintf( "\tg(x) = %f\n", constraints[ 0 ] );
-        }
-        else {
-            Rprintf( "\tg(x) = ( %f", constraints[ 0 ] );
-            for (i=1;i<m;i++) {
-                Rprintf( ", %f", constraints[ i ] );
-            }
-            Rprintf( " )\n" );
-        }
-    }
-
-    // get the value of the gradient if needed
-    if (grad) {
-        // result needs to be a list in this case
-        SEXP R_gradient;
-        PROTECT( R_gradient = getListElement( result, "jacobian" ) );
-
-        /*
-           * recode the return value from SEXP to double*, by looping over variables and constraints
-         * We get a matrix from R with the jacobian of the constraints
-         *  / dc_1/dx_1   dc_1/dx_2  ...  dc_1/dx_n \
-         * |  dc_2/dx_1   dc_2/dx_2  ...  dc_2/dx_n  |
-         * |     ...         ...             ...     |
-         *  \ dc_m/dx_1   dc_m/dx_2  ...  dc_m/dx_n /
-         * Matrices are stored column-wise, so basically we get a vector
-         * [ dc_1/dx_1, dc_2/dx_1, ..., dc_m/dx_1, dc_1/dx_2, dc_2/dx_2, ..., dc_m/dx_2, ..., dc_1/dx_n, dc_2/dx_n, ..., dc_m/dx_n ]
-         * which we have to convert to a row-wise format for NLopt.
-         */
-
-        for (i=0;i<m;i++) {
-            for (j=0;j<n;j++) {
-                grad[i*n + j] = REAL( R_gradient )[j*m + i];
-            }
-        }
-
-        UNPROTECT( 1 );
+    double *pRgrad = REAL(R_gradient);
+    for (size_t i = 0; i < m; i++) {
+      size_t ni = i * n;
+      for (size_t j = 0; j < n; j++) {
+        grad[ni + j] = pRgrad[j * m + i];
+      }
     }
 
-    UNPROTECT( 2 );
+    UNPROTECT(1);
+  }
+
+  UNPROTECT(2);
 }
 
-
-/*
- * Define structure that contains data to pass to the constraint function
- */
+// Define structure that contains data to pass to the constraint function.
 typedef struct {
     SEXP R_eval_g;
     SEXP R_environment;
@@ -431,542 +560,509 @@ typedef struct {
  * data        : additional data that we need to evaluate the function (e.g. the R function)
  */
 void func_constraints_eq(unsigned m, double* constraints, unsigned n, const double* x, double* grad, void* data) {
+  // Return the value (and the Jacobian) of the constraints.
 
-    // return the value (and the jacobian) of the constraints
+  // Check for user interruption from R.
+  R_CheckUserInterrupt();
 
-    // Check for user interruption from R
-    R_CheckUserInterrupt();
+  func_constraints_eq_data *d = (func_constraints_eq_data *) data;
 
-    // declare counter
-    unsigned i,j;
+  // Allocate memory for a vector of reals. This vector will contain the
+  // elements of x, where x is the argument to the R function R_eval_f.
+  SEXP rargs_x = allocVector(REALSXP, n);
+  double *prargsx = REAL(rargs_x);
+  for (size_t i = 0; i < n; i++) {
+    prargsx[i] = x[i];
+  }
 
-    func_constraints_eq_data *d = (func_constraints_eq_data *) data;
+  // Evaluate R function R_eval_g with the control x as an argument.
+  SEXP Rcall = PROTECT(lang2(d->R_eval_g, rargs_x));
+  SEXP result = PROTECT(eval(Rcall, d->R_environment));
 
-    // Allocate memory for a vector of reals.
-    // This vector will contain the elements of x,
-    // x is the argument to the R function R_eval_f
-    SEXP rargs_x = allocVector( REALSXP, n );
-    for (i=0;i<n;i++) {
-        REAL( rargs_x )[i] = x[i];
+  // Get the value of the constraint from the result.
+  if (isNumeric(result)) {
+    // Constraint values are the only element of result, so recode the return
+    // value from SEXP to double*, by looping over constraints.
+    double *presult = REAL(result);
+    for (size_t i = 0; i < m; i++) {
+      constraints[i] = presult[i];
+    }
+  } else {
+    // Constraint value should be extracted from the list of return values.
+    SEXP R_constraints = PROTECT(getListElement(result, "constraints"));
+
+    // Recode the return value from SEXP to double by looping over constraints.
+    double *pRconst = REAL(R_constraints);
+    for (size_t i = 0; i < m; i++) {
+      constraints[i] = pRconst[i];
     }
 
-    // evaluate R function R_eval_g with the control x as an argument
-    SEXP Rcall, result;
-    PROTECT( Rcall = lang2( d->R_eval_g, rargs_x ) );
-    PROTECT( result = eval( Rcall, d->R_environment ) );
+    UNPROTECT(1);
+  }
 
-    // get the value of the constraint from the result
-    if ( isNumeric( result ) ) {
+  // Print equality constraints.
+  if (d->print_level >= 2) {
+    if (m == 1) {
+      Rprintf("\th(x) = %f\n", constraints[0]);
+    } else {
+      Rprintf("\th(x) = (%f", constraints[0]);
+      for (size_t i = 1; i < m; i++) {
+        Rprintf(", %f", constraints[i]);
+      }
 
-        // constraint values are the only element of result
-        // recode the return value from SEXP to double*, by looping over constraints
-        for (i=0;i<m;i++) {
-            constraints[ i ] = REAL( result )[ i ];
-        }
+      Rprintf(")\n");
     }
-    else {
-        // constraint value should be parsed from the list of return values
-        SEXP R_constraints;
-        PROTECT( R_constraints = getListElement( result, "constraints" ) );
+  }
 
-        // recode the return value from SEXP to double*, by looping over constraints
-        for (i=0;i<m;i++) {
-            constraints[ i ] = REAL( R_constraints )[ i ];
-        }
-
-        UNPROTECT( 1 );
-    }
-
-    // print equality constraints
-    if ( d->print_level >= 2 ) {
-        if ( m == 1 ) {
-            Rprintf( "\th(x) = %f\n", constraints[ 0 ] );
-        }
-        else {
-            Rprintf( "\th(x) = ( %f", constraints[ 0 ] );
-            for (i=1;i<m;i++) {
-                Rprintf( ", %f", constraints[ i ] );
-            }
-            Rprintf( " )\n" );
-        }
-    }
-
-    // get the value of the gradient if needed
-    if (grad) {
-        // result needs to be a list in this case
-        SEXP R_gradient;
-        PROTECT( R_gradient = getListElement( result, "jacobian" ) );
-
-        /*
-         * recode the return value from SEXP to double*, by looping over variables and constraints
-         * We get a matrix from R with the jacobian of the constraints
-         *  / dc_1/dx_1   dc_1/dx_2  ...  dc_1/dx_n \
-         * |  dc_2/dx_1   dc_2/dx_2  ...  dc_2/dx_n  |
-         * |     ...         ...             ...     |
-         *  \ dc_m/dx_1   dc_m/dx_2  ...  dc_m/dx_n /
-         * Matrices are stored column-wise, so basically we get a vector
-         * [ dc_1/dx_1, dc_2/dx_1, ..., dc_m/dx_1, dc_1/dx_2, dc_2/dx_2, ..., dc_m/dx_2, ..., dc_1/dx_n, dc_2/dx_n, ..., dc_m/dx_n ]
-         * which we have to convert to a row-wise format for NLopt.
-         */
-
-        for (i=0;i<m;i++) {
-            for (j=0;j<n;j++) {
-                grad[i*n + j] = REAL( R_gradient )[j*m + i];
-            }
-        }
-
-        UNPROTECT( 1 );
-    }
-
-    UNPROTECT( 2 );
-}
-
-nlopt_opt getOptions( SEXP R_options, int num_controls, int *flag_encountered_error ) {
+  // Get the value of the gradient if needed.
+  if (grad) {
+    // Result needs to be a list in this case.
+    SEXP R_gradient = PROTECT(getListElement(result, "jacobian"));
 
     /*
-     * double minf_max - stop if the objective function value drops below minf_max. (Set to -HUGE_VAL to ignore.)
-     * double ftol_rel,
-     * double ftol_abs - relative and absolute tolerances in the objective function value. (Set to zero to ignore.)
-     * double xtol_rel, xtol_abs - relative and absolute tolerances in the optimization parameter values. xtol_abs
-     *                             should either be NULL, in which case it is ignored (equivalent to zero tolerance),
-     *                             or otherwise it should point to an array of length n containing absolute tolerances
-     *                             in each parameter x[i]. Set any tolerance to zero for it to be ignored.
-     * int maxeval - stop if the objective function is evaluated at least maxeval times. Set to zero to ignore.
-     * double maxtime - stop if the elapsed wall-clock time, in seconds, exceeds maxtime. Set to zero to ignore.
+     * recode the return value from SEXP to double*, by looping over variables and constraints
+     * We get a matrix from R with the Jacobian of the constraints
+     *  / dc_1/dx_1   dc_1/dx_2  ...  dc_1/dx_n \
+     * |  dc_2/dx_1   dc_2/dx_2  ...  dc_2/dx_n  |
+     * |     ...         ...             ...     |
+     *  \ dc_m/dx_1   dc_m/dx_2  ...  dc_m/dx_n /
+     * Matrices are stored column-wise, so basically we get a vector
+     * [dc_1/dx_1, dc_2/dx_1, ..., dc_m/dx_1, dc_1/dx_2, dc_2/dx_2, ..., dc_m/dx_2, ..., dc_1/dx_n, dc_2/dx_n, ..., dc_m/dx_n]
+     * which we have to convert to a row-wise format for NLopt.
      */
 
-    // declare nlopt_result, to capture error codes from setting options
-    nlopt_result res;
-
-    // get algorithm from options
-    SEXP R_algorithm;
-    PROTECT( R_algorithm = getListElement( R_options, "algorithm" ) );
-
-    // R_algorithm_str will contain the first (should be the only one) element of the list
-    SEXP R_algorithm_str;
-    PROTECT( R_algorithm_str = STRING_ELT( R_algorithm, 0 ) );
-    const char* algorithm_str = CHAR( R_algorithm_str );
-    nlopt_algorithm algorithm = getAlgorithmCode( algorithm_str );
-
-    // declare options
-    nlopt_opt opts;
-    opts = nlopt_create(algorithm, num_controls); // algorithm and dimensionality
-
-    // get other options
-    SEXP R_opts_stopval;        // stop when f(x) <= stopval for minimizing or >= stopval for maximizing
-    PROTECT( R_opts_stopval = getListElement( R_options, "stopval" ) );
-    double stopval = REAL( R_opts_stopval )[0];
-    res = nlopt_set_stopval(opts, stopval);
-    if ( res == NLOPT_INVALID_ARGS ) {
-        *flag_encountered_error = 1;
-        Rprintf("Error: nlopt_set_stopval returned NLOPT_INVALID_ARGS.\n");
+    double *pRgrad = REAL(R_gradient);
+    for (size_t i = 0; i < m; i++) {
+      size_t ni = i * n;
+      for (size_t j = 0; j < n; j++) {
+        grad[ni + j] = pRgrad[j * m + i];
+      }
     }
 
-    SEXP R_opts_ftol_rel;
-    PROTECT( R_opts_ftol_rel = getListElement( R_options, "ftol_rel" ) );
-    double ftol_rel = REAL( R_opts_ftol_rel )[0];
-    res = nlopt_set_ftol_rel(opts, ftol_rel);
-    if ( res == NLOPT_INVALID_ARGS ) {
-        *flag_encountered_error = 1;
-        Rprintf("Error: nlopt_set_ftol_rel returned NLOPT_INVALID_ARGS.\n");
-    }
+    UNPROTECT(1);
+  }
 
-    SEXP R_opts_ftol_abs;
-    PROTECT( R_opts_ftol_abs = getListElement( R_options, "ftol_abs" ) );
-    double ftol_abs = REAL( R_opts_ftol_abs )[0];
-    res = nlopt_set_ftol_abs(opts, ftol_abs);
-    if ( res == NLOPT_INVALID_ARGS ) {
-        *flag_encountered_error = 1;
-        Rprintf("Error: nlopt_set_ftol_abs returned NLOPT_INVALID_ARGS.\n");
-    }
-
-    SEXP R_opts_xtol_rel;
-    PROTECT( R_opts_xtol_rel = getListElement( R_options, "xtol_rel" ) );
-    double xtol_rel = REAL( R_opts_xtol_rel )[0];
-    res = nlopt_set_xtol_rel(opts, xtol_rel);
-    if ( res == NLOPT_INVALID_ARGS ) {
-        *flag_encountered_error = 1;
-        Rprintf("Error: nlopt_set_xtol_rel returned NLOPT_INVALID_ARGS.\n");
-    }
-
-    SEXP R_opts_xtol_abs;
-    PROTECT( R_opts_xtol_abs = getListElement( R_options, "xtol_abs" ) );
-    double xtol_abs[ num_controls ];
-    int i;
-    for (i=0;i<num_controls;i++) {
-        xtol_abs[ i ] = REAL( R_opts_xtol_abs )[0];
-    }
-    res = nlopt_set_xtol_abs(opts, xtol_abs);
-    if ( res == NLOPT_INVALID_ARGS ) {
-        *flag_encountered_error = 1;
-        Rprintf("Error: nlopt_set_xtol_abs returned NLOPT_INVALID_ARGS.\n");
-    }
-
-    SEXP R_opts_maxeval;
-    PROTECT( R_opts_maxeval = AS_INTEGER( getListElement( R_options, "maxeval" ) ) );
-    int maxeval = INTEGER( R_opts_maxeval )[0];
-    res = nlopt_set_maxeval(opts, maxeval);
-    if ( res == NLOPT_INVALID_ARGS ) {
-        *flag_encountered_error = 1;
-        Rprintf("Error: nlopt_set_maxeval returned NLOPT_INVALID_ARGS.\n");
-    }
-
-    SEXP R_opts_maxtime;
-    PROTECT( R_opts_maxtime = getListElement( R_options, "maxtime" ) );
-    double maxtime = REAL( R_opts_maxtime )[0];
-    res = nlopt_set_maxtime(opts, maxtime);
-    if ( res == NLOPT_INVALID_ARGS ) {
-        *flag_encountered_error = 1;
-        Rprintf("Error: nlopt_set_maxtime returned NLOPT_INVALID_ARGS.\n");
-    }
-
-    SEXP R_opts_population;
-    PROTECT( R_opts_population = AS_INTEGER( getListElement( R_options, "population" ) ) );
-    unsigned int population = INTEGER( R_opts_population )[0];
-    res = nlopt_set_population(opts, population);
-    if ( res == NLOPT_INVALID_ARGS ) {
-        *flag_encountered_error = 1;
-        Rprintf("Error: nlopt_set_population returned NLOPT_INVALID_ARGS.\n");
-    }
-
-    SEXP R_opts_ranseed;
-    PROTECT( R_opts_ranseed = AS_INTEGER( getListElement( R_options, "ranseed" ) ) );
-    unsigned long ranseed = INTEGER( R_opts_ranseed )[0];
-    // set random seed if ranseed > 0.
-    // by default a random seed is generated from system time.
-    if ( ranseed > 0 ) {
-        nlopt_srand(ranseed);
-    }
-    UNPROTECT( 11 );
-
-    return opts;
+  UNPROTECT(2);
 }
 
- SEXP convertStatusToMessage( nlopt_result status ) {
-    // convert message to an R object
-    SEXP R_status_message;
-    PROTECT(R_status_message = allocVector(STRSXP, 1));
-    switch ( status )
-    {
-        // Successful termination (positive return values):
+nlopt_opt getOptions(SEXP R_options, int num_controls, int *flag_encountered_error) {
 
-        // (= +1)
-        case NLOPT_SUCCESS:
-            SET_STRING_ELT(R_status_message, 0, mkChar("NLOPT_SUCCESS: Generic success return value."));
-            break;
-        // (= +2)
-        case NLOPT_STOPVAL_REACHED:
-            SET_STRING_ELT(R_status_message, 0, mkChar("NLOPT_STOPVAL_REACHED: Optimization stopped because stopval (above) was reached."));
-            break;
-        // (= +3)
-        case NLOPT_FTOL_REACHED:
-            SET_STRING_ELT(R_status_message, 0, mkChar("NLOPT_FTOL_REACHED: Optimization stopped because ftol_rel or ftol_abs (above) was reached."));
-            break;
-        // (= +4)
-        case NLOPT_XTOL_REACHED:
-            SET_STRING_ELT(R_status_message, 0, mkChar("NLOPT_XTOL_REACHED: Optimization stopped because xtol_rel or xtol_abs (above) was reached."));
-            break;
-        // (= +5)
-        case NLOPT_MAXEVAL_REACHED:
-            SET_STRING_ELT(R_status_message, 0, mkChar("NLOPT_MAXEVAL_REACHED: Optimization stopped because maxeval (above) was reached."));
-            break;
-        // (= +6)
-        case NLOPT_MAXTIME_REACHED:
-            SET_STRING_ELT(R_status_message, 0, mkChar("NLOPT_MAXTIME_REACHED: Optimization stopped because maxtime (above) was reached."));
-            break;
+  /*
+   * double minf_max - stop if the objective function value drops below minf_max. (Set to -HUGE_VAL to ignore.)
+   * double ftol_rel,
+   * double ftol_abs - relative and absolute tolerances in the objective function value. (Set to zero to ignore.)
+   * double xtol_rel, xtol_abs - relative and absolute tolerances in the optimization parameter values. xtol_abs
+   *                             should either be NULL, in which case it is ignored (equivalent to zero tolerance),
+   *                             or otherwise it should point to an array of length n containing absolute tolerances
+   *                             in each parameter x[i]. Set any tolerance to zero for it to be ignored.
+   * int maxeval - stop if the objective function is evaluated at least maxeval times. Set to zero to ignore.
+   * double maxtime - stop if the elapsed wall-clock time, in seconds, exceeds maxtime. Set to zero to ignore.
+   */
 
-        // Error codes (negative return values):
+  // Declare nlopt_result to capture error codes from setting options.
+  nlopt_result res;
 
-        // (= -1)
-        case NLOPT_FAILURE:
-            SET_STRING_ELT(R_status_message, 0, mkChar("NLOPT_FAILURE: Generic failure code."));
-            break;
-        // (= -2)
-        case NLOPT_INVALID_ARGS:
-            SET_STRING_ELT(R_status_message, 0, mkChar("NLOPT_INVALID_ARGS: Invalid arguments (e.g. lower bounds are bigger than upper bounds, an unknown algorithm was specified, etcetera)."));
-            break;
-        // (= -3)
-        case NLOPT_OUT_OF_MEMORY:
-            SET_STRING_ELT(R_status_message, 0, mkChar("NLOPT_OUT_OF_MEMORY: Ran out of memory."));
-            break;
-        // (= -4)
-        case NLOPT_ROUNDOFF_LIMITED:
-            SET_STRING_ELT(R_status_message, 0, mkChar("NLOPT_ROUNDOFF_LIMITED: Roundoff errors led to a breakdown of the optimization algorithm. In this case, the returned minimum may still be useful. (e.g. this error occurs in NEWUOA if one tries to achieve a tolerance too close to machine precision.)"));
-            break;
-        case NLOPT_FORCED_STOP:
-            SET_STRING_ELT(R_status_message, 0, mkChar("Halted because of a forced termination: the user called nlopt_force_stop(opt) on the optimization's nlopt_opt object opt from the user's objective function."));
-        default:
-            SET_STRING_ELT(R_status_message, 0, mkChar("Return status not recognized."));
-    }
+  // Get the algorithm from options.
+  SEXP R_algorithm = PROTECT(getListElement(R_options, "algorithm"));
 
-    UNPROTECT( 1 );
-    return R_status_message;
+  // R_algorithm_str will contain the first (should be the only one) element of the list.
+  SEXP R_algorithm_str = PROTECT(STRING_ELT(R_algorithm, 0));
+  const char* algorithm_str = CHAR(R_algorithm_str);
+  nlopt_algorithm algorithm = getAlgorithmCode(algorithm_str);
+
+  // Declare options.
+  nlopt_opt opts;
+  opts = nlopt_create(algorithm, num_controls); // algorithm and dimensionality
+
+  // Get other options.
+  // Stop when f(x) <= stopval for minimizing or >= stopval for maximizing.
+  SEXP R_opts_stopval = PROTECT(getListElement(R_options, "stopval"));
+  double stopval = asReal(R_opts_stopval);
+  res = nlopt_set_stopval(opts, stopval);
+  if (res == NLOPT_INVALID_ARGS) {
+    *flag_encountered_error = 1;
+    Rprintf("Error: nlopt_set_stopval returned NLOPT_INVALID_ARGS.\n");
+  }
+
+  SEXP R_opts_ftol_rel = PROTECT(getListElement(R_options, "ftol_rel"));
+  double ftol_rel = asReal(R_opts_ftol_rel);
+  res = nlopt_set_ftol_rel(opts, ftol_rel);
+  if (res == NLOPT_INVALID_ARGS) {
+    *flag_encountered_error = 1;
+    Rprintf("Error: nlopt_set_ftol_rel returned NLOPT_INVALID_ARGS.\n");
+  }
+
+  SEXP R_opts_ftol_abs = PROTECT(getListElement(R_options, "ftol_abs"));
+  double ftol_abs = asReal(R_opts_ftol_abs);
+  res = nlopt_set_ftol_abs(opts, ftol_abs);
+  if (res == NLOPT_INVALID_ARGS) {
+    *flag_encountered_error = 1;
+    Rprintf("Error: nlopt_set_ftol_abs returned NLOPT_INVALID_ARGS.\n");
+  }
+
+  SEXP R_opts_xtol_rel = PROTECT(getListElement(R_options, "xtol_rel"));
+  double xtol_rel = asReal(R_opts_xtol_rel);
+  res = nlopt_set_xtol_rel(opts, xtol_rel);
+  if (res == NLOPT_INVALID_ARGS) {
+    *flag_encountered_error = 1;
+    Rprintf("Error: nlopt_set_xtol_rel returned NLOPT_INVALID_ARGS.\n");
+  }
+
+  SEXP R_opts_xtol_abs = PROTECT(getListElement(R_options, "xtol_abs"));
+  double xtol_abs[num_controls];
+  for (size_t i = 0; i < num_controls; i++) {
+    xtol_abs[i] = asReal(R_opts_xtol_abs);
+  }
+  res = nlopt_set_xtol_abs(opts, xtol_abs);
+  if (res == NLOPT_INVALID_ARGS) {
+    *flag_encountered_error = 1;
+    Rprintf("Error: nlopt_set_xtol_abs returned NLOPT_INVALID_ARGS.\n");
+  }
+
+  SEXP R_opts_maxeval = PROTECT(AS_INTEGER(getListElement(R_options, "maxeval")));
+  int maxeval = asInteger(R_opts_maxeval);
+  res = nlopt_set_maxeval(opts, maxeval);
+  if (res == NLOPT_INVALID_ARGS) {
+    *flag_encountered_error = 1;
+    Rprintf("Error: nlopt_set_maxeval returned NLOPT_INVALID_ARGS.\n");
+  }
+
+  SEXP R_opts_maxtime = PROTECT(getListElement(R_options, "maxtime"));
+  double maxtime = asReal(R_opts_maxtime);
+  res = nlopt_set_maxtime(opts, maxtime);
+  if (res == NLOPT_INVALID_ARGS) {
+    *flag_encountered_error = 1;
+    Rprintf("Error: nlopt_set_maxtime returned NLOPT_INVALID_ARGS.\n");
+  }
+
+  SEXP R_opts_population = PROTECT(AS_INTEGER(getListElement(R_options, "population")));
+  unsigned int population = asInteger(R_opts_population);
+  res = nlopt_set_population(opts, population);
+  if (res == NLOPT_INVALID_ARGS) {
+    *flag_encountered_error = 1;
+    Rprintf("Error: nlopt_set_population returned NLOPT_INVALID_ARGS.\n");
+  }
+
+  SEXP R_opts_vector_storage = PROTECT(AS_INTEGER(getListElement(R_options, "vector_storage")));
+  unsigned int vector_storage = asInteger(R_opts_vector_storage);
+  res = nlopt_set_vector_storage(opts, vector_storage);
+  if (res == NLOPT_INVALID_ARGS) {
+    *flag_encountered_error = 1;
+    Rprintf("Error: nlopt_set_vector_storage returned NLOPT_INVALID_ARGS.\n");
+  }
+
+  SEXP R_opts_ranseed = PROTECT(AS_REAL(getListElement(R_options, "ranseed")));
+  unsigned long ranseed = REAL(R_opts_ranseed)[0];
+  // Set random seed if ranseed > 0. By default a random seed is generated from
+  // system time.
+  if (ranseed > 0) {
+    nlopt_srand(ranseed);
+  }
+
+  UNPROTECT(12);
+
+  return opts;
+}
+
+SEXP convertStatusToMessage(nlopt_result status) {
+  // Convert message to an R object.
+  SEXP R_status_message = PROTECT(allocVector(STRSXP, 1));
+  switch (status) {
+    // Successful termination (positive return values):
+
+    // (= +1)
+    case NLOPT_SUCCESS:
+        SET_STRING_ELT(R_status_message, 0, mkChar("NLOPT_SUCCESS: Generic success return value."));
+        break;
+    // (= +2)
+    case NLOPT_STOPVAL_REACHED:
+        SET_STRING_ELT(R_status_message, 0, mkChar("NLOPT_STOPVAL_REACHED: Optimization stopped because stopval (above) was reached."));
+        break;
+    // (= +3)
+    case NLOPT_FTOL_REACHED:
+        SET_STRING_ELT(R_status_message, 0, mkChar("NLOPT_FTOL_REACHED: Optimization stopped because ftol_rel or ftol_abs (above) was reached."));
+        break;
+    // (= +4)
+    case NLOPT_XTOL_REACHED:
+        SET_STRING_ELT(R_status_message, 0, mkChar("NLOPT_XTOL_REACHED: Optimization stopped because xtol_rel or xtol_abs (above) was reached."));
+        break;
+    // (= +5)
+    case NLOPT_MAXEVAL_REACHED:
+        SET_STRING_ELT(R_status_message, 0, mkChar("NLOPT_MAXEVAL_REACHED: Optimization stopped because maxeval (above) was reached."));
+        break;
+    // (= +6)
+    case NLOPT_MAXTIME_REACHED:
+        SET_STRING_ELT(R_status_message, 0, mkChar("NLOPT_MAXTIME_REACHED: Optimization stopped because maxtime (above) was reached."));
+        break;
+    // Error codes (negative return values):
+
+    // (= -1)
+    case NLOPT_FAILURE:
+        SET_STRING_ELT(R_status_message, 0, mkChar("NLOPT_FAILURE: Generic failure code."));
+        break;
+    // (= -2)
+    case NLOPT_INVALID_ARGS:
+        SET_STRING_ELT(R_status_message, 0, mkChar("NLOPT_INVALID_ARGS: Invalid arguments (e.g. lower bounds are bigger than upper bounds, an unknown algorithm was specified, etcetera)."));
+        break;
+    // (= -3)
+    case NLOPT_OUT_OF_MEMORY:
+        SET_STRING_ELT(R_status_message, 0, mkChar("NLOPT_OUT_OF_MEMORY: Ran out of memory."));
+        break;
+    // (= -4)
+    case NLOPT_ROUNDOFF_LIMITED:
+        SET_STRING_ELT(R_status_message, 0, mkChar("NLOPT_ROUNDOFF_LIMITED: Roundoff errors led to a breakdown of the optimization algorithm. In this case, the returned minimum may still be useful. (e.g. this error occurs in NEWUOA if one tries to achieve a tolerance too close to machine precision.)"));
+        break;
+    // # nocov start  - Cannot test as the nlopt_force_stop() function is not exposed to nloptr.
+    case NLOPT_FORCED_STOP:
+        SET_STRING_ELT(R_status_message, 0, mkChar("Halted because of a forced termination: the user called nlopt_force_stop(opt) on the optimization's nlopt_opt object opt from the user's objective function."));
+      // # nocov end
+    default:
+        SET_STRING_ELT(R_status_message, 0, mkChar("Return status not recognized."));
+  }
+
+  UNPROTECT(1);
+  return R_status_message;
 }
 
 
-//
-// Constrained minimization
-//
-SEXP NLoptR_Optimize( SEXP args )
-{
-    // declare counter
-    unsigned i;
+// Constrained minimization: main package function.
 
-    // declare nlopt_result, to capture error codes from setting options
-    nlopt_result res;
-    int flag_encountered_error = 0;
+SEXP NLoptR_Optimize(SEXP args) {
 
-    // get initial values
-    SEXP R_init_values;
-    PROTECT( R_init_values = getListElement( args, "x0" ) );
+  // Declare nlopt_result to capture error codes from setting options.
+  nlopt_result res;
+  int flag_encountered_error = 0;
 
-    // number of control variables
-    unsigned num_controls = length( R_init_values );
+  // Get initial values.
+  SEXP R_init_values = PROTECT(getListElement(args, "x0"));
 
-    // set initial values of the controls
-    double x0[ num_controls ];
-    for (i=0;i<num_controls;i++) {
-        x0[i] = REAL( R_init_values )[i];
+  // Number of control variables.
+  unsigned num_controls = length(R_init_values);
+
+  // Set initial values of the controls.
+  double x0[num_controls];
+  double *pRinit = REAL(R_init_values);
+  for (size_t i = 0; i < num_controls; i++) {
+    x0[i] = pRinit[i];
+  }
+  UNPROTECT(1);
+
+  // Get options.
+  SEXP R_options = PROTECT(getListElement(args, "options"));
+  nlopt_opt opts = getOptions(R_options, num_controls, &flag_encountered_error);
+  UNPROTECT(1);
+
+  // Get local options.
+  SEXP R_local_options = PROTECT(getListElement(args, "local_options"));
+  if (R_local_options != R_NilValue) {
+    // Parse list with options.
+    nlopt_opt local_opts = getOptions(R_local_options, num_controls, &flag_encountered_error);
+
+    // Add local optimizer options to global options.
+    nlopt_set_local_optimizer(opts, local_opts);
+  }
+  UNPROTECT(1);
+
+  // Get print_level from options.
+  SEXP R_opts_print_level = PROTECT(AS_INTEGER(getListElement(R_options, "print_level")));
+  int print_level = asInteger(R_opts_print_level);
+  UNPROTECT(1);
+
+  // Get lower and upper bounds.
+  SEXP R_lower_bounds = PROTECT(getListElement(args, "lower_bounds"));
+  SEXP R_upper_bounds = PROTECT(getListElement(args, "upper_bounds"));
+
+  // Set the upper and lower bounds of the controls.
+  double lb[num_controls];
+  double ub[num_controls];
+  double *pRlb = REAL(R_lower_bounds);
+  double *pRub = REAL(R_upper_bounds);
+  for (size_t i = 0; i < num_controls; i++) {
+    lb[i] = pRlb[i];                // lower bound
+    ub[i] = pRub[i];                // upper bound
+  }
+  UNPROTECT(2);
+
+  // Add upper and lower bounds to options.
+  res = nlopt_set_lower_bounds(opts, lb);
+  if (res == NLOPT_INVALID_ARGS) {
+    flag_encountered_error = 1;
+    Rprintf("Error: nlopt_set_lower_bounds returned NLOPT_INVALID_ARGS.\n");
+  }
+  res = nlopt_set_upper_bounds(opts, ub);
+  if (res == NLOPT_INVALID_ARGS) {
+    flag_encountered_error = 1;
+    Rprintf("Error: nlopt_set_upper_bounds returned NLOPT_INVALID_ARGS.\n");
+  }
+
+  // Get number of inequality constraints.
+  SEXP R_num_constraints_ineq = PROTECT(AS_INTEGER(getListElement(args, "num_constraints_ineq")));
+  unsigned num_constraints_ineq = asInteger(R_num_constraints_ineq);
+  UNPROTECT(1);
+
+  // Get number of equality constraints.
+  SEXP R_num_constraints_eq = PROTECT(AS_INTEGER(getListElement(args, "num_constraints_eq")));
+  unsigned num_constraints_eq = asInteger(R_num_constraints_eq);
+  UNPROTECT(1);
+
+  // Get evaluation functions and environment.
+  SEXP R_eval_f =      PROTECT(getListElement(args, "eval_f"));            // objective
+  SEXP R_eval_g_ineq = PROTECT(getListElement(args, "eval_g_ineq"));       // inequality constraints
+  SEXP R_eval_g_eq  =  PROTECT(getListElement(args, "eval_g_eq"));         // equality constraints
+  SEXP R_environment = PROTECT(getListElement(args, "nloptr_environment"));
+
+  // Define data to pass to objective function.
+  func_objective_data objfunc_data;
+  objfunc_data.R_eval_f        = R_eval_f;
+  objfunc_data.R_environment   = R_environment;
+  objfunc_data.num_iterations  = 0;
+  objfunc_data.print_level     = print_level;
+
+  // Add objective to options.
+  res = nlopt_set_min_objective(opts, func_objective, &objfunc_data);
+  if (res == NLOPT_INVALID_ARGS) {
+    flag_encountered_error = 1;
+    Rprintf("Error: nlopt_set_min_objective returned NLOPT_INVALID_ARGS.\n");
+  }
+
+  // Inequality constraints
+
+  // Declare data outside if-statement to prevent data corruption.
+  func_constraints_ineq_data ineq_constr_data;
+  if (num_constraints_ineq > 0) {
+    // Get tolerances from R_options.
+    double tol_constraints_ineq[num_constraints_ineq];
+    SEXP R_tol_constraints_ineq = PROTECT(getListElement(R_options, "tol_constraints_ineq"));
+    double *pRtolineqc = REAL(R_tol_constraints_ineq);
+    for (size_t i = 0; i < num_constraints_ineq; i++) {
+      tol_constraints_ineq[i] = pRtolineqc[i];
     }
-    UNPROTECT( 1 );
+    UNPROTECT(1);
 
-    // get options
-    SEXP R_options;
-    PROTECT( R_options = getListElement( args, "options" ) );
-    nlopt_opt opts = getOptions( R_options, num_controls, &flag_encountered_error );
-    UNPROTECT( 1 );
+    // Define data to pass to constraint function.
+    ineq_constr_data.R_eval_g       = R_eval_g_ineq;
+    ineq_constr_data.R_environment  = R_environment;
+    ineq_constr_data.print_level    = print_level;
 
-    // get local options
-    SEXP R_local_options;
-    PROTECT( R_local_options = getListElement( args, "local_options" ) );
-    if ( R_local_options != R_NilValue ) {
-        // parse list with options
-        nlopt_opt local_opts = getOptions( R_local_options, num_controls, &flag_encountered_error );
-
-        // add local optimizer options to global options
-        nlopt_set_local_optimizer(opts, local_opts);
+    // Add vector-valued inequality constraint.
+    res = nlopt_add_inequality_mconstraint(opts, num_constraints_ineq, func_constraints_ineq, &ineq_constr_data, tol_constraints_ineq);
+    if (res == NLOPT_INVALID_ARGS) {
+      flag_encountered_error = 1;
+      Rprintf("Error: nlopt_add_inequality_mconstraint returned NLOPT_INVALID_ARGS.\n");
     }
-    UNPROTECT( 1 );
+  }
 
-    // get print_level from options
-    SEXP R_opts_print_level;
-    PROTECT( R_opts_print_level = AS_INTEGER( getListElement( R_options, "print_level" ) ) );
-    int print_level = INTEGER( R_opts_print_level )[0];
-    UNPROTECT( 1 );
+  // Equality constraints
 
-    // get lower and upper bounds
-    SEXP R_lower_bounds, R_upper_bounds;
-    PROTECT( R_lower_bounds = getListElement( args, "lower_bounds" ) );
-    PROTECT( R_upper_bounds = getListElement( args, "upper_bounds" ) );
-
-    // set the upper and lower bounds of the controls
-    double lb[ num_controls ];
-    double ub[ num_controls ];
-    for (i=0;i<num_controls;i++) {
-        lb[i] = REAL( R_lower_bounds )[i];                // lower bound
-        ub[i] = REAL( R_upper_bounds )[i];                // upper bound
+  // Declare data outside if-statement to prevent data corruption.
+  func_constraints_eq_data eq_constr_data;
+  if (num_constraints_eq > 0) {
+    // Get tolerances from R_options.
+    double tol_constraints_eq[num_constraints_eq];
+    SEXP R_tol_constraints_eq = PROTECT(getListElement(R_options, "tol_constraints_eq"));
+    double *pRtoleqc = REAL(R_tol_constraints_eq);
+    for (size_t i = 0; i<num_constraints_eq; i++) {
+      tol_constraints_eq[i] = pRtoleqc[i];
     }
-    UNPROTECT( 2 );
+    UNPROTECT(1);
 
-    // add upper and lower bounds to options
-    res = nlopt_set_lower_bounds(opts, lb);
-    if ( res == NLOPT_INVALID_ARGS ) {
-        flag_encountered_error = 1;
-        Rprintf("Error: nlopt_set_lower_bounds returned NLOPT_INVALID_ARGS.\n");
+    // Define data to pass to constraint function.
+    eq_constr_data.R_eval_g       = R_eval_g_eq;
+    eq_constr_data.R_environment  = R_environment;
+    eq_constr_data.print_level    = print_level;
+
+    // Add vector-valued equality constraint.
+    res = nlopt_add_equality_mconstraint(opts, num_constraints_eq, func_constraints_eq, &eq_constr_data, tol_constraints_eq);
+    if (res == NLOPT_INVALID_ARGS) {
+      flag_encountered_error = 1;
+      Rprintf("Error: nlopt_add_equality_mconstraint returned NLOPT_INVALID_ARGS.\n");
     }
-    res = nlopt_set_upper_bounds(opts, ub);
-    if ( res == NLOPT_INVALID_ARGS ) {
-        flag_encountered_error = 1;
-        Rprintf("Error: nlopt_set_upper_bounds returned NLOPT_INVALID_ARGS.\n");
-    }
+  }
 
-    // get number of inequality constraints
-    SEXP R_num_constraints_ineq;
-    PROTECT( R_num_constraints_ineq = AS_INTEGER( getListElement( args, "num_constraints_ineq" ) ) );
-    unsigned num_constraints_ineq = INTEGER( R_num_constraints_ineq )[0];
-    UNPROTECT( 1 );
+  // Optimal value of objective value upon return.
+  double obj_value = HUGE_VAL;
 
-    // get number of equality constraints
-    SEXP R_num_constraints_eq;
-    PROTECT( R_num_constraints_eq = AS_INTEGER( getListElement( args, "num_constraints_eq" ) ) );
-    unsigned num_constraints_eq = INTEGER( R_num_constraints_eq )[0];
-    UNPROTECT( 1 );
+  // Do optimization if no error occurred during initialization of the problem.
+  nlopt_result status;
+  if (flag_encountered_error == 0) {
+    status = nlopt_optimize(opts, x0, &obj_value);
+  } else {
+    status = NLOPT_INVALID_ARGS;
+  }
 
-    // get evaluation functions and environment
-    SEXP R_eval_f, R_eval_g_ineq, R_eval_g_eq, R_environment;
-    PROTECT( R_eval_f      = getListElement( args, "eval_f" ) );            // objective
-    PROTECT( R_eval_g_ineq = getListElement( args, "eval_g_ineq" ) );       // inequality constraints
-    PROTECT( R_eval_g_eq   = getListElement( args, "eval_g_eq" ) );         // equality constraints
-    PROTECT( R_environment = getListElement( args, "nloptr_environment" ) );
+  // Dispose of the nlopt_opt object.
+  nlopt_destroy(opts);
 
+  // After minimizing we can unprotect eval_f, eval_g_ineq, eval_g_eq, and the
+  // environment.
+  UNPROTECT(4);
 
-    // define data to pass to objective function
-    func_objective_data objfunc_data;
-    objfunc_data.R_eval_f        = R_eval_f;
-    objfunc_data.R_environment   = R_environment;
-    objfunc_data.num_iterations  = 0;
-    objfunc_data.print_level     = print_level;
+  // Get version of NLopt.
+  int major, minor, bugfix;
+  nlopt_version(&major, &minor, &bugfix);
 
-    // add objective to options
-    res = nlopt_set_min_objective(opts, func_objective, &objfunc_data);
-    if ( res == NLOPT_INVALID_ARGS ) {
-        flag_encountered_error = 1;
-        Rprintf("Error: nlopt_set_min_objective returned NLOPT_INVALID_ARGS.\n");
-    }
+  // Create list to return results to R.
+  int num_return_elements = 8;
+  SEXP R_result_list = PROTECT(allocVector(VECSXP, num_return_elements));
 
-    //
-    // inequality constraints
-    //
+  // Attach names to the return list.
+  SEXP names = PROTECT(allocVector(STRSXP, num_return_elements));
 
-    // Declare data outside if-statement to prevent data corruption.
-    func_constraints_ineq_data ineq_constr_data;
-    if ( num_constraints_ineq > 0 ) {
+  SET_STRING_ELT(names, 0, mkChar("status"));
+  SET_STRING_ELT(names, 1, mkChar("message"));
+  SET_STRING_ELT(names, 2, mkChar("iterations"));
+  SET_STRING_ELT(names, 3, mkChar("objective"));
+  SET_STRING_ELT(names, 4, mkChar("solution"));
+  SET_STRING_ELT(names, 5, mkChar("version_major"));
+  SET_STRING_ELT(names, 6, mkChar("version_minor"));
+  SET_STRING_ELT(names, 7, mkChar("version_bugfix"));
+  setAttrib(R_result_list, R_NamesSymbol, names);
 
-        // get tolerances from R_options
-        double tol_constraints_ineq[ num_constraints_ineq ];
-        SEXP R_tol_constraints_ineq;
-        PROTECT( R_tol_constraints_ineq = getListElement( R_options, "tol_constraints_ineq" ) );
-        for (i=0;i<num_constraints_ineq;i++) {
-            tol_constraints_ineq[ i ] = REAL( R_tol_constraints_ineq )[ i ];
-        }
-        UNPROTECT( 1 );
+  // Convert status to an R object.
+  SEXP R_status = PROTECT(allocVector(INTSXP, 1));
+  INTEGER(R_status)[0] = (int) status;
 
-        // define data to pass to constraint function
-        ineq_constr_data.R_eval_g       = R_eval_g_ineq;
-        ineq_constr_data.R_environment  = R_environment;
-        ineq_constr_data.print_level    = print_level;
+  // Convert message to an R object.
+  SEXP R_status_message = PROTECT(convertStatusToMessage(status));
 
-        // add vector-valued inequality constraint
-        res = nlopt_add_inequality_mconstraint(opts, num_constraints_ineq, func_constraints_ineq, &ineq_constr_data, tol_constraints_ineq);
-        if ( res == NLOPT_INVALID_ARGS ) {
-            flag_encountered_error = 1;
-            Rprintf("Error: nlopt_add_inequality_mconstraint returned NLOPT_INVALID_ARGS.\n");
-        }
-    }
+  // Convert number of iterations to an R object.
+  SEXP R_num_iterations = PROTECT(allocVector(INTSXP, 1));
+  INTEGER(R_num_iterations)[0] = objfunc_data.num_iterations;
 
-    //
-    // equality constraints
-    //
+  // Convert value of objective function to an R object.
+  SEXP R_objective = PROTECT(allocVector(REALSXP, 1));
+  REAL(R_objective)[0] = obj_value;
 
-    // Declare data outside if-statement to prevent data corruption.
-    func_constraints_eq_data eq_constr_data;
-    if ( num_constraints_eq > 0 ) {
+  // Convert the value of the controls to an R object.
+  SEXP R_solution = PROTECT(allocVector(REALSXP, num_controls));
+  double *pRsol = REAL(R_solution);
+  for (size_t i = 0; i < num_controls; i++) {
+    pRsol[i] = x0[i];
+  }
 
-        // get tolerances from R_options
-        double tol_constraints_eq[ num_constraints_eq ];
-        SEXP R_tol_constraints_eq;
-        PROTECT( R_tol_constraints_eq = getListElement( R_options, "tol_constraints_eq" ) );
-        for (i=0;i<num_constraints_eq;i++) {
-            tol_constraints_eq[ i ] = REAL( R_tol_constraints_eq )[ i ];
-        }
-        UNPROTECT( 1 );
+  // Convert the major version number to an R object.
+  SEXP R_version_major = PROTECT(allocVector(INTSXP, 1));
+  INTEGER(R_version_major)[0] = major;
 
-        // define data to pass to constraint function
-        eq_constr_data.R_eval_g       = R_eval_g_eq;
-        eq_constr_data.R_environment  = R_environment;
-        eq_constr_data.print_level    = print_level;
+  // Convert the minor version number to an R object.
+  SEXP R_version_minor = PROTECT(allocVector(INTSXP, 1));
+  INTEGER(R_version_minor)[0] = minor;
 
-        // add vector-valued equality constraint
-        res = nlopt_add_equality_mconstraint(opts, num_constraints_eq, func_constraints_eq, &eq_constr_data, tol_constraints_eq);
-        if ( res == NLOPT_INVALID_ARGS ) {
-            flag_encountered_error = 1;
-            Rprintf("Error: nlopt_add_equality_mconstraint returned NLOPT_INVALID_ARGS.\n");
-        }
-    }
+  // Convert the bugfix version number to an R object.
+  SEXP R_version_bugfix = PROTECT(allocVector(INTSXP, 1));
+  INTEGER(R_version_bugfix)[0] = bugfix;
 
-    // optimal value of objective value, upon return
-    double obj_value = HUGE_VAL;
+  // Add elements to the list.
+  SET_VECTOR_ELT(R_result_list, 0, R_status);
+  SET_VECTOR_ELT(R_result_list, 1, R_status_message);
+  SET_VECTOR_ELT(R_result_list, 2, R_num_iterations);
+  SET_VECTOR_ELT(R_result_list, 3, R_objective);
+  SET_VECTOR_ELT(R_result_list, 4, R_solution);
+  SET_VECTOR_ELT(R_result_list, 5, R_version_major);
+  SET_VECTOR_ELT(R_result_list, 6, R_version_minor);
+  SET_VECTOR_ELT(R_result_list, 7, R_version_bugfix);
 
-    // do optimization, if no error occurred during initialization of the problem
-    nlopt_result status;
-    if ( flag_encountered_error==0 ) {
-        status = nlopt_optimize( opts, x0, &obj_value );
-    }
-    else {
-        status = NLOPT_INVALID_ARGS;
-    }
+  UNPROTECT(num_return_elements + 2);
 
-    // dispose of the nlopt_opt object
-    nlopt_destroy( opts );
-
-    // after minimizing we can unprotect eval_f, eval_g_ineq, eval_g_eq, and the environment
-    UNPROTECT( 4 );
-
-    // get version of NLopt
-    int major, minor, bugfix;
-    nlopt_version(&major, &minor, &bugfix);
-
-    // create list to return results to R
-    int num_return_elements = 8;
-    SEXP R_result_list;
-    PROTECT(R_result_list = allocVector(VECSXP, num_return_elements));
-
-    // attach names to the return list
-    SEXP names;
-    PROTECT(names = allocVector(STRSXP, num_return_elements));
-
-    SET_STRING_ELT(names, 0, mkChar("status"));
-    SET_STRING_ELT(names, 1, mkChar("message"));
-    SET_STRING_ELT(names, 2, mkChar("iterations"));
-    SET_STRING_ELT(names, 3, mkChar("objective"));
-    SET_STRING_ELT(names, 4, mkChar("solution"));
-    SET_STRING_ELT(names, 5, mkChar("version_major"));
-    SET_STRING_ELT(names, 6, mkChar("version_minor"));
-    SET_STRING_ELT(names, 7, mkChar("version_bugfix"));
-    setAttrib(R_result_list, R_NamesSymbol, names);
-
-    // convert status to an R object
-    SEXP R_status;
-    PROTECT(R_status = allocVector(INTSXP,1));
-    INTEGER(R_status)[0] = (int) status;
-
-    // convert message to an R object
-    SEXP R_status_message;
-    PROTECT( R_status_message = convertStatusToMessage( status ) );
-
-    // convert number of iterations to an R object
-    SEXP R_num_iterations;
-    PROTECT(R_num_iterations = allocVector(INTSXP,1));
-    INTEGER(R_num_iterations)[0] = objfunc_data.num_iterations;
-
-    // convert value of objective function to an R object
-    SEXP R_objective;
-    PROTECT(R_objective = allocVector(REALSXP,1));
-    REAL(R_objective)[0] = obj_value;
-
-    // convert the value of the controls to an R object
-    SEXP R_solution;
-    PROTECT(R_solution = allocVector(REALSXP,num_controls));
-    for (i=0;i<num_controls;i++) {
-        REAL(R_solution)[i] = x0[i];
-    }
-
-    // convert the major version number to an R object
-    SEXP R_version_major;
-    PROTECT(R_version_major = allocVector(INTSXP,1));
-    INTEGER(R_version_major)[0] = major;
-
-    // convert the minor version number to an R object
-    SEXP R_version_minor;
-    PROTECT(R_version_minor = allocVector(INTSXP,1));
-    INTEGER(R_version_minor)[0] = minor;
-
-    // convert the bugfix version number to an R object
-    SEXP R_version_bugfix;
-    PROTECT(R_version_bugfix = allocVector(INTSXP,1));
-    INTEGER(R_version_bugfix)[0] = bugfix;
-
-    // add elements to the list
-    SET_VECTOR_ELT(R_result_list, 0, R_status);
-    SET_VECTOR_ELT(R_result_list, 1, R_status_message);
-    SET_VECTOR_ELT(R_result_list, 2, R_num_iterations);
-    SET_VECTOR_ELT(R_result_list, 3, R_objective);
-    SET_VECTOR_ELT(R_result_list, 4, R_solution);
-    SET_VECTOR_ELT(R_result_list, 5, R_version_major);
-    SET_VECTOR_ELT(R_result_list, 6, R_version_minor);
-    SET_VECTOR_ELT(R_result_list, 7, R_version_bugfix);
-
-    UNPROTECT( num_return_elements + 2 );
-
-    return(R_result_list);
+  return(R_result_list);
 }
