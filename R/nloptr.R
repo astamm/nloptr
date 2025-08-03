@@ -332,6 +332,7 @@ nloptr <- function(x0,
     flist <- formals(fun)
     if (length(flist) > 1) {
       fnms <- names(flist)[2:length(flist)] # remove first argument (x)
+      fnms <- setdiff(fnms, "...") # don't check for '...' argument
       rnms <- names(arglist)
       m1 <- match(fnms, rnms)
       if (anyNA(m1)) {
