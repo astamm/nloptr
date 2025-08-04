@@ -711,7 +711,7 @@ nlopt_opt getOptions(SEXP R_options, int num_controls, int *flag_encountered_err
   SEXP R_opts_x_weights = PROTECT(getListElement(R_options, "x_weights"));
   unsigned int num_x_weights = length(R_opts_x_weights);
   // if R_opts_x_weights is of length 1, then use the same weight for all controls
-  if (num_controls == 1)
+  if (num_x_weights == 1)
   {
     res = nlopt_set_x_weights1(opts, asReal(R_opts_x_weights));
   }
