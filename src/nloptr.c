@@ -651,13 +651,17 @@ nlopt_opt getOptions(SEXP R_options, int num_controls, int *flag_encountered_err
    * double minf_max - stop if the objective function value drops below minf_max. (Set to -HUGE_VAL to ignore.)
    * double ftol_rel,
    * double ftol_abs - relative and absolute tolerances in the objective function value. (Set to zero to ignore.)
-   * double xtol_rel, xtol_abs - relative and absolute tolerances in the optimization parameter values. xtol_abs
-   *                             should either be NULL, in which case it is ignored (equivalent to zero tolerance),
-   *                             or otherwise it should point to an array of length n containing absolute tolerances
-   *                             in each parameter x[i]. Set any tolerance to zero for it to be ignored.
+   * double xtol_rel, *xtol_abs - relative and absolute tolerances in the optimization parameter values. xtol_abs
+   *                              should either be NULL, in which case it is ignored (equivalent to zero tolerance),
+   *                              or a single value in which case it is applied to all parameters, or an array of
+   *                              length n containing absolute tolerances in each parameter x[i]. Set any tolerance
+   *                              value to zero for it to be ignored.
+   * double *x_weights - weights on the optimization parameters. Can be a single value in which case it is applied to
+   *                     all parameters, or an array of length n containing weights for each of the n parameters.
+   *                     Set any weight value to zero for it to be ignored. (Set to NULL to ignore.)
    * int maxeval - stop if the objective function is evaluated at least maxeval times. Set to zero to ignore.
    * double maxtime - stop if the elapsed wall-clock time, in seconds, exceeds maxtime. Set to zero to ignore.
-   */
+  */
 
   // Declare nlopt_result to capture error codes from setting options.
   nlopt_result res;
