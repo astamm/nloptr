@@ -50,8 +50,22 @@
 #define AS_REAL(x) Rf_coerceVector(x, REALSXP)
 
 // Extracts element with name 'str' from R object 'list' & returns that element.
+// SEXP getListElement (SEXP list, char *str) {
+//   SEXP elmt = R_NilValue, names = getAttrib(list, R_NamesSymbol);
+//   for (size_t i = 0; i < length(list); i++) {
+//     if(strcmp(CHAR(STRING_ELT(names, i)), str) == 0) {
+//       elmt = VECTOR_ELT(list, i);
+//       break;
+//     }
+//   }
+//
+//   return elmt;
+// }
+
+// rewrite getListElement with PROTECT
 SEXP getListElement (SEXP list, char *str) {
   SEXP elmt = R_NilValue, names = getAttrib(list, R_NamesSymbol);
+  PROTECT(names);
   for (size_t i = 0; i < length(list); i++) {
     if(strcmp(CHAR(STRING_ELT(names, i)), str) == 0) {
       elmt = VECTOR_ELT(list, i);
@@ -59,6 +73,7 @@ SEXP getListElement (SEXP list, char *str) {
     }
   }
 
+  UNPROTECT(1);
   return elmt;
 }
 
