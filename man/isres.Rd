@@ -13,6 +13,7 @@ isres(
   heq = NULL,
   maxeval = 10000,
   pop.size = 20 * (length(x0) + 1),
+  ranseed = NULL,
   xtol_rel = 1e-06,
   nl.info = FALSE,
   deprecatedBehavior = TRUE,
@@ -35,6 +36,8 @@ for all components.}
 \item{maxeval}{maximum number of function evaluations.}
 
 \item{pop.size}{population size.}
+
+\item{ranseed}{random seed for the random number generator.}
 
 \item{xtol_rel}{stopping criterion for relative change reached.}
 

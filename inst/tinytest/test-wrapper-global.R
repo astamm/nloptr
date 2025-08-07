@@ -14,10 +14,12 @@
 #   2023-06-25: Use analytic gradients and Jacobians for hin/heq. Correct some
 #               of the ISRES tests which were pulling on Stogo results.
 #               (Avraham Adler)
+#   2025-08-07: Fix seed via ranseed and re-increase tolerance to machine
+#               precision (Aymeric Stamm)
 #
 
 library(nloptr)
-tol <- 1e-3 # Stochastic algorithms require a weaker tolerance
+tol <- sqrt(.Machine$double.eps)
 
 depMess <- paste(
   "The old behavior for hin >= 0 has been deprecated. Please",
@@ -122,11 +124,22 @@ expect_stdout(isres(x0, rbf, lb, ub, nl.info = TRUE), "Call:", fixed = TRUE)
 
 expect_silent(isres(x0, rbf, lb, ub))
 
-# As ISRES is stochastic, more iterations and a much looser tolerance is needed.
-# Also, iteration count will almost surely not be equal.
+ranseed <- 1234L
+maxeval <- 2e4L
+xtol_rel <- 1e-6
+pop_size <- 60L
 
 # No passed hin or heq
-isresTest <- isres(x0, rbf, lb, ub, maxeval = 2e4L)
+isresTest <- isres(
+  x0 = x0,
+  fn = rbf,
+  lower = lb,
+  upper = ub,
+  maxeval = maxeval,
+  xtol_rel = xtol_rel,
+  pop.size = pop_size,
+  ranseed = ranseed
+)
 
 isresControl <- nloptr(
   x0 = x0,
@@ -135,9 +148,10 @@ isresControl <- nloptr(
   ub = ub,
   opts = list(
     algorithm = "NLOPT_GN_ISRES",
-    maxeval = 2e4L,
-    xtol_rel = 1e-6,
-    population = 60
+    maxeval = maxeval,
+    xtol_rel = xtol_rel,
+    population = pop_size,
+    ranseed = ranseed
   )
 )
 
@@ -147,11 +161,17 @@ expect_identical(isresTest$convergence, isresControl$status)
 expect_identical(isresTest$message, isresControl$message)
 
 # Passing heq
-# Cannot check for value equivalence since the stochastic nature of the problem
-# creates different solutions to this "improper" test even using the same seed
-# and calls! So dropping maxeval to 1e4 for speed.
-# (AA: 2024-06-25)
-isresTest <- isres(x0, rbf, lb, ub, heq = heq, maxeval = 1e4L)
+isresTest <- isres(
+  x0 = x0,
+  fn = rbf,
+  lower = lb,
+  upper = ub,
+  heq = heq,
+  maxeval = maxeval,
+  xtol_rel = xtol_rel,
+  pop.size = pop_size,
+  ranseed = ranseed
+)
 
 isresControl <- nloptr(
   x0 = x0,
@@ -161,12 +181,15 @@ isresControl <- nloptr(
   ub = ub,
   opts = list(
     algorithm = "NLOPT_GN_ISRES",
-    maxeval = 1e4L,
-    xtol_rel = 1e-6,
-    population = 60
+    maxeval = maxeval,
+    xtol_rel = xtol_rel,
+    population = pop_size,
+    ranseed = ranseed
   )
 )
 
+expect_equal(isresTest$par, isresControl$solution, tolerance = tol)
+expect_equal(isresTest$value, isresControl$objective, tolerance = tol)
 expect_identical(isresTest$convergence, isresControl$status)
 expect_identical(isresTest$message, isresControl$message)
 
@@ -179,17 +202,18 @@ isresControl <- nloptr(
   ub = ub,
   opts = list(
     algorithm = "NLOPT_GN_ISRES",
-    maxeval = 2e4L,
-    xtol_rel = 1e-6,
-    population = 60
+    maxeval = maxeval,
+    xtol_rel = xtol_rel,
+    population = pop_size,
+    ranseed = ranseed
   )
 )
 
 expect_silent(isres(
-  x0,
-  rbf,
-  lb,
-  ub,
+  x0 = x0,
+  fn = rbf,
+  lower = lb,
+  upper = ub,
   hin = hin,
   maxeval = 2e4L,
   xtol_rel = 1e-6,
@@ -198,12 +222,15 @@ expect_silent(isres(
 ))
 
 isresTest <- isres(
-  x0,
-  rbf,
-  lb,
-  ub,
+  x0 = x0,
+  fn = rbf,
+  lower = lb,
+  upper = ub,
   hin = hin,
-  maxeval = 2e4L,
+  maxeval = maxeval,
+  xtol_rel = xtol_rel,
+  pop.size = pop_size,
+  ranseed = ranseed,
   deprecatedBehavior = FALSE
 )
 
@@ -214,7 +241,7 @@ expect_identical(isresTest$message, isresControl$message)
 
 # Test deprecated message
 expect_warning(
-  isres(x0, rbf, lower = lb, upper = ub, hin = hin2, maxeval = 2e4L),
+  isres(x0, rbf, lower = lb, upper = ub, hin = hin2, maxeval = maxeval),
   depMess
 )
 
@@ -225,7 +252,10 @@ isresTest <- suppressWarnings(isres(
   lb,
   ub,
   hin = hin2,
-  maxeval = 2e4L
+  maxeval = maxeval,
+  xtol_rel = xtol_rel,
+  pop.size = pop_size,
+  ranseed = ranseed
 ))
 
 expect_equal(isresTest$par, isresControl$solution, tolerance = tol)
