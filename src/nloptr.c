@@ -690,7 +690,7 @@ nlopt_opt getOptions(SEXP R_options, int num_controls, int *flag_encountered_err
   nlopt_algorithm algorithm = getAlgorithmCode(algorithm_str);
 
   // Declare options.
-  nlopt_opt opts = nlopt_create(algorithm, (unsigned int)num_controls); // algorithm and dimensionality
+  nlopt_opt opts = nlopt_create(algorithm, num_controls); // algorithm and dimensionality
 
   // Get other options.
   // Stop when f(x) <= stopval for minimizing or >= stopval for maximizing.
@@ -910,9 +910,11 @@ SEXP NLoptR_Optimize(SEXP args) {
 
   // Get local options.
   SEXP R_local_options = PROTECT(getListElement(args, "local_options"));
-  if (R_local_options != R_NilValue) {
+  bool use_local_optimizer = R_local_options != R_NilValue;
+  nlopt_opt local_opts = NULL;
+  if (use_local_optimizer) {
     // Parse list with options.
-    nlopt_opt local_opts = getOptions(R_local_options, num_controls, &flag_encountered_error);
+    local_opts = getOptions(R_local_options, num_controls, &flag_encountered_error);
 
     // Add local optimizer options to global options.
     nlopt_set_local_optimizer(opts, local_opts);
@@ -1051,6 +1053,9 @@ SEXP NLoptR_Optimize(SEXP args) {
 
   // Dispose of the nlopt_opt object.
   nlopt_destroy(opts);
+  if (use_local_optimizer) {
+    nlopt_destroy(local_opts);
+  }
 
   // After minimizing we can unprotect eval_f, eval_g_ineq, eval_g_eq, and the
   // environment.
