@@ -907,7 +907,6 @@ SEXP NLoptR_Optimize(SEXP args) {
   // Get options.
   SEXP R_options = PROTECT(getListElement(args, "options"));
   nlopt_opt opts = getOptions(R_options, num_controls, &flag_encountered_error);
-  UNPROTECT(1);
 
   // Get local options.
   SEXP R_local_options = PROTECT(getListElement(args, "local_options"));
@@ -1035,6 +1034,9 @@ SEXP NLoptR_Optimize(SEXP args) {
       Rprintf("Error: nlopt_add_equality_mconstraint returned NLOPT_INVALID_ARGS.\n");
     }
   }
+
+  // Now we can unprotect R_options
+  UNPROTECT(1);
 
   // Optimal value of objective value upon return.
   double obj_value = HUGE_VAL;
