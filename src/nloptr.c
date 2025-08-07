@@ -45,6 +45,7 @@
 
 #include <stdbool.h>
 #include <nlopt.h>
+#include "nloptr.h"
 
 #define AS_INTEGER(x)	Rf_coerceVector(x, INTSXP)
 #define AS_REAL(x) Rf_coerceVector(x, REALSXP)
