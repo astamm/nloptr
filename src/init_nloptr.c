@@ -30,15 +30,12 @@
  * 2023-08-24: Delete files solely needed for testthat (Avraham Adler).
  * 2024-07-02: Updated old include which is no longer maintained and other
  *             minor code tweaks and efficiency enhancements (Avraham Adler).
- */
-
-#include <R.h>
-#include <Rinternals.h>
-#include <stdlib.h> // for NULL
-#include <R_ext/Rdynload.h>
+*/
 
 #include "nloptr.h"
-#include <nlopt.h>
+
+#include <stdlib.h> // for NULL
+#include <R_ext/Rdynload.h>
 
 static const R_CallMethodDef CallEntries[] = {
   {"NLoptR_Optimize",    (DL_FUNC) &NLoptR_Optimize,    1},
