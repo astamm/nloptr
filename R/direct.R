@@ -103,8 +103,16 @@
 #' ## Current value of controls:
 #' ##   0.2016884 0.1500025 0.4768667 0.2753391 0.311648 0.6572931
 #'
-direct <- function(fn, lower, upper, scaled = TRUE, original = FALSE,
-                   nl.info = FALSE, control = list(), ...) {
+direct <- function(
+  fn,
+  lower,
+  upper,
+  scaled = TRUE,
+  original = FALSE,
+  nl.info = FALSE,
+  control = list(),
+  ...
+) {
   opts <- nl.opts(control)
   if (scaled) {
     opts["algorithm"] <- "NLOPT_GN_DIRECT"
@@ -112,30 +120,42 @@ direct <- function(fn, lower, upper, scaled = TRUE, original = FALSE,
     opts["algorithm"] <- "NLOPT_GN_DIRECT_NOSCAL"
   }
 
-  if (original) opts["algorithm"] <- "NLOPT_GN_ORIG_DIRECT"
+  if (original) {
+    opts["algorithm"] <- "NLOPT_GN_ORIG_DIRECT"
+  }
 
   fun <- match.fun(fn)
-  fn  <- function(x) fun(x, ...)
+  fn <- function(x) fun(x, ...)
 
   x0 <- (lower + upper) / 2
 
-  S0 <- nloptr(x0,
-               eval_f = fn,
-               lb = lower,
-               ub = upper,
-               opts = opts)
+  S0 <- nloptr(x0, eval_f = fn, lb = lower, ub = upper, opts = opts)
 
-  if (nl.info) print(S0)
+  if (nl.info) {
+    print(S0)
+  }
 
-  list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-       convergence = S0$status, message = S0$message)
+  list(
+    par = S0$solution,
+    value = S0$objective,
+    iter = S0$iterations,
+    convergence = S0$status,
+    message = S0$message
+  )
 }
 
 #' @export directL
 #' @rdname direct
-directL <- function(fn, lower, upper, randomized = FALSE, original = FALSE,
-                    nl.info = FALSE, control = list(), ...) {
-
+directL <- function(
+  fn,
+  lower,
+  upper,
+  randomized = FALSE,
+  original = FALSE,
+  nl.info = FALSE,
+  control = list(),
+  ...
+) {
   opts <- nl.opts(control)
   if (randomized) {
     opts["algorithm"] <- "NLOPT_GN_DIRECT_L_RAND"
@@ -143,22 +163,26 @@ directL <- function(fn, lower, upper, randomized = FALSE, original = FALSE,
     opts["algorithm"] <- "NLOPT_GN_DIRECT_L"
   }
 
-  if (original)
+  if (original) {
     opts["algorithm"] <- "NLOPT_GN_ORIG_DIRECT_L"
+  }
 
   fun <- match.fun(fn)
-  fn  <- function(x) fun(x, ...)
+  fn <- function(x) fun(x, ...)
 
   x0 <- (lower + upper) / 2
 
-  S0 <- nloptr(x0,
-               eval_f = fn,
-               lb = lower,
-               ub = upper,
-               opts = opts)
+  S0 <- nloptr(x0, eval_f = fn, lb = lower, ub = upper, opts = opts)
 
-  if (nl.info) print(S0)
+  if (nl.info) {
+    print(S0)
+  }
 
-  list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-       convergence = S0$status, message = S0$message)
+  list(
+    par = S0$solution,
+    value = S0$objective,
+    iter = S0$iterations,
+    convergence = S0$status,
+    message = S0$message
+  )
 }

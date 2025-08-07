@@ -14,12 +14,22 @@
 
 library(nloptr)
 
-expect_stdout(nloptr.print.options(opts.show = "check_derivatives"),
-              "user-supplied analytic gradients with finite difference",
-              fixed = TRUE)
+expect_stdout(
+  nloptr.print.options(opts.show = "check_derivatives"),
+  "user-supplied analytic gradients with finite difference",
+  fixed = TRUE
+)
 
-expect_stdout(nloptr(3, function(x) x ^ 2 + 1,
-                     opts = list(algorithm = "NLOPT_LN_NELDERMEAD",
-                                 xtol_rel = 1e-8, print_options_doc = TRUE)),
-              "user-supplied analytic gradients with finite difference",
-              fixed = TRUE)
+expect_stdout(
+  nloptr(
+    3,
+    function(x) x^2 + 1,
+    opts = list(
+      algorithm = "NLOPT_LN_NELDERMEAD",
+      xtol_rel = 1e-8,
+      print_options_doc = TRUE
+    )
+  ),
+  "user-supplied analytic gradients with finite difference",
+  fixed = TRUE
+)

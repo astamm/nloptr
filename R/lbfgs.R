@@ -12,7 +12,6 @@
 # 2023-02-09: Cleanup and tweaks for safety and efficiency (Avraham Adler)
 #
 
-
 #' Low-storage BFGS
 #'
 #' Low-storage version of the Broyden-Fletcher-Goldfarb-Shanno (BFGS) method.
@@ -71,14 +70,21 @@
 #' ## Optimal value of objective function:  368.105912874334
 #' ## Optimal value of controls: 2  ...  2  2.109093  4
 #'
-lbfgs <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
-                  nl.info = FALSE, control = list(), ...) {
-
+lbfgs <- function(
+  x0,
+  fn,
+  gr = NULL,
+  lower = NULL,
+  upper = NULL,
+  nl.info = FALSE,
+  control = list(),
+  ...
+) {
   opts <- nl.opts(control)
   opts["algorithm"] <- "NLOPT_LD_LBFGS"
 
   fun <- match.fun(fn)
-  fn  <- function(x) fun(x, ...)
+  fn <- function(x) fun(x, ...)
 
   if (is.null(gr)) {
     gr <- function(x) nl.grad(x, fn)
@@ -87,15 +93,24 @@ lbfgs <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
     gr <- function(x) .gr(x, ...)
   }
 
-  S0 <- nloptr(x0,
-               eval_f = fn,
-               eval_grad_f = gr,
-               lb = lower,
-               ub = upper,
-               opts = opts)
+  S0 <- nloptr(
+    x0,
+    eval_f = fn,
+    eval_grad_f = gr,
+    lb = lower,
+    ub = upper,
+    opts = opts
+  )
 
-  if (nl.info) print(S0)
+  if (nl.info) {
+    print(S0)
+  }
 
-  list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-       convergence = S0$status, message = S0$message)
+  list(
+    par = S0$solution,
+    value = S0$objective,
+    iter = S0$iterations,
+    convergence = S0$status,
+    message = S0$message
+  )
 }

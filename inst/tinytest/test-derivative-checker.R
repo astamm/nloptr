@@ -24,40 +24,61 @@ library(nloptr)
 tol <- 1e-7
 
 # Define objective function.
-f <- function(x, a) sum((x - a) ^ 2)
+f <- function(x, a) sum((x - a)^2)
 
 # Define gradient function without errors.
-f_grad <- function(x, a)  2 * (x - a)
+f_grad <- function(x, a) 2 * (x - a)
 
 # Generated a using:
 # > set.seed(3141)
 # > a <- runif(10)
 # > dump("a", file = "")
 
-a <- c(0.75499595934525132, 0.9649918619543314, 0.041430773446336389,
-       0.42781219445168972, 0.65170943737030029, 0.83836922678165138,
-       0.77428539283573627, 0.53199269832111895, 0.76871572202071548,
-       0.7851746492087841)
+a <- c(
+  0.75499595934525132,
+  0.9649918619543314,
+  0.041430773446336389,
+  0.42781219445168972,
+  0.65170943737030029,
+  0.83836922678165138,
+  0.77428539283573627,
+  0.53199269832111895,
+  0.76871572202071548,
+  0.7851746492087841
+)
 
 # Test nloptr:::finite.diff on multivariate scalar function
-expect_equal(nloptr:::finite.diff(f, 1:10, a = a), f_grad(1:10, a = a),
-             tolerance = tol)
+expect_equal(
+  nloptr:::finite.diff(f, 1:10, a = a),
+  f_grad(1:10, a = a),
+  tolerance = tol
+)
 
-expect_equal(nloptr:::finite.diff(f, 1:10, a = a), nl.grad(1:10, f, a = a),
-             tolerance = tol)
+expect_equal(
+  nloptr:::finite.diff(f, 1:10, a = a),
+  nl.grad(1:10, f, a = a),
+  tolerance = tol
+)
 
 # Test nloptr:::finite.diff on multivariate Jacobian of vector function
 x0 <- 1:3
 fn1 <- function(x) {
-  c(3 * x[1L] ^ 2 * x[2L] * log(x[3L]), x[3] ^ 3 - 2 * x[1L] * x[2L])
+  c(3 * x[1L]^2 * x[2L] * log(x[3L]), x[3]^3 - 2 * x[1L] * x[2L])
 }
 
 jac1 <- function(x) {
-  matrix(c(6 * x[1L] * x[2L] * log(x[3L]),
-           3 * x[1L] ^ 2 * log(x[3L]),
-           3 * x[1L] ^ 2 * x[2L] / x[3L],
-           -2 * x[2L], -2 * x[1L], 3 * x[3L] ^ 2),
-         nrow = 2L, byrow = TRUE)
+  matrix(
+    c(
+      6 * x[1L] * x[2L] * log(x[3L]),
+      3 * x[1L]^2 * log(x[3L]),
+      3 * x[1L]^2 * x[2L] / x[3L],
+      -2 * x[2L],
+      -2 * x[1L],
+      3 * x[3L]^2
+    ),
+    nrow = 2L,
+    byrow = TRUE
+  )
 }
 
 expect_equal(nloptr:::finite.diff(fn1, x0), jac1(x0), tolerance = tol)
@@ -90,12 +111,14 @@ res <- suppressMessages(
 expect_identical(sum(res$flag_derivative_warning), 1L)
 
 # Define objective function.
-g <- function(x, a) c(sum(x - a), sum((x - a) ^ 2))
+g <- function(x, a) c(sum(x - a), sum((x - a)^2))
 
 # Define gradient function with 2 errors.
 g_grad <- function(x, a) {
-  rbind(rep(1, length(x)) + c(0, 0.01, rep(0, 8L)),
-        2 * (x - a) + c(0, 0.1, rep(0, 8L)))
+  rbind(
+    rep(1, length(x)) + c(0, 0.01, rep(0, 8L)),
+    2 * (x - a) + c(0, 0.1, rep(0, 8L))
+  )
 }
 
 res <- suppressMessages(

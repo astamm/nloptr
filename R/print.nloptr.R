@@ -18,7 +18,6 @@
 #       if status == 1, 2, 3, or 4
 # 2023-02-09: Cleanup and tweaks for safety and efficiency (Avraham Adler)
 
-
 #' Print results after running nloptr
 #'
 #' This function prints the nloptr object that holds the results from a
@@ -45,9 +44,14 @@
 print.nloptr <- function(x, show.controls = TRUE, ...) {
   cat("\nCall:\n", deparse(x$call), "\n\n", sep = "", fill = TRUE)
   cat(paste("Minimization using NLopt version", x$version, "\n"), fill = TRUE)
-  cat(unlist(strsplit(paste("NLopt solver status:", x$status, "(",
-                            x$message, ")\n"),
-                      " ", fixed = TRUE)), fill = TRUE)
+  cat(
+    unlist(strsplit(
+      paste("NLopt solver status:", x$status, "(", x$message, ")\n"),
+      " ",
+      fixed = TRUE
+    )),
+    fill = TRUE
+  )
   cat(paste("Number of Iterations....:", x$iterations, "\n"))
   cat(paste("Termination conditions: ", x$termination_conditions, "\n"))
   cat(paste("Number of inequality constraints: ", x$num_constraints_ineq, "\n"))

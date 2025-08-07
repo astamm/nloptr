@@ -19,11 +19,14 @@ library(nloptr)
 tol <- sqrt(.Machine$double.eps)
 
 # Rosenbrock banana function (rbf)
-rbf <- function(x) {(1 - x[1]) ^ 2 + 100 * (x[2] - x[1] ^ 2) ^ 2}
+rbf <- function(x) {
+  (1 - x[1])^2 + 100 * (x[2] - x[1]^2)^2
+}
 
 # Analytic gradient for rbf
-rbfgr <- function(x) {c(-2 * (1 - x[1]) - 400 * x[1] * (x[2] - x[1] ^ 2),
-                     200 * (x[2] - x[1] ^ 2))}
+rbfgr <- function(x) {
+  c(-2 * (1 - x[1]) - 400 * x[1] * (x[2] - x[1]^2), 200 * (x[2] - x[1]^2))
+}
 
 # Used options
 opts <- list(ftol_rel = 1e-12, xtol_rel = 1e-12, print_level = 0, maxeval = 5e4)
@@ -160,7 +163,7 @@ expect_equal(testRes$solution, rbfOptLoc, tolerance = tol)
 
 # Global Algorithms
 lb <- c(-3, -3)
-ub <- c(3,  3)
+ub <- c(3, 3)
 
 ## StoGo
 ## StoGo passes on many platforms but fails MISERABLE (Inf???) on others. Note
@@ -272,15 +275,27 @@ opts$maxeval <- 1000
 
 # Gradient-based
 opts$algorithm <- "NLOPT_GD_MLSL"
-testRes <- nloptr(x0 = x0, eval_f = rbf, eval_grad_f = rbfgr, lb = lb, ub = ub,
-                  opts = opts)
+testRes <- nloptr(
+  x0 = x0,
+  eval_f = rbf,
+  eval_grad_f = rbfgr,
+  lb = lb,
+  ub = ub,
+  opts = opts
+)
 
 expect_equal(testRes$objective, rbfOptVal, tolerance = tol)
 expect_equal(testRes$solution, rbfOptLoc, tolerance = tol)
 
 opts$algorithm <- "NLOPT_GD_MLSL_LDS"
-testRes <- nloptr(x0 = x0, eval_f = rbf, eval_grad_f = rbfgr, lb = lb, ub = ub,
-                  opts = opts)
+testRes <- nloptr(
+  x0 = x0,
+  eval_f = rbf,
+  eval_grad_f = rbfgr,
+  lb = lb,
+  ub = ub,
+  opts = opts
+)
 
 expect_equal(testRes$objective, rbfOptVal, tolerance = tol)
 expect_equal(testRes$solution, rbfOptLoc, tolerance = tol)

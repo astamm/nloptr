@@ -16,7 +16,6 @@
 # 2024-06-04: Cleaned up the Hartmann 6 example. (Avraham Adler)
 #
 
-
 #' Multi-level Single-linkage
 #'
 #' The \dQuote{Multi-Level Single-Linkage} (\acronym{MLSL}) algorithm for global
@@ -111,10 +110,18 @@
 #'       a = a, A = A, B = B)
 #'
 
-mlsl <- function(x0, fn, gr = NULL, lower, upper,
-                 local.method = "LBFGS", low.discrepancy = TRUE,
-                 nl.info = FALSE, control = list(), ...) {
-
+mlsl <- function(
+  x0,
+  fn,
+  gr = NULL,
+  lower,
+  upper,
+  local.method = "LBFGS",
+  low.discrepancy = TRUE,
+  nl.info = FALSE,
+  control = list(),
+  ...
+) {
   local_opts <- list(algorithm = "NLOPT_LD_LBFGS", xtol_rel = 1e-4)
   opts <- nl.opts(control)
 
@@ -127,7 +134,7 @@ mlsl <- function(x0, fn, gr = NULL, lower, upper,
   opts[["local_opts"]] <- local_opts
 
   fun <- match.fun(fn)
-  fn  <- function(x) fun(x, ...)
+  fn <- function(x) fun(x, ...)
 
   if (local.method == "LBFGS") {
     if (is.null(gr)) {
@@ -137,20 +144,31 @@ mlsl <- function(x0, fn, gr = NULL, lower, upper,
       gr <- function(x) .gr(x, ...)
     }
   } else {
-    warning("Only gradient-based LBFGS available as local method. ",
-            "To use another method please use the nloptr interface.")
+    warning(
+      "Only gradient-based LBFGS available as local method. ",
+      "To use another method please use the nloptr interface."
+    )
     gr <- NULL
   }
 
-  S0 <- nloptr(x0 = x0,
-               eval_f = fn,
-               eval_grad_f = gr,
-               lb = lower,
-               ub = upper,
-               opts = opts)
+  S0 <- nloptr(
+    x0 = x0,
+    eval_f = fn,
+    eval_grad_f = gr,
+    lb = lower,
+    ub = upper,
+    opts = opts
+  )
 
-  if (nl.info) print(S0)
+  if (nl.info) {
+    print(S0)
+  }
 
-  list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-       convergence = S0$status, message = S0$message)
+  list(
+    par = S0$solution,
+    value = S0$objective,
+    iter = S0$iterations,
+    convergence = S0$status,
+    message = S0$message
+  )
 }

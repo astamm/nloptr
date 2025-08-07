@@ -6,6 +6,15 @@ CMAKE_BIN=$1
 RSCRIPT_BIN=${R_HOME}/bin/Rscript
 NCORES=`${RSCRIPT_BIN} -e "cat(min(2, parallel::detectCores(logical = FALSE), na.rm=TRUE))"`
 
+${RSCRIPT_BIN} --vanilla -e 'Sys.info()["sysname"] == "Darwin"' | grep TRUE > /dev/null
+if [ $? -eq 0 ]; then
+  SDK_PATH=`xcrun --sdk macosx --show-sdk-path`
+ 	AR=`which "$AR"`
+  CMAKE_ADD_OSX_SYSROOT="-D CMAKE_OSX_SYSROOT=${SDK_PATH}"
+else
+  CMAKE_ADD_OSX_SYSROOT=""
+fi
+
 cd src
 
 # Compile NLOpt from source
@@ -34,13 +43,16 @@ ${CMAKE_BIN} \
   -D NLOPT_PYTHON=OFF \
   -D NLOPT_SWIG=OFF \
   -D NLOPT_TESTS=OFF \
-  ${CMAKE_ADD_AR} ${CMAKE_ADD_RANLIB} ../nlopt-src
+  ${CMAKE_ADD_AR} ${CMAKE_ADD_RANLIB} ${CMAKE_ADD_OSX_SYSROOT} ../nlopt-src
 make -j${NCORES}
 make install
 cd ..
+
 lib_folder=`ls -d nlopt/lib*`
 echo "Moving ${lib_folder} to nlopt/lib"
-mv ${lib_folder} nlopt/lib
+if [ ${lib_folder} != "nlopt/lib" ]; then
+  mv ${lib_folder} nlopt/lib
+fi
 
 # Cleanup
 sh ./scripts/nlopt_cleanup.sh

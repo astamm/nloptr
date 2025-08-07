@@ -24,7 +24,7 @@
  * accessed by external R packages.
  *
  * 03/10/2017: Initial version exposing nlopt_version.
- */
+*/
 
 #ifndef __NLOPTRAPI_H__
 #define __NLOPTRAPI_H__
@@ -33,7 +33,7 @@
 #include <R.h>
 #include <Rinternals.h>
 
-#include <nlopt.h>
+#include "nlopt.h"
 
 /*
  * C functions can be exposed using the following template:
@@ -45,7 +45,7 @@
  *     return fun(ARGNAME_1, ARGNAME_2);
  * }
  *
- */
+*/
 
 inline NLOPT_EXTERN(const char *) nlopt_algorithm_name(nlopt_algorithm a)
 {
@@ -340,6 +340,27 @@ inline NLOPT_EXTERN(nlopt_result) nlopt_get_xtol_abs(const nlopt_opt opt, double
     static nlopt_result(*fun)(nlopt_opt, double *) = NULL;
     if (fun == NULL) fun = (nlopt_result(*)(nlopt_opt, double *)) R_GetCCallable("nloptr","nlopt_get_xtol_abs");
     return fun(opt, tol);
+}
+
+inline NLOPT_EXTERN(nlopt_result) nlopt_set_x_weights1(nlopt_opt opt, double tol)
+{
+  static nlopt_result(*fun)(nlopt_opt, double) = NULL;
+  if (fun == NULL) fun = (nlopt_result(*)(nlopt_opt, double)) R_GetCCallable("nloptr","nlopt_set_x_weights1");
+  return fun(opt, tol);
+}
+
+inline NLOPT_EXTERN(nlopt_result) nlopt_set_x_weights(nlopt_opt opt, const double *tol)
+{
+  static nlopt_result(*fun)(nlopt_opt, const double *) = NULL;
+  if (fun == NULL) fun = (nlopt_result(*)(nlopt_opt, const double *)) R_GetCCallable("nloptr","nlopt_set_x_weights");
+  return fun(opt, tol);
+}
+
+inline NLOPT_EXTERN(nlopt_result) nlopt_get_x_weights(const nlopt_opt opt, double *tol)
+{
+  static nlopt_result(*fun)(nlopt_opt, double *) = NULL;
+  if (fun == NULL) fun = (nlopt_result(*)(nlopt_opt, double *)) R_GetCCallable("nloptr","nlopt_get_x_weights");
+  return fun(opt, tol);
 }
 
 inline NLOPT_EXTERN(nlopt_result) nlopt_set_maxeval(nlopt_opt opt, int maxeval)

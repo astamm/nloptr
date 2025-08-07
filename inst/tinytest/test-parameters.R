@@ -23,7 +23,7 @@ library(nloptr)
 
 # Objective function and gradient in terms of parameters.
 eval_f <- function(x, params) {
-  params[1] * x ^ 2 + params[2] * x + params[3]
+  params[1] * x^2 + params[2] * x + params[3]
 }
 
 eval_grad_f <- function(x, params) {
@@ -38,11 +38,11 @@ x0 <- 0
 
 # Solve using nloptr adding params as an additional parameter
 res <- nloptr(
-  x0          = x0,
-  eval_f      = eval_f,
+  x0 = x0,
+  eval_f = eval_f,
   eval_grad_f = eval_grad_f,
-  opts        = list("algorithm" = "NLOPT_LD_MMA", "xtol_rel" = 1e-6),
-  params      = params
+  opts = list("algorithm" = "NLOPT_LD_MMA", "xtol_rel" = 1e-6),
+  params = params
 )
 
 # Solve using algebra

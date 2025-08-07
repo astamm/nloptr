@@ -11,7 +11,6 @@
 #   2023-02-08: Cleanup and tweaks for safety and efficiency (Avraham Adler)
 #
 
-
 #' Preconditioned Truncated Newton
 #'
 #' Truncated Newton methods, also called Newton-iterative methods, solve an
@@ -66,25 +65,35 @@
 #' ## Optimal value of objective function:  368.105912874334
 #' ## Optimal value of controls: 2  ...  2  2.109093  4
 #'
-tnewton <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
-                    precond = TRUE, restart = TRUE, nl.info = FALSE,
-                    control = list(), ...) {
-
+tnewton <- function(
+  x0,
+  fn,
+  gr = NULL,
+  lower = NULL,
+  upper = NULL,
+  precond = TRUE,
+  restart = TRUE,
+  nl.info = FALSE,
+  control = list(),
+  ...
+) {
   opts <- nl.opts(control)
   if (precond) {
-    if (restart)
+    if (restart) {
       opts["algorithm"] <- "NLOPT_LD_TNEWTON_PRECOND_RESTART"
-    else
+    } else {
       opts["algorithm"] <- "NLOPT_LD_TNEWTON_PRECOND"
+    }
   } else {
-    if (restart)
+    if (restart) {
       opts["algorithm"] <- "NLOPT_LD_TNEWTON_RESTART"
-    else
+    } else {
       opts["algorithm"] <- "NLOPT_LD_TNEWTON"
+    }
   }
 
   fun <- match.fun(fn)
-  fn  <- function(x) fun(x, ...)
+  fn <- function(x) fun(x, ...)
 
   if (is.null(gr)) {
     gr <- function(x) nl.grad(x, fn)
@@ -93,15 +102,24 @@ tnewton <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
     gr <- function(x) .gr(x, ...)
   }
 
-  S0 <- nloptr(x0,
-               eval_f = fn,
-               eval_grad_f = gr,
-               lb = lower,
-               ub = upper,
-               opts = opts)
+  S0 <- nloptr(
+    x0,
+    eval_f = fn,
+    eval_grad_f = gr,
+    lb = lower,
+    ub = upper,
+    opts = opts
+  )
 
-  if (nl.info) print(S0)
+  if (nl.info) {
+    print(S0)
+  }
 
-  list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-       convergence = S0$status, message = S0$message)
+  list(
+    par = S0$solution,
+    value = S0$objective,
+    iter = S0$iterations,
+    convergence = S0$status,
+    message = S0$message
+  )
 }

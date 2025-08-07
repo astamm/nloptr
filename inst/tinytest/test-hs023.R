@@ -42,22 +42,25 @@ library(nloptr)
 
 # f(x) = x1^2 + x2^2
 eval_f <- function(x) {
-  list("objective" = x[1] ^ 2 + x[2] ^ 2,
-       "gradient" = c(2 * x[1], 2 * x[2]))
+  list("objective" = x[1]^2 + x[2]^2, "gradient" = c(2 * x[1], 2 * x[2]))
 }
 
 # Inequality constraints.
 eval_g_ineq <- function(x) {
-  constr <- c(1 - x[1] - x[2],
-              1 - x[1] ^ 2 - x[2] ^ 2,
-              9 - 9 * x[1] ^ 2 - x[2] ^ 2,
-              x[2] - x[1] ^ 2,
-              x[1] - x[2] ^ 2)
-  grad <- rbind(c(-1, -1),
-                c(-2 * x[1], -2 * x[2]),
-                c(-18 * x[1], -2 * x[2]),
-                c(-2 * x[1], 1),
-                c(1, -2 * x[2]))
+  constr <- c(
+    1 - x[1] - x[2],
+    1 - x[1]^2 - x[2]^2,
+    9 - 9 * x[1]^2 - x[2]^2,
+    x[2] - x[1]^2,
+    x[1] - x[2]^2
+  )
+  grad <- rbind(
+    c(-1, -1),
+    c(-2 * x[1], -2 * x[2]),
+    c(-18 * x[1], -2 * x[2]),
+    c(-2 * x[1], 1),
+    c(1, -2 * x[2])
+  )
   list("constraints" = constr, "jacobian" = grad)
 }
 
@@ -66,24 +69,26 @@ x0 <- c(3, 1)
 
 # Lower and upper bounds of control.
 lb <- c(-50, -50)
-ub <- c(50,  50)
+ub <- c(50, 50)
 
 # Optimal solution.
 solution.opt <- c(1, 1)
 
 # Solve with MMA.
-opts <- list("algorithm"            = "NLOPT_LD_MMA",
-             "xtol_rel"             = 1.0e-6,
-             "tol_constraints_ineq" = rep(1.0e-6, 5),
-             "print_level"          = 0)
+opts <- list(
+  "algorithm" = "NLOPT_LD_MMA",
+  "xtol_rel" = 1.0e-6,
+  "tol_constraints_ineq" = rep(1.0e-6, 5),
+  "print_level" = 0
+)
 
 res <- nloptr(
-  x0          = x0,
-  eval_f      = eval_f,
-  lb          = lb,
-  ub          = ub,
+  x0 = x0,
+  eval_f = eval_f,
+  lb = lb,
+  ub = ub,
   eval_g_ineq = eval_g_ineq,
-  opts        = opts
+  opts = opts
 )
 
 # Run some checks on the optimal solution.

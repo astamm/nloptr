@@ -18,3 +18,5 @@ TODO
 ^docs$
 ^pkgdown$
 ^inst/include/nlopt\.
+^[.]?air[.]toml$
+^\.vscode$

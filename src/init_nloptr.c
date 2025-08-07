@@ -30,15 +30,12 @@
  * 2023-08-24: Delete files solely needed for testthat (Avraham Adler).
  * 2024-07-02: Updated old include which is no longer maintained and other
  *             minor code tweaks and efficiency enhancements (Avraham Adler).
- */
-
-#include <R.h>
-#include <Rinternals.h>
-#include <stdlib.h> // for NULL
-#include <R_ext/Rdynload.h>
+*/
 
 #include "nloptr.h"
-#include <nlopt.h>
+
+#include <stdlib.h> // for NULL
+#include <R_ext/Rdynload.h>
 
 static const R_CallMethodDef CallEntries[] = {
   {"NLoptR_Optimize",    (DL_FUNC) &NLoptR_Optimize,    1},
@@ -89,6 +86,9 @@ void R_init_nloptr(DllInfo *info) {
     R_RegisterCCallable("nloptr", "nlopt_set_xtol_abs1",  (DL_FUNC) &nlopt_set_xtol_abs1);
     R_RegisterCCallable("nloptr", "nlopt_set_xtol_abs",   (DL_FUNC) &nlopt_set_xtol_abs);
     R_RegisterCCallable("nloptr", "nlopt_get_xtol_abs",   (DL_FUNC) &nlopt_get_xtol_abs);
+    R_RegisterCCallable("nloptr", "nlopt_set_x_weights1", (DL_FUNC) &nlopt_set_x_weights1);
+    R_RegisterCCallable("nloptr", "nlopt_set_x_weights",  (DL_FUNC) &nlopt_set_x_weights);
+    R_RegisterCCallable("nloptr", "nlopt_get_x_weights",  (DL_FUNC) &nlopt_get_x_weights);
     R_RegisterCCallable("nloptr", "nlopt_set_maxeval",    (DL_FUNC) &nlopt_set_maxeval);
     R_RegisterCCallable("nloptr", "nlopt_get_maxeval",    (DL_FUNC) &nlopt_get_maxeval);
     R_RegisterCCallable("nloptr", "nlopt_set_maxtime",    (DL_FUNC) &nlopt_set_maxtime);

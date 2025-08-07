@@ -152,22 +152,37 @@
 #' # $value:   0.05394987
 #' # $iter:  916
 #'
-auglag <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL, hin = NULL,
-                   hinjac = NULL, heq = NULL, heqjac = NULL,
-                   localsolver = "COBYLA", localtol = 1e-6, ineq2local = FALSE,
-                   nl.info = FALSE, control = list(), deprecatedBehavior = TRUE,
-                   ...) {
+auglag <- function(
+  x0,
+  fn,
+  gr = NULL,
+  lower = NULL,
+  upper = NULL,
+  hin = NULL,
+  hinjac = NULL,
+  heq = NULL,
+  heqjac = NULL,
+  localsolver = "COBYLA",
+  localtol = 1e-6,
+  ineq2local = FALSE,
+  nl.info = FALSE,
+  control = list(),
+  deprecatedBehavior = TRUE,
+  ...
+) {
   if (ineq2local) {
     # gsolver <- "NLOPT_LN_AUGLAG_EQ"
     stop("Inequalities to local solver: feature not yet implemented.")
   }
 
   localsolver <- toupper(localsolver)
-  if (localsolver %in% c("COBYLA", "BOBYQA")) {   # derivative-free
+  if (localsolver %in% c("COBYLA", "BOBYQA")) {
+    # derivative-free
     dfree <- TRUE
     gsolver <- "NLOPT_LN_AUGLAG"
     lsolver <- paste0("NLOPT_LN_", localsolver)
-  } else if (localsolver %in% c("LBFGS", "MMA", "SLSQP")) { # with derivatives
+  } else if (localsolver %in% c("LBFGS", "MMA", "SLSQP")) {
+    # with derivatives
     dfree <- FALSE
     gsolver <- "NLOPT_LD_AUGLAG"
     lsolver <- paste0("NLOPT_LD_", localsolver)
@@ -177,39 +192,47 @@ auglag <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL, hin = NULL,
 
   # Function and gradient, if needed
   .fn <- match.fun(fn)
-  fn  <- function(x) .fn(x, ...)
+  fn <- function(x) .fn(x, ...)
 
-  if (!dfree && is.null(gr)) {gr <- function(x) nl.grad(x, fn)}
+  if (!dfree && is.null(gr)) {
+    gr <- function(x) nl.grad(x, fn)
+  }
 
   # Global and local options
   opts <- nl.opts(control)
   opts$algorithm <- gsolver
-  local_opts <- list(algorithm = lsolver,
-                     xtol_rel = localtol,
-                     eval_grad_f = if (!dfree) gr else NULL)
+  local_opts <- list(
+    algorithm = lsolver,
+    xtol_rel = localtol,
+    eval_grad_f = if (!dfree) gr else NULL
+  )
   opts$local_opts <- local_opts
 
   # Inequality constraints
   if (!is.null(hin)) {
     if (deprecatedBehavior) {
-      warning("The old behavior for hin >= 0 has been deprecated. Please ",
-              "restate the inequality to be <=0. The ability to use the old ",
-              "behavior will be removed in a future release.")
+      warning(
+        "The old behavior for hin >= 0 has been deprecated. Please ",
+        "restate the inequality to be <=0. The ability to use the old ",
+        "behavior will be removed in a future release."
+      )
       .hin <- match.fun(hin)
-      hin <- function(x) -.hin(x, ...)      # change  hin >= 0  to  hin <= 0 !
+      hin <- function(x) -.hin(x, ...) # change  hin >= 0  to  hin <= 0 !
     }
   }
   if (!dfree) {
     if (is.null(hinjac)) {
       hinjac <- function(x) nl.jacobian(x, hin)
     } else if (deprecatedBehavior) {
-      warning("The old behavior for hinjac >= 0 has been deprecated. Please ",
-              "restate the inequality to be <=0. The ability to use the old ",
-              "behavior will be removed in a future release.")
+      warning(
+        "The old behavior for hinjac >= 0 has been deprecated. Please ",
+        "restate the inequality to be <=0. The ability to use the old ",
+        "behavior will be removed in a future release."
+      )
       .hinjac <- match.fun(hinjac)
       hinjac <- function(x) -.hinjac(x)
-      }
     }
+  }
 
   # Equality constraints
   if (!is.null(heq)) {
@@ -225,19 +248,29 @@ auglag <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL, hin = NULL,
     }
   }
 
-  S0 <- nloptr(x0,
-               eval_f = fn,
-               eval_grad_f = gr,
-               lb = lower,
-               ub = upper,
-               eval_g_ineq = hin,
-               eval_jac_g_ineq = hinjac,
-               eval_g_eq = heq,
-               eval_jac_g_eq = heqjac,
-               opts = opts)
+  S0 <- nloptr(
+    x0,
+    eval_f = fn,
+    eval_grad_f = gr,
+    lb = lower,
+    ub = upper,
+    eval_g_ineq = hin,
+    eval_jac_g_ineq = hinjac,
+    eval_g_eq = heq,
+    eval_jac_g_eq = heqjac,
+    opts = opts
+  )
 
-  if (nl.info) print(S0)
-  list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-       global_solver = gsolver, local_solver = lsolver, convergence = S0$status,
-       message = S0$message)
+  if (nl.info) {
+    print(S0)
+  }
+  list(
+    par = S0$solution,
+    value = S0$objective,
+    iter = S0$iterations,
+    global_solver = gsolver,
+    local_solver = lsolver,
+    convergence = S0$status,
+    message = S0$message
+  )
 }

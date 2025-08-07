@@ -11,7 +11,6 @@
 # 2023-02-09: Cleanup and tweaks for safety and efficiency (Avraham Adler)
 #
 
-
 #' Nelder-Mead Simplex
 #'
 #' An implementation of almost the original Nelder-Mead simplex algorithm.
@@ -79,9 +78,15 @@
 #' # $xmin = c(0.7085595, 0.5000000, 0.2500000)
 #' # $fmin = 0.3353605}
 #'
-neldermead <- function(x0, fn, lower = NULL, upper = NULL, nl.info = FALSE,
-                       control = list(), ...) {
-
+neldermead <- function(
+  x0,
+  fn,
+  lower = NULL,
+  upper = NULL,
+  nl.info = FALSE,
+  control = list(),
+  ...
+) {
   opts <- nl.opts(control)
   opts["algorithm"] <- "NLOPT_LN_NELDERMEAD"
 
@@ -90,10 +95,17 @@ neldermead <- function(x0, fn, lower = NULL, upper = NULL, nl.info = FALSE,
 
   S0 <- nloptr(x0, fn, lb = lower, ub = upper, opts = opts)
 
-  if (nl.info) print(S0)
+  if (nl.info) {
+    print(S0)
+  }
 
-  list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-       convergence = S0$status, message = S0$message)
+  list(
+    par = S0$solution,
+    value = S0$objective,
+    iter = S0$iterations,
+    convergence = S0$status,
+    message = S0$message
+  )
 }
 
 
@@ -151,9 +163,15 @@ neldermead <- function(x0, fn, lower = NULL, upper = NULL, nl.info = FALSE,
 #' x0 <- c(3, -1, 0, 1)
 #' sbplx(x0, psf, control = list(maxeval = Inf, ftol_rel = 1e-6)) #  0 0 0 0 (?)
 #'
-sbplx <- function(x0, fn, lower = NULL, upper = NULL, nl.info = FALSE,
-                  control = list(), ...) {
-
+sbplx <- function(
+  x0,
+  fn,
+  lower = NULL,
+  upper = NULL,
+  nl.info = FALSE,
+  control = list(),
+  ...
+) {
   opts <- nl.opts(control)
   opts["algorithm"] <- "NLOPT_LN_SBPLX"
 
@@ -162,8 +180,15 @@ sbplx <- function(x0, fn, lower = NULL, upper = NULL, nl.info = FALSE,
 
   S0 <- nloptr(x0, fn, lb = lower, ub = upper, opts = opts)
 
-  if (nl.info) print(S0)
+  if (nl.info) {
+    print(S0)
+  }
 
-  list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-       convergence = S0$status, message = S0$message)
+  list(
+    par = S0$solution,
+    value = S0$objective,
+    iter = S0$iterations,
+    convergence = S0$status,
+    message = S0$message
+  )
 }

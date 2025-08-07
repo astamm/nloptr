@@ -34,7 +34,7 @@ eval_f0 <- function(x, params) 1
 eval_grad_f0 <- function(x, params) 0
 
 # Equality constraint function.
-eval_g0_eq <- function(x, params) params[1] * x ^ 2 + params[2] * x + params[3]
+eval_g0_eq <- function(x, params) params[1] * x^2 + params[2] * x + params[3]
 
 # Jacobian of constraint.
 eval_jac_g0_eq <- function(x, params) 2 * params[1] * x + params[2]
@@ -45,43 +45,55 @@ params <- c(1, 1, -1)
 # Define optimal solution.
 solution.opt <- -1.61803398875
 
-local_opts <- list("algorithm" = "NLOPT_LD_MMA", "xtol_rel"  = 1.0e-6)
+local_opts <- list("algorithm" = "NLOPT_LD_MMA", "xtol_rel" = 1.0e-6)
 
-opts <- list("algorithm"  = "NLOPT_LD_AUGLAG",
-             "xtol_rel"   = 1.0e-6,
-             "local_opts" = local_opts)
+opts <- list(
+  "algorithm" = "NLOPT_LD_AUGLAG",
+  "xtol_rel" = 1.0e-6,
+  "local_opts" = local_opts
+)
 
-res <- nloptr(x0            = -5,
-              eval_f        = eval_f0,
-              eval_grad_f   = eval_grad_f0,
-              eval_g_eq     = eval_g0_eq,
-              eval_jac_g_eq = eval_jac_g0_eq,
-              opts          = opts,
-              params        = params)
+res <- nloptr(
+  x0 = -5,
+  eval_f = eval_f0,
+  eval_grad_f = eval_grad_f0,
+  eval_g_eq = eval_g0_eq,
+  eval_jac_g_eq = eval_jac_g0_eq,
+  opts = opts,
+  params = params
+)
 
 # Run some checks on the optimal solution.
 expect_equal(res$solution, solution.opt, tolerance = tol)
 
 # Check whether constraints are violated (up to specified tolerance).
-expect_equal(eval_g0_eq(res$solution, params = params), 0,
-             tolerance = res$options$tol_constraints_eq)
+expect_equal(
+  eval_g0_eq(res$solution, params = params),
+  0,
+  tolerance = res$options$tol_constraints_eq
+)
 
 # Test Solve system of equations using NLOPT_LD_SLSQP.
 # Solve using NLOPT_LD_SLSQP.
 
-opts <- list("algorithm" = "NLOPT_LD_SLSQP", "xtol_rel"  = 1.0e-6)
+opts <- list("algorithm" = "NLOPT_LD_SLSQP", "xtol_rel" = 1.0e-6)
 
-res <- nloptr(x0            = -5,
-              eval_f        = eval_f0,
-              eval_grad_f   = eval_grad_f0,
-              eval_g_eq     = eval_g0_eq,
-              eval_jac_g_eq = eval_jac_g0_eq,
-              opts          = opts,
-              params        = params)
+res <- nloptr(
+  x0 = -5,
+  eval_f = eval_f0,
+  eval_grad_f = eval_grad_f0,
+  eval_g_eq = eval_g0_eq,
+  eval_jac_g_eq = eval_jac_g0_eq,
+  opts = opts,
+  params = params
+)
 
 # Run some checks on the optimal solution.
 expect_equal(res$solution, solution.opt, tolerance = tol)
 
 # Check whether constraints are violated (up to specified tolerance).
-expect_equal(eval_g0_eq(res$solution, params = params), 0,
-             tolerance = res$options$tol_constraints_eq)
+expect_equal(
+  eval_g0_eq(res$solution, params = params),
+  0,
+  tolerance = res$options$tol_constraints_eq
+)

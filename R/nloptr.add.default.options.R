@@ -24,11 +24,12 @@
 #   2023-02-08: Tweaks for efficiency and readability (Avraham Adler)
 #
 
-nloptr.add.default.options <- function(opts.user,
-                                       x0 = 0,
-                                       num_constraints_ineq = 0,
-                                       num_constraints_eq = 0) {
-
+nloptr.add.default.options <- function(
+  opts.user,
+  x0 = 0,
+  num_constraints_ineq = 0,
+  num_constraints_eq = 0
+) {
   nloptr.default.options <- nloptr.get.default.options()
   rownames(nloptr.default.options) <- nloptr.default.options$name
 
@@ -45,15 +46,26 @@ nloptr.add.default.options <- function(opts.user,
       ]
     )
 
-    warning("No termination criterion specified, using default",
-            "(relative x-tolerance = ", xtol_rel_default, ")")
+    warning(
+      "No termination criterion specified, using default",
+      "(relative x-tolerance = ",
+      xtol_rel_default,
+      ")"
+    )
 
-    termination_conditions <- paste0("relative x-tolerance = ",
-                                     xtol_rel_default, " (DEFAULT)")
+    termination_conditions <- paste0(
+      "relative x-tolerance = ",
+      xtol_rel_default,
+      " (DEFAULT)"
+    )
   } else {
     conv_options <- unlist(opts.user[names(opts.user) %in% termination.opts])
-    termination_conditions <- paste0(paste(names(conv_options)), ": ",
-                                     paste(conv_options), collapse = "\t")
+    termination_conditions <- paste0(
+      paste(names(conv_options)),
+      ": ",
+      paste(conv_options),
+      collapse = "\t"
+    )
   }
 
   # determine list with names of options that contain character values.
@@ -70,8 +82,9 @@ nloptr.add.default.options <- function(opts.user,
     } else if (name %in% nloptr.list.character.options) {
       opts[[name]] <- nloptr.default.options[name, "default"]
     } else {
-      opts[[name]] <- eval(parse(text = nloptr.default.options[name,
-                                                               "default"]))
+      opts[[name]] <- eval(parse(
+        text = nloptr.default.options[name, "default"]
+      ))
     }
   }
 

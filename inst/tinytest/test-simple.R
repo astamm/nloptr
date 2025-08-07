@@ -29,7 +29,7 @@ tol <- sqrt(.Machine$double.eps)
 # Test simple constrained optimization problem with gradient information.
 
 # Objective function
-eval_f <- function(x) x ^ 2
+eval_f <- function(x) x^2
 
 # Gradient of objective function.
 eval_grad_f <- function(x) 2 * x
@@ -45,13 +45,14 @@ solution.opt <- 5
 
 # Solve using NLOPT_LD_MMA with gradient information supplied in separate
 # function.
-res <- nloptr(x0              = 1,
-              eval_f          = eval_f,
-              eval_grad_f     = eval_grad_f,
-              eval_g_ineq     = eval_g_ineq,
-              eval_jac_g_ineq = eval_jac_g_ineq,
-              opts            = list("algorithm" = "NLOPT_LD_MMA",
-                                     "xtol_rel" = 1e-4))
+res <- nloptr(
+  x0 = 1,
+  eval_f = eval_f,
+  eval_grad_f = eval_grad_f,
+  eval_g_ineq = eval_g_ineq,
+  eval_jac_g_ineq = eval_jac_g_ineq,
+  opts = list("algorithm" = "NLOPT_LD_MMA", "xtol_rel" = 1e-4)
+)
 
 # Run some checks on the optimal solution.
 expect_equal(res$solution, solution.opt, tolerance = tol)
@@ -62,12 +63,16 @@ expect_true(eval_g_ineq(res$solution) <= res$options$tol_constraints_ineq)
 # Test simple constrained optimization problem without gradient information.
 
 # Solve using NLOPT_LN_COBYLA without gradient information
-res <- nloptr(x0              = 1,
-              eval_f          = eval_f,
-              eval_g_ineq     = eval_g_ineq,
-              opts            = list("algorithm"            = "NLOPT_LN_COBYLA",
-                                     "xtol_rel"             = 1e-6,
-                                     "tol_constraints_ineq" = 1e-6))
+res <- nloptr(
+  x0 = 1,
+  eval_f = eval_f,
+  eval_g_ineq = eval_g_ineq,
+  opts = list(
+    "algorithm" = "NLOPT_LN_COBYLA",
+    "xtol_rel" = 1e-6,
+    "tol_constraints_ineq" = 1e-6
+  )
+)
 
 # Run some checks on the optimal solution.
 expect_equal(res$solution, solution.opt, tolerance = 1e-6)

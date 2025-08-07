@@ -93,10 +93,17 @@
 #' @export cobyla
 #'
 
-cobyla <- function(x0, fn, lower = NULL, upper = NULL, hin = NULL,
-                   nl.info = FALSE, control = list(),
-                   deprecatedBehavior = TRUE, ...) {
-
+cobyla <- function(
+  x0,
+  fn,
+  lower = NULL,
+  upper = NULL,
+  hin = NULL,
+  nl.info = FALSE,
+  control = list(),
+  deprecatedBehavior = TRUE,
+  ...
+) {
   opts <- nl.opts(control)
   opts["algorithm"] <- "NLOPT_LN_COBYLA"
 
@@ -105,25 +112,36 @@ cobyla <- function(x0, fn, lower = NULL, upper = NULL, hin = NULL,
 
   if (!is.null(hin)) {
     if (deprecatedBehavior) {
-      warning("The old behavior for hin >= 0 has been deprecated. Please ",
-              "restate the inequality to be <=0. The ability to use the old ",
-              "behavior will be removed in a future release.")
+      warning(
+        "The old behavior for hin >= 0 has been deprecated. Please ",
+        "restate the inequality to be <=0. The ability to use the old ",
+        "behavior will be removed in a future release."
+      )
       .hin <- match.fun(hin)
-      hin <- function(x) -.hin(x, ...)      # change  hin >= 0  to  hin <= 0 !
+      hin <- function(x) -.hin(x, ...) # change  hin >= 0  to  hin <= 0 !
     }
   }
 
-  S0 <- nloptr(x0,
-               eval_f = fn,
-               lb = lower,
-               ub = upper,
-               eval_g_ineq = hin,
-               opts = opts)
+  S0 <- nloptr(
+    x0,
+    eval_f = fn,
+    lb = lower,
+    ub = upper,
+    eval_g_ineq = hin,
+    opts = opts
+  )
 
-  if (nl.info) print(S0)
+  if (nl.info) {
+    print(S0)
+  }
 
-  list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-       convergence = S0$status, message = S0$message)
+  list(
+    par = S0$solution,
+    value = S0$objective,
+    iter = S0$iterations,
+    convergence = S0$status,
+    message = S0$message
+  )
 }
 
 #' Bound Optimization by Quadratic Approximation
@@ -184,9 +202,15 @@ cobyla <- function(x0, fn, lower = NULL, upper = NULL, hin = NULL,
 #' S
 #'
 
-bobyqa <- function(x0, fn, lower = NULL, upper = NULL, nl.info = FALSE,
-                   control = list(), ...) {
-
+bobyqa <- function(
+  x0,
+  fn,
+  lower = NULL,
+  upper = NULL,
+  nl.info = FALSE,
+  control = list(),
+  ...
+) {
   opts <- nl.opts(control)
   opts["algorithm"] <- "NLOPT_LN_BOBYQA"
 
@@ -195,10 +219,17 @@ bobyqa <- function(x0, fn, lower = NULL, upper = NULL, nl.info = FALSE,
 
   S0 <- nloptr(x0, fn, lb = lower, ub = upper, opts = opts)
 
-  if (nl.info) print(S0)
+  if (nl.info) {
+    print(S0)
+  }
 
-  list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-       convergence = S0$status, message = S0$message)
+  list(
+    par = S0$solution,
+    value = S0$objective,
+    iter = S0$iterations,
+    convergence = S0$status,
+    message = S0$message
+  )
 }
 
 #' New Unconstrained Optimization with quadratic Approximation
@@ -253,7 +284,6 @@ bobyqa <- function(x0, fn, lower = NULL, upper = NULL, nl.info = FALSE,
 #'
 
 newuoa <- function(x0, fn, nl.info = FALSE, control = list(), ...) {
-
   opts <- nl.opts(control)
   opts["algorithm"] <- "NLOPT_LN_NEWUOA"
 
@@ -262,8 +292,15 @@ newuoa <- function(x0, fn, nl.info = FALSE, control = list(), ...) {
 
   S0 <- nloptr(x0, fn, opts = opts)
 
-  if (nl.info) print(S0)
+  if (nl.info) {
+    print(S0)
+  }
 
-  list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-       convergence = S0$status, message = S0$message)
+  list(
+    par = S0$solution,
+    value = S0$objective,
+    iter = S0$iterations,
+    convergence = S0$status,
+    message = S0$message
+  )
 }
