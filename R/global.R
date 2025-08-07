@@ -67,10 +67,18 @@
 #' stogo(x0 = x0, fn = rbf, lower = lb, upper = ub)
 #'
 
-stogo <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
-                  maxeval = 10000, xtol_rel = 1e-6, randomized = FALSE,
-                  nl.info = FALSE, ...) {
-
+stogo <- function(
+  x0,
+  fn,
+  gr = NULL,
+  lower = NULL,
+  upper = NULL,
+  maxeval = 10000,
+  xtol_rel = 1e-6,
+  randomized = FALSE,
+  nl.info = FALSE,
+  ...
+) {
   opts <- list()
   opts$maxeval <- maxeval
   opts$xtol_rel <- xtol_rel
@@ -83,19 +91,30 @@ stogo <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
   fun <- match.fun(fn)
   fn <- function(x) fun(x, ...)
 
-  if (is.null(gr)) {gr <- function(x) nl.grad(x, fn)}
+  if (is.null(gr)) {
+    gr <- function(x) nl.grad(x, fn)
+  }
 
-  S0 <- nloptr(x0,
-               eval_f = fn,
-               eval_grad_f = gr,
-               lb = lower,
-               ub = upper,
-               opts = opts)
+  S0 <- nloptr(
+    x0,
+    eval_f = fn,
+    eval_grad_f = gr,
+    lb = lower,
+    ub = upper,
+    opts = opts
+  )
 
-  if (nl.info) print(S0)
+  if (nl.info) {
+    print(S0)
+  }
 
-  list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-       convergence = S0$status, message = S0$message)
+  list(
+    par = S0$solution,
+    value = S0$objective,
+    iter = S0$iterations,
+    convergence = S0$status,
+    message = S0$message
+  )
 }
 
 #---------------------------------ISRES-----------------------------------------
@@ -182,26 +201,38 @@ stogo <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL,
 #' sum(S$par)
 #'
 
-isres <- function(x0, fn, lower, upper, hin = NULL, heq = NULL, maxeval = 10000,
-                  pop.size = 20 * (length(x0) + 1), xtol_rel = 1e-6,
-                  nl.info = FALSE, deprecatedBehavior = TRUE, ...) {
-
+isres <- function(
+  x0,
+  fn,
+  lower,
+  upper,
+  hin = NULL,
+  heq = NULL,
+  maxeval = 10000,
+  pop.size = 20 * (length(x0) + 1),
+  xtol_rel = 1e-6,
+  nl.info = FALSE,
+  deprecatedBehavior = TRUE,
+  ...
+) {
   opts <- list()
-  opts$maxeval  <- maxeval
-  opts$xtol_rel   <- xtol_rel
+  opts$maxeval <- maxeval
+  opts$xtol_rel <- xtol_rel
   opts$population <- pop.size
-  opts$algorithm  <- "NLOPT_GN_ISRES"
+  opts$algorithm <- "NLOPT_GN_ISRES"
 
   fun <- match.fun(fn)
-  fn  <- function(x) fun(x, ...)
+  fn <- function(x) fun(x, ...)
 
   if (!is.null(hin)) {
     if (deprecatedBehavior) {
-      warning("The old behavior for hin >= 0 has been deprecated. Please ",
-              "restate the inequality to be <=0. The ability to use the old ",
-              "behavior will be removed in a future release.")
+      warning(
+        "The old behavior for hin >= 0 has been deprecated. Please ",
+        "restate the inequality to be <=0. The ability to use the old ",
+        "behavior will be removed in a future release."
+      )
       .hin <- match.fun(hin)
-      hin <- function(x) -.hin(x, ...)      # change  hin >= 0  to  hin <= 0 !
+      hin <- function(x) -.hin(x, ...) # change  hin >= 0  to  hin <= 0 !
     }
   }
 
@@ -210,17 +241,26 @@ isres <- function(x0, fn, lower, upper, hin = NULL, heq = NULL, maxeval = 10000,
     heq <- function(x) .heq(x)
   }
 
-  S0 <- nloptr(x0 = x0,
-               eval_f = fn,
-               lb = lower,
-               ub = upper,
-               eval_g_ineq = hin,
-               eval_g_eq = heq,
-               opts = opts)
+  S0 <- nloptr(
+    x0 = x0,
+    eval_f = fn,
+    lb = lower,
+    ub = upper,
+    eval_g_ineq = hin,
+    eval_g_eq = heq,
+    opts = opts
+  )
 
-  if (nl.info) print(S0)
-  list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-       convergence = S0$status, message = S0$message)
+  if (nl.info) {
+    print(S0)
+  }
+  list(
+    par = S0$solution,
+    value = S0$objective,
+    iter = S0$iterations,
+    convergence = S0$status,
+    message = S0$message
+  )
 }
 
 #-  --------------------------------- CRS --------------------------------------
@@ -308,28 +348,41 @@ isres <- function(x0, fn, lower, upper, hin = NULL, heq = NULL, maxeval = 10000,
 #' S
 #'
 
-crs2lm <- function(x0, fn, lower, upper, maxeval = 10000,
-                   pop.size = 10 * (length(x0) + 1), ranseed = NULL,
-                   xtol_rel = 1e-6, nl.info = FALSE, ...) {
-
+crs2lm <- function(
+  x0,
+  fn,
+  lower,
+  upper,
+  maxeval = 10000,
+  pop.size = 10 * (length(x0) + 1),
+  ranseed = NULL,
+  xtol_rel = 1e-6,
+  nl.info = FALSE,
+  ...
+) {
   opts <- list()
   opts$maxeval <- maxeval
   opts$xtol_rel <- xtol_rel
   opts$population <- pop.size
-  if (!is.null(ranseed)) {opts$ranseed <- as.integer(ranseed)}
-  opts$algorithm  <- "NLOPT_GN_CRS2_LM"
+  if (!is.null(ranseed)) {
+    opts$ranseed <- as.integer(ranseed)
+  }
+  opts$algorithm <- "NLOPT_GN_CRS2_LM"
 
   fun <- match.fun(fn)
-  fn  <- function(x) fun(x, ...)
+  fn <- function(x) fun(x, ...)
 
-  S0 <- nloptr(x0,
-               eval_f = fn,
-               lb = lower,
-               ub = upper,
-               opts = opts)
+  S0 <- nloptr(x0, eval_f = fn, lb = lower, ub = upper, opts = opts)
 
-  if (nl.info) print(S0)
+  if (nl.info) {
+    print(S0)
+  }
 
-  list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-       convergence = S0$status, message = S0$message)
+  list(
+    par = S0$solution,
+    value = S0$objective,
+    iter = S0$iterations,
+    convergence = S0$status,
+    message = S0$message
+  )
 }

@@ -22,7 +22,7 @@ library(nloptr)
 #
 eval_f <- function(x) {
   Sys.sleep(0.1)
-  x ^ 2
+  x^2
 }
 
 eval_grad_f <- function(x) 2 * x
@@ -31,15 +31,17 @@ eval_grad_f <- function(x) 2 * x
 x0 <- 5
 
 # Define optimizer options.
-opts <- list("algorithm" = "NLOPT_LD_LBFGS",
-             "maxtime"   = 0.05,
-             "xtol_rel"  = 1e-4)
+opts <- list(
+  "algorithm" = "NLOPT_LD_LBFGS",
+  "maxtime" = 0.05,
+  "xtol_rel" = 1e-4
+)
 # Solve problem.
 res <- nloptr(
-  x0          = x0,
-  eval_f      = eval_f,
+  x0 = x0,
+  eval_f = eval_f,
   eval_grad_f = eval_grad_f,
-  opts        = opts
+  opts = opts
 )
 
 # Check results.
