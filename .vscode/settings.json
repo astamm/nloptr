@@ -6,5 +6,13 @@
     "[quarto]": {
         "editor.formatOnSave": true,
         "editor.defaultFormatter": "quarto.quarto"
+    },
+    "[c]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+    },
+    "[cpp]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
     }
 }
