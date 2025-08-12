@@ -534,7 +534,6 @@ unsigned int parse_vector_length_option(SEXP R_options, char *name) {
 
 double *parse_real_vector_option(SEXP R_options, char *name) {
   SEXP R_value = PROTECT(getListElement(R_options, name));
-  unsigned int n = length(R_value);
   double *value = REAL(R_value);
   UNPROTECT(1);
   return value;
@@ -802,57 +801,69 @@ SEXP NLoptR_Optimize(SEXP args) {
   UNPROTECT(1);
 
   // Get print_level from options.
-  SEXP R_opts_print_level =
-      PROTECT(AS_INTEGER(getListElement(R_options, "print_level")));
-  int print_level = asInteger(R_opts_print_level);
-  UNPROTECT(1);
+  int print_level = parse_integer_option(R_options, "print_level");
 
-  // Get lower and upper bounds.
-  SEXP R_lower_bounds = PROTECT(getListElement(args, "lower_bounds"));
-  SEXP R_upper_bounds = PROTECT(getListElement(args, "upper_bounds"));
-
-  // Set the upper and lower bounds of the controls.
-  double lb[num_controls];
-  double ub[num_controls];
-  double *pRlb = REAL(R_lower_bounds);
-  double *pRub = REAL(R_upper_bounds);
-  for (size_t i = 0; i < num_controls; i++) {
-    lb[i] = pRlb[i]; // lower bound
-    ub[i] = pRub[i]; // upper bound
-  }
-  UNPROTECT(2);
-
-  // Add upper and lower bounds to options.
-  res = nlopt_set_lower_bounds(opts, lb);
-  if (res == NLOPT_INVALID_ARGS) {
+  // Lower bounds
+  unsigned int lb_size = parse_vector_length_option(args, "lower_bounds");
+  if (lb_size == 0) {
     flag_encountered_error = 1;
-    Rprintf("Error: nlopt_set_lower_bounds returned NLOPT_INVALID_ARGS.\n");
+    Rprintf("Error: lower_bounds must have either length 1 or length equal to "
+            "the number of controls.\n");
+  } else {
+    if (lb_size == 1) {
+      double lb_value = parse_real_option(args, "lower_bounds");
+      res = nlopt_set_lower_bounds1(opts, lb_value);
+    } else {
+      if (lb_size != num_controls) {
+        flag_encountered_error = 1;
+        Rprintf("Error: lower_bounds must have either length 1 or length equal "
+                "to the number of controls.\n");
+      }
+      double *lb_values = parse_real_vector_option(args, "lower_bounds");
+      res = nlopt_set_lower_bounds(opts, lb_values);
+    }
+    if (res == NLOPT_INVALID_ARGS) {
+      flag_encountered_error = 1;
+      Rprintf("Error: nlopt_set_lower_bounds returned NLOPT_INVALID_ARGS.\n");
+    }
   }
-  res = nlopt_set_upper_bounds(opts, ub);
-  if (res == NLOPT_INVALID_ARGS) {
+
+  // Upper bounds
+  unsigned int ub_size = parse_vector_length_option(args, "upper_bounds");
+  if (ub_size == 0) {
     flag_encountered_error = 1;
-    Rprintf("Error: nlopt_set_upper_bounds returned NLOPT_INVALID_ARGS.\n");
+    Rprintf("Error: upper_bounds must have either length 1 or length equal to "
+            "the number of controls.\n");
+  } else {
+    if (ub_size == 1) {
+      double ub_value = parse_real_option(args, "upper_bounds");
+      res = nlopt_set_upper_bounds1(opts, ub_value);
+    } else {
+      if (ub_size != num_controls) {
+        flag_encountered_error = 1;
+        Rprintf("Error: upper_bounds must have either length 1 or length equal "
+                "to the number of controls.\n");
+      }
+      double *ub_values = parse_real_vector_option(args, "upper_bounds");
+      res = nlopt_set_upper_bounds(opts, ub_values);
+    }
+    if (res == NLOPT_INVALID_ARGS) {
+      flag_encountered_error = 1;
+      Rprintf("Error: nlopt_set_upper_bounds returned NLOPT_INVALID_ARGS.\n");
+    }
   }
 
   // Get number of inequality constraints.
-  SEXP R_num_constraints_ineq =
-      PROTECT(AS_INTEGER(getListElement(args, "num_constraints_ineq")));
-  unsigned num_constraints_ineq = asInteger(R_num_constraints_ineq);
-  UNPROTECT(1);
+  unsigned int num_constraints_ineq =
+      parse_integer_option(args, "num_constraints_ineq");
 
   // Get number of equality constraints.
-  SEXP R_num_constraints_eq =
-      PROTECT(AS_INTEGER(getListElement(args, "num_constraints_eq")));
-  unsigned num_constraints_eq = asInteger(R_num_constraints_eq);
-  UNPROTECT(1);
+  unsigned int num_constraints_eq =
+      parse_integer_option(args, "num_constraints_eq");
 
   // Get evaluation functions and environment.
-  SEXP R_eval_f = PROTECT(getListElement(args, "eval_f")); // objective
-  SEXP R_eval_g_ineq =
-      PROTECT(getListElement(args, "eval_g_ineq")); // inequality constraints
-  SEXP R_eval_g_eq =
-      PROTECT(getListElement(args, "eval_g_eq")); // equality constraints
   SEXP R_environment = PROTECT(getListElement(args, "nloptr_environment"));
+  SEXP R_eval_f = PROTECT(getListElement(args, "eval_f")); // objective
 
   // Define data to pass to objective function.
   func_objective_data objfunc_data;
@@ -860,6 +871,9 @@ SEXP NLoptR_Optimize(SEXP args) {
   objfunc_data.R_environment = R_environment;
   objfunc_data.num_iterations = 0;
   objfunc_data.print_level = print_level;
+
+  // Unprotect R_eval_f
+  UNPROTECT(1);
 
   // Add objective to options.
   res = nlopt_set_min_objective(opts, func_objective, &objfunc_data);
@@ -873,15 +887,20 @@ SEXP NLoptR_Optimize(SEXP args) {
   // Declare data outside if-statement to prevent data corruption.
   func_constraints_ineq_data ineq_constr_data;
   if (num_constraints_ineq > 0) {
+    SEXP R_eval_g_ineq =
+        PROTECT(getListElement(args, "eval_g_ineq")); // inequality constraints
+
     // Get tolerances from R_options.
-    double tol_constraints_ineq[num_constraints_ineq];
-    SEXP R_tol_constraints_ineq =
-        PROTECT(getListElement(R_options, "tol_constraints_ineq"));
-    double *pRtolineqc = REAL(R_tol_constraints_ineq);
-    for (size_t i = 0; i < num_constraints_ineq; i++) {
-      tol_constraints_ineq[i] = pRtolineqc[i];
+    unsigned int tol_constraints_ineq_size =
+        parse_vector_length_option(R_options, "tol_constraints_ineq");
+    if (tol_constraints_ineq_size != num_constraints_ineq) {
+      flag_encountered_error = 1;
+      Rprintf(
+          "Error: tol_constraints_ineq must have length equal to the number "
+          "of inequality constraints.\n");
     }
-    UNPROTECT(1);
+    double *tol_constraints_ineq_values =
+        parse_real_vector_option(R_options, "tol_constraints_ineq");
 
     // Define data to pass to constraint function.
     ineq_constr_data.R_eval_g = R_eval_g_ineq;
@@ -891,12 +910,15 @@ SEXP NLoptR_Optimize(SEXP args) {
     // Add vector-valued inequality constraint.
     res = nlopt_add_inequality_mconstraint(
         opts, num_constraints_ineq, func_constraints_ineq, &ineq_constr_data,
-        tol_constraints_ineq);
+        tol_constraints_ineq_values);
     if (res == NLOPT_INVALID_ARGS) {
       flag_encountered_error = 1;
       Rprintf("Error: nlopt_add_inequality_mconstraint returned "
               "NLOPT_INVALID_ARGS.\n");
     }
+
+    // Unprotect R_eval_g_ineq
+    UNPROTECT(1);
   }
 
   // Equality constraints
@@ -904,15 +926,19 @@ SEXP NLoptR_Optimize(SEXP args) {
   // Declare data outside if-statement to prevent data corruption.
   func_constraints_eq_data eq_constr_data;
   if (num_constraints_eq > 0) {
+    SEXP R_eval_g_eq =
+        PROTECT(getListElement(args, "eval_g_eq")); // equality constraints
+
     // Get tolerances from R_options.
-    double tol_constraints_eq[num_constraints_eq];
-    SEXP R_tol_constraints_eq =
-        PROTECT(getListElement(R_options, "tol_constraints_eq"));
-    double *pRtoleqc = REAL(R_tol_constraints_eq);
-    for (size_t i = 0; i < num_constraints_eq; i++) {
-      tol_constraints_eq[i] = pRtoleqc[i];
+    unsigned int tol_constraints_eq_size =
+        parse_vector_length_option(R_options, "tol_constraints_eq");
+    if (tol_constraints_eq_size != num_constraints_eq) {
+      flag_encountered_error = 1;
+      Rprintf("Error: tol_constraints_eq must have length equal to the number "
+              "of equality constraints.\n");
     }
-    UNPROTECT(1);
+    double *tol_constraints_eq_values =
+        parse_real_vector_option(R_options, "tol_constraints_eq");
 
     // Define data to pass to constraint function.
     eq_constr_data.R_eval_g = R_eval_g_eq;
@@ -922,13 +948,19 @@ SEXP NLoptR_Optimize(SEXP args) {
     // Add vector-valued equality constraint.
     res = nlopt_add_equality_mconstraint(opts, num_constraints_eq,
                                          func_constraints_eq, &eq_constr_data,
-                                         tol_constraints_eq);
+                                         tol_constraints_eq_values);
     if (res == NLOPT_INVALID_ARGS) {
       flag_encountered_error = 1;
       Rprintf("Error: nlopt_add_equality_mconstraint returned "
               "NLOPT_INVALID_ARGS.\n");
     }
+
+    // Unprotect R_eval_g_eq
+    UNPROTECT(1);
   }
+
+  // Unprotect R_environment
+  UNPROTECT(1);
 
   // Now we can unprotect R_options
   UNPROTECT(1);
@@ -949,10 +981,6 @@ SEXP NLoptR_Optimize(SEXP args) {
   if (use_local_optimizer) {
     nlopt_destroy(local_opts);
   }
-
-  // After minimizing we can unprotect eval_f, eval_g_ineq, eval_g_eq, and the
-  // environment.
-  UNPROTECT(4);
 
   // Get version of NLopt.
   int major, minor, bugfix;
