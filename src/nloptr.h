@@ -3,13 +3,7 @@
 
 #include <nlopt.h>
 
-#include <R.h>
 #include <Rinternals.h>
-
-#define AS_INTEGER(x) Rf_coerceVector(x, INTSXP)
-
-// Extracts element with name 'str' from R object 'list' & returns that element.
-SEXP getListElement(SEXP list, char *str);
 
 // Convert the algorithm lookup from a nested if-else chain to a lookup table
 // and switch statement. See https://stackoverflow.com/a/49215742/2726543
