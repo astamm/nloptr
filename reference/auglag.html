@@ -170,7 +170,8 @@ to the desired solution (if it exists).</p>
 <p>Since all of the actual optimization is performed in this subsidiary
 optimizer, the subsidiary algorithm that you specify determines whether the
 optimization is gradient-based or derivative-free.</p>
-<p>The local solvers available at the moment are <code>COBYLA'' (for the derivative-free approach) and </code>LBFGS”, <code>MMA'', or </code>SLSQP” (for smooth
+<p>The local solvers available at the moment are <code>COBYLA'' or </code>BOBYQA” (for the
+derivative-free approach) and <code>LBFGS'', </code>MMA”, or “SLSQP” (for smooth
 functions). The tolerance for the local solver has to be provided.</p>
 <p>There is a variant that only uses penalty functions for equality constraints
 while inequality constraints are passed through to the subsidiary algorithm
