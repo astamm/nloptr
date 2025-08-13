@@ -36,7 +36,7 @@
 #' optimizer, the subsidiary algorithm that you specify determines whether the
 #' optimization is gradient-based or derivative-free.
 #'
-#' The local solvers available at the moment are ``COBYLA'' (for the
+#' The local solvers available at the moment are ``COBYLA'' or ``BOBYQA'' (for the
 #' derivative-free approach) and ``LBFGS'', ``MMA'', or ``SLSQP'' (for smooth
 #' functions). The tolerance for the local solver has to be provided.
 #'

@@ -30,85 +30,133 @@
  * 2023-08-24: Delete files solely needed for testthat (Avraham Adler).
  * 2024-07-02: Updated old include which is no longer maintained and other
  *             minor code tweaks and efficiency enhancements (Avraham Adler).
-*/
+ */
 
 #include "nloptr.h"
 
-#include <stdlib.h> // for NULL
 #include <R_ext/Rdynload.h>
+#include <stdlib.h> // for NULL
 
 static const R_CallMethodDef CallEntries[] = {
-  {"NLoptR_Optimize",    (DL_FUNC) &NLoptR_Optimize,    1},
-  {NULL, NULL, 0}
-};
+    {"NLoptR_Optimize", (DL_FUNC)&NLoptR_Optimize, 1}, {NULL, NULL, 0}};
 
 void R_init_nloptr(DllInfo *info) {
-    // Register C functions that can be used by external packages
-    // linking to internal NLopt code from C.
-    R_RegisterCCallable("nloptr", "nlopt_algorithm_name",            (DL_FUNC) &nlopt_algorithm_name);
-    R_RegisterCCallable("nloptr", "nlopt_srand",                     (DL_FUNC) &nlopt_srand);
-    R_RegisterCCallable("nloptr", "nlopt_srand_time",                (DL_FUNC) &nlopt_srand_time);
-    R_RegisterCCallable("nloptr", "nlopt_version",                   (DL_FUNC) &nlopt_version);
-    R_RegisterCCallable("nloptr", "nlopt_create",                    (DL_FUNC) &nlopt_create);
-    R_RegisterCCallable("nloptr", "nlopt_destroy",                   (DL_FUNC) &nlopt_destroy);
-    R_RegisterCCallable("nloptr", "nlopt_copy",                      (DL_FUNC) &nlopt_copy);
-    R_RegisterCCallable("nloptr", "nlopt_optimize",                  (DL_FUNC) &nlopt_optimize);
-    R_RegisterCCallable("nloptr", "nlopt_set_min_objective",         (DL_FUNC) &nlopt_set_min_objective);
-    R_RegisterCCallable("nloptr", "nlopt_set_max_objective",         (DL_FUNC) &nlopt_set_max_objective);
-    R_RegisterCCallable("nloptr", "nlopt_set_precond_min_objective", (DL_FUNC) &nlopt_set_precond_min_objective);
-    R_RegisterCCallable("nloptr", "nlopt_set_precond_max_objective", (DL_FUNC) &nlopt_set_precond_max_objective);
-    R_RegisterCCallable("nloptr", "nlopt_get_algorithm",             (DL_FUNC) &nlopt_get_algorithm);
-    R_RegisterCCallable("nloptr", "nlopt_get_dimension",             (DL_FUNC) &nlopt_get_dimension);
+  // Register C functions that can be used by external packages
+  // linking to internal NLopt code from C.
+  R_RegisterCCallable("nloptr", "nlopt_algorithm_name",
+                      (DL_FUNC)&nlopt_algorithm_name);
+  R_RegisterCCallable("nloptr", "nlopt_srand", (DL_FUNC)&nlopt_srand);
+  R_RegisterCCallable("nloptr", "nlopt_srand_time", (DL_FUNC)&nlopt_srand_time);
+  R_RegisterCCallable("nloptr", "nlopt_version", (DL_FUNC)&nlopt_version);
+  R_RegisterCCallable("nloptr", "nlopt_create", (DL_FUNC)&nlopt_create);
+  R_RegisterCCallable("nloptr", "nlopt_destroy", (DL_FUNC)&nlopt_destroy);
+  R_RegisterCCallable("nloptr", "nlopt_copy", (DL_FUNC)&nlopt_copy);
+  R_RegisterCCallable("nloptr", "nlopt_optimize", (DL_FUNC)&nlopt_optimize);
+  R_RegisterCCallable("nloptr", "nlopt_set_min_objective",
+                      (DL_FUNC)&nlopt_set_min_objective);
+  R_RegisterCCallable("nloptr", "nlopt_set_max_objective",
+                      (DL_FUNC)&nlopt_set_max_objective);
+  R_RegisterCCallable("nloptr", "nlopt_set_precond_min_objective",
+                      (DL_FUNC)&nlopt_set_precond_min_objective);
+  R_RegisterCCallable("nloptr", "nlopt_set_precond_max_objective",
+                      (DL_FUNC)&nlopt_set_precond_max_objective);
+  R_RegisterCCallable("nloptr", "nlopt_get_algorithm",
+                      (DL_FUNC)&nlopt_get_algorithm);
+  R_RegisterCCallable("nloptr", "nlopt_get_dimension",
+                      (DL_FUNC)&nlopt_get_dimension);
 
-    R_RegisterCCallable("nloptr", "nlopt_set_lower_bounds",                  (DL_FUNC) &nlopt_set_lower_bounds);
-    R_RegisterCCallable("nloptr", "nlopt_set_lower_bounds1",                 (DL_FUNC) &nlopt_set_lower_bounds1);
-    R_RegisterCCallable("nloptr", "nlopt_get_lower_bounds",                  (DL_FUNC) &nlopt_get_lower_bounds);
-    R_RegisterCCallable("nloptr", "nlopt_set_upper_bounds",                  (DL_FUNC) &nlopt_set_upper_bounds);
-    R_RegisterCCallable("nloptr", "nlopt_set_upper_bounds1",                 (DL_FUNC) &nlopt_set_upper_bounds1);
-    R_RegisterCCallable("nloptr", "nlopt_get_upper_bounds",                  (DL_FUNC) &nlopt_get_upper_bounds);
-    R_RegisterCCallable("nloptr", "nlopt_remove_inequality_constraints",     (DL_FUNC) &nlopt_remove_inequality_constraints);
-    R_RegisterCCallable("nloptr", "nlopt_add_inequality_constraint",         (DL_FUNC) &nlopt_add_inequality_constraint);
-    R_RegisterCCallable("nloptr", "nlopt_add_precond_inequality_constraint", (DL_FUNC) &nlopt_add_precond_inequality_constraint);
-    R_RegisterCCallable("nloptr", "nlopt_add_inequality_mconstraint",        (DL_FUNC) &nlopt_add_inequality_mconstraint);
-    R_RegisterCCallable("nloptr", "nlopt_remove_equality_constraints",       (DL_FUNC) &nlopt_remove_equality_constraints);
-    R_RegisterCCallable("nloptr", "nlopt_add_equality_constraint",           (DL_FUNC) &nlopt_add_equality_constraint);
-    R_RegisterCCallable("nloptr", "nlopt_add_precond_equality_constraint",   (DL_FUNC) &nlopt_add_precond_equality_constraint);
-    R_RegisterCCallable("nloptr", "nlopt_add_equality_mconstraint",          (DL_FUNC) &nlopt_add_equality_mconstraint);
+  R_RegisterCCallable("nloptr", "nlopt_set_lower_bounds",
+                      (DL_FUNC)&nlopt_set_lower_bounds);
+  R_RegisterCCallable("nloptr", "nlopt_set_lower_bounds1",
+                      (DL_FUNC)&nlopt_set_lower_bounds1);
+  R_RegisterCCallable("nloptr", "nlopt_get_lower_bounds",
+                      (DL_FUNC)&nlopt_get_lower_bounds);
+  R_RegisterCCallable("nloptr", "nlopt_set_upper_bounds",
+                      (DL_FUNC)&nlopt_set_upper_bounds);
+  R_RegisterCCallable("nloptr", "nlopt_set_upper_bounds1",
+                      (DL_FUNC)&nlopt_set_upper_bounds1);
+  R_RegisterCCallable("nloptr", "nlopt_get_upper_bounds",
+                      (DL_FUNC)&nlopt_get_upper_bounds);
+  R_RegisterCCallable("nloptr", "nlopt_remove_inequality_constraints",
+                      (DL_FUNC)&nlopt_remove_inequality_constraints);
+  R_RegisterCCallable("nloptr", "nlopt_add_inequality_constraint",
+                      (DL_FUNC)&nlopt_add_inequality_constraint);
+  R_RegisterCCallable("nloptr", "nlopt_add_precond_inequality_constraint",
+                      (DL_FUNC)&nlopt_add_precond_inequality_constraint);
+  R_RegisterCCallable("nloptr", "nlopt_add_inequality_mconstraint",
+                      (DL_FUNC)&nlopt_add_inequality_mconstraint);
+  R_RegisterCCallable("nloptr", "nlopt_remove_equality_constraints",
+                      (DL_FUNC)&nlopt_remove_equality_constraints);
+  R_RegisterCCallable("nloptr", "nlopt_add_equality_constraint",
+                      (DL_FUNC)&nlopt_add_equality_constraint);
+  R_RegisterCCallable("nloptr", "nlopt_add_precond_equality_constraint",
+                      (DL_FUNC)&nlopt_add_precond_equality_constraint);
+  R_RegisterCCallable("nloptr", "nlopt_add_equality_mconstraint",
+                      (DL_FUNC)&nlopt_add_equality_mconstraint);
 
-    R_RegisterCCallable("nloptr", "nlopt_set_stopval",    (DL_FUNC) &nlopt_set_stopval);
-    R_RegisterCCallable("nloptr", "nlopt_get_stopval",    (DL_FUNC) &nlopt_get_stopval);
-    R_RegisterCCallable("nloptr", "nlopt_set_ftol_rel",   (DL_FUNC) &nlopt_set_ftol_rel);
-    R_RegisterCCallable("nloptr", "nlopt_get_ftol_rel",   (DL_FUNC) &nlopt_get_ftol_rel);
-    R_RegisterCCallable("nloptr", "nlopt_set_ftol_abs",   (DL_FUNC) &nlopt_set_ftol_abs);
-    R_RegisterCCallable("nloptr", "nlopt_get_ftol_abs",   (DL_FUNC) &nlopt_get_ftol_abs);
-    R_RegisterCCallable("nloptr", "nlopt_set_xtol_rel",   (DL_FUNC) &nlopt_set_xtol_rel);
-    R_RegisterCCallable("nloptr", "nlopt_get_xtol_rel",   (DL_FUNC) &nlopt_get_xtol_rel);
-    R_RegisterCCallable("nloptr", "nlopt_set_xtol_abs1",  (DL_FUNC) &nlopt_set_xtol_abs1);
-    R_RegisterCCallable("nloptr", "nlopt_set_xtol_abs",   (DL_FUNC) &nlopt_set_xtol_abs);
-    R_RegisterCCallable("nloptr", "nlopt_get_xtol_abs",   (DL_FUNC) &nlopt_get_xtol_abs);
-    R_RegisterCCallable("nloptr", "nlopt_set_x_weights1", (DL_FUNC) &nlopt_set_x_weights1);
-    R_RegisterCCallable("nloptr", "nlopt_set_x_weights",  (DL_FUNC) &nlopt_set_x_weights);
-    R_RegisterCCallable("nloptr", "nlopt_get_x_weights",  (DL_FUNC) &nlopt_get_x_weights);
-    R_RegisterCCallable("nloptr", "nlopt_set_maxeval",    (DL_FUNC) &nlopt_set_maxeval);
-    R_RegisterCCallable("nloptr", "nlopt_get_maxeval",    (DL_FUNC) &nlopt_get_maxeval);
-    R_RegisterCCallable("nloptr", "nlopt_set_maxtime",    (DL_FUNC) &nlopt_set_maxtime);
-    R_RegisterCCallable("nloptr", "nlopt_get_maxtime",    (DL_FUNC) &nlopt_get_maxtime);
-    R_RegisterCCallable("nloptr", "nlopt_force_stop",     (DL_FUNC) &nlopt_force_stop);
-    R_RegisterCCallable("nloptr", "nlopt_set_force_stop", (DL_FUNC) &nlopt_set_force_stop);
-    R_RegisterCCallable("nloptr", "nlopt_get_force_stop", (DL_FUNC) &nlopt_get_force_stop);
+  R_RegisterCCallable("nloptr", "nlopt_set_stopval",
+                      (DL_FUNC)&nlopt_set_stopval);
+  R_RegisterCCallable("nloptr", "nlopt_get_stopval",
+                      (DL_FUNC)&nlopt_get_stopval);
+  R_RegisterCCallable("nloptr", "nlopt_set_ftol_rel",
+                      (DL_FUNC)&nlopt_set_ftol_rel);
+  R_RegisterCCallable("nloptr", "nlopt_get_ftol_rel",
+                      (DL_FUNC)&nlopt_get_ftol_rel);
+  R_RegisterCCallable("nloptr", "nlopt_set_ftol_abs",
+                      (DL_FUNC)&nlopt_set_ftol_abs);
+  R_RegisterCCallable("nloptr", "nlopt_get_ftol_abs",
+                      (DL_FUNC)&nlopt_get_ftol_abs);
+  R_RegisterCCallable("nloptr", "nlopt_set_xtol_rel",
+                      (DL_FUNC)&nlopt_set_xtol_rel);
+  R_RegisterCCallable("nloptr", "nlopt_get_xtol_rel",
+                      (DL_FUNC)&nlopt_get_xtol_rel);
+  R_RegisterCCallable("nloptr", "nlopt_set_xtol_abs1",
+                      (DL_FUNC)&nlopt_set_xtol_abs1);
+  R_RegisterCCallable("nloptr", "nlopt_set_xtol_abs",
+                      (DL_FUNC)&nlopt_set_xtol_abs);
+  R_RegisterCCallable("nloptr", "nlopt_get_xtol_abs",
+                      (DL_FUNC)&nlopt_get_xtol_abs);
+  R_RegisterCCallable("nloptr", "nlopt_set_x_weights1",
+                      (DL_FUNC)&nlopt_set_x_weights1);
+  R_RegisterCCallable("nloptr", "nlopt_set_x_weights",
+                      (DL_FUNC)&nlopt_set_x_weights);
+  R_RegisterCCallable("nloptr", "nlopt_get_x_weights",
+                      (DL_FUNC)&nlopt_get_x_weights);
+  R_RegisterCCallable("nloptr", "nlopt_set_maxeval",
+                      (DL_FUNC)&nlopt_set_maxeval);
+  R_RegisterCCallable("nloptr", "nlopt_get_maxeval",
+                      (DL_FUNC)&nlopt_get_maxeval);
+  R_RegisterCCallable("nloptr", "nlopt_set_maxtime",
+                      (DL_FUNC)&nlopt_set_maxtime);
+  R_RegisterCCallable("nloptr", "nlopt_get_maxtime",
+                      (DL_FUNC)&nlopt_get_maxtime);
+  R_RegisterCCallable("nloptr", "nlopt_force_stop", (DL_FUNC)&nlopt_force_stop);
+  R_RegisterCCallable("nloptr", "nlopt_set_force_stop",
+                      (DL_FUNC)&nlopt_set_force_stop);
+  R_RegisterCCallable("nloptr", "nlopt_get_force_stop",
+                      (DL_FUNC)&nlopt_get_force_stop);
 
-    R_RegisterCCallable("nloptr", "nlopt_set_local_optimizer",      (DL_FUNC) &nlopt_set_local_optimizer);
-    R_RegisterCCallable("nloptr", "nlopt_set_population",           (DL_FUNC) &nlopt_set_population);
-    R_RegisterCCallable("nloptr", "nlopt_get_population",           (DL_FUNC) &nlopt_get_population);
-    R_RegisterCCallable("nloptr", "nlopt_set_vector_storage",       (DL_FUNC) &nlopt_set_vector_storage);
-    R_RegisterCCallable("nloptr", "nlopt_get_vector_storage",       (DL_FUNC) &nlopt_get_vector_storage);
-    R_RegisterCCallable("nloptr", "nlopt_set_default_initial_step", (DL_FUNC) &nlopt_set_default_initial_step);
-    R_RegisterCCallable("nloptr", "nlopt_set_initial_step",         (DL_FUNC) &nlopt_set_initial_step);
-    R_RegisterCCallable("nloptr", "nlopt_set_initial_step1",        (DL_FUNC) &nlopt_set_initial_step1);
-    R_RegisterCCallable("nloptr", "nlopt_get_initial_step",         (DL_FUNC) &nlopt_get_initial_step);
+  R_RegisterCCallable("nloptr", "nlopt_set_local_optimizer",
+                      (DL_FUNC)&nlopt_set_local_optimizer);
+  R_RegisterCCallable("nloptr", "nlopt_set_population",
+                      (DL_FUNC)&nlopt_set_population);
+  R_RegisterCCallable("nloptr", "nlopt_get_population",
+                      (DL_FUNC)&nlopt_get_population);
+  R_RegisterCCallable("nloptr", "nlopt_set_vector_storage",
+                      (DL_FUNC)&nlopt_set_vector_storage);
+  R_RegisterCCallable("nloptr", "nlopt_get_vector_storage",
+                      (DL_FUNC)&nlopt_get_vector_storage);
+  R_RegisterCCallable("nloptr", "nlopt_set_default_initial_step",
+                      (DL_FUNC)&nlopt_set_default_initial_step);
+  R_RegisterCCallable("nloptr", "nlopt_set_initial_step",
+                      (DL_FUNC)&nlopt_set_initial_step);
+  R_RegisterCCallable("nloptr", "nlopt_set_initial_step1",
+                      (DL_FUNC)&nlopt_set_initial_step1);
+  R_RegisterCCallable("nloptr", "nlopt_get_initial_step",
+                      (DL_FUNC)&nlopt_get_initial_step);
 
-    // Register routines to improve lookup from R using .Call interface.
-    R_registerRoutines(info, NULL, CallEntries, NULL, NULL);
-    R_useDynamicSymbols(info, FALSE);
-    R_forceSymbols(info, TRUE);
+  // Register routines to improve lookup from R using .Call interface.
+  R_registerRoutines(info, NULL, CallEntries, NULL, NULL);
+  R_useDynamicSymbols(info, FALSE);
+  R_forceSymbols(info, TRUE);
 }

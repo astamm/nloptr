@@ -86,7 +86,8 @@ Since all of the actual optimization is performed in this subsidiary
 optimizer, the subsidiary algorithm that you specify determines whether the
 optimization is gradient-based or derivative-free.
 
-The local solvers available at the moment are \verb{COBYLA'' (for the derivative-free approach) and }LBFGS'', \verb{MMA'', or }SLSQP'' (for smooth
+The local solvers available at the moment are \verb{COBYLA'' or }BOBYQA'' (for the
+derivative-free approach) and \verb{LBFGS'', }MMA'', or ``SLSQP'' (for smooth
 functions). The tolerance for the local solver has to be provided.
 
 There is a variant that only uses penalty functions for equality constraints
