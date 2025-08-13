@@ -110,15 +110,24 @@
 #'       deprecatedBehavior = FALSE)
 #'
 
-ccsaq <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL, hin = NULL,
-                  hinjac = NULL, nl.info = FALSE, control = list(),
-                  deprecatedBehavior = TRUE, ...) {
-
+ccsaq <- function(
+  x0,
+  fn,
+  gr = NULL,
+  lower = NULL,
+  upper = NULL,
+  hin = NULL,
+  hinjac = NULL,
+  nl.info = FALSE,
+  control = list(),
+  deprecatedBehavior = TRUE,
+  ...
+) {
   opts <- nl.opts(control)
   opts["algorithm"] <- "NLOPT_LD_CCSAQ"
 
   fun <- match.fun(fn)
-  fn  <- function(x) fun(x, ...)
+  fn <- function(x) fun(x, ...)
 
   if (is.null(gr)) {
     gr <- function(x) nl.grad(x, fn)
@@ -129,34 +138,47 @@ ccsaq <- function(x0, fn, gr = NULL, lower = NULL, upper = NULL, hin = NULL,
 
   if (!is.null(hin)) {
     if (deprecatedBehavior) {
-      warning("The old behavior for hin >= 0 has been deprecated. Please ",
-              "restate the inequality to be <=0. The ability to use the old ",
-              "behavior will be removed in a future release.")
+      warning(
+        "The old behavior for hin >= 0 has been deprecated. Please ",
+        "restate the inequality to be <=0. The ability to use the old ",
+        "behavior will be removed in a future release."
+      )
       .hin <- match.fun(hin)
-      hin <- function(x) -.hin(x, ...)      # change  hin >= 0  to  hin <= 0 !
+      hin <- function(x) -.hin(x, ...) # change  hin >= 0  to  hin <= 0 !
     }
     if (is.null(hinjac)) {
       hinjac <- function(x) nl.jacobian(x, hin)
     } else if (deprecatedBehavior) {
-      warning("The old behavior for hinjac >= 0 has been deprecated. Please ",
-              "restate the inequality to be <=0. The ability to use the old ",
-              "behavior will be removed in a future release.")
-        .hinjac <- match.fun(hinjac)
-        hinjac <- function(x) -.hinjac(x)
+      warning(
+        "The old behavior for hinjac >= 0 has been deprecated. Please ",
+        "restate the inequality to be <=0. The ability to use the old ",
+        "behavior will be removed in a future release."
+      )
+      .hinjac <- match.fun(hinjac)
+      hinjac <- function(x) -.hinjac(x)
     }
   }
 
-  S0 <- nloptr(x0,
-               eval_f = fn,
-               eval_grad_f = gr,
-               lb = lower,
-               ub = upper,
-               eval_g_ineq = hin,
-               eval_jac_g_ineq = hinjac,
-               opts = opts)
+  S0 <- nloptr(
+    x0,
+    eval_f = fn,
+    eval_grad_f = gr,
+    lb = lower,
+    ub = upper,
+    eval_g_ineq = hin,
+    eval_jac_g_ineq = hinjac,
+    opts = opts
+  )
 
-  if (nl.info) print(S0)
+  if (nl.info) {
+    print(S0)
+  }
 
-  list(par = S0$solution, value = S0$objective, iter = S0$iterations,
-       convergence = S0$status, message = S0$message)
+  list(
+    par = S0$solution,
+    value = S0$objective,
+    iter = S0$iterations,
+    convergence = S0$status,
+    message = S0$message
+  )
 }

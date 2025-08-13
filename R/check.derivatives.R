@@ -29,7 +29,6 @@
 #         suppressMessages.
 #   2023-02-09: Cleanup and tweaks for safety and efficiency (AA)
 
-
 #' Check analytic gradients of a function using finite difference
 #' approximations
 #'
@@ -90,83 +89,115 @@
 #' check.derivatives(.x = 1:10, func = g, func_grad = g_grad,
 #'           check_derivatives_print = 'all', a = runif(10))
 #'
-check.derivatives <- function(.x,
-                              func,
-                              func_grad,
-                              check_derivatives_tol = 1e-04,
-                              check_derivatives_print = "all",
-                              func_grad_name = "grad_f",
-                              ...) {
+check.derivatives <- function(
+  .x,
+  func,
+  func_grad,
+  check_derivatives_tol = 1e-04,
+  check_derivatives_print = "all",
+  func_grad_name = "grad_f",
+  ...
+) {
   analytic_grad <- func_grad(.x, ...)
 
   finite_diff_grad <- finite.diff(func, .x, ...)
 
-  relative_error <- ifelse(finite_diff_grad == 0,
-                           analytic_grad,
-                           abs((analytic_grad - finite_diff_grad) /
-                                 finite_diff_grad))
+  relative_error <- ifelse(
+    finite_diff_grad == 0,
+    analytic_grad,
+    abs(
+      (analytic_grad - finite_diff_grad) /
+        finite_diff_grad
+    )
+  )
 
   flag_derivative_warning <- relative_error > check_derivatives_tol
 
   if (!(check_derivatives_print %in% c("all", "errors", "none"))) {
-    warning("Value '", check_derivatives_print,
-            "' for check_derivatives_print is unknown; use 'all' ",
-            "(default), 'errors', or 'none'.")
+    warning(
+      "Value '",
+      check_derivatives_print,
+      "' for check_derivatives_print is unknown; use 'all' ",
+      "(default), 'errors', or 'none'."
+    )
     check_derivatives_print <- "none"
   }
 
   # determine indices of vector / matrix for printing
   # format indices with width, such that they are aligned vertically
   if (is.matrix(analytic_grad)) {
-    indices <- paste(format(rep(seq_len(nrow(analytic_grad)),
-                                times = ncol(analytic_grad)),
-                            width = 1 + sum(nrow(analytic_grad) > 10 ^ (1:10))),
-                     format(rep(seq_len(ncol(analytic_grad)),
-                                each = nrow(analytic_grad)),
-                            width = 1 + sum(ncol(analytic_grad) > 10 ^ (1:10))),
-                     sep = ", ")
+    indices <- paste(
+      format(
+        rep(seq_len(nrow(analytic_grad)), times = ncol(analytic_grad)),
+        width = 1 + sum(nrow(analytic_grad) > 10^(1:10))
+      ),
+      format(
+        rep(seq_len(ncol(analytic_grad)), each = nrow(analytic_grad)),
+        width = 1 + sum(ncol(analytic_grad) > 10^(1:10))
+      ),
+      sep = ", "
+    )
   } else {
-    indices <- format(seq_along(analytic_grad),
-                      width = 1 + sum(length(analytic_grad)) > 10 ^ (1:10))
+    indices <- format(
+      seq_along(analytic_grad),
+      width = 1 + sum(length(analytic_grad)) > 10^(1:10)
+    )
   }
 
   # Print results.
-  message("Derivative checker results: ", sum(flag_derivative_warning),
-          " error(s) detected.")
+  message(
+    "Derivative checker results: ",
+    sum(flag_derivative_warning),
+    " error(s) detected."
+  )
   if (check_derivatives_print == "all") {
-
-    message("\n",
-            paste0(ifelse(flag_derivative_warning, "*", " "),
-                   " ", func_grad_name, "[", indices, "] = ",
-                   format(analytic_grad, scientific = TRUE),
-                   " ~ ",
-                   format(finite_diff_grad, scientific = TRUE),
-                   "   [",
-                   format(relative_error, scientific = TRUE),
-                   "]", collapse = "\n"),
-            "\n\n")
+    message(
+      "\n",
+      paste0(
+        ifelse(flag_derivative_warning, "*", " "),
+        " ",
+        func_grad_name,
+        "[",
+        indices,
+        "] = ",
+        format(analytic_grad, scientific = TRUE),
+        " ~ ",
+        format(finite_diff_grad, scientific = TRUE),
+        "   [",
+        format(relative_error, scientific = TRUE),
+        "]",
+        collapse = "\n"
+      ),
+      "\n\n"
+    )
   } else if (check_derivatives_print == "errors") {
     if (sum(flag_derivative_warning) > 0) {
-
-      message("\n",
-              paste0(ifelse(flag_derivative_warning[flag_derivative_warning],
-                            "*", " "),
-                     " ", func_grad_name, "[", indices[flag_derivative_warning],
-                     "] = ", format(analytic_grad[flag_derivative_warning],
-                                    scientific = TRUE),
-                     " ~ ",
-                     format(finite_diff_grad[flag_derivative_warning],
-                            scientific = TRUE),
-                     "   [",
-                     format(relative_error[flag_derivative_warning],
-                            scientific = TRUE),
-                     "]", collapse = "\n"),
-              "\n\n")
+      message(
+        "\n",
+        paste0(
+          ifelse(flag_derivative_warning[flag_derivative_warning], "*", " "),
+          " ",
+          func_grad_name,
+          "[",
+          indices[flag_derivative_warning],
+          "] = ",
+          format(analytic_grad[flag_derivative_warning], scientific = TRUE),
+          " ~ ",
+          format(finite_diff_grad[flag_derivative_warning], scientific = TRUE),
+          "   [",
+          format(relative_error[flag_derivative_warning], scientific = TRUE),
+          "]",
+          collapse = "\n"
+        ),
+        "\n\n"
+      )
     }
   } else if (check_derivatives_print == "none") {}
 
-  list("analytic"        = analytic_grad,
-       "finite_difference"     = finite_diff_grad,
-       "relative_error"      = relative_error,
-       "flag_derivative_warning" = flag_derivative_warning)
+  list(
+    "analytic" = analytic_grad,
+    "finite_difference" = finite_diff_grad,
+    "relative_error" = relative_error,
+    "flag_derivative_warning" = flag_derivative_warning
+  )
 }

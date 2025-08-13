@@ -26,11 +26,14 @@
 # Output: matrix with finite difference approximations
 #
 
-
 # http://en.wikipedia.org/wiki/Numerical_differentiation
-finite.diff <- function(func, .x, indices = seq_along(.x),
-                        stepSize = sqrt(.Machine$double.eps), ...) {
-
+finite.diff <- function(
+  func,
+  .x,
+  indices = seq_along(.x),
+  stepSize = sqrt(.Machine$double.eps),
+  ...
+) {
   # if we evaluate at values close to 0, we need a different step size
   stepSizeVec <- pmax(abs(.x), 1) * stepSize
 
@@ -43,6 +46,14 @@ finite.diff <- function(func, .x, indices = seq_along(.x),
     (fx_prime - fx) / stepSizeVec[i]
   }
 
-  vapply(indices, approx.gradf.index, double(length(fx)), .x = .x, func = func,
-         fx = fx, stepSizeVec = stepSizeVec, ...)
+  vapply(
+    indices,
+    approx.gradf.index,
+    double(length(fx)),
+    .x = .x,
+    func = func,
+    fx = fx,
+    stepSizeVec = stepSizeVec,
+    ...
+  )
 }
