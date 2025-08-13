@@ -61,6 +61,7 @@ semi-global, although it has heuristics to escape local optima.</p>
 <span>  heq <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  maxeval <span class="op">=</span> <span class="fl">10000</span>,</span>
 <span>  pop.size <span class="op">=</span> <span class="fl">20</span> <span class="op">*</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x0</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  ranseed <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  xtol_rel <span class="op">=</span> <span class="fl">1e-06</span>,</span>
 <span>  nl.info <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  deprecatedBehavior <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -100,6 +101,10 @@ for all components.</p></dd>
 
 <dt id="arg-pop-size">pop.size<a class="anchor" aria-label="anchor" href="#arg-pop-size"></a></dt>
 <dd><p>population size.</p></dd>
+
+
+<dt id="arg-ranseed">ranseed<a class="anchor" aria-label="anchor" href="#arg-ranseed"></a></dt>
+<dd><p>random seed for the random number generator.</p></dd>
 
 
 <dt id="arg-xtol-rel">xtol_rel<a class="anchor" aria-label="anchor" href="#arg-xtol-rel"></a></dt>
