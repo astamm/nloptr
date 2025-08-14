@@ -52,6 +52,11 @@ void R_init_nloptr(DllInfo *info) {
   R_RegisterCCallable("nloptr", "nlopt_destroy", (DL_FUNC)&nlopt_destroy);
   R_RegisterCCallable("nloptr", "nlopt_copy", (DL_FUNC)&nlopt_copy);
   R_RegisterCCallable("nloptr", "nlopt_optimize", (DL_FUNC)&nlopt_optimize);
+  R_RegisterCCallable("nloptr", "nlopt_get_errmsg", (DL_FUNC)&nlopt_get_errmsg);
+  R_RegisterCCallable("nloptr", "nlopt_result_to_string",
+                      (DL_FUNC)&nlopt_result_to_string);
+  R_RegisterCCallable("nloptr", "nlopt_result_from_string",
+                      (DL_FUNC)&nlopt_result_from_string);
   R_RegisterCCallable("nloptr", "nlopt_set_min_objective",
                       (DL_FUNC)&nlopt_set_min_objective);
   R_RegisterCCallable("nloptr", "nlopt_set_max_objective",
