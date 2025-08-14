@@ -105,7 +105,7 @@ void func_constraints_eq(unsigned m, double *constraints, unsigned n,
 nlopt_opt getOptions(SEXP R_options, int num_controls,
                      int *flag_encountered_error);
 
-SEXP convertStatusToMessage(nlopt_result status);
+SEXP convertStatusToMessage(nlopt_result status, nlopt_opt opts);
 
 SEXP NLoptR_Optimize(SEXP args);
 
