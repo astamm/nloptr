@@ -634,9 +634,18 @@ nlopt_opt getOptions(SEXP R_options, int num_controls,
   return opts;
 }
 
-SEXP convertStatusToMessage(nlopt_result status) {
+SEXP convertStatusToMessage(nlopt_result status, nlopt_opt opts) {
   // Convert message to an R object.
-  SEXP R_status_message = PROTECT(allocVector(STRSXP, 1));
+  SEXP R_status_message;
+
+  const char *message = nlopt_get_errmsg(opts);
+
+  if (message == NULL) {
+    R_status_message = PROTECT(allocVector(STRSXP, 1));
+  } else {
+    R_status_message = PROTECT(allocVector(STRSXP, 2));
+  }
+
   switch (status) {
   // Successful termination (positive return values):
 
@@ -681,6 +690,8 @@ SEXP convertStatusToMessage(nlopt_result status) {
   case NLOPT_FAILURE:
     SET_STRING_ELT(R_status_message, 0,
                    mkChar("NLOPT_FAILURE: Generic failure code."));
+    if (message != NULL)
+      SET_STRING_ELT(R_status_message, 1, mkChar(message));
     break;
   // (= -2)
   case NLOPT_INVALID_ARGS:
@@ -688,11 +699,15 @@ SEXP convertStatusToMessage(nlopt_result status) {
                    mkChar("NLOPT_INVALID_ARGS: Invalid arguments (e.g. lower "
                           "bounds are bigger than upper bounds, an unknown "
                           "algorithm was specified, etcetera)."));
+    if (message != NULL)
+      SET_STRING_ELT(R_status_message, 1, mkChar(message));
     break;
   // (= -3)
   case NLOPT_OUT_OF_MEMORY:
     SET_STRING_ELT(R_status_message, 0,
                    mkChar("NLOPT_OUT_OF_MEMORY: Ran out of memory."));
+    if (message != NULL)
+      SET_STRING_ELT(R_status_message, 1, mkChar(message));
     break;
   // (= -4)
   case NLOPT_ROUNDOFF_LIMITED:
@@ -701,6 +716,8 @@ SEXP convertStatusToMessage(nlopt_result status) {
         mkChar("NLOPT_ROUNDOFF_LIMITED: Halted because roundoff errors limited "
                "progress. (In this case, the optimization still typically "
                "returns a useful result.)"));
+    if (message != NULL)
+      SET_STRING_ELT(R_status_message, 1, mkChar(message));
     break;
   // # nocov start  - Cannot test as the nlopt_force_stop() function is not
   // exposed to nloptr.
@@ -711,6 +728,9 @@ SEXP convertStatusToMessage(nlopt_result status) {
             "NLOPT_FORCED_STOP: Halted because of a forced termination: the "
             "user called nlopt_force_stop(opt) on the optimization’s nlopt_opt "
             "object opt from the user’s objective function or constraints."));
+    if (message != NULL)
+      SET_STRING_ELT(R_status_message, 1, mkChar(message));
+    break;
     // # nocov end
   default:
     SET_STRING_ELT(R_status_message, 0,
@@ -936,6 +956,9 @@ SEXP NLoptR_Optimize(SEXP args) {
     status = NLOPT_INVALID_ARGS;
   }
 
+  // Convert message to an R object.
+  SEXP R_status_message = PROTECT(convertStatusToMessage(status, opts));
+
   // Dispose of the nlopt_opt object.
   nlopt_destroy(opts);
   if (use_local_optimizer) {
@@ -966,9 +989,6 @@ SEXP NLoptR_Optimize(SEXP args) {
   // Convert status to an R object.
   SEXP R_status = PROTECT(allocVector(INTSXP, 1));
   INTEGER(R_status)[0] = (int)status;
-
-  // Convert message to an R object.
-  SEXP R_status_message = PROTECT(convertStatusToMessage(status));
 
   // Convert number of iterations to an R object.
   SEXP R_num_iterations = PROTECT(allocVector(INTSXP, 1));

@@ -393,7 +393,7 @@ expect_message(
 # Test NLOPT_ROUNDOFF_LIMITED
 expect_true(
   grepl(
-    "Roundoff errors led to a breakdown",
+    "NLOPT_ROUNDOFF_LIMITED: Halted because roundoff errors limited",
     nloptr(
       x0,
       fn,
