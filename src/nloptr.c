@@ -698,20 +698,19 @@ SEXP convertStatusToMessage(nlopt_result status) {
   case NLOPT_ROUNDOFF_LIMITED:
     SET_STRING_ELT(
         R_status_message, 0,
-        mkChar(
-            "NLOPT_ROUNDOFF_LIMITED: Roundoff errors led to a breakdown of the "
-            "optimization algorithm. In this case, the returned minimum may "
-            "still be useful. (e.g. this error occurs in NEWUOA if one tries "
-            "to achieve a tolerance too close to machine precision.)"));
+        mkChar("NLOPT_ROUNDOFF_LIMITED: Halted because roundoff errors limited "
+               "progress. (In this case, the optimization still typically "
+               "returns a useful result.)"));
     break;
   // # nocov start  - Cannot test as the nlopt_force_stop() function is not
   // exposed to nloptr.
   case NLOPT_FORCED_STOP:
     SET_STRING_ELT(
         R_status_message, 0,
-        mkChar("Halted because of a forced termination: the user called "
-               "nlopt_force_stop(opt) on the optimization's nlopt_opt object "
-               "opt from the user's objective function."));
+        mkChar(
+            "NLOPT_FORCED_STOP: Halted because of a forced termination: the "
+            "user called nlopt_force_stop(opt) on the optimization’s nlopt_opt "
+            "object opt from the user’s objective function or constraints."));
     // # nocov end
   default:
     SET_STRING_ELT(R_status_message, 0,
