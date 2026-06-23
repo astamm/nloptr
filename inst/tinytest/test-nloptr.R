@@ -238,7 +238,7 @@ alg <- list(algorithm = "NLOPT_GN_ESCH")
 ctl <- list(xtol_rel = 1e-8, maxeval = 150000L)
 testRun <- nloptr(c(1, 1), fn, lb = lb, ub = ub, opts = c(alg, ctl))
 
-expect_equal(testRun$solution, optSol, tolerance = 2e-2)
+expect_equal(testRun$solution, optSol, tolerance = 1e-2)
 expect_equal(testRun$objective, optVal, tolerance = 1e-2)
 expect_true(testRun$iterations <= ctl$maxeval + 5)
 expect_true(testRun$status > 0)
