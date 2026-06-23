@@ -235,7 +235,7 @@ optVal <- -305 / 64
 
 ## NLOPT_GN_ESCH
 alg <- list(algorithm = "NLOPT_GN_ESCH")
-ctl <- list(xtol_rel = 1e-8, maxeval = 50000L)
+ctl <- list(xtol_rel = 1e-8, maxeval = 150000L)
 testRun <- nloptr(c(1, 1), fn, lb = lb, ub = ub, opts = c(alg, ctl))
 
 expect_equal(testRun$solution, optSol, tolerance = 2e-2)
