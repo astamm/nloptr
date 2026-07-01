@@ -1,0 +1,268 @@
+diff -ur nlopt-src-original/src/algs/ags/ags.cc nlopt-src-inspect/src/algs/ags/ags.cc
+--- nlopt-src-original/src/algs/ags/ags.cc	2025-02-04 18:29:30.000000000 +0000
++++ nlopt-src-inspect/src/algs/ags/ags.cc	2026-07-01 06:41:52.158242786 +0000
+@@ -26,8 +26,9 @@
+   if(m != nlopt_count_constraints(m, fc) || m > ags::solverMaxConstraints)
+     return NLOPT_INVALID_ARGS;
+ 
+-  if (ags_verbose && n > 5)
+-    std::cout << "Warning: AGS is unstable when dimension > 5" << std::endl;
++  if (ags_verbose && n > 5) {
++    // Disabled warning output to avoid std::cout
++  }
+ 
+   std::vector<double> lb(l, l + n);
+   std::vector<double> ub(u, u + n);
+@@ -77,26 +78,12 @@
+   }
+   catch (const std::exception& exp)
+   {
+-    std::cerr << "AGS internal error: " << std::string(exp.what()) << std::endl;
+     return NLOPT_FAILURE;
+   }
+ 
+   if (ags_verbose)
+   {
+-    auto calcCounters = solver.GetCalculationsStatistics();
+-    auto holderConstEstimations = solver.GetHolderConstantsEstimations();
+-
+-    std::cout << std::string(20, '-') << "AGS statistics: " << std::string(20, '-') << std::endl;
+-    for (size_t i = 0; i < calcCounters.size() - 1; i++)
+-      std::cout << "Number of calculations of constraint # " << i << ": " << calcCounters[i] << "\n";
+-    std::cout << "Number of calculations of objective: " << calcCounters.back() << "\n";;
+-
+-    for (size_t i = 0; i < holderConstEstimations.size() - 1; i++)
+-      std::cout << "Estimation of Holder constant of function # " << i << ": " << holderConstEstimations[i] << "\n";
+-    std::cout << "Estimation of Holder constant of objective: " << holderConstEstimations.back() << "\n";
+-    if (optPoint.idx != static_cast<int>(m))
+-      std::cout << "Feasible point not found" << "\n";
+-    std::cout << std::string(40, '-') << std::endl;
++    // Disabled statistics output to avoid std::cout
+   }
+ 
+   if (static_cast<int>(m) == optPoint.idx)
+diff -ur nlopt-src-original/src/algs/cquad/cquad.c nlopt-src-inspect/src/algs/cquad/cquad.c
+--- nlopt-src-original/src/algs/cquad/cquad.c	2025-02-04 18:29:30.000000000 +0000
++++ nlopt-src-inspect/src/algs/cquad/cquad.c	2026-07-01 06:41:47.854340571 +0000
+@@ -92,7 +92,7 @@
+    See Powell (2004) for how this routine works.  Here, we use the
+    simple O((M+n)^3) technique, rather than the fancy O((M+n)^2) method
+    described by Powell, as explained in the README. */
+-static void update_model(quad_model *model, double *W, double *r,
++static int update_model(quad_model *model, double *W, double *r,
+ 			 int M, double *X, int inew, double fnew,
+ 			 int *iwork, double *work)
+ {
+@@ -126,8 +126,7 @@
+      /* solve s = W \ r, via the LAPACK symmetric-indefinite solver */
+      DSYSV("U", &N, &one, W, &N, iwork, r, &N, work, &lwork, &info);
+      if (info != 0) { 
+-	  fprintf(stderr, "nlopt cquad: failure %d in dsysv", info);
+-	  abort();
++	  return info;
+      }
+      
+      /* update model */
+@@ -140,6 +139,7 @@
+ 		    sum += lam[k] * (X[k*n+i] - x0[i]) * (X[k*n+j] - x0[j]);
+ 	       Q[i*n + j] = Q[j*n + i] = Q[i*n + j] + sum;
+ 	  }
++     return 0;
+ }
+ 
+ /* insert the new point xnew (length n) into the array of points X (M x n),
+@@ -436,10 +436,19 @@
+ 
+ 	       /* update the quadratic models */
+ 	       iMnew = insert_new_point(n, xcur, x, M, X);
+-	       update_model(&model.model, W, r, M, X, iMnew, fcur, iwork,work);
+-	       for (i = 0; i < m; ++i)
+-		    update_model(&modelc[i].model, W, r, M, X, iMnew, 
+-				 fcval_cur[i], iwork,work);
++	       if (update_model(&model.model, W, r, M, X, iMnew, fcur, iwork,work)) {
++		    nlopt_stop_msg(stop, "cquad: failure in update_model");
++		    ret = NLOPT_FAILURE;
++		    goto done;
++	       }
++	       for (i = 0; i < m; ++i) {
++		    if (update_model(&modelc[i].model, W, r, M, X, iMnew, 
++				 fcval_cur[i], iwork,work)) {
++			 nlopt_stop_msg(stop, "cquad: failure in update_model");
++			 ret = NLOPT_FAILURE;
++			 goto done;
++		    }
++	       }
+ 
+ 	       /* once we have reached a feasible solution, the
+ 		  algorithm should never make the solution infeasible
+diff -ur nlopt-src-original/src/algs/stogo/local.cc nlopt-src-inspect/src/algs/stogo/local.cc
+--- nlopt-src-original/src/algs/stogo/local.cc	2025-02-04 18:29:30.000000000 +0000
++++ nlopt-src-inspect/src/algs/stogo/local.cc	2026-07-01 06:41:47.854820711 +0000
+@@ -5,6 +5,7 @@
+ 
+ #include <iostream>
+ #include <stdlib.h>
++#include <stdexcept>
+ 
+ #include "stogo_config.h"
+ #include "global.h"
+@@ -60,9 +61,7 @@
+ #endif
+ 
+   if (box.OutsideBox(x, domain) != 0) {
+-    cout << "Starting point is not inside the boundary. Exiting...\n" ;
+-    exit(1) ;
+-    return LS_Out ;
++    throw std::runtime_error("Starting point is not inside the boundary.");
+   }
+ 
+   // Check if we are close to a stationary point located previously
+@@ -377,8 +376,7 @@
+   }
+ 
+   if (info == LS_Unstable) {
+-    cout << "Local search became unstable. No big deal but exiting anyway\n" ;
+-    exit(1);
++    throw std::runtime_error("Local search became unstable.");
+   }
+ 
+   *mgr=maxgrad ;
+diff -ur nlopt-src-original/src/algs/stogo/stogo.cc nlopt-src-inspect/src/algs/stogo/stogo.cc
+--- nlopt-src-original/src/algs/stogo/stogo.cc	2025-02-04 18:29:30.000000000 +0000
++++ nlopt-src-inspect/src/algs/stogo/stogo.cc	2026-07-01 06:41:47.855217391 +0000
+@@ -3,6 +3,7 @@
+ 
+ #include "stogo.h"
+ #include "global.h"
++#include <stdexcept>
+ 
+ namespace {
+ class MyGlobal : public Global {
+@@ -63,29 +64,36 @@
+ #endif
+ 		   int nrandom)
+ {
+-  GlobalParams params;
++  try {
++    GlobalParams params;
+ 
+-  // FIXME: WTF do these parameters mean?
+-  params.rnd_pnts=nrandom;
+-  params.det_pnts=2*n+1 - nrandom; 
+-  params.eps_cl=0.1; params.rshift=0.3;
+-  params.mu=1.0E-4;
+-  params.stop = stop;
+-
+-  TBox D(n);
+-  for (int i = 0; i < n; ++i) {
+-    D.lb(i) = l[i];
+-    D.ub(i) = u[i];
+-  }
+-
+-  MyGlobal Problem(D, params, fgrad, data);
+-  RVector dummyvec(n);
+-  Problem.Search(-1, dummyvec);
++    // FIXME: WTF do these parameters mean?
++    params.rnd_pnts=nrandom;
++    params.det_pnts=2*n+1 - nrandom; 
++    params.eps_cl=0.1; params.rshift=0.3;
++    params.mu=1.0E-4;
++    params.stop = stop;
++
++    TBox D(n);
++    for (int i = 0; i < n; ++i) {
++      D.lb(i) = l[i];
++      D.ub(i) = u[i];
++    }
+ 
+-  if (Problem.NoMinimizers())
++    MyGlobal Problem(D, params, fgrad, data);
++    RVector dummyvec(n);
++    Problem.Search(-1, dummyvec);
++
++    if (Problem.NoMinimizers())
++      return 0;
++
++    *minf = Problem.OneMinimizer(dummyvec);
++    for (int i = 0; i < n; ++i) x[i] = dummyvec(i);
++    return 1;
++  } catch (const std::exception& e) {
++#ifdef NLOPT_UTIL_H
++    nlopt_stop_msg(stop, "stogo: %s", e.what());
++#endif
+     return 0;
+-
+-  *minf = Problem.OneMinimizer(dummyvec);
+-  for (int i = 0; i < n; ++i) x[i] = dummyvec(i);
+-  return 1;
++  }
+ }
+diff -ur nlopt-src-original/src/algs/stogo/tools.cc nlopt-src-inspect/src/algs/stogo/tools.cc
+--- nlopt-src-original/src/algs/stogo/tools.cc	2025-02-04 18:29:30.000000000 +0000
++++ nlopt-src-inspect/src/algs/stogo/tools.cc	2026-07-01 06:41:47.855618911 +0000
+@@ -1,6 +1,7 @@
+ 
+ #include <float.h>
+ #include <iostream>
++#include <stdexcept>
+ 
+ #include "stogo_config.h"
+ #include "tools.h"
+@@ -230,12 +231,7 @@
+ }
+ 
+ void TBox::dispTrials() {
+-  // Display information about box
+-#ifdef KCC
+-  copy(TList.begin(), TList.end(), ostream_iterator<Trial,char>(cout));
+-#else
+-  copy(TList.begin(), TList.end(), ostream_iterator<Trial>(cout));
+-#endif
++  // Display information about box is disabled
+ }
+ 
+ ostream & operator << (ostream & os, const TBox & B) {
+@@ -277,8 +273,7 @@
+     outs=2;
+   if (outs==999) {
+     // Something has gone wrong!
+-    cout << "Error in OutsideBox, exiting\n";
+-    exit(1);
++    throw std::runtime_error("Error in OutsideBox");
+   }
+   return outs;
+ }
+diff -ur nlopt-src-original/src/util/stop.c nlopt-src-inspect/src/util/stop.c
+--- nlopt-src-original/src/util/stop.c	2025-02-04 18:29:30.000000000 +0000
++++ nlopt-src-inspect/src/util/stop.c	2026-07-01 06:41:47.856080650 +0000
+@@ -188,18 +188,24 @@
+     size_t len = strlen(format) + 128;
+     int ret;
+ 
+-    p = (char *) realloc(p, len);
+-    if (!p)
+-        abort();
++    char *new_p = (char *) realloc(p, len);
++    if (!new_p) {
++        free(p);
++        return NULL;
++    }
++    p = new_p;
+ 
+     /* TODO: check HAVE_VSNPRINTF, and fallback to vsprintf otherwise */
+     while ((ret = vsnprintf(p, len, format, ap)) < 0 || (size_t) ret >= len) {
+         /* C99 vsnprintf returns the required number of bytes (excluding \0)
+            if the buffer is too small; older versions (e.g. MS) return -1 */
+         len = ret >= 0 ? (size_t) (ret + 1) : (len * 3) >> 1;
+-        p = (char *) realloc(p, len);
+-        if (!p)
+-            abort();
++        char *new_p = (char *) realloc(p, len);
++        if (!new_p) {
++            free(p);
++            return NULL;
++        }
++        p = new_p;
+     }
+     return p;
+ }
