@@ -19,6 +19,8 @@ cd src
 
 # Compile NLOpt from source
 sh ./scripts/nlopt_download.sh ${RSCRIPT_BIN}
+# Apply patches
+patch -p1 -d nlopt-src < ../tools/patches/nlopt.patch
 dot() { file=$1; shift; . "$file"; }
 dot ./scripts/r_config.sh ""
 ${RSCRIPT_BIN} --vanilla -e 'getRversion() > "4.0.0"' | grep TRUE > /dev/null
@@ -44,6 +46,49 @@ ${CMAKE_BIN} \
   -D NLOPT_SWIG=OFF \
   -D NLOPT_TESTS=OFF \
   ${CMAKE_ADD_AR} ${CMAKE_ADD_RANLIB} ${CMAKE_ADD_OSX_SYSROOT} ../nlopt-src
+
+# Append R support to generated nlopt_config.h
+cat >> nlopt_config.h <<EOF
+#ifdef NLOPTR_R
+#  include <stdio.h>
+#  undef stderr
+#  define stderr ((void*)2)
+#  undef stdout
+#  define stdout ((void*)1)
+
+#  ifdef __cplusplus
+     extern "C" {
+#  endif
+     void nlopt_abort(void) __attribute__((noreturn));
+     void nlopt_exit(int status) __attribute__((noreturn));
+     int nlopt_printf(const char *format, ...) __attribute__((format(printf, 1, 2)));
+     int nlopt_fprintf(void *stream, const char *format, ...) __attribute__((format(printf, 2, 3)));
+     int nlopt_putchar(int c);
+     int nlopt_puts(const char *s);
+#  ifdef __cplusplus
+     }
+#  endif
+
+#  define abort nlopt_abort
+#  define exit nlopt_exit
+#  define printf nlopt_printf
+#  define fprintf nlopt_fprintf
+#  define putchar nlopt_putchar
+#  define puts nlopt_puts
+
+#  ifdef __cplusplus
+#    include <ostream>
+     class NullOStream : public std::ostream {
+     public:
+         NullOStream() : std::ostream(nullptr) {}
+     };
+     extern NullOStream null_ostream;
+#    define cout null_ostream
+#    define cerr null_ostream
+#  endif
+#endif
+EOF
+
 make -j${NCORES}
 make install
 cd ..
